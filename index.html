@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Уроки інформатики</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 16px 24px 20px; }
+  h1 { font-size: 30px; margin: 0 0 4px; }
+  .sub { color: #555; margin: 0 0 16px; }
+  h2 { font-size: 22px; margin: 18px 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  a.lesson { display: flex; gap: 14px; align-items: baseline; padding: 10px 14px; border: 1px solid #d5dae0; border-radius: 6px; color: #111; text-decoration: none; }
+  a.lesson:hover, a.lesson:focus-visible { border-color: #0b5cad; background: #eef4fb; outline: none; }
+  .date { font: 700 16px Consolas, "Courier New", monospace; color: #0b5cad; min-width: 3.4em; }
+  .name { font-weight: 700; }
+  .note { color: #555; font-size: 16px; }
+  button { font: inherit; font-weight: 700; padding: 6px 14px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; cursor: pointer; }
+  #qrbox { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.97); align-items: center; justify-content: center; flex-direction: column; gap: 18px; cursor: pointer; }
+  #qrbox.show { display: flex; }
+  #qr { padding: 16px; background: #fff; }
+  #qrurl { font: 700 24px Consolas, monospace; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Уроки інформатики</h1>
+  <p class="sub">Мурованський ліцей · відкрий свій клас і потрібний урок
+    <button id="qrbtn" style="margin-left:10px">Показати QR</button></p>
+
+  <h2>8-А</h2>
+  <ul>
+    <li><a class="lesson" href="8a-vkladeni-cykly.html"><span class="date">03.11</span><span><span class="name">Вкладені цикли</span><br><span class="note">показ, завдання для Thonny, тест</span></span></a></li>
+  </ul>
+
+  <h2>7-Б</h2>
+  <ul>
+    <li><a class="lesson" href="7b-myachyk.html"><span class="date">03.11</span><span><span class="name">Рухомі м'ячики</span><br><span class="note">код, який треба переписати в Thonny</span></span></a></li>
+  </ul>
+</div>
+
+<div id="qrbox" title="Клікни, щоб закрити"><div id="qr"></div><div id="qrurl"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  const box = document.getElementById("qrbox");
+  let made = false;
+  document.getElementById("qrbtn").onclick = () => {
+    const url = location.href.split("#")[0].replace(/index\.html$/, "");
+    if (!made && window.QRCode) { new QRCode(document.getElementById("qr"), { text: url, width: 360, height: 360 }); made = true; }
+    document.getElementById("qrurl").textContent = url.replace(/^https?:\/\//, "");
+    box.classList.add("show");
+  };
+  box.onclick = () => box.classList.remove("show");
+</script>
+</body>
+</html>

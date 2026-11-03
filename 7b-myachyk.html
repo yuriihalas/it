@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>М'ячик у коробці</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #ffffff; color: #000; }
+  body { font-family: "Segoe UI", Roboto, Arial, sans-serif; padding: 1.2vh 1.6vw; display: flex; flex-direction: column; gap: 1.2vh;
+         font-size: min(1.9vw, 3.3vh); }
+  h1 { font-size: 1.45em; line-height: 1.1; }
+  h1 span { font-weight: 400; color: #444; font-size: 0.65em; }
+  .cols { display: grid; grid-template-columns: 1fr 1.15fr; gap: 1.6vw; flex: 1; min-height: 0; }
+  .part { display: flex; flex-direction: column; gap: 0.4vh; min-width: 0; }
+  .part h2 { font-size: 0.8em; color: #fff; background: #0b5cad; border-radius: 0.25em; padding: 0.1em 0.5em; align-self: flex-start; }
+  .part.p2 h2 { background: #7e22ce; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 1.12em; line-height: 1.32;
+        background: #f4f6f9; border: 2px solid #d5dbe3; border-left: 8px solid #0b5cad; border-radius: 0.2em; padding: 0.3em 0.6em; white-space: pre; overflow-x: auto; }
+  .p2 pre { border-left-color: #7e22ce; }
+  .k { color: #b0006e; } .s { color: #0a6e2a; } .n { color: #b45309; }
+  .tip { font-size: 0.78em; color: #222; }
+  .tip b { background: #fff1a8; padding: 0 0.2em; }
+  .bar { display: flex; gap: 1.2vw; font-size: 0.82em; }
+  .bar div { flex: 1; padding: 0.35em 0.6em; border-radius: 0.25em; }
+  .must { background: #e6f6ea; border-left: 6px solid #1a7f37; }
+  .more { background: #fff4e0; border-left: 6px solid #c26a00; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>М'ячик у коробці <span>· перепиши точно як тут і запусти F5</span></h1>
+<div class="cols">
+  <div class="part p1">
+    <h2>Частина 1 · вікно і м'ячик</h2>
+<pre><span class="k">import</span> turtle
+<span class="k">import</span> time
+
+screen = turtle.Screen()
+screen.setup(<span class="n">800</span>, <span class="n">600</span>)
+screen.bgcolor(<span class="s">"black"</span>)
+screen.tracer(<span class="n">0</span>)
+
+ball = turtle.Turtle()
+ball.shape(<span class="s">"circle"</span>)
+ball.color(<span class="s">"red"</span>)
+ball.penup()</pre>
+  </div>
+  <div class="part p2">
+    <h2>Частина 2 · швидкість і рух</h2>
+<pre>dx = <span class="n">5</span>
+dy = <span class="n">3</span>
+
+<span class="k">while</span> True:
+    x = ball.xcor() + dx
+    y = ball.ycor() + dy
+    <span class="k">if</span> x &gt; <span class="n">380</span> <span class="k">or</span> x &lt; -<span class="n">380</span>:
+        dx = -dx
+    <span class="k">if</span> y &gt; <span class="n">280</span> <span class="k">or</span> y &lt; -<span class="n">280</span>:
+        dy = -dy
+    ball.goto(x, y)
+    screen.update()
+    time.sleep(<span class="n">0.02</span>)</pre>
+    <p class="tip">Після <code>while</code> та <code>if</code> — <b>двокрапка</b>. Відступ — <b>4 пробіли або Tab</b>. <code>True</code> — з великої. <code>0.02</code> — з крапкою.</p>
+  </div>
+</div>
+<div class="bar">
+  <div class="must"><b>Обов'язково:</b> м'ячик літає і відбивається від стін.</div>
+  <div class="more"><b>Потім:</b> зміни 1–2 числа: <code>dx = 15</code>, <code>dy = 0</code>, <code>ball.color("yellow")</code></div>
+</div>
+</body>
+</html>
