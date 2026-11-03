@@ -57,277 +57,99 @@
   .console { font: 700 18px/1.35 Consolas, monospace; background: #111; color: #9ff0a8; border-radius: 6px; padding: 8px 12px; min-height: 6em; max-height: 13em; overflow: auto; white-space: pre; }
   .console::before { content: "Вивід програми"; display: block; font: 13px "Segoe UI", Arial, sans-serif; color: #8a97a3; margin-bottom: 2px; }
 
-  /* тест */
-  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
-  .q pre { font-size: 16px; }
-  .opts { display: flex; flex-wrap: wrap; gap: 6px; }
-  .opts button { border-color: #9aa4ae; color: #111; font-weight: 600; font-size: 16px; padding: 4px 12px; }
-  .opts button.yes { background: #1a7f37; border-color: #1a7f37; color: #fff; }
-  .opts button.no { background: #b42318; border-color: #b42318; color: #fff; }
-  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
-  .q.answered .why { display: block; }
-  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
-  .hw { background: #f6f0fd; border-left: 5px solid #7e22ce; padding: 6px 10px; }
-  @media (max-width: 860px) { .two, .three, .viz { grid-template-columns: 1fr; } }
-  @media (prefers-reduced-motion: reduce) { .grid .c { transition: none; } }
-</style>
-</head>
-<body>
-<div class="sheet">
-  <h1>Вкладені цикли <span>· 8-А · 03.11 · цикл усередині циклу</span></h1>
-  <p class="big">Вкладений цикл — це цикл, який стоїть <u>усередині</u> іншого циклу. Поки зовнішній робить <b>1 крок</b>, внутрішній проходить <b>усі свої кроки</b>.</p>
-
-  <section>
-    <h2>Подивись, як це працює</h2>
-    <div class="controls">
-      <label>Програма
-        <select id="prog">
-          <option value="pairs">пари i, j</option>
-          <option value="stars">прямокутник із зірочок</option>
-          <option value="table">таблиця множення</option>
-        </select>
-      </label>
-      <label>рядків <select id="rows"></select></label>
-      <label>стовпців <select id="cols"></select></label>
-    </div>
-    <div class="viz">
-      <div>
-        <div class="code" id="code"></div>
-        <div class="vars">
-          <div class="vi" id="vi">i = –</div>
-          <div class="vj" id="vj">j = –</div>
-          <div class="vn" id="vn">разів: 0</div>
-        </div>
-        <div class="say" id="say"></div>
-        <div class="controls">
-          <button class="main" id="step">Крок ▶</button>
-          <button id="auto">Авто</button>
-          <button id="reset">Спочатку</button>
-        </div>
-      </div>
-      <div>
-        <div class="grid" id="grid"></div>
-        <div class="console" id="console"></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="two">
-    <div>
-      <h2>Як це запам'ятати</h2>
-      <p><b>Годинник.</b> Хвилинна стрілка проходить повне коло (60 хвилин), і лише тоді годинна зсувається на 1. Хвилини — це <span class="in"><b>внутрішній</b></span> цикл, години — <span class="o"><b>зовнішній</b></span>.</p>
-      <p><b>Кінотеатр.</b> Обходимо зал: беремо ряд 1 і проходимо всі місця, потім ряд 2 і знову всі місця. Ряд — <span class="o"><b>зовнішній</b></span>, місце — <span class="in"><b>внутрішній</b></span>.</p>
-      <p class="big">Скільки разів виконається тіло? <br>рядків × стовпців. Наприклад, 3 × 4 = 12.</p>
-    </div>
-    <div>
-      <h2>Що тут нового</h2>
-<pre>print("*", end=" ")</pre>
-      <p><code>end=" "</code> — після друку <b>не переходити</b> на новий рядок, а поставити пробіл.</p>
-<pre>print()</pre>
-      <p>Порожній <code>print()</code> — <b>просто перейти</b> на новий рядок.</p>
-      <p><b>Відступи:</b> внутрішній <code>for</code> на 4 пробіли правіше, а його тіло ще на 4. <code>print()</code> стоїть під внутрішнім <code>for</code>, тому він спрацює <b>після</b> кожного рядка.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Зроби в Thonny</h2>
-    <div class="three">
-      <div class="card">
-        <span class="lvl">Обов'язково</span>
-        <h3>1. Прямокутник</h3>
-        <p>Надрукуй 5 рядків по 8 зірочок.</p>
-        <details><summary>Підказка</summary>
-<pre>for i in range(5):
-    for j in range(8):
-        print("*", end=" ")
-    print()</pre>
-        <p>Потім заміни <code>"*"</code> на <code>"#"</code> або інший символ.</p>
-        </details>
-      </div>
-      <div class="card">
-        <span class="lvl">Обов'язково</span>
-        <h3>2. Кінотеатр</h3>
-        <p>3 ряди по 4 місця. Виведи кожне місце:</p>
-<pre class="out">Ряд 1 місце 1
-Ряд 1 місце 2
-…
-Ряд 3 місце 4</pre>
-        <details><summary>Підказка</summary>
-<pre>for row in range(1, 4):
-    for seat in range(1, 5):
-        print("Ряд", row, "місце", seat)</pre>
-        </details>
-      </div>
-      <div class="card">
-        <span class="lvl more">Хто швидко</span>
-        <h3>3. Трикутник</h3>
-        <p>У кожному рядку на одну зірочку більше:</p>
-<pre class="out">*
-* *
-* * *
-* * * *
-* * * * *</pre>
-        <details><summary>Підказка</summary>
-<pre>for i in range(1, 6):
-    for j in range(i):
-        print("*", end=" ")
-    print()</pre>
-        <p>Секрет: внутрішній цикл іде до <code>i</code>, а не до сталого числа.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Перевір себе</h2>
-    <div class="two" id="quiz"></div>
-    <div class="score" id="score">Правильно: 0 з 6</div>
-  </section>
-
-  <section>
-    <h2>Домашнє завдання</h2>
-    <p class="hw">Вивчити, що таке вкладений цикл. Порахувати, скільки разів виконається тіло при 3 × 4, і записати програму, яка це покаже.</p>
-  </section>
-</div>
-
-<script>
-const PROGS = {
-  pairs: {
-    start: 0, nl: false,
-    lines: (R, C) => [`for i in range(${R}):`, `    for j in range(${C}):`, `        print(i, j)`],
-    out: (i, j) => `${i} ${j}\n`, cell: (i, j) => `${i},${j}`
-  },
-  stars: {
-    start: 0, nl: true,
-    lines: (R, C) => [`for i in range(${R}):`, `    for j in range(${C}):`, `        print("*", end=" ")`, `    print()`],
-    out: () => "* ", cell: () => "★"
-  },
-  table: {
-    start: 1, nl: true,
-    lines: (R, C) => [`for i in range(1, ${R + 1}):`, `    for j in range(1, ${C + 1}):`, `        print(i * j, end=" ")`, `    print()`],
-    out: (i, j) => `${i * j} `, cell: (i, j) => i * j
-  }
-};
-const $ = id => document.getElementById(id);
-let p, R, C, steps, pos, timer = null;
-
-function fill(sel, from, to, val) {
-  for (let n = from; n <= to; n++) sel.add(new Option(n, n));
-  sel.value = val;
-}
-fill($("rows"), 1, 5, 3);
-fill($("cols"), 1, 7, 4);
-
-function build() {
-  p = PROGS[$("prog").value]; R = +$("rows").value; C = +$("cols").value;
-  steps = [{ line: -1, say: "Натисни «Крок ▶» (або стрілку →). Жовтим підсвічено рядок, який зараз виконується." }];
-  let n = 0;
-  for (let a = 0; a < R; a++) {
-    const i = a + p.start;
-    steps.push({ line: 0, i, a, say: `<b class="o">Зовнішній</b> цикл: i = ${i}. Починаємо рядок ${a + 1} з ${R}.` });
-    for (let b = 0; b < C; b++) {
-      const j = b + p.start;
-      steps.push({ line: 1, i, j, a, b, say: `<b class="in">Внутрішній</b> цикл: j = ${j}. (i досі ${i})` });
-      n++;
-      steps.push({ line: 2, i, j, a, b, n, out: p.out(i, j), fill: true,
-        say: `Друкуємо <code>${p.out(i, j).trim()}</code>. Тіло виконується ${n}-й раз.` });
-    }
-    const last = { line: -2, i, a, say: `Внутрішній цикл <b>закінчився</b>. Повертаємось до зовнішнього.` };
-    if (p.nl) { last.line = 3; last.out = "\n"; last.say = `<code>print()</code> — новий рядок. Внутрішній цикл закінчився, повертаємось до зовнішнього.`; }
-    steps.push(last);
-  }
-  steps.push({ line: -1, end: true, say: `<b>Готово!</b> Усього тіло внутрішнього циклу виконалось: ${R} × ${C} = <b>${R * C}</b>.` });
-  pos = 0; stop(); render();
-}
-
-function render() {
-  const s = steps[pos];
-  $("code").innerHTML = p.lines(R, C).map((t, k) => `<div class="${k === s.line ? "now" : ""}">${t.replace(/</g, "&lt;")}</div>`).join("");
-  let out = "", n = 0, i = null, j = null;
-  const filled = new Set();
-  for (let k = 0; k <= pos; k++) {
-    const t = steps[k];
-    if (t.out) out += t.out;
-    if (t.fill) { filled.add(t.a + "_" + t.b); n = t.n; }
-    if (t.i !== undefined) i = t.i;
-    if (t.j !== undefined) j = t.j;
-  }
-  $("vi").textContent = `i = ${i === null ? "–" : i}`;
-  $("vj").textContent = `j = ${j === null ? "–" : j}`;
-  $("vn").textContent = `разів: ${n}`;
-  $("say").innerHTML = s.say;
-  $("console").textContent = out;
-  $("console").scrollTop = 1e6;
-
-  const g = $("grid");
-  g.style.gridTemplateColumns = `40px repeat(${C}, 52px)`;
-  let h = `<div></div>`;
-  for (let b = 0; b < C; b++) h += `<div class="h cj">j=${b + p.start}</div>`;
-  for (let a = 0; a < R; a++) {
-    h += `<div class="h ri">i=${a + p.start}</div>`;
-    for (let b = 0; b < C; b++) {
-      const key = a + "_" + b;
-      let cls = "c";
-      if (filled.has(key)) cls += " done";
-      if (s.fill && s.a === a && s.b === b) cls += " cur";
-      else if (!s.end && s.a === a && !filled.has(key)) cls += " row";
-      h += `<div class="${cls}">${filled.has(key) ? p.cell(a + p.start, b + p.start) : ""}</div>`;
-    }
-  }
-  g.innerHTML = h;
-  $("step").disabled = pos === steps.length - 1;
-}
-
-function step() { if (pos < steps.length - 1) { pos++; render(); } else stop(); }
-function stop() { clearInterval(timer); timer = null; $("auto").textContent = "Авто"; }
-$("step").onclick = () => { stop(); step(); };
-$("auto").onclick = () => {
-  if (timer) return stop();
-  if (pos === steps.length - 1) { pos = 0; render(); }
-  $("auto").textContent = "Пауза";
-  timer = setInterval(step, 550);
-};
-$("reset").onclick = build;
-["prog", "rows", "cols"].forEach(id => $(id).onchange = build);
-document.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight" && e.target.tagName !== "SELECT") { e.preventDefault(); stop(); step(); }
-});
-build();
-
-/* тест */
+  /* тест: відповідь вводять, перевірити можна один раз */
 const QUIZ = [
-  { q: "Скільки плюсів надрукує програма?", code: 'for i in range(3):\n    for j in range(4):\n        print("+")',
-    a: ["3", "4", "7", "12"], ok: 3, why: "3 × 4 = 12. На кожне з 3 значень i внутрішній цикл робить 4 кроки." },
-  { q: "Яка змінна змінюється частіше?", code: "for i in range(5):\n    for j in range(5):\n        print(i, j)",
-    a: ["i (зовнішній)", "j (внутрішній)", "однаково"], ok: 1, why: "Внутрішній цикл проходить усі свої кроки, поки i стоїть на місці — як хвилини і години." },
-  { q: "Що виведе програма?", code: 'for i in range(2):\n    for j in range(3):\n        print(i, end="")',
-    a: ["012012", "000111", "0101", "001122"], ok: 1, why: "Друкуємо i, а не j. i = 0 тричі, потім i = 1 тричі: 000111." },
-  { q: "Що робить порожній print()?", code: "print()",
-    a: ["нічого", "помилку", "переходить на новий рядок", "друкує пробіл"], ok: 2, why: "Порожній print() друкує тільки перехід на новий рядок." },
-  { q: "Скільки разів надрукується «Привіт»?", code: 'for i in range(5):\n    for j in range(2):\n        print("Привіт")',
-    a: ["7", "10", "5", "2"], ok: 1, why: "5 × 2 = 10." },
-  { q: "Де помилка?", code: "for i in range(3):\nfor j in range(3):\n    print(i, j)",
-    a: ["немає відступу в другому for", "range(3) двічі не можна", "треба while", "помилки немає"], ok: 0, why: "Внутрішній for має стояти на 4 пробіли правіше, інакше він не всередині першого циклу." }
+ {
+  "q": "Скільки плюсів надрукує програма?",
+  "code": "for i in range(3):\n    for j in range(4):\n        print(\"+\")",
+  "ok": [
+   "MTI="
+  ],
+  "show": "12",
+  "why": "3 × 4 = 12. На кожне з 3 значень i внутрішній цикл робить 4 кроки."
+ },
+ {
+  "q": "Що виведе програма? Напиши все в один рядок.",
+  "code": "for i in range(2):\n    for j in range(3):\n        print(i, end=\"\")",
+  "ok": [
+   "MDAwMTEx"
+  ],
+  "show": "000111",
+  "why": "Друкуємо i, а не j. i = 0 тричі, потім i = 1 тричі."
+ },
+ {
+  "q": "Скільки разів надрукується «Привіт»?",
+  "code": "for i in range(5):\n    for j in range(2):\n        print(\"Привіт\")",
+  "ok": [
+   "MTA="
+  ],
+  "show": "10",
+  "why": "5 × 2 = 10."
+ },
+ {
+  "q": "Що виведе програма?",
+  "code": "for i in range(1, 3):\n    for j in range(1, 3):\n        print(i * j, end=\" \")",
+  "ok": [
+   "MTIyNA=="
+  ],
+  "show": "1 2 2 4",
+  "why": "i = 1: 1·1, 1·2 → 1 2. i = 2: 2·1, 2·2 → 2 4."
+ },
+ {
+  "q": "Яка змінна змінюється частіше: i чи j?",
+  "code": "for i in range(5):\n    for j in range(5):\n        print(i, j)",
+  "ok": [
+   "ag==",
+   "JUQwJUIyJUQwJUJEJUQxJTgzJUQxJTgyJUQxJTgwJUQxJTk2JUQxJTg4JUQwJUJEJUQxJTk2JUQwJUI5",
+   "JUQwJUIyJUQwJUJEJUQxJTgzJUQxJTgyJUQxJTgwJUQxJTk2JUQxJTg4JUQwJUJEJUQxJTk2JUQwJUI5JUQxJTg2JUQwJUI4JUQwJUJBJUQwJUJC",
+   "aiVEMCVCMiVEMCVCRCVEMSU4MyVEMSU4MiVEMSU4MCVEMSU5NiVEMSU4OCVEMCVCRCVEMSU5NiVEMCVCOQ==",
+   "aiglRDAlQjIlRDAlQkQlRDElODMlRDElODIlRDElODAlRDElOTYlRDElODglRDAlQkQlRDElOTYlRDAlQjkp"
+  ],
+  "show": "j",
+  "why": "Внутрішній цикл проходить усі свої кроки, поки i стоїть на місці — як хвилини і години."
+ },
+ {
+  "q": "Скільки рядків зірочок буде на екрані?",
+  "code": "for i in range(4):\n    for j in range(3):\n        print(\"*\", end=\"\")\n    print()",
+  "ok": [
+   "NA=="
+  ],
+  "show": "4",
+  "why": "print() стоїть у зовнішньому циклі, а він виконується 4 рази. У кожному рядку 3 зірочки."
+ }
 ];
-let right = 0;
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
 $("quiz").innerHTML = QUIZ.map((t, k) => `
   <div class="q" id="q${k}">
     <p><b>${k + 1}.</b> ${t.q}</p>
-    <pre>${t.code}</pre>
-    <div class="opts">${t.a.map((x, m) => `<button data-q="${k}" data-m="${m}">${x}</button>`).join("")}</div>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
     <p class="why">${t.why}</p>
   </div>`).join("");
-$("quiz").addEventListener("click", e => {
-  const b = e.target.closest("button[data-q]");
-  if (!b) return;
-  const k = +b.dataset.q, box = $("q" + k);
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
   if (box.classList.contains("answered")) return;
-  box.classList.add("answered");
-  const ok = QUIZ[k].ok;
-  box.querySelectorAll("button").forEach((x, m) => { if (m === ok) x.classList.add("yes"); });
-  if (+b.dataset.m === ok) right++; else b.classList.add("no");
-  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (box.parentNode.querySelectorAll(".answered").length === QUIZ.length ? " — покажи вчителю" : "");
-});
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
 </script>
 </body>
 </html>
