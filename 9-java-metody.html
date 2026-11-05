@@ -75,7 +75,7 @@
 </head>
 <body>
 <div class="sheet">
-  <h1>Методи в Java <span>· 9 клас · 05.11 · ділимо програму на частини</span></h1>
+  <h1>Методи в Java <span>· 9-А · 05.11 · ділимо програму на частини</span></h1>
   <p class="big">Великий проєкт не пишуть одним шматком. Його ділять на маленькі частини, і кожна робить одну справу. У Java такі частини називаються методами.</p>
 
   <section>
@@ -596,113 +596,8 @@ static double add(double a, double b)</pre>
   </section>
 
   <section>
-    <h2>Де писати код</h2>
-    <p>Пишемо онлайн, нічого встановлювати не треба: <a href="https://www.programiz.com/java-programming/online-compiler/" target="_blank" rel="noopener"><b>відкрити компілятор Java</b></a>. Зітри там приклад, встав свій код і натисни <b>Run</b>. Клас має називатися <code>Main</code>.</p>
-    <p class="big">Метод пишемо всередині класу <code>Main</code>, але поза <code>main</code>. Натисни «Копіювати», встав каркас і допиши метод.</p>
-  </section>
-
-  <section>
     <h2>Завдання</h2>
-    <div class="two">
-      <div class="card">
-        <h3>1. Привітання</h3>
-        <p>Напиши метод <code>greet</code>, щоб програма вивела:</p>
-<pre class="out">Привіт, Оля!
-Привіт, Назар!</pre>
-<pre id="c1">public class Main {
-    // метод тут
-
-    public static void main(String[] args) {
-        greet("Оля");
-        greet("Назар");
-    }
-}</pre>
-        <button class="copy" data-c="c1">Копіювати</button>
-        <details><summary>Підказка</summary><p><code>static void greet(String name)</code>. Рядки склеюємо через <code>+</code>.</p></details>
-      </div>
-      <div class="card">
-        <h3>2. Квадрат</h3>
-        <p>Напиши метод <code>square</code>. Має вивести:</p>
-<pre class="out">25
-144</pre>
-<pre id="c2">public class Main {
-    // метод тут
-
-    public static void main(String[] args) {
-        System.out.println(square(5));
-        System.out.println(square(12));
-    }
-}</pre>
-        <button class="copy" data-c="c2">Копіювати</button>
-        <details><summary>Підказка</summary><p>Подивись на приклад угорі сторінки.</p></details>
-      </div>
-      <div class="card">
-        <h3>3. Більше з двох</h3>
-        <p>Напиши метод <code>max</code>, який повертає більше число. Має вивести:</p>
-<pre class="out">8
-10</pre>
-<pre id="c3">public class Main {
-    // метод тут
-
-    public static void main(String[] args) {
-        System.out.println(max(3, 8));
-        System.out.println(max(10, 2));
-    }
-}</pre>
-        <button class="copy" data-c="c3">Копіювати</button>
-        <details><summary>Підказка</summary><p><code>static int max(int a, int b)</code>. Усередині <code>if</code>: якщо <code>a &gt; b</code>, повертаємо <code>a</code>. Інакше <code>b</code>.</p></details>
-      </div>
-      <div class="card">
-        <h3>4. Парне число</h3>
-        <p>Напиши метод <code>isEven</code>, який повертає <code>true</code> для парного числа. Має вивести:</p>
-<pre class="out">true
-false</pre>
-<pre id="c4">public class Main {
-    // метод тут
-
-    public static void main(String[] args) {
-        System.out.println(isEven(6));
-        System.out.println(isEven(7));
-    }
-}</pre>
-        <button class="copy" data-c="c4">Копіювати</button>
-        <details><summary>Підказка</summary><p>Тип результату — <code>boolean</code>. Перевірка: <code>n % 2 == 0</code>.</p></details>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Збери разом: чек у кафе</h2>
-    <p>Маленький проєкт із трьох методів. Кожен робить одну справу, а <code>printCheck</code> використовує два інші.</p>
-    <div class="two">
-      <div>
-<pre id="c5">public class Main {
-    // 1. total: ціна * кількість
-    // 2. discount: якщо сума від 100,
-    //    знижка 10%, інакше без знижки
-    // 3. printCheck: друкує два рядки чека
-
-    public static void main(String[] args) {
-        printCheck("Піца", 60, 3);
-        printCheck("Чай", 15, 2);
-    }
-}</pre>
-        <button class="copy" data-c="c5">Копіювати</button>
-      </div>
-      <div>
-        <p>Має вивести:</p>
-<pre class="out">Піца x 3 = 180 грн
-До сплати: 162 грн
-Чай x 2 = 30 грн
-До сплати: 30 грн</pre>
-        <details><summary>Підказка</summary>
-<pre>static int total(int price, int count)
-static int discount(int sum)
-static void printCheck(String item, int price, int count)</pre>
-          <p>Знижка 10%: <code>sum - sum / 10</code>.</p>
-        </details>
-      </div>
-    </div>
+    <p class="big">Завдання на окремій сторінці, з поясненням, як думати крок за кроком: <a href="9-java-zavdannia.html">відкрити завдання</a>.</p>
   </section>
 
   <section>
@@ -710,48 +605,6 @@ static void printCheck(String item, int price, int count)</pre>
     <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
     <div class="two" id="quiz"></div>
     <div class="score" id="score">Правильно: 0 з 10</div>
-  </section>
-
-  <section>
-    <h2>Остання задача: твій метод</h2>
-    <p class="big">Кожен вигадує і пише свій метод. Можна шукати в інтернеті, але ти маєш пояснити кожен рядок свого коду.</p>
-    <div class="two">
-      <div>
-        <h3>Умови</h3>
-        <ol>
-          <li>Своя ідея, не така, як у сусіда.</li>
-          <li>Метод отримує хоча б один параметр і повертає результат.</li>
-          <li>У <code>main</code> виклич його двічі з різними значеннями.</li>
-          <li>Покажи запуск учителю і поясни, що робить кожен рядок.</li>
-        </ol>
-<pre id="c8">public class Main {
-    // мій метод тут
-
-    public static void main(String[] args) {
-        // виклич його двічі
-    }
-}</pre>
-        <button class="copy" data-c="c8">Копіювати</button>
-      </div>
-      <div>
-        <h3>Якщо нема ідеї</h3>
-        <ul>
-          <li><code>isLeapYear(2024)</code> — чи рік високосний</li>
-          <li><code>toFahrenheit(20)</code> — градуси Цельсія у Фаренгейта</li>
-          <li><code>countVowels("Олімпіада")</code> — скільки голосних</li>
-          <li><code>isPalindrome("радар")</code> — чи слово паліндром</li>
-          <li><code>factorial(5)</code> — факторіал числа</li>
-          <li><code>schoolMark(85)</code> — переводить відсотки в бали від 1 до 12</li>
-        </ul>
-        <h3>Де шукати</h3>
-        <ul>
-          <li><a href="https://www.w3schools.com/java/java_methods.asp" target="_blank" rel="noopener">W3Schools: методи Java</a></li>
-          <li><a href="https://www.programiz.com/java-programming/methods" target="_blank" rel="noopener">Programiz: методи Java</a></li>
-          <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Math.html" target="_blank" rel="noopener">Усі методи Math</a> і <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" target="_blank" rel="noopener">усі методи String</a></li>
-        </ul>
-        <p>Ці сторінки англійською. Переклад у браузері теж можна використовувати.</p>
-      </div>
-    </div>
   </section>
 
   <section>
