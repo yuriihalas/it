@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Практична робота № 3</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: start; }
+  .two > div, .three > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .task { display: grid; grid-template-columns: 1.7em 1fr 2.6em; gap: 2px 6px; padding: 8px 0; border-top: 1px solid #e1e5ea; }
+  .task:first-of-type { border-top: 0; }
+  .task > b:first-child { color: #0b5cad; }
+  .task .pts { font-weight: 700; text-align: right; color: #555; white-space: nowrap; }
+  .task .ex { grid-column: 2 / 4; min-width: 0; }
+  .var { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px 6px; }
+  .var h3 { font-size: 20px; margin: 0; }
+
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, .ans input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  @media (max-width: 860px) { .two, .three { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Практична робота № 3 <span>· вкладені цикли · 8-А · 05.11</span></h1>
+
+  <section>
+    <h2>Розминка: що виведе?</h2>
+    <p>Подумай, потім впиши відповідь. Перевірити можна лише один раз.</p>
+    <div class="three" id="quiz"></div>
+  </section>
+
+  <section>
+    <h2>Пам'ятка</h2>
+    <div class="two">
+      <div>
+<pre>for i in range(3):
+    for j in range(4):
+        print("*", end=" ")
+    print()</pre>
+        <p class="big">Зовнішній цикл — рядки, внутрішній — стовпці.</p>
+      </div>
+      <div>
+        <p><code>end=" "</code> — друкувати далі в цьому самому рядку.</p>
+        <p><code>print()</code> під внутрішнім <code>for</code> — перейти на новий рядок.</p>
+        <p><code>range(1, 5)</code> — числа 1, 2, 3, 4. Останнє не входить.</p>
+        <p><code>(i + j) % 2 == 0</code> — сума номерів рядка і стовпця парна. Так клітинки чергуються, як на шахівниці.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання · 12 балів</h2>
+    <p>Сусіди по парті пишуть різні варіанти. Кожну задачу — окремим файлом: <code>task1.py</code>, <code>task2.py</code> … Готову задачу покажи вчителю запуском.</p>
+    <div class="two">
+      <div class="var">
+        <h3>Варіант 1</h3>
+        <div class="task"><b>1.</b><span>Надрукуй прямокутник із зірочок: 3 рядки по 6.</span><span class="pts">1 б</span>
+          <div class="ex"><pre class="out">* * * * * *
+* * * * * *
+* * * * * *</pre></div></div>
+        <div class="task"><b>2.</b><span>Користувач вводить кількість рядків і стовпців. Надрукуй прямокутник із <code>#</code>.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">рядків 2, стовпців 4
+# # # #
+# # # #</pre></div></div>
+        <div class="task"><b>3.</b><span>Кінотеатр: 2 ряди по 3 місця. Виведи кожне місце.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">Ряд 1 місце 1
+Ряд 1 місце 2
+…
+Ряд 2 місце 3</pre></div></div>
+        <div class="task"><b>4.</b><span>Надрукуй таблицю множення для чисел від 1 до 4.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">1 2 3 4
+2 4 6 8
+3 6 9 12
+4 8 12 16</pre></div></div>
+        <div class="task"><b>5.</b><span>Користувач вводить висоту. Надрукуй трикутник: у кожному рядку на одну зірочку більше.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">висота 3
+*
+* *
+* * *</pre></div></div>
+        <div class="task"><b>6.</b><span>Шахівниця 4 × 4 із символів <code>#</code> і <code>.</code></span><span class="pts">3 б</span>
+          <div class="ex"><pre class="out"># . # .
+. # . #
+# . # .
+. # . #</pre></div></div>
+      </div>
+      <div class="var">
+        <h3>Варіант 2</h3>
+        <div class="task"><b>1.</b><span>Надрукуй прямокутник із плюсів: 4 рядки по 5.</span><span class="pts">1 б</span>
+          <div class="ex"><pre class="out">+ + + + +
++ + + + +
++ + + + +
++ + + + +</pre></div></div>
+        <div class="task"><b>2.</b><span>Користувач вводить кількість рядків і стовпців. Надрукуй прямокутник із <code>@</code>.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">рядків 3, стовпців 2
+@ @
+@ @
+@ @</pre></div></div>
+        <div class="task"><b>3.</b><span>Шафа: 3 полиці по 2 коробки. Виведи кожну коробку.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">Полиця 1 коробка 1
+Полиця 1 коробка 2
+…
+Полиця 3 коробка 2</pre></div></div>
+        <div class="task"><b>4.</b><span>Надрукуй таблицю сум: номер рядка + номер стовпця, числа від 1 до 4.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">2 3 4 5
+3 4 5 6
+4 5 6 7
+5 6 7 8</pre></div></div>
+        <div class="task"><b>5.</b><span>Користувач вводить висоту. Надрукуй трикутник навпаки: у кожному рядку на одну зірочку менше.</span><span class="pts">2 б</span>
+          <div class="ex"><pre class="out">висота 3
+* * *
+* *
+*</pre></div></div>
+        <div class="task"><b>6.</b><span>Шахівниця: 3 рядки по 5 символів <code>X</code> і <code>O</code>.</span><span class="pts">3 б</span>
+          <div class="ex"><pre class="out">X O X O X
+O X O X O
+X O X O X</pre></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити вкладені цикли. Дописати задачі, які не встиг.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+  { q: "Скільки зірочок надрукує?", code: 'for i in range(2):\n    for j in range(5):\n        print("*")', ok: ["MTA="], show: "10", why: "2 × 5 = 10." },
+  { q: "Що виведе? Напиши в один рядок.", code: 'for i in range(3):\n    for j in range(2):\n        print(i, end="")', ok: ["MDAxMTIy"], show: "001122", why: "Друкуємо i, а воно стоїть на місці, поки j робить 2 кроки." },
+  { q: "Скільки зірочок усього?", code: 'for i in range(1, 4):\n    for j in range(i):\n        print("*", end="")\n    print()', ok: ["Ng=="], show: "6", why: "У рядках 1, 2 і 3 зірочки: 1 + 2 + 3 = 6." }
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План: ПР № 3, 8-А</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  ul { margin: 0 0 8px; padding-left: 1.3em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child { white-space: nowrap; font-weight: 700; color: #0b5cad; font-variant-numeric: tabular-nums; }
+  .wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>План уроку <span>· 8-А · 05.11 · вкладені цикли, ПР № 3</span></h1>
+  <p>Сторінка для учнів: <a href="8a-pr3.html">yuriihalas.github.io/it/8a-pr3.html</a>. Розв'язки лежать лише на Mac, у папці «8 клас».</p>
+
+  <section>
+    <h2>Хід уроку</h2>
+    <div class="wrap"><table>
+      <tr><th>Хв</th><th>Що робимо</th></tr>
+      <tr><td>0–5</td><td>Діти відкривають сторінку через QR. Розминка: 3 питання, вводять відповідь самі.</td></tr>
+      <tr><td>5–10</td><td>Розбір розминки на проєкторі. За потреби покажи покроковий показ з уроку 03.11: <a href="8a-vkladeni-cykly.html">вкладені цикли</a>.</td></tr>
+      <tr><td>10–12</td><td>Варіанти через парту. Умови: кожна задача окремим файлом, показати запуском.</td></tr>
+      <tr><td>12–41</td><td>Практична. Ходиш, дивишся запуск, записуєш бали. Навідні питання нижче.</td></tr>
+      <tr><td>41–45</td><td>Хто скільки здав, домашнє.</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Оцінювання</h2>
+    <p>Разом 12 балів: задача 1 — 1 бал, задачі 2–5 — по 2, задача 6 — 3.</p>
+    <p>Частковий бал: працює, але не так, як у прикладі. Наприклад, усе в один стовпець або забутий <code>print()</code>. Для задачі 6: половина шахівниці або однакові рядки — 1–2 бали.</p>
+    <p>Свої тести для задач із введенням: задача 2 — 1 і 1, задача 5 — висота 1 і висота 5.</p>
+  </section>
+
+  <section>
+    <h2>Поки пишуть: по задачах</h2>
+    <div class="wrap"><table>
+      <tr><th>Задача</th><th>Типова помилка</th><th>Навідне питання</th></tr>
+      <tr><td>1</td><td>Забули <code>print()</code>: усе в одному довгому рядку.</td><td>«Що має статися, коли рядок закінчився?»</td></tr>
+      <tr><td>2</td><td>Немає <code>int()</code> біля <code>input()</code>: помилка в <code>range</code>.</td><td>«Який тип повертає input?»</td></tr>
+      <tr><td>3</td><td><code>range(3)</code> дає 0, 1, 2, а треба з 1.</td><td>«З якого числа починається ряд у кінотеатрі?»</td></tr>
+      <tr><td>4</td><td><code>range(1, 4)</code>: таблиця 3 × 3, бо останнє число не входить.</td><td>«Яке число має бути останнім? Що тоді писати в range?»</td></tr>
+      <tr><td>5</td><td>Внутрішній цикл має стале число, тому виходить прямокутник.</td><td>«Скільки зірочок у рядку 1, 2, 3? Яка змінна дорівнює цьому числу?»</td></tr>
+      <tr><td>6</td><td>Рядки однакові, бо перевіряють лише <code>j</code>.</td><td>«Чим відрізняються рядок 1 і рядок 2? Що буде, якщо додати номери рядка й стовпця?»</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Про домашнє</h2>
+    <p>У КТП на 05.11 стоїть «Повторити вкладені цикли. Підготуватися до практичної», але практична вже на цьому уроці. Тому на сторінці написав: повторити цикли й дописати задачі, які не встигли. Наступний урок 10.11 — налагодження програм.</p>
+  </section>
+</div>
+</body>
+</html>

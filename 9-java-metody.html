@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методи в Java</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 16px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .card { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px 6px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  details { margin: 4px 0 8px; } summary { cursor: pointer; color: #0b5cad; font-weight: 600; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button.main { background: #0b5cad; color: #fff; font-size: 17px; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .copy { margin-bottom: 8px; }
+
+  /* покроковий показ */
+  .viz { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: start; }
+  .viz > div { min-width: 0; }
+  .code { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 19px; line-height: 1.45; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 0; margin: 0 0 10px; overflow-x: auto; }
+  .code div { padding: 0 10px; white-space: pre; border-left: 6px solid transparent; min-height: 1.45em; }
+  .code div.now { background: #fff1a8; border-left-color: #c79100; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .say { min-height: 4.4em; background: #eef4fb; border-left: 5px solid #0b5cad; padding: 6px 10px; margin-bottom: 10px; }
+  .frames { display: grid; gap: 6px; margin-bottom: 10px; }
+  .frame { border: 2px solid #d5dae0; border-radius: 6px; padding: 4px 10px; font: 700 18px Consolas, monospace; }
+  .frame small { display: block; font: 13px "Segoe UI", Arial, sans-serif; color: #555; }
+  .frame.m { border-color: #0b5cad; }
+  .frame.s { border-color: #7e22ce; color: #7e22ce; }
+  .console { font: 700 18px/1.35 Consolas, monospace; background: #111; color: #9ff0a8; border-radius: 6px; padding: 8px 12px; min-height: 3.6em; white-space: pre; overflow-x: auto; }
+  .console::before { content: "Вивід програми"; display: block; font: 13px "Segoe UI", Arial, sans-serif; color: #8a97a3; margin-bottom: 2px; }
+
+  /* тест */
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .viz { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Методи в Java <span>· 9 клас · 05.11 · ділимо програму на частини</span></h1>
+  <p class="big">Великий проєкт не пишуть одним шматком. Його ділять на маленькі частини, і кожна робить одну справу. У Java такі частини називаються методами.</p>
+
+  <section class="two">
+    <div>
+      <h2>Два види методів</h2>
+      <h3>Процедура: робить дію, нічого не повертає</h3>
+<pre>static void greet(String name) {
+    System.out.println("Привіт, " + name);
+}</pre>
+      <h3>Функція: рахує і повертає результат</h3>
+<pre>static int square(int x) {
+    return x * x;
+}</pre>
+    </div>
+    <div>
+      <h2>З чого складається метод</h2>
+      <div class="wrap"><table>
+        <tr><th>Частина</th><th>Що означає</th></tr>
+        <tr><td><code>static</code></td><td>Поки що просто пишемо завжди</td></tr>
+        <tr><td><code>void</code> / <code>int</code></td><td>Що повертає: нічого або ціле число</td></tr>
+        <tr><td><code>square</code></td><td>Ім'я: що робить метод</td></tr>
+        <tr><td><code>(int x)</code></td><td>Параметр: що метод отримує</td></tr>
+        <tr><td><code>return</code></td><td>Віддати результат і вийти</td></tr>
+      </table></div>
+      <p><b>Хто вчив Python:</b> <code>def square(x):</code> у Java пишеться <code>static int square(int x) {</code>. Різниця лише в тому, що Java вимагає вказати типи.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Подивись, як іде програма</h2>
+    <div class="viz">
+      <div>
+        <div class="code" id="code"></div>
+        <div class="controls">
+          <button class="main" id="step">Крок ▶</button>
+          <button id="auto">Авто</button>
+          <button id="reset">Спочатку</button>
+        </div>
+      </div>
+      <div>
+        <div class="say" id="say"></div>
+        <div class="frames" id="frames"></div>
+        <div class="console" id="console"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Де писати код</h2>
+    <p>На шкільному комп'ютері: IntelliJ IDEA, проєкт JavaLessons, файл <code>Main.java</code>. Або онлайн: <a href="https://www.programiz.com/java-programming/online-compiler/" target="_blank" rel="noopener">programiz.com/java-programming/online-compiler</a> — там клас має називатися <code>Main</code>.</p>
+    <p class="big">Метод пишемо всередині класу <code>Main</code>, але поза <code>main</code>. Натисни «Копіювати», встав каркас і допиши метод.</p>
+  </section>
+
+  <section>
+    <h2>Завдання</h2>
+    <div class="two">
+      <div class="card">
+        <h3>1. Привітання</h3>
+        <p>Напиши процедуру <code>greet</code>, щоб програма вивела:</p>
+<pre class="out">Привіт, Оля!
+Привіт, Назар!</pre>
+<pre id="c1">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        greet("Оля");
+        greet("Назар");
+    }
+}</pre>
+        <button class="copy" data-c="c1">Копіювати</button>
+        <details><summary>Підказка</summary><p><code>static void greet(String name)</code>. Рядки склеюємо через <code>+</code>.</p></details>
+      </div>
+      <div class="card">
+        <h3>2. Квадрат</h3>
+        <p>Напиши функцію <code>square</code>. Має вивести:</p>
+<pre class="out">25
+144</pre>
+<pre id="c2">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        System.out.println(square(5));
+        System.out.println(square(12));
+    }
+}</pre>
+        <button class="copy" data-c="c2">Копіювати</button>
+        <details><summary>Підказка</summary><p>Подивись на приклад угорі сторінки.</p></details>
+      </div>
+      <div class="card">
+        <h3>3. Більше з двох</h3>
+        <p>Напиши функцію <code>max</code>, яка повертає більше число. Має вивести:</p>
+<pre class="out">8
+10</pre>
+<pre id="c3">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        System.out.println(max(3, 8));
+        System.out.println(max(10, 2));
+    }
+}</pre>
+        <button class="copy" data-c="c3">Копіювати</button>
+        <details><summary>Підказка</summary><p><code>static int max(int a, int b)</code>. Усередині <code>if</code>: якщо <code>a &gt; b</code>, повертаємо <code>a</code>. Інакше <code>b</code>.</p></details>
+      </div>
+      <div class="card">
+        <h3>4. Парне число</h3>
+        <p>Напиши функцію <code>isEven</code>, яка повертає <code>true</code> для парного числа. Має вивести:</p>
+<pre class="out">true
+false</pre>
+<pre id="c4">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        System.out.println(isEven(6));
+        System.out.println(isEven(7));
+    }
+}</pre>
+        <button class="copy" data-c="c4">Копіювати</button>
+        <details><summary>Підказка</summary><p>Тип результату — <code>boolean</code>. Перевірка: <code>n % 2 == 0</code>.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Збери разом: чек у кафе</h2>
+    <p>Маленький проєкт із трьох методів. Кожен робить одну справу, а <code>printCheck</code> використовує два інші.</p>
+    <div class="two">
+      <div>
+<pre id="c5">public class Main {
+    // 1. total: ціна * кількість
+    // 2. discount: якщо сума від 100,
+    //    знижка 10%, інакше без знижки
+    // 3. printCheck: друкує два рядки чека
+
+    public static void main(String[] args) {
+        printCheck("Піца", 60, 3);
+        printCheck("Чай", 15, 2);
+    }
+}</pre>
+        <button class="copy" data-c="c5">Копіювати</button>
+      </div>
+      <div>
+        <p>Має вивести:</p>
+<pre class="out">Піца x 3 = 180 грн
+До сплати: 162 грн
+Чай x 2 = 30 грн
+До сплати: 30 грн</pre>
+        <details><summary>Підказка</summary>
+<pre>static int total(int price, int count)
+static int discount(int sum)
+static void printCheck(String item, int price, int count)</pre>
+          <p>Знижка 10%: <code>sum - sum / 10</code>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Перевір себе</h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="two" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити, що таке функція, параметр і значення, яке функція повертає.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* покроковий показ */
+const LINES = [
+  "public class Main {",
+  "    static int square(int x) {",
+  "        return x * x;",
+  "    }",
+  "",
+  "    public static void main(String[] args) {",
+  "        int a = square(3);",
+  "        int b = square(a);",
+  '        System.out.println(a + " " + b);',
+  "    }",
+  "}"
+];
+const STEPS = [
+  { line: -1, say: "Натисни «Крок ▶» (або стрілку →). Жовтим підсвічено рядок, який виконується зараз." },
+  { line: 5, main: "", say: "Програма завжди починається з <b>main</b>, а не з першого рядка файлу." },
+  { line: 6, main: "", say: "<code>square(3)</code> — виклик. Java на час іде в метод і бере з собою число 3." },
+  { line: 1, main: "", sq: "x = 3", say: "Ми в методі. Параметр <code>x</code> отримав значення 3." },
+  { line: 2, main: "", sq: "x = 3", say: "<code>return</code> рахує 3 × 3 і віддає <b>9</b> туди, звідки метод викликали." },
+  { line: 6, main: "a = 9", say: "Повернулися в main. Результат записали в <code>a</code>. Змінна <code>x</code> зникла." },
+  { line: 7, main: "a = 9", say: "Викликаємо той самий метод ще раз, тепер із числом 9. Код написано один раз, а працює скільки завгодно разів." },
+  { line: 1, main: "a = 9", sq: "x = 9", say: "Знову в методі. Тепер <code>x</code> дорівнює 9." },
+  { line: 2, main: "a = 9", sq: "x = 9", say: "<code>return</code> віддає 9 × 9 = <b>81</b>." },
+  { line: 7, main: "a = 9, b = 81", say: "Назад у main. Результат записали в <code>b</code>." },
+  { line: 8, main: "a = 9, b = 81", out: "9 81", say: "Друкуємо результат." },
+  { line: -1, main: "a = 9, b = 81", out: "9 81", say: "<b>Готово.</b> Метод викликали двічі, а написали один раз." }
+];
+let pos = 0, timer = null;
+function render() {
+  const s = STEPS[pos];
+  $("code").innerHTML = LINES.map((t, k) => `<div class="${k === s.line ? "now" : ""}">${t.replace(/</g, "&lt;")}</div>`).join("");
+  $("say").innerHTML = s.say;
+  let f = "";
+  if (s.main !== undefined) f += `<div class="frame m"><small>змінні в main</small>${s.main || "поки порожньо"}</div>`;
+  if (s.sq) f += `<div class="frame s"><small>змінні в square</small>${s.sq}</div>`;
+  $("frames").innerHTML = f;
+  $("console").textContent = s.out || "";
+  $("step").disabled = pos === STEPS.length - 1;
+}
+function stop() { clearInterval(timer); timer = null; $("auto").textContent = "Авто"; }
+function step() { if (pos < STEPS.length - 1) { pos++; render(); } if (pos === STEPS.length - 1) stop(); }
+$("step").onclick = () => { stop(); step(); };
+$("auto").onclick = () => {
+  if (timer) return stop();
+  if (pos === STEPS.length - 1) { pos = 0; render(); }
+  $("auto").textContent = "Пауза";
+  timer = setInterval(step, 1800);
+};
+$("reset").onclick = () => { stop(); pos = 0; render(); };
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" && e.target.tagName !== "INPUT") { e.preventDefault(); stop(); step(); }
+});
+render();
+
+/* копіювання каркаса */
+document.addEventListener("click", async e => {
+  const b = e.target.closest("button.copy");
+  if (!b) return;
+  const text = $(b.dataset.c).textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    b.textContent = "Скопійовано ✓";
+  } catch {
+    const r = document.createRange();
+    r.selectNodeContents($(b.dataset.c));
+    const sel = getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+    b.textContent = "Виділено: натисни Ctrl+C";
+  }
+  setTimeout(() => { b.textContent = "Копіювати"; }, 2500);
+});
+
+/* тест: відповідь вводять, перевірити можна один раз */
+const QUIZ = [
+  { q: "Що виведе програма?", code: "static int twice(int x) {\n    return x * 2;\n}\n// у main:\nSystem.out.println(twice(4) + 1);", ok: ["OQ=="], show: "9", why: "twice(4) повертає 8, а потім додаємо 1." },
+  { q: "Яке слово пишемо замість типу, якщо метод нічого не повертає?", code: "static ____ hello() {\n    System.out.println(\"Привіт\");\n}", ok: ["dm9pZA=="], show: "void", why: "void означає «нічого не повертає»." },
+  { q: "Яким словом метод віддає результат?", code: "static int five() {\n    ______ 5;\n}", ok: ["cmV0dXJu"], show: "return", why: "return віддає значення і завершує метод." },
+  { q: "Що виведе програма?", code: "static int f(int a, int b) {\n    return a - b;\n}\n// у main:\nSystem.out.println(f(2, 7));", ok: ["LTU="], show: "-5", why: "Значення йдуть по порядку: a = 2, b = 7, тому 2 − 7 = −5." },
+  { q: "Що виведе програма?", code: "static boolean big(int n) {\n    return n > 10;\n}\n// у main:\nSystem.out.println(big(10));", ok: ["ZmFsc2U="], show: "false", why: "10 не більше за 10, тому false." },
+  { q: "Скільки параметрів у цього методу?", code: "static int add(int a, int b, int c) {\n    return a + b + c;\n}", ok: ["Mw=="], show: "3", why: "Параметри записані в дужках: a, b і c." }
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "").replace(/[−–—]/g, "-");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План: методи в Java</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  ul { margin: 0 0 8px; padding-left: 1.3em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child { white-space: nowrap; font-weight: 700; color: #0b5cad; font-variant-numeric: tabular-nums; }
+  .wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>План уроку <span>· 9-А, 9-Б · 05.11 · методи в Java</span></h1>
+  <p>Тема за КТП: «Рішення для окремих частин проєкту у вигляді процедур чи функцій». Сторінка для учнів: <a href="9-java-metody.html">yuriihalas.github.io/it/9-java-metody.html</a>. Розв'язки лежать лише на Mac, у папці «9 клас».</p>
+
+  <section>
+    <h2>Хід уроку</h2>
+    <div class="wrap"><table>
+      <tr><th>Хв</th><th>Що робимо</th></tr>
+      <tr><td>0–5</td><td>Навіщо ділити програму. Спитай: «Якщо гра на 1000 рядків у одному шматку, як знайти помилку?» Метод — як кнопка: написав раз, натискаєш скільки треба.</td></tr>
+      <tr><td>5–13</td><td>Процедура і функція, частини методу. Для тих, хто вчив Python, порівняй <code>def</code> зі <code>static</code>.</td></tr>
+      <tr><td>13–20</td><td>Покроковий показ на проєкторі, стрілкою →. Зупинись на кроці, де <code>x</code> зникає, і на другому виклику.</td></tr>
+      <tr><td>20–37</td><td>Завдання 1–4, потім чек у кафе. Хто не дійшов до чека, не страшно.</td></tr>
+      <tr><td>37–43</td><td>Тест на сторінці. Покажи рахунок учителю.</td></tr>
+      <tr><td>43–45</td><td>Підсумок і домашнє. Наступний урок 12.11: планування свого проєкту. Методи там і знадобляться.</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Про 9-Б</h2>
+    <p>9-Б вчив переважно Python, тому Java для нього нова. Каркас із <code>public class Main</code> не пояснюй докладно: кажи, що це обгортка, яка є в кожній програмі. Важливо лише, де стоїть метод. На сторінці є кнопка «Копіювати», тож каркас діти не набирають. Якщо важко, досить завдань 1–2 і тесту.</p>
+    <p>Якщо на комп'ютері нема IntelliJ, працюйте онлайн: на сторінці є посилання на programiz. Я перевірив, що сайт відкривається, але чи дозволяє це шкільна мережа, побачиш на місці.</p>
+  </section>
+
+  <section>
+    <h2>Що сказати про терміни</h2>
+    <ul>
+      <li><b>Параметр</b> — змінна в дужках у методі. <b>Аргумент</b> — значення, яке передаєш під час виклику.</li>
+      <li><b>Процедура</b> — метод із <code>void</code>. <b>Функція</b> — метод, що повертає значення. У Java обидва називають методами.</li>
+      <li><code>static</code> поки не пояснюй: на цьому етапі пишемо завжди. Детальніше буде з об'єктами.</li>
+      <li>Змінні методу живуть лише поки він працює. Тому <code>x</code> у показі зникає.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Поки пишуть</h2>
+    <div class="wrap"><table>
+      <tr><th>Помилка</th><th>Як виглядає</th><th>Що спитати</th></tr>
+      <tr><td>Метод у main</td><td>Метод написали всередині <code>main</code>: помилка компіляції.</td><td>«Де закінчується main? Де його дужка?»</td></tr>
+      <tr><td>Немає return</td><td><code>missing return statement</code></td><td>«Що метод має віддати назад?»</td></tr>
+      <tr><td>print замість return</td><td>Метод друкує, а <code>println(square(5))</code> не компілюється.</td><td>«Хто друкує результат: метод чи main?»</td></tr>
+      <tr><td>Без типів</td><td><code>static int square(x)</code></td><td>«Якого типу x?»</td></tr>
+      <tr><td>Немає static</td><td><code>non-static method cannot be referenced</code></td><td>«Подивись на приклад: яке слово пропущено?»</td></tr>
+      <tr><td>Клас не Main</td><td>Онлайн-компілятор не запускає програму.</td><td>«Як називається клас у каркасі?»</td></tr>
+    </table></div>
+  </section>
+</div>
+</body>
+</html>
