@@ -28,6 +28,13 @@
   .var { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px 6px; }
   .var h3 { font-size: 20px; margin: 0; }
 
+  .card { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px 6px; min-width: 0; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .err { color: #b42318; border-left-color: #b42318; background: #fdf3f2; font-size: 15px; }
   .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
   .q pre { font-size: 16px; }
   .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -55,22 +62,93 @@
   </section>
 
   <section>
-    <h2>Пам'ятка</h2>
+    <h2>Теорія: усе, що потрібно для роботи</h2>
     <div class="two">
-      <div>
+      <div class="card">
+        <h3>input(): введення</h3>
+<pre>text = input()</pre>
+        <p>Програма зупиняється і чекає. Введи значення й натисни Enter. Значення запишеться в змінну.</p>
+        <p class="big"><code>input()</code> завжди дає текст, навіть якщо ввести число.</p>
+      </div>
+      <div class="card">
+        <h3>int(): робимо з тексту число</h3>
+<pre>rows = int(input())</pre>
+        <p>Читаємо зсередини: <code>input()</code> дає текст <code>"3"</code>, а <code>int()</code> робить із нього число 3.</p>
+        <p><b>Навіщо:</b> <code>range</code> і арифметика працюють лише з числами. Без <code>int()</code> буде помилка:</p>
+<pre class="err">n = input()
+for i in range(n):
+TypeError: 'str' object cannot be
+interpreted as an integer</pre>
+      </div>
+      <div class="card">
+        <h3>print(): виведення</h3>
+<pre>print("Ряд", 1, "місце", 2)</pre>
+<pre class="out">Ряд 1 місце 2</pre>
+        <p>Значення пишемо через кому, а Python сам ставить між ними пробіл. Текст у лапках, змінні без лапок.</p>
+<pre>print(f"рядків {rows}, стовпців {cols}")</pre>
+<pre class="out">рядків 2, стовпців 4</pre>
+        <p>Літера <code>f</code> перед лапками означає: підстав значення змінних у фігурних дужках.</p>
+      </div>
+      <div class="card">
+        <h3>end і порожній print()</h3>
+        <p>Звичайний <code>print</code> після друку переходить на новий рядок.</p>
+<pre>print("*", end=" ")
+print("*", end=" ")
+print()</pre>
+<pre class="out">* *</pre>
+        <p><code>end=" "</code> — замість нового рядка поставити пробіл, тому зірочки стоять поруч.</p>
+        <p><code>print()</code> — просто перейти на новий рядок.</p>
+      </div>
+      <div class="card">
+        <h3>range(): які числа дає цикл</h3>
+        <div class="wrap"><table>
+          <tr><th>Запис</th><th>Числа</th></tr>
+          <tr><td><code>range(5)</code></td><td>0, 1, 2, 3, 4</td></tr>
+          <tr><td><code>range(1, 5)</code></td><td>1, 2, 3, 4</td></tr>
+          <tr><td><code>range(3, 0, -1)</code></td><td>3, 2, 1</td></tr>
+          <tr><td><code>range(i)</code></td><td>стільки кроків, скільки в <code>i</code></td></tr>
+        </table></div>
+        <p>Останнє число <b>не входить</b>. Щоб нумерувати з 1 до 4, пишемо <code>range(1, 5)</code>.</p>
+      </div>
+      <div class="card">
+        <h3>Вкладений цикл</h3>
 <pre>for i in range(3):
     for j in range(4):
         print("*", end=" ")
     print()</pre>
         <p class="big">Зовнішній цикл — рядки, внутрішній — стовпці.</p>
+        <p>Поки <code>i</code> робить 1 крок, <code>j</code> проходить усі свої. <code>print()</code> стоїть під внутрішнім <code>for</code>, тому спрацьовує після кожного рядка. Відступ — 4 пробіли, після <code>for</code> і <code>if</code> двокрапка.</p>
       </div>
-      <div>
-        <p><code>end=" "</code> — друкувати далі в цьому самому рядку.</p>
-        <p><code>print()</code> під внутрішнім <code>for</code> — перейти на новий рядок.</p>
-        <p><code>range(1, 5)</code> — числа 1, 2, 3, 4. Останнє не входить.</p>
-        <p><code>(i + j) % 2 == 0</code> — сума номерів рядка і стовпця парна. Так клітинки чергуються, як на шахівниці.</p>
+      <div class="card">
+        <h3>if, else і остача %</h3>
+<pre>if (i + j) % 2 == 0:
+    print("#", end=" ")
+else:
+    print(".", end=" ")</pre>
+        <p><code>%</code> — остача від ділення: <code>8 % 2</code> дає 0, <code>7 % 2</code> дає 1. Якщо остача 0, число парне. <code>==</code> порівнює, а один знак <code>=</code> записує в змінну.</p>
+      </div>
+      <div class="card">
+        <h3>Чому i + j дає шахівницю</h3>
+        <p>Ось суми <code>i + j</code> у кожній клітинці:</p>
+<pre>0 1 2 3
+1 2 3 4
+2 3 4 5</pre>
+        <p>Парні й непарні числа чергуються і в рядку, і в стовпці. Для парних друкуємо один символ, для непарних інший.</p>
       </div>
     </div>
+  </section>
+
+  <section>
+    <h2>Що використати в кожній задачі</h2>
+    <div class="wrap"><table>
+      <tr><th>Задача</th><th>Що використати</th><th>Чому</th></tr>
+      <tr><td>1</td><td>Два <code>for</code>, <code>end=" "</code>, <code>print()</code></td><td>Кількість рядків і стовпців уже відома</td></tr>
+      <tr><td>2</td><td>Два <code>int(input())</code>, <code>print(f"...")</code>, потім цикли</td><td>Розміри вводить користувач, тому в <code>range</code> ставимо змінні</td></tr>
+      <tr><td>3</td><td><code>range(1, ...)</code>, <code>print</code> через кому</td><td>Ряди й місця рахуємо з 1, кожне місце — окремий рядок, тому без <code>end</code></td></tr>
+      <tr><td>4</td><td><code>range(1, 5)</code>, <code>print(i * j, end=" ")</code> або <code>i + j</code></td><td>Друкуємо не символ, а результат обчислення</td></tr>
+      <tr><td>5</td><td><code>int(input())</code>, <code>print("висота", n)</code>, внутрішній <code>range(i)</code></td><td>Кількість зірочок залежить від рядка. У варіанті 2 зовнішній цикл іде назад: <code>range(n, 0, -1)</code></td></tr>
+      <tr><td>6</td><td>Два <code>for</code>, усередині <code>if (i + j) % 2 == 0</code></td><td>Символ залежить від клітинки</td></tr>
+    </table></div>
   </section>
 
   <section>
@@ -83,7 +161,7 @@
           <div class="ex"><pre class="out">* * * * * *
 * * * * * *
 * * * * * *</pre></div></div>
-        <div class="task"><b>2.</b><span>Користувач вводить кількість рядків і стовпців. Надрукуй прямокутник із <code>#</code>.</span><span class="pts">2 б</span>
+        <div class="task"><b>2.</b><span>Користувач вводить кількість рядків і стовпців. Виведи ці числа, як у прикладі, і надрукуй прямокутник із <code>#</code>.</span><span class="pts">2 б</span>
           <div class="ex"><pre class="out">рядків 2, стовпців 4
 # # # #
 # # # #</pre></div></div>
@@ -97,7 +175,7 @@
 2 4 6 8
 3 6 9 12
 4 8 12 16</pre></div></div>
-        <div class="task"><b>5.</b><span>Користувач вводить висоту. Надрукуй трикутник: у кожному рядку на одну зірочку більше.</span><span class="pts">2 б</span>
+        <div class="task"><b>5.</b><span>Користувач вводить висоту. Виведи її, як у прикладі, і надрукуй трикутник: у кожному рядку на одну зірочку більше.</span><span class="pts">2 б</span>
           <div class="ex"><pre class="out">висота 3
 *
 * *
@@ -115,7 +193,7 @@
 + + + + +
 + + + + +
 + + + + +</pre></div></div>
-        <div class="task"><b>2.</b><span>Користувач вводить кількість рядків і стовпців. Надрукуй прямокутник із <code>@</code>.</span><span class="pts">2 б</span>
+        <div class="task"><b>2.</b><span>Користувач вводить кількість рядків і стовпців. Виведи ці числа, як у прикладі, і надрукуй прямокутник із <code>@</code>.</span><span class="pts">2 б</span>
           <div class="ex"><pre class="out">рядків 3, стовпців 2
 @ @
 @ @
@@ -130,7 +208,7 @@
 3 4 5 6
 4 5 6 7
 5 6 7 8</pre></div></div>
-        <div class="task"><b>5.</b><span>Користувач вводить висоту. Надрукуй трикутник навпаки: у кожному рядку на одну зірочку менше.</span><span class="pts">2 б</span>
+        <div class="task"><b>5.</b><span>Користувач вводить висоту. Виведи її, як у прикладі, і надрукуй трикутник навпаки: у кожному рядку на одну зірочку менше.</span><span class="pts">2 б</span>
           <div class="ex"><pre class="out">висота 3
 * * *
 * *
