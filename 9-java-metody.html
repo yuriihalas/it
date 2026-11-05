@@ -70,11 +70,12 @@
   <section class="two">
     <div>
       <h2>Два види методів</h2>
-      <h3>Процедура: робить дію, нічого не повертає</h3>
+      <p>У Java все це називається <b>методами</b>. Слова «процедура» (нічого не повертає) і «функція» (повертає результат) — із загальної теорії програмування, вони є в темі уроку й у Python.</p>
+      <h3>Метод void: робить дію, нічого не повертає</h3>
 <pre>static void greet(String name) {
     System.out.println("Привіт, " + name);
 }</pre>
-      <h3>Функція: рахує і повертає результат</h3>
+      <h3>Метод із результатом: рахує і повертає значення</h3>
 <pre>static int square(int x) {
     return x * x;
 }</pre>
@@ -123,7 +124,7 @@
     <div class="two">
       <div class="card">
         <h3>1. Привітання</h3>
-        <p>Напиши процедуру <code>greet</code>, щоб програма вивела:</p>
+        <p>Напиши метод <code>greet</code>, щоб програма вивела:</p>
 <pre class="out">Привіт, Оля!
 Привіт, Назар!</pre>
 <pre id="c1">public class Main {
@@ -139,7 +140,7 @@
       </div>
       <div class="card">
         <h3>2. Квадрат</h3>
-        <p>Напиши функцію <code>square</code>. Має вивести:</p>
+        <p>Напиши метод <code>square</code>. Має вивести:</p>
 <pre class="out">25
 144</pre>
 <pre id="c2">public class Main {
@@ -155,7 +156,7 @@
       </div>
       <div class="card">
         <h3>3. Більше з двох</h3>
-        <p>Напиши функцію <code>max</code>, яка повертає більше число. Має вивести:</p>
+        <p>Напиши метод <code>max</code>, який повертає більше число. Має вивести:</p>
 <pre class="out">8
 10</pre>
 <pre id="c3">public class Main {
@@ -171,7 +172,7 @@
       </div>
       <div class="card">
         <h3>4. Парне число</h3>
-        <p>Напиши функцію <code>isEven</code>, яка повертає <code>true</code> для парного числа. Має вивести:</p>
+        <p>Напиши метод <code>isEven</code>, який повертає <code>true</code> для парного числа. Має вивести:</p>
 <pre class="out">true
 false</pre>
 <pre id="c4">public class Main {
