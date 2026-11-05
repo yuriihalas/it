@@ -36,7 +36,7 @@
   .head { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
   .head div { flex: 0 1 auto; border-radius: 6px; padding: 4px 10px; text-align: center; font-size: 15px; background: #eef2f6; }
   .head code { display: block; font-size: 20px; }
-  .head .rt { background: #fde68a; } .head .nm { background: #c7f0d0; } .head .pr { background: #dbeafe; }
+  .head .ac { background: #f3e8ff; } .head .rt { background: #fde68a; } .head .nm { background: #c7f0d0; } .head .pr { background: #dbeafe; }
   .kinds td:first-child, .kinds th:first-child { font-weight: 700; background: #eef2f6; }
 
   /* покроковий показ */
@@ -174,29 +174,38 @@ be converted to int</pre>
   <section>
     <h2>Заголовок методу</h2>
     <div class="head">
+      <div class="ac"><code>public</code>тип доступу</div>
       <div><code>static</code>модифікатор</div>
       <div class="rt"><code>int</code>тип повернення</div>
       <div class="nm"><code>add</code>ім'я</div>
       <div class="pr"><code>(int a, int b)</code>параметри</div>
     </div>
-    <p>Заголовок читаємо зліва направо. Обов'язкові лише тип повернення, ім'я і дужки: <code>int add(int a, int b)</code>. Модифікаторів може не бути.</p>
+    <p>Заголовок читаємо зліва направо. Обов'язкові лише тип повернення, ім'я і дужки: <code>int add(int a, int b)</code>. Типу доступу й інших модифікаторів може не бути.</p>
 
-    <h3>1. Модифікатори: хто бачить метод і як він працює</h3>
+    <h3>1. Тип доступу: хто може викликати метод</h3>
+    <p>Це теж модифікатори, їх називають модифікаторами доступу. Вони стосуються методів, а ще змінних класу і самих класів. Вибираємо лише один.</p>
+    <div class="wrap"><table>
+      <tr><th>Доступ</th><th>Свій клас</th><th>Свій пакет</th><th>Нащадок в іншому пакеті</th><th>Усюди</th></tr>
+      <tr><td><code>public</code></td><td>так</td><td>так</td><td>так</td><td>так</td></tr>
+      <tr><td><code>protected</code></td><td>так</td><td>так</td><td>так</td><td>ні</td></tr>
+      <tr><td>нічого не писати (default)</td><td>так</td><td>так</td><td>ні</td><td>ні</td></tr>
+      <tr><td><code>private</code></td><td>так</td><td>ні</td><td>ні</td><td>ні</td></tr>
+    </table></div>
+    <p><b>Пакет</b> — це група класів, <b>нащадок</b> — клас, створений на основі іншого. Доступ default називають так за звичкою: слово <code>default</code> перед методом не пишемо, просто нічого не ставимо.</p>
+    <p>Сьогодні весь код лежить в одному класі, тому різниці не побачимо. Детально вивчимо, коли писатимемо кілька класів.</p>
+
+    <h3>2. Інші модифікатори: як працює метод</h3>
     <div class="wrap"><table>
       <tr><th>Модифікатор</th><th>Що означає</th></tr>
-      <tr><td><code>public</code></td><td>Метод доступний звідусіль</td></tr>
-      <tr><td><code>private</code></td><td>Лише всередині свого класу</td></tr>
-      <tr><td><code>protected</code></td><td>У своєму пакеті й у класах-нащадках</td></tr>
-      <tr><td>нічого не писати</td><td>Лише у своєму пакеті (групі класів)</td></tr>
       <tr><td><code>static</code></td><td>Належить класу, об'єкт не потрібен</td></tr>
       <tr><td><code>final</code></td><td>Клас-нащадок не може змінити цей метод</td></tr>
       <tr><td><code>abstract</code></td><td>Метод без тіла, його допише клас-нащадок</td></tr>
       <tr><td><code>synchronized</code></td><td>Метод виконує лише один потік за раз, це для складних програм</td></tr>
       <tr><td><code>native</code></td><td>Метод написаний не на Java</td></tr>
     </table></div>
-    <p>Модифікаторів може бути кілька: <code>public static final</code>. Але з <code>public</code>, <code>private</code>, <code>protected</code> вибираємо лише один. Нам сьогодні потрібен <code>static</code>, а решту зустрінемо, коли вчитимемо класи.</p>
+    <p>Їх може бути кілька: <code>public static final</code>. Спочатку зазвичай пишуть тип доступу. Нам сьогодні потрібен лише <code>static</code>.</p>
 
-    <h3>2. Тип повернення: що метод віддає</h3>
+    <h3>3. Тип повернення: що метод віддає</h3>
     <p>Це тип значення після <code>return</code>. Підходить будь-який тип із таблиці вище, <code>void</code> або навіть власний клас.</p>
     <div class="wrap"><table>
       <tr><th>Заголовок</th><th>Що поверне</th></tr>
@@ -213,7 +222,7 @@ be converted to int</pre>
 <pre class="err">incompatible types: possible lossy
 conversion from double to int</pre>
 
-    <h3>3. Ім'я: вигадуєш сам, але є правила</h3>
+    <h3>4. Ім'я: вигадуєш сам, але є правила</h3>
     <div class="two">
       <div>
         <p><b>Правила Java (інакше помилка):</b></p>
@@ -246,7 +255,7 @@ conversion from double to int</pre>
       </div>
     </div>
 
-    <h3>4. Параметри: що метод отримує</h3>
+    <h3>5. Параметри: що метод отримує</h3>
     <p>Параметри пишемо в дужках через кому: спочатку тип, потім ім'я. Значення у виклику йдуть у тому самому порядку: у <code>add(2, 3)</code> буде <code>a = 2</code>, <code>b = 3</code>.</p>
     <div class="wrap"><table>
       <tr><th>Які бувають</th><th>Заголовок</th><th>Виклик</th></tr>
