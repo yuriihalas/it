@@ -37,6 +37,10 @@
   .head div { flex: 0 1 auto; border-radius: 6px; padding: 4px 10px; text-align: center; font-size: 15px; background: #eef2f6; }
   .head code { display: block; font-size: 20px; }
   .head .ac { background: #f3e8ff; } .head .rt { background: #fde68a; } .head .nm { background: #c7f0d0; } .head .pr { background: #dbeafe; }
+  .qa { border: 1px solid #d5dae0; border-radius: 6px; padding: 6px 12px; margin: 0 0 8px; }
+  .qa summary { color: #111; }
+  .qa summary::after { content: " · відповідь"; color: #0b5cad; font-weight: 400; font-size: 15px; }
+  .qa[open] summary { margin-bottom: 6px; }
   .kinds td:first-child, .kinds th:first-child { font-weight: 700; background: #eef2f6; }
 
   /* покроковий показ */
@@ -753,6 +757,64 @@ static void printCheck(String item, int price, int count)</pre>
   <section>
     <h2>Домашнє завдання</h2>
     <p>Вивчити, що таке функція, параметр і значення, яке функція повертає.</p>
+    <p>І відповісти на питання нижче. Спочатку спробуй сам, потім відкрий відповідь.</p>
+
+    <h3>Типові питання на співбесіді: Junior</h3>
+    <details class="qa"><summary>Що таке метод і навіщо він потрібен?</summary><p>Іменований блок коду, який виконує одну справу. Дає змогу не повторювати код, легше його читати, змінювати й перевіряти.</p></details>
+    <details class="qa"><summary>Чим параметр відрізняється від аргументу?</summary><p>Параметр — змінна в заголовку методу. Аргумент — конкретне значення під час виклику: у <code>square(5)</code> це 5.</p></details>
+    <details class="qa"><summary>Що таке сигнатура методу? Чи входить до неї тип повернення?</summary><p>Ім'я методу і типи параметрів. Тип повернення не входить, імена параметрів теж.</p></details>
+    <details class="qa"><summary>Чи можна перевантажити метод, змінивши лише тип повернення?</summary><p>Ні. Сигнатура лишиться однакова, і Java покаже помилку <code>method f(int) is already defined</code>.</p></details>
+    <details class="qa"><summary>Чим static-метод відрізняється від звичайного?</summary><p>static належить класу і працює без об'єкта. Звичайний належить об'єкту і має доступ до його даних.</p></details>
+    <details class="qa"><summary>Чи можна викликати нестатичний метод зі статичного?</summary><p>Напряму ні, бо немає об'єкта. Спочатку треба створити об'єкт і викликати метод через нього. Навпаки можна: звичайний метод може викликати static.</p></details>
+    <details class="qa"><summary>Чому main оголошений як public static void?</summary><p><code>public</code> — щоб Java могла запустити його ззовні. <code>static</code> — бо об'єктів ще немає. <code>void</code> — бо він нічого не повертає.</p></details>
+    <details class="qa"><summary>Чи можна перевантажити main?</summary><p>Так, але програма запускається лише з <code>main(String[] args)</code>. Інші варіанти треба викликати самому.</p></details>
+    <details class="qa"><summary>Назви модифікатори доступу від найширшого до найвужчого.</summary><p><code>public</code>, <code>protected</code>, default (нічого не пишемо), <code>private</code>.</p></details>
+    <details class="qa"><summary>Що виведе програма?<pre>static void swap(int a, int b) {
+    int t = a;
+    a = b;
+    b = t;
+}
+// у main:
+int x = 1, y = 2;
+swap(x, y);
+System.out.println(x + " " + y);</pre></summary><p><b>1 2.</b> Метод змінив лише копії значень.</p></details>
+    <details class="qa"><summary>Java передає аргументи за значенням чи за посиланням?</summary><p>Завжди за значенням. Для об'єктів копіюється посилання: через нього можна змінити сам об'єкт, але не можна змусити змінну в <code>main</code> вказувати на інший об'єкт.</p></details>
+    <details class="qa"><summary>Що виведе програма?<pre>static void change(String s) {
+    s = s + "!";
+}
+// у main:
+String word = "кіт";
+change(word);
+System.out.println(word);</pre></summary><p><b>кіт.</b> Рядки незмінні: <code>s + "!"</code> створює новий рядок, а <code>word</code> далі вказує на старий.</p></details>
+
+    <h3>Типові питання на співбесіді: Middle</h3>
+    <p>Тут уже є класи й нащадки, яких ми ще не вчили: <code>extends</code> — це клас на основі іншого. Це важче, але корисно побачити наперед.</p>
+    <details class="qa"><summary>Чим перевантаження відрізняється від перевизначення?</summary><p>Перевантаження (overload) — кілька методів з одним ім'ям і різними параметрами. Перевизначення (override) — клас-нащадок пише свою версію методу з такою самою сигнатурою.</p></details>
+    <details class="qa"><summary>Що виведе програма?<pre>class Animal {
+    void speak() { System.out.println("Тварина"); }
+}
+class Cat extends Animal {
+    @Override
+    void speak() { System.out.println("Кіт"); }
+}
+// у main:
+Animal a = new Cat();
+a.speak();</pre></summary><p><b>Кіт.</b> Перевизначений метод вибирається під час виконання за справжнім об'єктом, а не за типом змінної.</p></details>
+    <details class="qa"><summary>Є методи show(Animal) і show(Cat). Який спрацює?<pre>Animal a = new Cat();
+show(a);</pre></summary><p><b>show(Animal).</b> Перевантажений метод вибирається ще під час компіляції, за типом змінної. Це головна різниця з попереднім питанням.</p></details>
+    <details class="qa"><summary>Чи можна перевизначити static, private або final метод?</summary><p>Ні. <code>final</code> забороняє це прямо. <code>private</code> нащадок не бачить, тому його метод буде новим. <code>static</code> можна лише сховати: нащадок оголошує такий самий static, а вибір іде за типом змінної.</p></details>
+    <details class="qa"><summary>Є методи f(long), f(Integer) і f(int...). Який спрацює для f(5)?</summary><p><b>f(long).</b> Порядок такий: спершу точний тип або розширення типу, потім автоупаковка в <code>Integer</code>, і лише тоді varargs.</p></details>
+    <details class="qa"><summary>Що поверне метод?<pre>static int f() {
+    try {
+        return 1;
+    } finally {
+        return 2;
+    }
+}</pre></summary><p><b>2.</b> <code>finally</code> виконується завжди, і його <code>return</code> замінює попередній. Тому в реальному коді <code>return</code> у <code>finally</code> не пишуть.</p></details>
+    <details class="qa"><summary>Що таке стек викликів? Коли буває StackOverflowError?</summary><p>Кожен виклик кладе у стек свій блок із параметрами й локальними змінними, а після завершення прибирає його. Якщо виклики не закінчуються, наприклад рекурсія без умови виходу, стек переповнюється і виникає <code>StackOverflowError</code>.</p></details>
+    <details class="qa"><summary>Де зберігаються локальні змінні, а де об'єкти?</summary><p>Локальні змінні й параметри — у стеку, вони зникають після виходу з методу. Об'єкти — у купі (heap), їх прибирає збирач сміття, коли на них нема посилань.</p></details>
+    <details class="qa"><summary>Чи можна при перевизначенні змінити тип доступу, тип повернення чи винятки?</summary><p>Доступ можна лише розширити, наприклад з default на <code>public</code>. Тип повернення може бути той самий або його нащадок. Нових перевірюваних винятків у <code>throws</code> додавати не можна.</p></details>
+    <details class="qa"><summary>Що таке чистий метод і чому він кращий?</summary><p>Результат залежить лише від параметрів, а зовні нічого не змінюється. Такий метод легко перевіряти і він не дає несподіваних побічних ефектів. <code>square(x)</code> чистий, а метод, який змінює спільну змінну, ні.</p></details>
   </section>
 </div>
 
