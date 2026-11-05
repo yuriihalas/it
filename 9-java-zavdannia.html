@@ -271,6 +271,129 @@ static void printCheck(String item, int price, int count)</pre>
       </div>
     </div>
   </section>
+
+  <section>
+    <h2>Продовження: нова теорія</h2>
+    <div class="two">
+      <div class="card">
+        <h3>Масив як параметр</h3>
+<pre>static int countEven(int[] a) {
+    int count = 0;
+    for (int i = 0; i &lt; a.length; i++) {
+        if (a[i] % 2 == 0) {
+            count++;
+        }
+    }
+    return count;
+}
+// у main:
+int[] nums = {1, 2, 4, 7};
+System.out.println(countEven(nums));</pre>
+<pre class="out">2</pre>
+        <p>Лічильник створюємо до циклу, а <code>return</code> пишемо після циклу.</p>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Цикл for-each</h3>
+<pre>for (int n : a) {
+    System.out.println(n);
+}</pre>
+          <p>Читаємо так: «для кожного числа <code>n</code> у масиві <code>a</code>». Зручно, коли індекс не потрібен.</p>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3>Довжина: дужки чи ні</h3>
+          <p>Масив: <code>a.length</code>, без дужок. Рядок: <code>s.length()</code>, з дужками, бо це метод. Символ рядка: <code>s.charAt(0)</code>.</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Ділення цілих чисел</h3>
+<pre>System.out.println(9 / 2);
+System.out.println((double) 9 / 2);</pre>
+<pre class="out">4
+4.5</pre>
+        <p>Ціле ділимо на ціле, і дробова частина зникає. Запис <code>(double)</code> перетворює число на дробове. Це потрібно для середнього значення.</p>
+      </div>
+      <div class="card">
+        <h3>char і String</h3>
+        <p>Символ у одинарних лапках: <code>'а'</code>. Рядок у подвійних: <code>"а"</code>. Символи порівнюємо через <code>==</code>, а рядки — лише через <code>.equals()</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Продовження: нові завдання</h2>
+    <p>Для кожного завдання пройди ті самі 6 кроків.</p>
+    <div class="two">
+      <div class="card">
+        <h3>5. Сума масиву</h3>
+        <p>Метод <code>sum</code> отримує масив цілих чисел і повертає їхню суму.</p>
+<pre id="c10">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        int[] nums = {3, 5, 7};
+        System.out.println(sum(nums));
+    }
+}</pre>
+        <button class="copy" data-c="c10">Копіювати</button>
+<pre class="out">15</pre>
+        <details><summary>Підказка 1</summary><p>Заголовок: <code>static int sum(int[] a)</code>.</p></details>
+        <details><summary>Підказка 2</summary><p>Перед циклом <code>int total = 0;</code>. У циклі додавай кожне число, після циклу зроби <code>return total;</code>.</p></details>
+      </div>
+      <div class="card">
+        <h3>6. Середнє</h3>
+        <p>Метод <code>average</code> отримує масив цілих чисел і повертає середнє значення як дробове число.</p>
+<pre id="c11">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        int[] first = {10, 11, 12};
+        int[] second = {4, 5};
+        System.out.println(average(first));
+        System.out.println(average(second));
+    }
+}</pre>
+        <button class="copy" data-c="c11">Копіювати</button>
+<pre class="out">11.0
+4.5</pre>
+        <details><summary>Підказка 1</summary><p>Тип повернення <code>double</code>. Спочатку порахуй суму, як у задачі 5.</p></details>
+        <details><summary>Підказка 2</summary><p>Щоб не втратити дробову частину: <code>(double) total / a.length</code>.</p></details>
+      </div>
+      <div class="card">
+        <h3>7. Скільки разів символ</h3>
+        <p>Метод <code>countChar</code> отримує рядок і символ і повертає, скільки разів символ трапляється в рядку.</p>
+<pre id="c12">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        System.out.println(countChar("банан", 'а'));
+        System.out.println(countChar("програма", 'р'));
+    }
+}</pre>
+        <button class="copy" data-c="c12">Копіювати</button>
+<pre class="out">2
+2</pre>
+        <details><summary>Підказка 1</summary><p>Заголовок: <code>static int countChar(String s, char c)</code>.</p></details>
+        <details><summary>Підказка 2</summary><p>Цикл від 0 до <code>s.length()</code>. Порівнюй <code>s.charAt(i) == c</code>.</p></details>
+      </div>
+      <div class="card">
+        <h3>8. Найбільше в масиві</h3>
+        <p>Метод <code>maxOf</code> отримує масив і повертає найбільше число.</p>
+<pre id="c13">public class Main {
+    // метод тут
+
+    public static void main(String[] args) {
+        int[] nums = {3, 9, 2};
+        System.out.println(maxOf(nums));
+    }
+}</pre>
+        <button class="copy" data-c="c13">Копіювати</button>
+<pre class="out">9</pre>
+        <details><summary>Підказка 1</summary><p>Спочатку вважаємо найбільшим перший елемент: <code>int best = a[0];</code>.</p></details>
+        <details><summary>Підказка 2</summary><p>У циклі: якщо число більше за <code>best</code>, запиши його в <code>best</code>. Після циклу поверни <code>best</code>.</p></details>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script>
