@@ -31,6 +31,13 @@
   button:disabled { opacity: .55; cursor: default; }
   button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
   .copy { margin-bottom: 8px; }
+  .err { color: #b42318; border-left-color: #b42318; background: #fdf3f2; }
+  ol { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  .head { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .head div { flex: 0 1 auto; border-radius: 6px; padding: 4px 10px; text-align: center; font-size: 15px; background: #eef2f6; }
+  .head code { display: block; font-size: 20px; }
+  .head .rt { background: #fde68a; } .head .nm { background: #c7f0d0; } .head .pr { background: #dbeafe; }
+  .kinds td:first-child, .kinds th:first-child { font-weight: 700; background: #eef2f6; }
 
   /* покроковий показ */
   .viz { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: start; }
@@ -67,6 +74,42 @@
   <h1>Методи в Java <span>· 9 клас · 05.11 · ділимо програму на частини</span></h1>
   <p class="big">Великий проєкт не пишуть одним шматком. Його ділять на маленькі частини, і кожна робить одну справу. У Java такі частини називаються методами.</p>
 
+  <section>
+    <h2>Спочатку: типи даних</h2>
+    <p class="big">У Java перед іменем завжди стоїть тип. Перед змінною, перед параметром і перед методом.</p>
+    <div class="two">
+      <div>
+<pre>int age = 14;
+String name = "Оля";
+
+static int square(int x) {
+    return x * x;
+}</pre>
+      </div>
+      <div>
+        <p><b>Python:</b> <code>age = 14</code>. Тип Python визначає сам.</p>
+        <p><b>Java:</b> <code>int age = 14;</code> Тип пишеш ти, і змінити його вже не можна. Java перевіряє типи ще до запуску:</p>
+<pre class="err">int age = "14";
+incompatible types: String cannot
+be converted to int</pre>
+      </div>
+    </div>
+    <div class="wrap"><table>
+      <tr><th>Тип</th><th>Що зберігає</th><th>Приклад</th></tr>
+      <tr><td><code>byte</code></td><td>Маленьке ціле, від −128 до 127</td><td><code>byte b = 100;</code></td></tr>
+      <tr><td><code>short</code></td><td>Ціле, до 32 767</td><td><code>short s = 20000;</code></td></tr>
+      <tr><td><code>int</code></td><td>Ціле, до 2 147 483 647. Основний тип для цілих</td><td><code>int age = 14;</code></td></tr>
+      <tr><td><code>long</code></td><td>Дуже велике ціле, в кінці літера L</td><td><code>long big = 3000000000L;</code></td></tr>
+      <tr><td><code>float</code></td><td>Дробове, менш точне, в кінці літера f</td><td><code>float f = 1.5f;</code></td></tr>
+      <tr><td><code>double</code></td><td>Дробове. Основний тип для дробових</td><td><code>double price = 19.99;</code></td></tr>
+      <tr><td><code>char</code></td><td>Один символ, одинарні лапки</td><td><code>char letter = 'к';</code></td></tr>
+      <tr><td><code>boolean</code></td><td>Лише true або false</td><td><code>boolean ok = true;</code></td></tr>
+      <tr><td><code>String</code></td><td>Рядок, подвійні лапки. Пишеться з великої, бо це клас</td><td><code>String name = "Оля";</code></td></tr>
+      <tr><td><code>int[]</code></td><td>Масив цілих чисел</td><td><code>int[] marks = {10, 11, 12};</code></td></tr>
+    </table></div>
+    <p>Перші вісім типів базові (примітивні). <code>String</code> і масиви — об'єкти. На уроках найчастіше потрібні <code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code>, <code>String</code>.</p>
+  </section>
+
   <section class="two">
     <div>
       <h2>Два види методів</h2>
@@ -84,13 +127,60 @@
       <h2>З чого складається метод</h2>
       <div class="wrap"><table>
         <tr><th>Частина</th><th>Що означає</th></tr>
-        <tr><td><code>static</code></td><td>Поки що просто пишемо завжди</td></tr>
-        <tr><td><code>void</code> / <code>int</code></td><td>Що повертає: нічого або ціле число</td></tr>
+        <tr><td><code>static</code></td><td>Метод належить класу, а не об'єкту. Докладно нижче</td></tr>
+        <tr><td><code>void</code> / <code>int</code></td><td>Тип повернення: нічого або ціле число</td></tr>
         <tr><td><code>square</code></td><td>Ім'я: що робить метод</td></tr>
         <tr><td><code>(int x)</code></td><td>Параметр: що метод отримує</td></tr>
         <tr><td><code>return</code></td><td>Віддати результат і вийти</td></tr>
       </table></div>
       <p><b>Хто вчив Python:</b> <code>def square(x):</code> у Java пишеться <code>static int square(int x) {</code>. Різниця лише в тому, що Java вимагає вказати типи.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Заголовок методу</h2>
+    <div class="head">
+      <div><code>static</code>модифікатор</div>
+      <div class="rt"><code>int</code>тип повернення</div>
+      <div class="nm"><code>add</code>ім'я</div>
+      <div class="pr"><code>(int a, int b)</code>параметри</div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h3>Тип повернення</h3>
+        <p>Це тип значення, яке метод віддає через <code>return</code>. Він стоїть перед іменем методу.</p>
+        <ul>
+          <li><code>int</code> — метод поверне ціле число.</li>
+          <li><code>boolean</code> — поверне true або false.</li>
+          <li><code>void</code> — нічого не поверне, <code>return</code> зі значенням не потрібен.</li>
+        </ul>
+        <p>Тип мусить збігатися. Метод <code>int</code> не може повернути <code>2.5</code>:</p>
+<pre class="err">incompatible types: possible lossy
+conversion from double to int</pre>
+      </div>
+      <div class="card">
+        <h3>Параметри</h3>
+        <p>Це змінні в дужках, через які метод отримує значення. Параметрів може бути скільки завгодно або жодного, тоді дужки порожні.</p>
+        <p>Кожен параметр має свій тип:</p>
+<pre>static int add(int a, int b)   // правильно
+static int add(int a, b)       // помилка</pre>
+        <p>Значення у виклику йдуть у тому самому порядку: у <code>add(2, 3)</code> буде <code>a = 2</code>, <code>b = 3</code>.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>Сигнатура методу</h3>
+      <p>Сигнатура — це <b>ім'я методу і типи його параметрів</b>. За нею Java відрізняє один метод від іншого.</p>
+      <div class="wrap"><table>
+        <tr><th>Заголовок</th><th>Сигнатура</th></tr>
+        <tr><td><code>static int add(int a, int b)</code></td><td><code>add(int, int)</code></td></tr>
+        <tr><td><code>static double add(double a, double b)</code></td><td><code>add(double, double)</code></td></tr>
+        <tr><td><code>static void greet(String name)</code></td><td><code>greet(String)</code></td></tr>
+      </table></div>
+      <p class="big">Тип повернення й імена параметрів до сигнатури не входять.</p>
+      <p>Тому в одному класі не може бути двох методів з однаковою сигнатурою, навіть якщо типи повернення різні:</p>
+<pre class="err">static int f(int x)
+static double f(int y)
+method f(int) is already defined in class Main</pre>
     </div>
   </section>
 
@@ -109,6 +199,198 @@
         <div class="say" id="say"></div>
         <div class="frames" id="frames"></div>
         <div class="console" id="console"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Які бувають методи</h2>
+    <p>Метод відрізняється двома речами: чи отримує він щось (параметри) і чи віддає щось назад (результат). Тому видів чотири.</p>
+    <div class="wrap"><table class="kinds">
+      <tr><th></th><th>Нічого не повертає (void)</th><th>Повертає результат</th></tr>
+      <tr><td>Без параметрів</td><td><code>static void hello()</code></td><td><code>static int dice()</code></td></tr>
+      <tr><td>З параметрами</td><td><code>static void greet(String name)</code></td><td><code>static int add(int a, int b)</code></td></tr>
+    </table></div>
+    <div class="two">
+      <div>
+<pre id="c6">public class Main {
+    static void hello() {
+        System.out.println("Привіт!");
+    }
+
+    static void greet(String name) {
+        System.out.println("Привіт, " + name + "!");
+    }
+
+    static int dice() {
+        return (int) (Math.random() * 6) + 1;
+    }
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        hello();
+        greet("Оля");
+        int roll = dice();
+        System.out.println("Кубик: " + roll);
+        System.out.println(add(2, 3));
+    }
+}</pre>
+        <button class="copy" data-c="c6">Копіювати</button>
+      </div>
+      <div>
+        <p>Програма виведе:</p>
+<pre class="out">Привіт!
+Привіт, Оля!
+Кубик: 4
+5</pre>
+        <p>Число на кубику щоразу інше: від 1 до 6.</p>
+        <p class="big">Метод void викликаємо окремим рядком. Результат іншого методу записуємо в змінну або одразу використовуємо.</p>
+        <p>Тип результату може бути будь-який: <code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code>, <code>String</code>, <code>int[]</code>. Те, що стоїть після <code>return</code>, має бути саме цього типу.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>static і не static</h2>
+    <div class="two">
+      <div class="card">
+        <h3>static: метод класу</h3>
+        <p>Працює без об'єкта. Викликаємо через ім'я класу, а всередині свого класу просто за іменем.</p>
+<pre>Math.max(3, 8)
+Cat.info()
+square(5)</pre>
+      </div>
+      <div class="card">
+        <h3>Не static: метод об'єкта</h3>
+        <p>Працює з конкретним об'єктом і його даними. Спочатку створюємо об'єкт, потім викликаємо через крапку.</p>
+<pre>word.length()
+word.toUpperCase()
+a.speak()</pre>
+      </div>
+    </div>
+    <p class="big">Клас — це креслення, об'єкт — конкретна річ за цим кресленням. Клас Cat описує всіх котів, а Мурчик і Барсик — два окремі об'єкти.</p>
+    <div class="two">
+      <div>
+<pre id="c7">class Cat {
+    String name;
+
+    Cat(String name) {
+        this.name = name;
+    }
+
+    void speak() {
+        System.out.println(name + ": няв");
+    }
+
+    static void info() {
+        System.out.println("Усі коти люблять спати");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Cat a = new Cat("Мурчик");
+        Cat b = new Cat("Барсик");
+        a.speak();
+        b.speak();
+        Cat.info();
+    }
+}</pre>
+        <button class="copy" data-c="c7">Копіювати</button>
+      </div>
+      <div>
+        <p>Програма виведе:</p>
+<pre class="out">Мурчик: няв
+Барсик: няв
+Усі коти люблять спати</pre>
+        <ul>
+          <li><code>speak</code> не static, бо в кожного кота своє ім'я.</li>
+          <li><code>info</code> static, бо це про всіх котів одразу.</li>
+          <li><code>Cat(String name)</code> — конструктор: він спрацьовує, коли пишемо <code>new Cat(...)</code>. Це єдиний випадок без типу повернення, навіть без <code>void</code>.</li>
+          <li><code>new</code> створює об'єкт, <code>this.name</code> — ім'я саме цього об'єкта.</li>
+        </ul>
+        <p><b>Чому <code>main</code> static?</b> Java запускає його першим, коли ще немає жодного об'єкта.</p>
+        <p><b>Тому без <code>static</code> буде помилка,</b> якщо викликати метод із <code>main</code> просто за іменем:</p>
+<pre class="err">non-static method hello() cannot be
+referenced from a static context</pre>
+      </div>
+    </div>
+    <h3>Готові методи Java</h3>
+    <div class="wrap"><table>
+      <tr><th>Виклик</th><th>Результат</th><th>Вид</th></tr>
+      <tr><td><code>Math.max(3, 8)</code></td><td>8</td><td>static</td></tr>
+      <tr><td><code>Math.sqrt(16)</code></td><td>4.0</td><td>static</td></tr>
+      <tr><td><code>Math.abs(-5)</code></td><td>5</td><td>static</td></tr>
+      <tr><td><code>Math.pow(2, 3)</code></td><td>8.0</td><td>static</td></tr>
+      <tr><td><code>word.length()</code>, де word = "кіт"</td><td>3</td><td>не static</td></tr>
+      <tr><td><code>word.toUpperCase()</code></td><td>КІТ</td><td>не static</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Ключові слова</h2>
+    <p>Тепер можна прочитати рядок, який досі писали не думаючи:</p>
+<pre>public static void main(String[] args)</pre>
+    <div class="wrap"><table>
+      <tr><th>Слово</th><th>Що означає</th></tr>
+      <tr><td><code>public</code></td><td>Доступний звідусіль. Протилежне — <code>private</code>: лише всередині свого класу</td></tr>
+      <tr><td><code>static</code></td><td>Належить класу, об'єкт не потрібен</td></tr>
+      <tr><td><code>void</code></td><td>Нічого не повертає</td></tr>
+      <tr><td><code>main</code></td><td>Ім'я методу, з якого починається програма</td></tr>
+      <tr><td><code>String[] args</code></td><td>Параметр: масив рядків, які можна передати під час запуску</td></tr>
+      <tr><td><code>return</code></td><td>Віддає результат і завершує метод</td></tr>
+      <tr><td><code>class</code></td><td>Оголошує клас</td></tr>
+      <tr><td><code>new</code></td><td>Створює об'єкт</td></tr>
+      <tr><td><code>this</code></td><td>Цей самий об'єкт, із яким працює метод</td></tr>
+      <tr><td><code>final</code></td><td>Значення не можна змінити: <code>final int MAX = 12;</code></td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Важливі деталі</h2>
+    <div class="two">
+      <div class="card">
+        <h3>Параметр і аргумент</h3>
+        <p>У <code>static int square(int x)</code> змінна <code>x</code> — параметр. У виклику <code>square(5)</code> число 5 — аргумент. Кількість, порядок і типи мають збігатися.</p>
+      </div>
+      <div class="card">
+        <h3>return завершує метод</h3>
+<pre>static String grade(int points) {
+    if (points &gt;= 10) {
+        return "Високий";
+    }
+    return "Ще попрацюй";
+}</pre>
+        <p>Код одразу після <code>return</code> ніколи не виконається. Java покаже помилку <code>unreachable statement</code>.</p>
+      </div>
+      <div class="card">
+        <h3>Змінні живуть лише в методі</h3>
+        <p>Змінна, створена в методі, зникає, коли метод закінчується. Тому в різних методах можуть бути змінні з однаковим іменем, і вони не заважають одна одній.</p>
+      </div>
+      <div class="card">
+        <h3>Параметр — це копія</h3>
+<pre>static void addOne(int x) {
+    x = x + 1;
+}
+// у main:
+int n = 5;
+addOne(n);
+System.out.println(n);</pre>
+        <p>Виведе <b>5</b>: метод змінив копію. А ось елементи масиву метод змінити може, бо отримує посилання на той самий масив.</p>
+      </div>
+      <div class="card">
+        <h3>Однакові імена</h3>
+<pre>static int add(int a, int b)
+static int add(int a, int b, int c)
+static double add(double a, double b)</pre>
+        <p>Це перевантаження: ім'я однакове, а сигнатури різні. Java вибирає метод за кількістю і типами аргументів.</p>
+      </div>
+      <div class="card">
+        <h3>Як називати методи</h3>
+        <p>Ім'я з малої літери, кожне наступне слово з великої: <code>printCheck</code>, <code>isEven</code>. Найкраще — дієслово, яке каже, що робить метод. Один метод — одна справа.</p>
       </div>
     </div>
   </section>
@@ -227,7 +509,49 @@ static void printCheck(String item, int price, int count)</pre>
     <h2>Перевір себе</h2>
     <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
     <div class="two" id="quiz"></div>
-    <div class="score" id="score">Правильно: 0 з 6</div>
+    <div class="score" id="score">Правильно: 0 з 10</div>
+  </section>
+
+  <section>
+    <h2>Остання задача: твій метод</h2>
+    <p class="big">Кожен вигадує і пише свій метод. Можна шукати в інтернеті, але ти маєш пояснити кожен рядок свого коду.</p>
+    <div class="two">
+      <div>
+        <h3>Умови</h3>
+        <ol>
+          <li>Своя ідея, не така, як у сусіда.</li>
+          <li>Метод отримує хоча б один параметр і повертає результат.</li>
+          <li>У <code>main</code> виклич його двічі з різними значеннями.</li>
+          <li>Покажи запуск учителю і поясни, що робить кожен рядок.</li>
+        </ol>
+<pre id="c8">public class Main {
+    // мій метод тут
+
+    public static void main(String[] args) {
+        // виклич його двічі
+    }
+}</pre>
+        <button class="copy" data-c="c8">Копіювати</button>
+      </div>
+      <div>
+        <h3>Якщо нема ідеї</h3>
+        <ul>
+          <li><code>isLeapYear(2024)</code> — чи рік високосний</li>
+          <li><code>toFahrenheit(20)</code> — градуси Цельсія у Фаренгейта</li>
+          <li><code>countVowels("Олімпіада")</code> — скільки голосних</li>
+          <li><code>isPalindrome("радар")</code> — чи слово паліндром</li>
+          <li><code>factorial(5)</code> — факторіал числа</li>
+          <li><code>schoolMark(85)</code> — переводить відсотки в бали від 1 до 12</li>
+        </ul>
+        <h3>Де шукати</h3>
+        <ul>
+          <li><a href="https://www.w3schools.com/java/java_methods.asp" target="_blank" rel="noopener">W3Schools: методи Java</a></li>
+          <li><a href="https://www.programiz.com/java-programming/methods" target="_blank" rel="noopener">Programiz: методи Java</a></li>
+          <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Math.html" target="_blank" rel="noopener">Усі методи Math</a> і <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" target="_blank" rel="noopener">усі методи String</a></li>
+        </ul>
+        <p>Ці сторінки англійською. Переклад у браузері теж можна використовувати.</p>
+      </div>
+    </div>
   </section>
 
   <section>
@@ -320,7 +644,11 @@ const QUIZ = [
   { q: "Яким словом метод віддає результат?", code: "static int five() {\n    ______ 5;\n}", ok: ["cmV0dXJu"], show: "return", why: "return віддає значення і завершує метод." },
   { q: "Що виведе програма?", code: "static int f(int a, int b) {\n    return a - b;\n}\n// у main:\nSystem.out.println(f(2, 7));", ok: ["LTU="], show: "-5", why: "Значення йдуть по порядку: a = 2, b = 7, тому 2 − 7 = −5." },
   { q: "Що виведе програма?", code: "static boolean big(int n) {\n    return n > 10;\n}\n// у main:\nSystem.out.println(big(10));", ok: ["ZmFsc2U="], show: "false", why: "10 не більше за 10, тому false." },
-  { q: "Скільки параметрів у цього методу?", code: "static int add(int a, int b, int c) {\n    return a + b + c;\n}", ok: ["Mw=="], show: "3", why: "Параметри записані в дужках: a, b і c." }
+  { q: "Скільки параметрів у цього методу?", code: "static int add(int a, int b, int c) {\n    return a + b + c;\n}", ok: ["Mw=="], show: "3", why: "Параметри записані в дужках: a, b і c." },
+  { q: "Яке слово дозволяє викликати метод без об'єкта?", code: "Math.max(3, 8);", ok: ["c3RhdGlj"], show: "static", why: "Метод static належить класу, тому об'єкт не потрібен." },
+  { q: "Що виведе програма?", code: "static void addOne(int x) {\n    x = x + 1;\n}\n// у main:\nint n = 5;\naddOne(n);\nSystem.out.println(n);", ok: ["NQ=="], show: "5", why: "Метод отримав копію числа, тому n не змінилося." },
+  { q: "Який тип вкажеш для ціни 19.99?", code: "____ price = 19.99;", ok: ["ZG91Ymxl"], show: "double", why: "Дробові числа зазвичай зберігаємо в double." },
+  { q: "Чи входить тип повернення до сигнатури? Напиши так або ні.", code: "static int add(int a, int b)\n// сигнатура: add(int, int)", ok: ["JUQwJUJEJUQxJTk2"], show: "ні", why: "Сигнатура — це лише ім'я і типи параметрів." }
 ];
 const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "").replace(/[−–—]/g, "-");
 const enc = v => btoa(encodeURIComponent(v));
