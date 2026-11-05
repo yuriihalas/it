@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Функції в Python</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; }
+  .err { color: #b42318; border-left-color: #b42318; background: #fdf3f2; font-size: 15px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .card { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px 6px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  details { margin: 4px 0 8px; } summary { cursor: pointer; color: #0b5cad; font-weight: 600; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .copy { margin-bottom: 8px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Функції в Python <span>· 9-Б · 05.11 · ділимо програму на частини</span></h1>
+  <p class="big">Функція — це шматок коду з ім'ям. Написав один раз, викликаєш скільки треба. Великий проєкт складається з багатьох маленьких функцій.</p>
+
+  <section>
+    <h2>Навіщо потрібні функції</h2>
+    <div class="two">
+      <div class="card">
+        <h3>Без функції</h3>
+<pre>pizza = 180 - 180 // 10
+tea = 120 - 120 // 10
+cake = 250 - 250 // 10</pre>
+        <p>Формула написана тричі. Якщо знижка зміниться, треба міняти кожен рядок.</p>
+      </div>
+      <div class="card">
+        <h3>З функцією</h3>
+<pre>def discount(price):
+    return price - price // 10
+
+pizza = discount(180)
+tea = discount(120)
+cake = discount(250)</pre>
+        <p>Формула написана один раз. Змінити треба в одному місці.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Як написати функцію</h2>
+    <div class="two">
+      <div>
+<pre>def square(x):
+    return x * x
+
+print(square(5))</pre>
+<pre class="out">25</pre>
+      </div>
+      <div>
+        <div class="wrap"><table>
+          <tr><th>Частина</th><th>Що означає</th></tr>
+          <tr><td><code>def</code></td><td>Починаємо нову функцію</td></tr>
+          <tr><td><code>square</code></td><td>Ім'я функції</td></tr>
+          <tr><td><code>(x)</code></td><td>Параметр: що функція отримує</td></tr>
+          <tr><td><code>:</code></td><td>Двокрапка обов'язкова</td></tr>
+          <tr><td>відступ</td><td>4 пробіли: це код усередині функції</td></tr>
+          <tr><td><code>return</code></td><td>Віддає результат і завершує функцію</td></tr>
+          <tr><td><code>square(5)</code></td><td>Виклик: запускаємо функцію з числом 5</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h3>Написати і викликати</h3>
+        <p class="big">Написана функція сама нічого не робить. Вона спрацює, лише коли її викличуть.</p>
+        <p>У Python функцію пишемо <b>вище</b> того місця, де викликаємо. Інакше буде помилка:</p>
+<pre class="err">NameError: name 'square' is not defined</pre>
+      </div>
+      <div class="card">
+        <h3>print і return — різні речі</h3>
+        <p><code>return</code> віддає результат програмі, і з ним можна працювати далі. <code>print</code> лише показує на екрані.</p>
+        <p>Якщо забути <code>return</code>, функція поверне порожнечу, і побачиш:</p>
+<pre class="err">None</pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Що робити: 5 кроків до будь-якої функції</h2>
+    <ol>
+      <li><b>Ім'я.</b> Що робить функція? Придумай ім'я англійською, малими літерами, слова через <code>_</code>.</li>
+      <li><b>Параметри.</b> Що їй потрібно отримати?</li>
+      <li><b>Результат.</b> Вона має щось повернути (<code>return</code>) чи лише надрукувати (<code>print</code>)?</li>
+      <li><b>Тіло.</b> Напиши код усередині, з відступом.</li>
+      <li><b>Виклик.</b> Виклич функцію нижче і порівняй результат із прикладом.</li>
+    </ol>
+    <h3>Розв'язуємо разом: потрійне число</h3>
+    <p>Завдання: функція отримує число і повертає його, помножене на 3.</p>
+    <div class="two">
+      <div>
+        <ol>
+          <li>Ім'я: <code>triple</code>.</li>
+          <li>Параметр: одне число <code>x</code>.</li>
+          <li>Результат: повертає число, тому потрібен <code>return</code>.</li>
+          <li>Тіло: <code>return x * 3</code>.</li>
+          <li>Виклик: <code>print(triple(4))</code> має дати 12.</li>
+        </ol>
+      </div>
+      <div>
+<pre>def triple(x):
+    return x * 3
+
+print(triple(4))
+print(triple(10))</pre>
+<pre class="out">12
+30</pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання</h2>
+    <p>Працюємо в Thonny. Кожне завдання — окремий файл: <code>task1.py</code>, <code>task2.py</code> … Нижнього коду не змінюй: напиши функцію <b>над</b> ним. Готове покажи вчителю запуском.</p>
+    <div class="two">
+      <div class="card">
+        <h3>1. Привітання</h3>
+        <p>Напиши функцію <code>greet</code>, яка отримує ім'я і друкує привітання.</p>
+<pre id="c1">greet("Оля")
+greet("Назар")</pre>
+        <button class="copy" data-c="c1">Копіювати</button>
+<pre class="out">Привіт, Оля
+Привіт, Назар</pre>
+        <details><summary>Підказка</summary>
+          <p>Параметр один: <code>name</code>. Повертати нічого не треба, лише <code>print("Привіт,", name)</code>.</p>
+        </details>
+      </div>
+      <div class="card">
+        <h3>2. Квадрат</h3>
+        <p>Напиши функцію <code>square</code>, яка повертає квадрат числа.</p>
+<pre id="c2">print(square(5))
+print(square(12))</pre>
+        <button class="copy" data-c="c2">Копіювати</button>
+<pre class="out">25
+144</pre>
+        <details><summary>Підказка</summary>
+          <p>Подивись на приклад угорі. Без <code>return</code> виведе <code>None</code>.</p>
+        </details>
+      </div>
+      <div class="card">
+        <h3>3. Більше з двох</h3>
+        <p>Напиши функцію <code>bigger</code>, яка отримує два числа і повертає більше.</p>
+<pre id="c3">print(bigger(3, 8))
+print(bigger(10, 2))</pre>
+        <button class="copy" data-c="c3">Копіювати</button>
+<pre class="out">8
+10</pre>
+        <details><summary>Підказка</summary>
+          <p>Параметри: <code>a, b</code>. Усередині <code>if a &gt; b:</code>, далі <code>return a</code>. Інакше повертаємо <code>b</code>.</p>
+        </details>
+      </div>
+      <div class="card">
+        <h3>4. Парне число</h3>
+        <p>Напиши функцію <code>is_even</code>, яка повертає <code>True</code> для парного числа.</p>
+<pre id="c4">print(is_even(6))
+print(is_even(7))</pre>
+        <button class="copy" data-c="c4">Копіювати</button>
+<pre class="out">True
+False</pre>
+        <details><summary>Підказка</summary>
+          <p>Парне число ділиться на 2 без остачі: <code>n % 2 == 0</code>. Цей вираз уже дає <code>True</code> або <code>False</code>, тому його можна одразу поставити після <code>return</code>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Збери разом: чек у кафе</h2>
+    <p>Маленький проєкт із трьох функцій. Кожна робить одну справу, а <code>print_check</code> викликає дві інші.</p>
+    <div class="two">
+      <div>
+        <ol>
+          <li><code>total(price, count)</code> — повертає ціну, помножену на кількість.</li>
+          <li><code>discount(amount)</code> — якщо сума від 100, повертає її зі знижкою 10%, інакше без знижки.</li>
+          <li><code>print_check(item, price, count)</code> — друкує два рядки чека.</li>
+        </ol>
+<pre id="c5">print_check("Піца", 60, 3)
+print_check("Чай", 15, 2)</pre>
+        <button class="copy" data-c="c5">Копіювати</button>
+      </div>
+      <div>
+        <p>Має вивести:</p>
+<pre class="out">Піца x 3 = 180 грн
+До сплати: 162 грн
+Чай x 2 = 30 грн
+До сплати: 30 грн</pre>
+        <details><summary>Підказка</summary>
+          <p>Знижка 10%: <code>amount - amount // 10</code>.</p>
+          <p>Рядок чека: <code>print(item, "x", count, "=", amount, "грн")</code>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що пише Python</th><th>Що не так</th></tr>
+      <tr><td><code>NameError: name 'square' is not defined</code></td><td>Функції нема, ім'я написане інакше, або вона нижче виклику</td></tr>
+      <tr><td><code>SyntaxError: expected ':'</code></td><td>Забули двокрапку після <code>def</code> чи <code>if</code></td></tr>
+      <tr><td><code>IndentationError: expected an indented block</code></td><td>Немає відступу в тілі функції</td></tr>
+      <tr><td><code>TypeError: add() missing 1 required positional argument</code></td><td>У виклику замало значень</td></tr>
+      <tr><td>Виводить <code>None</code></td><td>Забули <code>return</code></td></tr>
+      <tr><td>Нічого не виводить</td><td>Забули викликати функцію або <code>print</code></td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Перевір себе</h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="two" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Остання задача: твоя функція</h2>
+    <p class="big">Кожен вигадує і пише свою функцію. Можна шукати в інтернеті, але ти маєш пояснити кожен рядок свого коду.</p>
+    <div class="two">
+      <div>
+        <h3>Умови</h3>
+        <ol>
+          <li>Своя ідея, не така, як у сусіда.</li>
+          <li>Функція отримує хоча б один параметр і повертає результат.</li>
+          <li>Виклич її двічі з різними значеннями.</li>
+          <li>Покажи запуск учителю і поясни кожен рядок.</li>
+        </ol>
+      </div>
+      <div>
+        <h3>Якщо нема ідеї</h3>
+        <ul>
+          <li><code>is_leap_year(2024)</code> — чи рік високосний</li>
+          <li><code>to_fahrenheit(20)</code> — градуси Цельсія у Фаренгейта</li>
+          <li><code>count_vowels("олімпіада")</code> — скільки голосних</li>
+          <li><code>is_palindrome("радар")</code> — чи слово паліндром</li>
+          <li><code>biggest([3, 9, 2])</code> — найбільше число в списку</li>
+        </ul>
+        <p>Де шукати: <a href="https://www.w3schools.com/python/python_functions.asp" target="_blank" rel="noopener">W3Schools: функції Python</a>. Сторінка англійською, переклад у браузері теж можна використовувати.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити, що таке функція, параметр і значення, яке функція повертає.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+document.addEventListener("click", async e => {
+  const b = e.target.closest("button.copy");
+  if (!b) return;
+  try {
+    await navigator.clipboard.writeText($(b.dataset.c).textContent);
+    b.textContent = "Скопійовано ✓";
+  } catch {
+    const r = document.createRange();
+    r.selectNodeContents($(b.dataset.c));
+    const sel = getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+    b.textContent = "Виділено: натисни Ctrl+C";
+  }
+  setTimeout(() => { b.textContent = "Копіювати"; }, 2500);
+});
+
+const QUIZ = [
+  { q: "Яким словом починається функція?", code: "___ hello():\n    print(\"Привіт\")", ok: ["ZGVm"], show: "def", why: "def від англійського define — визначити." },
+  { q: "Яким словом функція віддає результат?", code: "def five():\n    ______ 5", ok: ["cmV0dXJu"], show: "return", why: "return віддає значення і завершує функцію." },
+  { q: "Що виведе програма?", code: "def twice(x):\n    return x * 2\n\nprint(twice(4) + 1)", ok: ["OQ=="], show: "9", why: "twice(4) повертає 8, а потім додаємо 1." },
+  { q: "Що виведе програма?", code: "def f(x):\n    x * 2\n\nprint(f(4))", ok: ["bm9uZQ=="], show: "None", why: "Немає return, тому функція повертає None." },
+  { q: "Скільки параметрів у цієї функції?", code: "def add(a, b, c):\n    return a + b + c", ok: ["Mw=="], show: "3", why: "Параметри записані в дужках: a, b і c." },
+  { q: "Що виведе програма?", code: "def f(a, b):\n    return a - b\n\nprint(f(2, 7))", ok: ["LTU="], show: "-5", why: "Значення йдуть по порядку: a = 2, b = 7." }
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "").replace(/[−–—]/g, "-");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
