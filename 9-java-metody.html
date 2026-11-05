@@ -75,7 +75,41 @@
   <p class="big">Великий проєкт не пишуть одним шматком. Його ділять на маленькі частини, і кожна робить одну справу. У Java такі частини називаються методами.</p>
 
   <section>
-    <h2>Спочатку: типи даних</h2>
+    <h2>Навіщо потрібні методи</h2>
+    <p>Кафе дає знижку 10% на всі страви. Порівняй дві програми: обидві виведуть <code>162 108 225</code>.</p>
+    <div class="two">
+      <div class="card">
+        <h3>Без методу</h3>
+<pre>int pizza = 180 - 180 / 10;
+int tea = 120 - 120 / 10;
+int cake = 250 - 250 / 10;</pre>
+        <p>Формула написана тричі. Якщо знижка стане 20%, треба міняти кожен рядок, і один легко пропустити. А якщо страв 100?</p>
+      </div>
+      <div class="card">
+        <h3>З методом</h3>
+<pre>static int discount(int price) {
+    return price - price / 10;
+}
+// у main:
+int pizza = discount(180);
+int tea = discount(120);
+int cake = discount(250);</pre>
+        <p>Формула написана один раз. Змінити знижку треба в одному місці, і назва каже, що робить цей рядок.</p>
+      </div>
+    </div>
+    <div class="wrap"><table>
+      <tr><th>Що дають методи</th><th>Чому це важливо</th></tr>
+      <tr><td>Немає повторів</td><td>Написав раз, викликаєш скільки треба</td></tr>
+      <tr><td>Легко змінювати</td><td>Виправив в одному місці, і працює всюди</td></tr>
+      <tr><td>Легко читати</td><td><code>discount(180)</code> зрозуміліше за формулу</td></tr>
+      <tr><td>Легко шукати помилки</td><td>Кожну частину можна перевірити окремо</td></tr>
+      <tr><td>Можна працювати в команді</td><td>Кожен пише свої методи, а потім їх поєднують</td></tr>
+    </table></div>
+    <p class="big">Коли робити метод: код повторюється, або шматок коду можна назвати одним дієсловом, або метод став завеликим і його варто поділити.</p>
+  </section>
+
+  <section>
+    <h2>Типи даних</h2>
     <p class="big">У Java перед іменем завжди стоїть тип. Перед змінною, перед параметром і перед методом.</p>
     <div class="two">
       <div>
@@ -181,6 +215,35 @@ static int add(int a, b)       // помилка</pre>
 <pre class="err">static int f(int x)
 static double f(int y)
 method f(int) is already defined in class Main</pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>Написати і викликати</h2>
+    <p class="big">Написаний метод сам нічого не робить. Він спрацює лише тоді, коли його викличуть.</p>
+    <div class="two">
+      <div>
+<pre>public class Main {
+    static void hello() {
+        System.out.println("Привіт!");
+    }
+
+    public static void main(String[] args) {
+        hello();
+        hello();
+    }
+}</pre>
+      </div>
+      <div>
+        <ul>
+          <li><b>Оголошення</b> — це сам метод із тілом у фігурних дужках. Це як рецепт у книжці.</li>
+          <li><b>Виклик</b> — це ім'я з дужками: <code>hello();</code>. Це як приготувати страву за рецептом.</li>
+          <li>Дужки потрібні завжди, навіть порожні.</li>
+          <li>Програма виконується з <code>main</code>. Метод без виклику просто лежить без діла.</li>
+          <li>Порядок методів у класі не важливий: <code>main</code> може стояти вище або нижче.</li>
+          <li>Метод може викликати інший метод, але оголосити метод усередині іншого не можна.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -352,6 +415,30 @@ referenced from a static context</pre>
   <section>
     <h2>Важливі деталі</h2>
     <div class="two">
+      <div class="card">
+        <h3>println і return — різні речі</h3>
+<pre>static int square(int x) {
+    return x * x;
+}
+static void printSquare(int x) {
+    System.out.println(x * x);
+}</pre>
+        <p><code>square(3) + 1</code> дасть 10: результат можна використати далі. <code>printSquare</code> лише показує число на екрані, і далі з ним нічого не зробиш:</p>
+<pre class="err">int y = printSquare(3);
+incompatible types: void cannot
+be converted to int</pre>
+      </div>
+      <div class="card">
+        <h3>return на кожному шляху</h3>
+<pre>static int sign(int n) {
+    if (n &gt; 0) {
+        return 1;
+    }
+}</pre>
+        <p>Якщо <code>n</code> не більше за 0, повертати нічого. Java цього не пропустить:</p>
+<pre class="err">missing return statement</pre>
+        <p>Метод повертає лише одне значення. Якщо треба кілька, можна повернути масив.</p>
+      </div>
       <div class="card">
         <h3>Параметр і аргумент</h3>
         <p>У <code>static int square(int x)</code> змінна <code>x</code> — параметр. У виклику <code>square(5)</code> число 5 — аргумент. Кількість, порядок і типи мають збігатися.</p>
