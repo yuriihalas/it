@@ -179,28 +179,128 @@ be converted to int</pre>
       <div class="nm"><code>add</code>ім'я</div>
       <div class="pr"><code>(int a, int b)</code>параметри</div>
     </div>
-    <div class="two">
-      <div class="card">
-        <h3>Тип повернення</h3>
-        <p>Це тип значення, яке метод віддає через <code>return</code>. Він стоїть перед іменем методу.</p>
-        <ul>
-          <li><code>int</code> — метод поверне ціле число.</li>
-          <li><code>boolean</code> — поверне true або false.</li>
-          <li><code>void</code> — нічого не поверне, <code>return</code> зі значенням не потрібен.</li>
-        </ul>
-        <p>Тип мусить збігатися. Метод <code>int</code> не може повернути <code>2.5</code>:</p>
+    <p>Заголовок читаємо зліва направо. Обов'язкові лише тип повернення, ім'я і дужки: <code>int add(int a, int b)</code>. Модифікаторів може не бути.</p>
+
+    <h3>1. Модифікатори: хто бачить метод і як він працює</h3>
+    <div class="wrap"><table>
+      <tr><th>Модифікатор</th><th>Що означає</th></tr>
+      <tr><td><code>public</code></td><td>Метод доступний звідусіль</td></tr>
+      <tr><td><code>private</code></td><td>Лише всередині свого класу</td></tr>
+      <tr><td><code>protected</code></td><td>У своєму пакеті й у класах-нащадках</td></tr>
+      <tr><td>нічого не писати</td><td>Лише у своєму пакеті (групі класів)</td></tr>
+      <tr><td><code>static</code></td><td>Належить класу, об'єкт не потрібен</td></tr>
+      <tr><td><code>final</code></td><td>Клас-нащадок не може змінити цей метод</td></tr>
+      <tr><td><code>abstract</code></td><td>Метод без тіла, його допише клас-нащадок</td></tr>
+      <tr><td><code>synchronized</code></td><td>Метод виконує лише один потік за раз, це для складних програм</td></tr>
+      <tr><td><code>native</code></td><td>Метод написаний не на Java</td></tr>
+    </table></div>
+    <p>Модифікаторів може бути кілька: <code>public static final</code>. Але з <code>public</code>, <code>private</code>, <code>protected</code> вибираємо лише один. Нам сьогодні потрібен <code>static</code>, а решту зустрінемо, коли вчитимемо класи.</p>
+
+    <h3>2. Тип повернення: що метод віддає</h3>
+    <p>Це тип значення після <code>return</code>. Підходить будь-який тип із таблиці вище, <code>void</code> або навіть власний клас.</p>
+    <div class="wrap"><table>
+      <tr><th>Заголовок</th><th>Що поверне</th></tr>
+      <tr><td><code>static void hello()</code></td><td>Нічого</td></tr>
+      <tr><td><code>static int add(int a, int b)</code></td><td>Ціле число</td></tr>
+      <tr><td><code>static double average(int a, int b)</code></td><td>Дробове число</td></tr>
+      <tr><td><code>static boolean isEven(int n)</code></td><td>true або false</td></tr>
+      <tr><td><code>static char firstLetter(String s)</code></td><td>Один символ</td></tr>
+      <tr><td><code>static String title(String s)</code></td><td>Рядок</td></tr>
+      <tr><td><code>static int[] pair()</code></td><td>Масив</td></tr>
+      <tr><td><code>static Cat makeCat()</code></td><td>Об'єкт класу Cat</td></tr>
+    </table></div>
+    <p>Тип мусить збігатися. Метод <code>int</code> не може повернути <code>2.5</code>:</p>
 <pre class="err">incompatible types: possible lossy
 conversion from double to int</pre>
+
+    <h3>3. Ім'я: вигадуєш сам, але є правила</h3>
+    <div class="two">
+      <div>
+        <p><b>Правила Java (інакше помилка):</b></p>
+        <ul>
+          <li>Лише літери, цифри, <code>_</code> і <code>$</code>.</li>
+          <li>Не можна починати з цифри.</li>
+          <li>Без пробілів і дефісів.</li>
+          <li>Не можна брати ключове слово: <code>class</code>, <code>int</code>, <code>return</code> тощо.</li>
+          <li>Великі й малі літери різні: <code>add</code> і <code>Add</code> — два різні імена.</li>
+        </ul>
+        <p><b>Домовленість програмістів:</b></p>
+        <ul>
+          <li>Англійською, хоча кирилицю Java дозволяє.</li>
+          <li>З малої літери, кожне наступне слово з великої: <code>printCheck</code>.</li>
+          <li>Дієслово: що метод робить. Для <code>boolean</code> зазвичай <code>is</code> або <code>has</code>: <code>isEven</code>.</li>
+        </ul>
       </div>
-      <div class="card">
-        <h3>Параметри</h3>
-        <p>Це змінні в дужках, через які метод отримує значення. Параметрів може бути скільки завгодно або жодного, тоді дужки порожні.</p>
-        <p>Кожен параметр має свій тип:</p>
-<pre>static int add(int a, int b)   // правильно
-static int add(int a, b)       // помилка</pre>
-        <p>Значення у виклику йдуть у тому самому порядку: у <code>add(2, 3)</code> буде <code>a = 2</code>, <code>b = 3</code>.</p>
+      <div>
+        <div class="wrap"><table>
+          <tr><th>Ім'я</th><th>Чи можна</th></tr>
+          <tr><td><code>add</code>, <code>printCheck</code></td><td>Так, і це гарні імена</td></tr>
+          <tr><td><code>add2</code></td><td>Так: цифра не на початку</td></tr>
+          <tr><td><code>a</code>, <code>doIt</code></td><td>Можна, але незрозуміло, що робить</td></tr>
+          <tr><td><code>квадрат</code></td><td>Працює, але так не пишуть</td></tr>
+          <tr><td><code>2add</code></td><td>Ні: цифра на початку</td></tr>
+          <tr><td><code>print check</code></td><td>Ні: пробіл</td></tr>
+          <tr><td><code>add-one</code></td><td>Ні: дефіс</td></tr>
+          <tr><td><code>class</code></td><td>Ні: ключове слово</td></tr>
+        </table></div>
       </div>
     </div>
+
+    <h3>4. Параметри: що метод отримує</h3>
+    <p>Параметри пишемо в дужках через кому: спочатку тип, потім ім'я. Значення у виклику йдуть у тому самому порядку: у <code>add(2, 3)</code> буде <code>a = 2</code>, <code>b = 3</code>.</p>
+    <div class="wrap"><table>
+      <tr><th>Які бувають</th><th>Заголовок</th><th>Виклик</th></tr>
+      <tr><td>Жодного</td><td><code>static void hello()</code></td><td><code>hello()</code></td></tr>
+      <tr><td>Один</td><td><code>static int square(int x)</code></td><td><code>square(5)</code></td></tr>
+      <tr><td>Кілька</td><td><code>static int add(int a, int b)</code></td><td><code>add(2, 3)</code></td></tr>
+      <tr><td>Різних типів</td><td><code>static String repeat(String s, int n)</code></td><td><code>repeat("ха", 3)</code></td></tr>
+      <tr><td>Масив</td><td><code>static int sum(int[] a)</code></td><td><code>sum(marks)</code></td></tr>
+      <tr><td>Об'єкт</td><td><code>static void feed(Cat c)</code></td><td><code>feed(a)</code></td></tr>
+      <tr><td>Будь-яка кількість</td><td><code>static int sum(int... nums)</code></td><td><code>sum(1, 2, 3)</code></td></tr>
+      <tr><td>Незмінний</td><td><code>static int f(final int x)</code></td><td><code>f(5)</code></td></tr>
+    </table></div>
+    <div class="two">
+      <div class="card">
+        <h3>Три крапки: будь-яка кількість значень</h3>
+<pre id="c9">public class Main {
+    static int sum(int... nums) {
+        int total = 0;
+        for (int n : nums) {
+            total = total + n;
+        }
+        return total;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(sum());
+        System.out.println(sum(5));
+        System.out.println(sum(1, 2, 3));
+    }
+}</pre>
+        <button class="copy" data-c="c9">Копіювати</button>
+<pre class="out">0
+5
+6</pre>
+        <p>Усередині методу <code>nums</code> — звичайний масив. Такий параметр лише один і стоїть останнім:</p>
+<pre class="err">static int f(int... a, int b)
+varargs parameter must be the last parameter</pre>
+      </div>
+      <div class="card">
+        <h3>Що ще важливо</h3>
+        <ul>
+          <li>Кожен параметр має свій тип:</li>
+        </ul>
+<pre>static int add(int a, int b)   // правильно
+static int add(int a, b)       // помилка</pre>
+        <ul>
+          <li>Значень за замовчуванням, як у Python, у Java нема: <code>int a = 5</code> у дужках дає помилку. Замість цього роблять перевантаження.</li>
+          <li>Передавати значення за іменем теж не можна, лише за порядком.</li>
+          <li><code>final</code> біля параметра забороняє змінювати його всередині методу.</li>
+          <li><code>String[] args</code> у <code>main</code> — теж звичайний параметр: масив рядків.</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="card" style="margin-top:14px">
       <h3>Сигнатура методу</h3>
       <p>Сигнатура — це <b>ім'я методу і типи його параметрів</b>. За нею Java відрізняє один метод від іншого.</p>
@@ -476,8 +576,8 @@ static double add(double a, double b)</pre>
         <p>Це перевантаження: ім'я однакове, а сигнатури різні. Java вибирає метод за кількістю і типами аргументів.</p>
       </div>
       <div class="card">
-        <h3>Як називати методи</h3>
-        <p>Ім'я з малої літери, кожне наступне слово з великої: <code>printCheck</code>, <code>isEven</code>. Найкраще — дієслово, яке каже, що робить метод. Один метод — одна справа.</p>
+        <h3>Один метод — одна справа</h3>
+        <p>Якщо в назві хочеться написати «і», наприклад <code>readAndPrint</code>, краще поділити на два методи.</p>
       </div>
     </div>
   </section>
