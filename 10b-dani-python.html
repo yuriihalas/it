@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Аналіз даних у Python</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.25fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Аналіз даних у Python <span>· 10-Б · 06.11 · робота на оцінку, 12 балів</span></h1>
+  <p class="big">Набір даних — це багато однотипних записів. Сьогодні аналізуємо справжні дані: який відсоток людей в Україні користується інтернетом.</p>
+  <p>Працюємо в Thonny. Перепиши код точно як на сторінці, частинами, і запускай після кожного кроку. Назви файл <code>dani.py</code>. <b>Не називай його statistics.py</b>, інакше програма не працюватиме.</p>
+
+  <section>
+    <h2>Крок 1: дані й підрахунки <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div>
+<pre>import statistics
+
+years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+ukraine = [48.9, 53.0, 58.9, 62.6, 70.1, 75.0, 79.2, 80.5, 81.6, 82.5]
+
+print("Записів:", len(ukraine))
+print("Середнє:", round(statistics.mean(ukraine), 1))
+print("Медіана:", round(statistics.median(ukraine), 1))
+print("Мінімум:", min(ukraine))
+print("Максимум:", max(ukraine))
+print("Розмах:", round(max(ukraine) - min(ukraine), 1))</pre>
+      </div>
+      <div>
+        <p>Має вивести:</p>
+<pre class="out">Записів: 10
+Середнє: 69.2
+Медіана: 72.5
+Мінімум: 48.9
+Максимум: 82.5
+Розмах: 33.6</pre>
+      </div>
+    </div>
+    <div class="wrap"><table>
+      <tr><th>Код</th><th>Що робить</th></tr>
+      <tr><td><code>import statistics</code></td><td>Підключає готові функції для статистики</td></tr>
+      <tr><td><code>years</code>, <code>ukraine</code></td><td>Два списки: роки і значення. Це наш набір даних</td></tr>
+      <tr><td><code>len(ukraine)</code></td><td>Скільки значень у списку</td></tr>
+      <tr><td><code>statistics.mean</code></td><td>Середнє значення</td></tr>
+      <tr><td><code>statistics.median</code></td><td>Медіана: значення посередині впорядкованого списку</td></tr>
+      <tr><td><code>round(число, 1)</code></td><td>Округлює до десятих</td></tr>
+      <tr><td><code>min</code>, <code>max</code></td><td>Найменше і найбільше. Розмах — це їхня різниця</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Крок 2: графік із символів <span class="pts">3 бали</span></h2>
+    <p>Допиши нижче попереднього коду:</p>
+    <div class="two">
+      <div>
+<pre>print()
+for i in range(len(years)):
+    bar = "#" * int(ukraine[i] / 5)
+    print(years[i], ukraine[i], bar)</pre>
+        <div class="wrap"><table>
+          <tr><th>Код</th><th>Що робить</th></tr>
+          <tr><td><code>range(len(years))</code></td><td>Номери 0, 1, 2 … для кожного запису</td></tr>
+          <tr><td><code>ukraine[i]</code></td><td>Значення за номером <code>i</code></td></tr>
+          <tr><td><code>int(ukraine[i] / 5)</code></td><td>Ділимо на 5 і відкидаємо дробову частину: один <code>#</code> дорівнює 5%</td></tr>
+          <tr><td><code>"#" * число</code></td><td>Повторює символ стільки разів</td></tr>
+        </table></div>
+      </div>
+      <div>
+        <p>Має вивести:</p>
+<pre class="out">2015 48.9 #########
+2016 53.0 ##########
+2017 58.9 ###########
+2018 62.6 ############
+2019 70.1 ##############
+2020 75.0 ###############
+2021 79.2 ###############
+2022 80.5 ################
+2023 81.6 ################
+2024 82.5 ################</pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 3: шукаємо в даних <span class="pts">3 бали</span></h2>
+    <p>Допиши далі:</p>
+    <div class="two">
+      <div>
+<pre>print()
+count = 0
+for value in ukraine:
+    if value &gt; 70:
+        count = count + 1
+print("Років понад 70%:", count)
+
+for i in range(len(years)):
+    if ukraine[i] &gt; 50:
+        print("Вперше понад 50%:", years[i])
+        break</pre>
+      </div>
+      <div>
+        <p>Має вивести:</p>
+<pre class="out">Років понад 70%: 6
+Вперше понад 50%: 2016</pre>
+        <p>Перший цикл рахує, скільки значень більші за 70. Другий шукає перше значення понад 50, а <code>break</code> одразу зупиняє цикл.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 4: своя країна <span class="pts">1 бал</span></h2>
+    <p>Сусіди беруть різні країни. У списку <code>ukraine</code> заміни числа на дані своєї країни. У кроці 3 заміни обидва числа, <code>70</code> і <code>50</code>, на <code>75</code>, а також текст повідомлень. Запусти і покажи вчителю.</p>
+    <div class="wrap"><table>
+      <tr><th>Країна</th><th>Дані за 2015–2024</th></tr>
+      <tr><td>Польща</td><td><code>68.0, 73.3, 76.0, 77.5, 80.4, 83.2, 85.4, 86.9, 86.4, 88.6</code></td></tr>
+      <tr><td>Румунія</td><td><code>55.8, 59.5, 63.7, 70.7, 73.7, 78.5, 83.6, 85.5, 89.2, 91.3</code></td></tr>
+      <tr><td>Молдова</td><td><code>69.0, 71.0, 71.8, 72.5, 73.3, 74.1, 74.9, 74.9, 76.5, 77.4</code></td></tr>
+      <tr><td>Німеччина</td><td><code>87.6, 84.2, 84.4, 87.0, 88.1, 89.8, 91.4, 91.6, 92.5, 93.5</code></td></tr>
+    </table></div>
+    <p>Джерело даних: Міжнародний союз електрозв'язку, <a href="https://ourworldindata.org/grapher/share-of-individuals-using-the-internet" target="_blank" rel="noopener">Our World in Data</a>.</p>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td><code>AttributeError: module 'statistics' has no attribute 'mean'</code></td><td>Файл названо <code>statistics.py</code>. Перейменуй його</td></tr>
+      <tr><td>Записів не 10, а більше</td><td>У числах кома замість крапки: треба <code>48.9</code>, а не <code>48,9</code></td></tr>
+      <tr><td><code>NameError</code></td><td>Помилка в імені: перевір літери й великий чи малий регістр</td></tr>
+      <tr><td><code>SyntaxError</code></td><td>Перевір дужки, лапки й двокрапку після <code>for</code> та <code>if</code></td></tr>
+      <tr><td><code>IndentationError</code></td><td>Неправильний відступ: 4 пробіли всередині циклу</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 5</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити, що таке набір даних. Назвати 2 відкриті джерела даних, наприклад data.gov.ua і Our World in Data.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+  { q: "Що виведе програма?", code: "print(len([5, 6, 7]))", ok: ["Mw=="], show: "3", why: "len рахує кількість елементів." },
+  { q: "Що виведе програма?", code: "print(max([3, 9, 2]))", ok: ["OQ=="], show: "9", why: "max дає найбільше значення." },
+  { q: "Яка функція з statistics рахує медіану? Напиши лише назву.", code: "statistics.______(ukraine)", ok: ["bWVkaWFu"], show: "median", why: "mean — середнє, median — медіана." },
+  { q: "Що виведе програма?", code: "print(\"#\" * 3)", ok: ["JTIzJTIzJTIz"], show: "###", why: "Рядок повторюється 3 рази." },
+  { q: "Що виведе програма?", code: "import statistics\nprint(statistics.median([1, 5, 100]))", ok: ["NQ=="], show: "5", why: "Посередині впорядкованого списку стоїть 5." }
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
