@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <title>Мої класи</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 760px; margin: 20px auto; font-size: 18px; }
+    svg { background: #f2f4f7; border: 1px solid #bbb; display: block; }
+    button { font-size: 18px; padding: 4px 14px; margin: 8px 8px 8px 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    td, th { border: 1px solid #bbb; padding: 4px 8px; text-align: left; }
+    th { background: #eef2f6; }
+    #error { color: #b42318; font-weight: bold; }
+    .ok { color: #1a7f37; font-weight: bold; }
+    .bad { color: #b42318; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Мої класи</h1>
+  <svg width="600" height="300">
+    <circle id="a"></circle>
+    <circle id="b"></circle>
+    <circle id="c"></circle>
+  </svg>
+  <button onclick="run('step')">Крок</button>
+  <button onclick="run('bigger')">Більше</button>
+  <p id="error"></p>
+  <p>
+    Варіант:
+    <label><input type="radio" name="v" value="1" checked> 1</label>
+    <label><input type="radio" name="v" value="2"> 2</label>
+    <button onclick="check()">Перевірити крок 4</button>
+  </p>
+  <table id="result"></table>
+
+  <script>
+    window.addEventListener("error", function (e) {
+      document.getElementById("error").textContent = "Помилка в рядку " + e.lineno + ": " + e.message;
+    });
+  </script>
+
+  <script>
+    // ===== ПИШИ СВІЙ КОД ТУТ =====
+
+
+
+    // ===== ДАЛІ НІЧОГО НЕ ЗМІНЮЙ =====
+  </script>
+
+  <script>
+    const tests = {
+      1: [
+        ["new Rect(5, 3).w", 5],
+        ["new Rect(5, 3).h", 3],
+        ["new Rect(5, 3).area()", 15],
+        ["new Rect(2, 3).area()", 6],
+        ["new Rect(5, 3).perimeter()", 16],
+        ["new Rect(5, 3).isSquare()", false],
+        ["new Rect(4, 4).isSquare()", true]
+      ],
+      2: [
+        ["new Product('Хліб', 30).name", "Хліб"],
+        ["new Product('Хліб', 30).price", 30],
+        ["new Product('Хліб', 30).label()", "Хліб: 30 грн"],
+        ["new Product('Сир', 200).label()", "Сир: 200 грн"],
+        ["new Product('Хліб', 30).sale(10)", 27],
+        ["new Product('Хліб', 30).isExpensive()", false],
+        ["new Product('Книга', 250).isExpensive()", true]
+      ]
+    };
+
+    function run(name) {
+      const error = document.getElementById("error");
+      let fn;
+      try {
+        fn = new Function("return " + name)();
+      } catch (e) {
+        if (error.textContent === "") {
+          error.textContent = "Функції " + name + " ще немає";
+        }
+        return;
+      }
+      fn();
+    }
+
+    function check() {
+      const v = document.querySelector('input[name="v"]:checked').value;
+      let html = "<tr><th>Перевірка</th><th>Очікую</th><th>Отримав</th><th></th></tr>";
+      let good = 0;
+      for (const [code, expected] of tests[v]) {
+        let got = "";
+        let mark = '<span class="bad">✗</span>';
+        try {
+          const r = new Function("return " + code)();
+          got = JSON.stringify(r);
+          if (r === expected) {
+            mark = '<span class="ok">✓</span>';
+            good++;
+          }
+        } catch (e) {
+          got = e.message;
+        }
+        html += "<tr><td><code>" + code + "</code></td><td>" + JSON.stringify(expected) + "</td><td>" + got + "</td><td>" + mark + "</td></tr>";
+      }
+      html += "<tr><th colspan='4'>Правильно: " + good + " з " + tests[v].length + "</th></tr>";
+      document.getElementById("result").innerHTML = html;
+    }
+  </script>
+</body>
+</html>

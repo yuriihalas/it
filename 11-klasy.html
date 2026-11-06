@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Класи в JavaScript</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0e7490; border-bottom: 3px solid #0e7490; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0e7490; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  a.get { display: inline-block; font-weight: 700; color: #fff; background: #0e7490; border-radius: 5px; padding: 6px 14px; text-decoration: none; margin: 0 0 8px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0e7490; border-radius: 5px; background: #fff; color: #0e7490; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 9em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two { grid-template-columns: 1fr; } .sheet { padding: 12px 16px; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Клас, властивості, конструктор, методи <span>· 11 клас · JavaScript</span></h1>
+  <p class="big">Клас — це креслення. Об'єкт — річ, зроблена за цим кресленням. Одне креслення, скільки завгодно речей.</p>
+
+  <section>
+    <h2>Навіщо клас</h2>
+    <div class="two">
+      <div>
+        <h3>Без класу</h3>
+<pre>let x1 = 100, y1 = 150, r1 = 40;
+let x2 = 300, y2 = 150, r2 = 60;
+let x3 = 500, y3 = 150, r3 = 20;</pre>
+        <p>Кожен новий м'яч — це ще три змінні. Легко заплутатися, чий <code>x</code>.</p>
+      </div>
+      <div>
+        <h3>З класом</h3>
+<pre>const a = new Ball(100, 150, 40);
+const b = new Ball(300, 150, 60);
+const c = new Ball(500, 150, 20);</pre>
+        <p>Кожен м'яч сам зберігає свої дані: <code>a.x</code>, <code>b.x</code>, <code>c.x</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>З чого складається клас</h2>
+    <div class="two">
+      <div>
+<pre>class Ball {
+  constructor(x, y, r) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+  }
+
+  move(dx) {
+    this.x = this.x + dx;
+  }
+}
+
+const a = new Ball(100, 150, 40);
+a.move(20);
+console.log(a.x);   // 120</pre>
+      </div>
+      <div class="wrap">
+        <table>
+          <tr><th>Що</th><th>Що означає</th></tr>
+          <tr><td><code>class Ball</code></td><td>Оголошуємо клас. Назву пишуть з великої літери.</td></tr>
+          <tr><td><code>constructor</code></td><td><b>Конструктор.</b> Запускається сам, коли пишемо <code>new</code>. Заповнює об'єкт даними.</td></tr>
+          <tr><td><code>this</code></td><td>«Цей об'єкт». Для <code>a</code> це <code>a</code>, для <code>b</code> це <code>b</code>.</td></tr>
+          <tr><td><code>this.x</code></td><td><b>Властивість.</b> Змінна, що належить об'єкту.</td></tr>
+          <tr><td><code>move(dx)</code></td><td><b>Метод.</b> Функція всередині класу. Слова <code>function</code> тут немає.</td></tr>
+          <tr><td><code>new Ball(...)</code></td><td>Створює новий об'єкт. Числа йдуть у параметри конструктора по порядку.</td></tr>
+          <tr><td><code>a.move(20)</code></td><td>Виклик методу через крапку.</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Робота на 12 балів</h2>
+    <p><a class="get" href="11-klasy-baza.html" download="klasy.html">Завантажити файл klasy.html</a></p>
+    <ol>
+      <li>Знайди файл у «Завантаженнях». Натисни правою кнопкою → «Відкрити за допомогою» → <b>Блокнот</b>.</li>
+      <li>Той самий файл відкрий у браузері подвійним кліком.</li>
+      <li>Пиши код між рядками <code>ПИШИ СВІЙ КОД ТУТ</code> і <code>ДАЛІ НІЧОГО НЕ ЗМІНЮЙ</code>.</li>
+      <li>Після кожного кроку: у Блокноті <b>Ctrl + S</b>, у браузері <b>F5</b>.</li>
+    </ol>
+    <p>Якщо в коді помилка, браузер покаже червоним номер рядка і що не так.</p>
+  </section>
+
+  <section>
+    <h2>Крок 1. Клас і два м'ячі <span class="pts">3 бали</span></h2>
+    <p>Перепиши код руками, не копіюй: так ти запам'ятаєш, де що стоїть.</p>
+    <div class="two">
+      <div>
+<pre>class Ball {
+  constructor(id, x, y, r, color) {
+    this.el = document.getElementById(id);
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.color = color;
+  }
+
+  draw() {
+    this.el.setAttribute("cx", this.x);
+    this.el.setAttribute("cy", this.y);
+    this.el.setAttribute("r", this.r);
+    this.el.setAttribute("fill", this.color);
+  }
+}
+
+const a = new Ball("a", 100, 150, 40, "tomato");
+const b = new Ball("b", 300, 150, 60, "teal");
+a.draw();
+b.draw();</pre>
+      </div>
+      <div>
+        <p><b>Має вийти:</b> два кола на сірому полі.</p>
+        <svg viewBox="0 0 600 300" style="width:100%;background:#f2f4f7;border:1px solid #bbb;display:block;margin-bottom:8px" role="img" aria-label="Червоне коло ліворуч і більше бірюзове коло посередині"><circle cx="100" cy="150" r="40" fill="tomato"/><circle cx="300" cy="150" r="60" fill="teal"/></svg>
+        <p><code>&lt;circle&gt;</code> ви вже знаєте зі SVG: <code>cx</code>, <code>cy</code>, <code>r</code>, <code>fill</code>. Тут ці атрибути ставить метод <code>draw</code>.</p>
+        <p><code>this.el</code> — властивість, де об'єкт тримає своє коло зі сторінки. У файлі вже є кола з id <code>a</code>, <code>b</code>, <code>c</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 2. Метод move <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div>
+        <p>Додай цей метод <b>усередину класу</b>, після <code>draw</code>:</p>
+<pre>  move(dx, dy) {
+    this.x = this.x + dx;
+    this.y = this.y + dy;
+    this.draw();
+  }</pre>
+      </div>
+      <div>
+        <p>А цю функцію допиши в самому <b>кінці</b>, поза класом:</p>
+<pre>function step() {
+  a.move(20, 0);
+  b.move(0, -10);
+}</pre>
+        <p><b>Має вийти:</b> кнопка «Крок» рухає <code>a</code> праворуч, а <code>b</code> вгору.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 3. Сам: третій м'яч і метод grow <span class="pts">2 бали</span></h2>
+    <p>Тут коду немає, напиши сам за зразком кроків 1 і 2.</p>
+    <ol>
+      <li>Створи третій об'єкт <code>c</code> зі своїми числами й кольором. Перший аргумент — <code>"c"</code>. Намалюй його.</li>
+      <li>Додай у клас метод <code>grow(d)</code>: він збільшує <code>this.r</code> на <code>d</code> і викликає <code>this.draw()</code>.</li>
+      <li>Напиши функцію <code>bigger()</code>, яка викликає <code>c.grow(10)</code>.</li>
+    </ol>
+    <p><b>Має вийти:</b> кнопка «Більше» збільшує третій м'яч.</p>
+  </section>
+
+  <section>
+    <h2>Крок 4. Свій клас <span class="pts">3 бали</span></h2>
+    <p>Напиши клас свого варіанта під усім попереднім кодом. Потім вибери варіант у файлі й натисни «Перевірити крок 4». Назви пиши точно як тут.</p>
+    <div class="two">
+      <div class="wrap">
+        <h3>Варіант 1: прямокутник</h3>
+        <table>
+          <tr><th>Що</th><th>Приклад</th></tr>
+          <tr><td>Клас <code>Rect</code>, конструктор <code>(w, h)</code></td><td><code>new Rect(5, 3)</code></td></tr>
+          <tr><td>Властивості <code>w</code>, <code>h</code></td><td><code>.w</code> → 5</td></tr>
+          <tr><td><code>area()</code> — площа</td><td>15</td></tr>
+          <tr><td><code>perimeter()</code> — периметр</td><td>16</td></tr>
+          <tr><td><code>isSquare()</code> — чи сторони рівні</td><td><code>false</code></td></tr>
+        </table>
+      </div>
+      <div class="wrap">
+        <h3>Варіант 2: товар</h3>
+        <table>
+          <tr><th>Що</th><th>Приклад</th></tr>
+          <tr><td>Клас <code>Product</code>, конструктор <code>(name, price)</code></td><td><code>new Product("Хліб", 30)</code></td></tr>
+          <tr><td>Властивості <code>name</code>, <code>price</code></td><td><code>.price</code> → 30</td></tr>
+          <tr><td><code>label()</code> — підпис</td><td><code>"Хліб: 30 грн"</code></td></tr>
+          <tr><td><code>sale(percent)</code> — ціна зі знижкою</td><td><code>sale(10)</code> → 27</td></tr>
+          <tr><td><code>isExpensive()</code> — чи ціна більша за 100</td><td><code>false</code></td></tr>
+        </table>
+      </div>
+    </div>
+    <p>Метод, який рахує, закінчується словом <code>return</code>. Значення бери через <code>this</code>: <code>return this.w * this.h;</code></p>
+  </section>
+
+  <section>
+    <h2>Якщо не працює</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що зробити</th></tr>
+      <tr><td><code>x is not defined</code></td><td>Усередині класу пиши <code>this.x</code>, а не просто <code>x</code>.</td></tr>
+      <tr><td><code>Class constructor Ball cannot be invoked without 'new'</code></td><td>Забуто <code>new</code> перед <code>Ball(...)</code>.</td></tr>
+      <tr><td><code>a.mov is not a function</code></td><td>Назва методу написана з помилкою.</td></tr>
+      <tr><td><code>Unexpected token</code></td><td>Зайва або забута дужка. Перед методом не пиши <code>function</code>.</td></tr>
+      <tr><td>Кола немає, помилки теж</td><td>Забуто <code>a.draw()</code>, або ти не зберіг файл.</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <div id="quiz"></div>
+    <p class="score" id="score">Правильно: 0 з 5</p>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити: клас, властивість, конструктор, метод. Придумати свій клас із життя: 3 властивості й 2 методи, записати словами.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+  { q: "Яке слово створює об'єкт із класу?", code: "const a = ___ Ball(\"a\", 100, 150, 40, \"red\");", ok: ["bmV3"], show: "new", why: "new створює об'єкт і запускає конструктор." },
+  { q: "Як називається метод, який запускається сам під час створення об'єкта? Напиши його так, як у коді.", code: "class Ball {\n  ___________(x, y) { ... }\n}", ok: ["Y29uc3RydWN0b3I="], show: "constructor", why: "Назва завжди constructor." },
+  { q: "Яке слово всередині класу означає «цей об'єкт»?", code: "___.r = r;", ok: ["dGhpcw=="], show: "this", why: "this вказує на той об'єкт, з яким зараз працює метод." },
+  { q: "Яке число виведе програма?", code: "const t = new Ball(\"a\", 10, 20, 5, \"red\");\nt.move(3, 4);\nconsole.log(t.y);", ok: ["MjQ="], show: "24", why: "y було 20, move додає dy = 4." },
+  { q: "Є один клас і такий код. Скільки об'єктів створено?", code: "const a = new Ball(\"a\", 1, 1, 1, \"red\");\nconst b = new Ball(\"b\", 2, 2, 2, \"red\");\nconst c = new Ball(\"c\", 3, 3, 3, \"red\");", ok: ["Mw=="], show: "3", why: "Кожне new дає новий об'єкт." }
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

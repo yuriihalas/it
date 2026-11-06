@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кіт-художник</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 21px; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+
+  .bar { position: sticky; top: 0; z-index: 5; background: #0b5cad; color: #fff; font-weight: 700; padding: 6px 14px; margin: 8px 0 0; border-radius: 5px; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
+  .bar .stars { color: #ffd34d; font-size: 24px; letter-spacing: 2px; line-height: 1; }
+
+  .sb { color: #fff; font-weight: 600; font-size: 16px; border-radius: 5px; padding: 4px 9px; margin-bottom: 2px; white-space: nowrap; }
+  .hat { border-radius: 15px 15px 5px 5px; padding-top: 7px; }
+  .ev { background: #e6a800; }
+  .mot { background: #4c97ff; }
+  .pen { background: #0da57a; }
+  .lks { background: #9966ff; }
+  .val { background: #fff; color: #333; border-radius: 10px; padding: 0 7px; margin: 0 2px; }
+  .sw { display: inline-block; width: 1.3em; height: .95em; border-radius: 8px; border: 2px solid #fff; vertical-align: -2px; margin-left: 2px; }
+  .cond { background: #5cb1d6; display: inline-block; padding: 1px 12px; margin: 0 2px; clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0 50%); }
+  .stack { display: inline-flex; flex-direction: column; align-items: flex-start; }
+  .stacks { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; min-width: 0; overflow-x: auto; }
+  .c { background: #ffab19; color: #fff; font-weight: 600; font-size: 16px; border-radius: 5px; margin-bottom: 2px; }
+  .c > .head { padding: 4px 9px; white-space: nowrap; }
+  .c > .in { margin-left: 14px; background: #fff; padding: 2px 0 0 3px; display: flex; flex-direction: column; align-items: flex-start; }
+  .c > .foot { height: 11px; }
+
+  .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  .lvl { border: 2px solid #d5dae0; border-radius: 8px; padding: 10px 12px; min-width: 0; }
+  .lvl.done { border-color: #e0a800; background: #fffbea; }
+  .n { background: #0b5cad; color: #fff; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-flex; align-items: center; justify-content: center; font-size: .9em; flex: none; }
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 12px; align-items: start; margin-bottom: 8px; }
+  #l8 .pair { grid-template-columns: 1fr; }
+  #l8 svg.stage { max-width: 170px; }
+  svg.stage { width: 100%; display: block; background: #fff; border: 2px solid #9aa4ae; border-radius: 5px; }
+
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .star.on { background: #ffd34d; border-color: #b98900; color: #4a3800; }
+
+  .chs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 8px; }
+  .ch { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .ch span { font-size: 16px; color: #333; }
+
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .quiz { display: grid; gap: 8px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 19px Consolas, "Courier New", monospace; width: 5em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q p { margin-bottom: 6px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 900px) { .levels { grid-template-columns: 1fr; } .chs { grid-template-columns: 1fr 1fr; } .sheet { padding: 12px 16px; } }
+  @media (max-width: 520px) { .pair { grid-template-columns: 1fr; } svg.stage { max-width: 240px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="cat" viewBox="0 0 120 130"><ellipse cx="60" cy="100" rx="34" ry="28" fill="#f5a623" stroke="#7a4a00" stroke-width="3"/><polygon points="22,40 30,6 50,30" fill="#f5a623" stroke="#7a4a00" stroke-width="3"/><polygon points="98,40 90,6 70,30" fill="#f5a623" stroke="#7a4a00" stroke-width="3"/><circle cx="60" cy="50" r="36" fill="#f5a623" stroke="#7a4a00" stroke-width="3"/><circle cx="46" cy="46" r="7" fill="#fff"/><circle cx="74" cy="46" r="7" fill="#fff"/><circle cx="47" cy="47" r="3.5" fill="#222"/><circle cx="75" cy="47" r="3.5" fill="#222"/></symbol></svg>
+<div class="sheet">
+  <h1>Кіт-художник <span>· 5 клас · малювання у Scratch</span></h1>
+  <p class="big">Кіт тримає олівець. Опустив його — за котом лишається лінія. Підняв — кіт іде без сліду.</p>
+
+  <div class="bar"><span>Мої зірки:</span><span class="stars" id="stars">☆☆☆☆☆☆☆☆☆☆</span><span id="count">0 з 10</span></div>
+
+  <section>
+    <h2>Старт. Чистий аркуш</h2>
+    <div class="pair" style="grid-template-columns: minmax(0, 1fr) auto">
+      <ol>
+        <li>Відкрий Scratch.</li>
+        <li>Унизу ліворуч натисни синю кнопку <b>«Додати розширення»</b>.</li>
+        <li>Вибери <b>«Олівець»</b>. Зліва з'являться нові зелені блоки.</li>
+        <li>Склади цей скрипт. Пропуск стане чистим аркушем: він усе стирає й ставить кота в центр.</li>
+      </ol>
+      <div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">пропуск ▾</span> натиснуто</div><div class="sb pen">очистити все</div><div class="sb mot">перемістити в x: <span class="val">0</span> y: <span class="val">0</span></div><div class="sb mot">повернути в напрямку <span class="val">90</span></div><div class="sb lks">очистити графічні ефекти</div></div></div>
+    </div>
+    <p>Кожен рівень — окремий скрипт на своїй цифрі. Склади блоки, натисни цифру, подивись на результат і натисни «Зробив».</p>
+  </section>
+
+  <section>
+    <h2>Рівні</h2>
+    <div class="levels">
+    <article class="lvl" id="l1">
+      <h3><span class="n">1</span> Квадрат</h3>
+      <p>Кіт 4 рази йде й повертає. Натисни клавішу <b>1</b>.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">1 ▾</span> натиснуто</div><div class="sb pen">опустити олівець</div><div class="c"><div class="head">повторити <span class="val">4</span></div><div class="in"><div class="sb mot">перемістити на <span class="val">100</span> кроків</div><div class="sb mot">поворот ↻ на <span class="val">90</span> градусів</div></div><div class="foot"></div></div><div class="sb pen">підняти олівець</div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Синій квадрат"><line x1="0.0" y1="-0.0" x2="100.0" y2="-0.0" stroke="#2b4fd8" stroke-width="3.2" stroke-linecap="round"/><line x1="100.0" y1="-0.0" x2="100.0" y2="100.0" stroke="#2b4fd8" stroke-width="3.2" stroke-linecap="round"/><line x1="100.0" y1="100.0" x2="0.0" y2="100.0" stroke="#2b4fd8" stroke-width="3.2" stroke-linecap="round"/><line x1="0.0" y1="100.0" x2="-0.0" y2="0.0" stroke="#2b4fd8" stroke-width="3.2" stroke-linecap="round"/></svg></div>
+      <button class="star" data-n="1">☆ Зробив</button>
+    </article>
+    <article class="lvl" id="l2">
+      <h3><span class="n">2</span> Трикутник</h3>
+      <p>З'явилися колір і товщина. Клікни на кружечок, щоб вибрати свій колір.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">2 ▾</span> натиснуто</div><div class="sb pen">надати олівцю колір <span class="sw" style="background:#e6194b"></span></div><div class="sb pen">задати розмір олівця <span class="val">5</span></div><div class="sb pen">опустити олівець</div><div class="c"><div class="head">повторити <span class="val">3</span></div><div class="in"><div class="sb mot">перемістити на <span class="val">150</span> кроків</div><div class="sb mot">поворот ↻ на <span class="val">120</span> градусів</div></div><div class="foot"></div></div><div class="sb pen">підняти олівець</div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Червоний трикутник"><line x1="0.0" y1="-0.0" x2="150.0" y2="-0.0" stroke="#e6194b" stroke-width="8.0" stroke-linecap="round"/><line x1="150.0" y1="-0.0" x2="75.0" y2="129.9" stroke="#e6194b" stroke-width="8.0" stroke-linecap="round"/><line x1="75.0" y1="129.9" x2="-0.0" y2="0.0" stroke="#e6194b" stroke-width="8.0" stroke-linecap="round"/></svg></div>
+      <button class="star" data-n="2">☆ Зробив</button>
+    </article>
+    <article class="lvl" id="l3">
+      <h3><span class="n">3</span> Коло</h3>
+      <p>Багато маленьких кроків і маленьких поворотів дають коло.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">3 ▾</span> натиснуто</div><div class="sb pen">надати олівцю колір <span class="sw" style="background:#1a9e4b"></span></div><div class="sb pen">опустити олівець</div><div class="c"><div class="head">повторити <span class="val">36</span></div><div class="in"><div class="sb mot">перемістити на <span class="val">10</span> кроків</div><div class="sb mot">поворот ↻ на <span class="val">10</span> градусів</div></div><div class="foot"></div></div><div class="sb pen">підняти олівець</div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Зелене коло"><line x1="0.0" y1="-0.0" x2="10.0" y2="-0.0" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="10.0" y1="-0.0" x2="19.8" y2="1.7" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="19.8" y1="1.7" x2="29.2" y2="5.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="29.2" y1="5.2" x2="37.9" y2="10.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="37.9" y1="10.2" x2="45.6" y2="16.6" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="45.6" y1="16.6" x2="52.0" y2="24.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="52.0" y1="24.2" x2="57.0" y2="32.9" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="57.0" y1="32.9" x2="60.4" y2="42.3" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="60.4" y1="42.3" x2="62.2" y2="52.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="62.2" y1="52.2" x2="62.2" y2="62.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="62.2" y1="62.2" x2="60.4" y2="72.0" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="60.4" y1="72.0" x2="57.0" y2="81.4" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="57.0" y1="81.4" x2="52.0" y2="90.1" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="52.0" y1="90.1" x2="45.6" y2="97.7" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="45.6" y1="97.7" x2="37.9" y2="104.1" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="37.9" y1="104.1" x2="29.2" y2="109.1" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="29.2" y1="109.1" x2="19.8" y2="112.6" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="19.8" y1="112.6" x2="10.0" y2="114.3" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="10.0" y1="114.3" x2="0.0" y2="114.3" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="0.0" y1="114.3" x2="-9.8" y2="112.6" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-9.8" y1="112.6" x2="-19.2" y2="109.1" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-19.2" y1="109.1" x2="-27.9" y2="104.1" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-27.9" y1="104.1" x2="-35.6" y2="97.7" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-35.6" y1="97.7" x2="-42.0" y2="90.1" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-42.0" y1="90.1" x2="-47.0" y2="81.4" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-47.0" y1="81.4" x2="-50.4" y2="72.0" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-50.4" y1="72.0" x2="-52.2" y2="62.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-52.2" y1="62.2" x2="-52.2" y2="52.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-52.2" y1="52.2" x2="-50.4" y2="42.3" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-50.4" y1="42.3" x2="-47.0" y2="32.9" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-47.0" y1="32.9" x2="-42.0" y2="24.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-42.0" y1="24.2" x2="-35.6" y2="16.6" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-35.6" y1="16.6" x2="-27.9" y2="10.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-27.9" y1="10.2" x2="-19.2" y2="5.2" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-19.2" y1="5.2" x2="-9.8" y2="1.7" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/><line x1="-9.8" y1="1.7" x2="-0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="8.0" stroke-linecap="round"/></svg></div>
+      <button class="star" data-n="3">☆ Зробив</button>
+    </article>
+    <article class="lvl" id="l4">
+      <h3><span class="n">4</span> Зірка</h3>
+      <p>Великий поворот 144: кіт майже розвертається назад.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">4 ▾</span> натиснуто</div><div class="sb pen">надати олівцю колір <span class="sw" style="background:#f58220"></span></div><div class="sb pen">опустити олівець</div><div class="c"><div class="head">повторити <span class="val">5</span></div><div class="in"><div class="sb mot">перемістити на <span class="val">150</span> кроків</div><div class="sb mot">поворот ↻ на <span class="val">144</span> градусів</div></div><div class="foot"></div></div><div class="sb pen">підняти олівець</div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Помаранчева зірка"><line x1="0.0" y1="-0.0" x2="150.0" y2="-0.0" stroke="#f58220" stroke-width="8.0" stroke-linecap="round"/><line x1="150.0" y1="-0.0" x2="28.6" y2="88.2" stroke="#f58220" stroke-width="8.0" stroke-linecap="round"/><line x1="28.6" y1="88.2" x2="75.0" y2="-54.5" stroke="#f58220" stroke-width="8.0" stroke-linecap="round"/><line x1="75.0" y1="-54.5" x2="121.4" y2="88.2" stroke="#f58220" stroke-width="8.0" stroke-linecap="round"/><line x1="121.4" y1="88.2" x2="-0.0" y2="0.0" stroke="#f58220" stroke-width="8.0" stroke-linecap="round"/></svg></div>
+      <button class="star" data-n="4">☆ Зробив</button>
+    </article>
+    <article class="lvl" id="l5">
+      <h3><span class="n">5</span> Сонце-веселка</h3>
+      <p>Колір змінюється на кожному кроці. Спершу натисни пропуск.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">5 ▾</span> натиснуто</div><div class="sb pen">задати розмір олівця <span class="val">2</span></div><div class="sb pen">опустити олівець</div><div class="c"><div class="head">повторити <span class="val">36</span></div><div class="in"><div class="sb mot">перемістити на <span class="val">200</span> кроків</div><div class="sb mot">поворот ↻ на <span class="val">170</span> градусів</div><div class="sb pen">змінити <span class="val">колір ▾</span> олівця на <span class="val">3</span></div></div><div class="foot"></div></div><div class="sb pen">підняти олівець</div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Різнокольорове сонце з тонких ліній"><line x1="0.0" y1="-0.0" x2="200.0" y2="-0.0" stroke="#2b4fd8" stroke-width="3.2" stroke-linecap="round"/><line x1="200.0" y1="-0.0" x2="3.0" y2="34.7" stroke="#ff2d00" stroke-width="3.2" stroke-linecap="round"/><line x1="3.0" y1="34.7" x2="191.0" y2="-33.7" stroke="#ff5b00" stroke-width="3.2" stroke-linecap="round"/><line x1="191.0" y1="-33.7" x2="17.8" y2="66.3" stroke="#ff8900" stroke-width="3.2" stroke-linecap="round"/><line x1="17.8" y1="66.3" x2="171.0" y2="-62.2" stroke="#ffb700" stroke-width="3.2" stroke-linecap="round"/><line x1="171.0" y1="-62.2" x2="42.4" y2="91.0" stroke="#ffe500" stroke-width="3.2" stroke-linecap="round"/><line x1="42.4" y1="91.0" x2="142.4" y2="-82.2" stroke="#eaff00" stroke-width="3.2" stroke-linecap="round"/><line x1="142.4" y1="-82.2" x2="74.0" y2="105.7" stroke="#bcff00" stroke-width="3.2" stroke-linecap="round"/><line x1="74.0" y1="105.7" x2="108.7" y2="-91.3" stroke="#8eff00" stroke-width="3.2" stroke-linecap="round"/><line x1="108.7" y1="-91.3" x2="108.7" y2="108.7" stroke="#60ff00" stroke-width="3.2" stroke-linecap="round"/><line x1="108.7" y1="108.7" x2="74.0" y2="-88.2" stroke="#33ff00" stroke-width="3.2" stroke-linecap="round"/><line x1="74.0" y1="-88.2" x2="142.4" y2="99.7" stroke="#05ff00" stroke-width="3.2" stroke-linecap="round"/><line x1="142.4" y1="99.7" x2="42.4" y2="-73.5" stroke="#00ff28" stroke-width="3.2" stroke-linecap="round"/><line x1="42.4" y1="-73.5" x2="171.0" y2="79.7" stroke="#00ff56" stroke-width="3.2" stroke-linecap="round"/><line x1="171.0" y1="79.7" x2="17.8" y2="-48.8" stroke="#00ff84" stroke-width="3.2" stroke-linecap="round"/><line x1="17.8" y1="-48.8" x2="191.0" y2="51.2" stroke="#00ffb2" stroke-width="3.2" stroke-linecap="round"/><line x1="191.0" y1="51.2" x2="3.0" y2="-17.2" stroke="#00ffe0" stroke-width="3.2" stroke-linecap="round"/><line x1="3.0" y1="-17.2" x2="200.0" y2="17.5" stroke="#00efff" stroke-width="3.2" stroke-linecap="round"/><line x1="200.0" y1="17.5" x2="-0.0" y2="17.5" stroke="#00c1ff" stroke-width="3.2" stroke-linecap="round"/><line x1="-0.0" y1="17.5" x2="197.0" y2="-17.2" stroke="#0093ff" stroke-width="3.2" stroke-linecap="round"/><line x1="197.0" y1="-17.2" x2="9.0" y2="51.2" stroke="#0066ff" stroke-width="3.2" stroke-linecap="round"/><line x1="9.0" y1="51.2" x2="182.2" y2="-48.8" stroke="#0038ff" stroke-width="3.2" stroke-linecap="round"/><line x1="182.2" y1="-48.8" x2="29.0" y2="79.7" stroke="#000aff" stroke-width="3.2" stroke-linecap="round"/><line x1="29.0" y1="79.7" x2="157.6" y2="-73.5" stroke="#2300ff" stroke-width="3.2" stroke-linecap="round"/><line x1="157.6" y1="-73.5" x2="57.6" y2="99.7" stroke="#5100ff" stroke-width="3.2" stroke-linecap="round"/><line x1="57.6" y1="99.7" x2="126.0" y2="-88.2" stroke="#7f00ff" stroke-width="3.2" stroke-linecap="round"/><line x1="126.0" y1="-88.2" x2="91.3" y2="108.7" stroke="#ad00ff" stroke-width="3.2" stroke-linecap="round"/><line x1="91.3" y1="108.7" x2="91.3" y2="-91.3" stroke="#db00ff" stroke-width="3.2" stroke-linecap="round"/><line x1="91.3" y1="-91.3" x2="126.0" y2="105.7" stroke="#ff00f4" stroke-width="3.2" stroke-linecap="round"/><line x1="126.0" y1="105.7" x2="57.6" y2="-82.2" stroke="#ff00c6" stroke-width="3.2" stroke-linecap="round"/><line x1="57.6" y1="-82.2" x2="157.6" y2="91.0" stroke="#ff0098" stroke-width="3.2" stroke-linecap="round"/><line x1="157.6" y1="91.0" x2="29.0" y2="-62.2" stroke="#ff006b" stroke-width="3.2" stroke-linecap="round"/><line x1="29.0" y1="-62.2" x2="182.2" y2="66.3" stroke="#ff003d" stroke-width="3.2" stroke-linecap="round"/><line x1="182.2" y1="66.3" x2="9.0" y2="-33.7" stroke="#ff000f" stroke-width="3.2" stroke-linecap="round"/><line x1="9.0" y1="-33.7" x2="197.0" y2="34.7" stroke="#ff1e00" stroke-width="3.2" stroke-linecap="round"/><line x1="197.0" y1="34.7" x2="0.0" y2="-0.0" stroke="#ff4c00" stroke-width="3.2" stroke-linecap="round"/></svg></div>
+      <button class="star" data-n="5">☆ Зробив</button>
+    </article>
+    <article class="lvl" id="l6">
+      <h3><span class="n">6</span> Кільце котів</h3>
+      <p>Штамп друкує кота на сцені. Спершу натисни пропуск.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">6 ▾</span> натиснуто</div><div class="sb mot">перемістити в x: <span class="val">-40</span> y: <span class="val">100</span></div><div class="c"><div class="head">повторити <span class="val">8</span></div><div class="in"><div class="sb pen">штамп</div><div class="sb lks">змінити ефект <span class="val">колір ▾</span> на <span class="val">25</span></div><div class="sb mot">перемістити на <span class="val">80</span> кроків</div><div class="sb mot">поворот ↻ на <span class="val">45</span> градусів</div></div><div class="foot"></div></div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Вісім різнокольорових котів по колу"><use href="#cat" x="-82.0" y="-145.0" width="84" height="91" transform="rotate(0.0 -40.0 -100.0)" style="filter:hue-rotate(0deg)"/><use href="#cat" x="-2.0" y="-145.0" width="84" height="91" transform="rotate(45.0 40.0 -100.0)" style="filter:hue-rotate(45deg)"/><use href="#cat" x="54.6" y="-88.4" width="84" height="91" transform="rotate(90.0 96.6 -43.4)" style="filter:hue-rotate(90deg)"/><use href="#cat" x="54.6" y="-8.4" width="84" height="91" transform="rotate(135.0 96.6 36.6)" style="filter:hue-rotate(135deg)"/><use href="#cat" x="-2.0" y="48.1" width="84" height="91" transform="rotate(180.0 40.0 93.1)" style="filter:hue-rotate(180deg)"/><use href="#cat" x="-82.0" y="48.1" width="84" height="91" transform="rotate(225.0 -40.0 93.1)" style="filter:hue-rotate(225deg)"/><use href="#cat" x="-138.6" y="-8.4" width="84" height="91" transform="rotate(270.0 -96.6 36.6)" style="filter:hue-rotate(270deg)"/><use href="#cat" x="-138.6" y="-88.4" width="84" height="91" transform="rotate(315.0 -96.6 -43.4)" style="filter:hue-rotate(315deg)"/></svg></div>
+      <button class="star" data-n="6">☆ Зробив</button>
+    </article>
+    <article class="lvl" id="l7">
+      <h3><span class="n">7</span> Малювалка</h3>
+      <p>Тепер малюєш ти: тримай мишку й веди. Кіт сховається. Щоб вийти, натисни червоний кружечок біля прапорця.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">7 ▾</span> натиснуто</div><div class="sb lks">сховати</div><div class="c"><div class="head">завжди</div><div class="in"><div class="sb mot">перейти до <span class="val">вказівник ▾</span></div><div class="c"><div class="head">якщо <span class="cond">мишку натиснуто?</span> то</div><div class="in"><div class="sb pen">опустити олівець</div></div><div class="head">інакше</div><div class="in"><div class="sb pen">підняти олівець</div></div><div class="foot"></div></div></div><div class="foot"></div></div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Лінії, намальовані мишкою"><path d="M-170 40 C-120 -90 -60 -90 -20 10 S80 120 150 -30" fill="none" stroke="#2b4fd8" stroke-width="7" stroke-linecap="round"/><path d="M-120 110 L-60 70 L0 110 L60 70 L120 110" fill="none" stroke="#e6194b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <button class="star" data-n="7">☆ Зробив</button>
+    </article>
+    <article class="lvl" id="l8">
+      <h3><span class="n">8</span> Кнопки малювалки</h3>
+      <p>Три маленькі скрипти. Стрілками міняй товщину й колір, а пропуск дає чистий аркуш. Запусти малювалку клавішею <b>7</b>.</p>
+      <div class="pair"><div class="stacks"><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">стрілка вгору ▾</span> натиснуто</div><div class="sb pen">змінити розмір олівця на <span class="val">2</span></div></div><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">стрілка вниз ▾</span> натиснуто</div><div class="sb pen">змінити розмір олівця на <span class="val">-2</span></div></div><div class="stack"><div class="sb hat ev">коли клавішу <span class="val">стрілка праворуч ▾</span> натиснуто</div><div class="sb pen">змінити <span class="val">колір ▾</span> олівця на <span class="val">10</span></div></div></div><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Лінії різної товщини й кольору"><path d="M-170 40 C-120 -90 -60 -90 -20 10 S80 120 150 -30" fill="none" stroke="#1a9e4b" stroke-width="20" stroke-linecap="round"/><path d="M-120 120 L-60 90 L0 120 L60 90 L120 120" fill="none" stroke="#f58220" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M-180 -130 L180 -130" stroke="#7a3fd1" stroke-width="11" stroke-linecap="round"/></svg></div>
+      <button class="star" data-n="8">☆ Зробив</button>
+    </article>
+    </div>
+  </section>
+
+  <section id="l9">
+    <h2>Рівень 9. Виклики</h2>
+    <p>Тут блоків немає, є лише картинка. Склади скрипт сам на клавішу <b>8</b>. Зроби хоча б 2 виклики.</p>
+    <p class="big">Щоб повернутись на початок: кут = 360 ÷ кількість сторін. Для квадрата 360 ÷ 4 = 90.</p>
+    <div class="chs"><div class="ch"><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="П&#x27;ятикутник"><line x1="0.0" y1="-0.0" x2="100.0" y2="-0.0" stroke="#7a3fd1" stroke-width="8.0" stroke-linecap="round"/><line x1="100.0" y1="-0.0" x2="130.9" y2="95.1" stroke="#7a3fd1" stroke-width="8.0" stroke-linecap="round"/><line x1="130.9" y1="95.1" x2="50.0" y2="153.9" stroke="#7a3fd1" stroke-width="8.0" stroke-linecap="round"/><line x1="50.0" y1="153.9" x2="-30.9" y2="95.1" stroke="#7a3fd1" stroke-width="8.0" stroke-linecap="round"/><line x1="-30.9" y1="95.1" x2="-0.0" y2="-0.0" stroke="#7a3fd1" stroke-width="8.0" stroke-linecap="round"/></svg><b>П'ятикутник</b><span>5 сторін</span></div><div class="ch"><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Восьмикутник"><line x1="0.0" y1="-0.0" x2="70.0" y2="-0.0" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/><line x1="70.0" y1="-0.0" x2="119.5" y2="49.5" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/><line x1="119.5" y1="49.5" x2="119.5" y2="119.5" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/><line x1="119.5" y1="119.5" x2="70.0" y2="169.0" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/><line x1="70.0" y1="169.0" x2="0.0" y2="169.0" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/><line x1="0.0" y1="169.0" x2="-49.5" y2="119.5" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/><line x1="-49.5" y1="119.5" x2="-49.5" y2="49.5" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/><line x1="-49.5" y1="49.5" x2="-0.0" y2="-0.0" stroke="#0b8fb0" stroke-width="8.0" stroke-linecap="round"/></svg><b>Восьмикутник</b><span>8 сторін</span></div><div class="ch"><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Зірка з дванадцятьма гострими променями"><line x1="0.0" y1="-0.0" x2="150.0" y2="-0.0" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="150.0" y1="-0.0" x2="20.1" y2="75.0" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="20.1" y1="75.0" x2="95.1" y2="-54.9" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="95.1" y1="-54.9" x2="95.1" y2="95.1" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="95.1" y1="95.1" x2="20.1" y2="-34.8" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="20.1" y1="-34.8" x2="150.0" y2="40.2" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="150.0" y1="40.2" x2="0.0" y2="40.2" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="40.2" x2="129.9" y2="-34.8" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="129.9" y1="-34.8" x2="54.9" y2="95.1" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="54.9" y1="95.1" x2="54.9" y2="-54.9" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="54.9" y1="-54.9" x2="129.9" y2="75.0" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="129.9" y1="75.0" x2="0.0" y2="-0.0" stroke="#d6336c" stroke-width="4.800000000000001" stroke-linecap="round"/></svg><b>Гостра зірка</b><span>12 разів, поворот 150</span></div><div class="ch"><svg class="stage" viewBox="-240 -180 480 360" role="img" aria-label="Квітка з дванадцяти квадратів"><line x1="0.0" y1="-0.0" x2="80.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="80.0" y1="-0.0" x2="80.0" y2="80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="80.0" y1="80.0" x2="0.0" y2="80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="80.0" x2="-0.0" y2="0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-0.0" y1="0.0" x2="69.3" y2="40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="69.3" y1="40.0" x2="29.3" y2="109.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="29.3" y1="109.3" x2="-40.0" y2="69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-40.0" y1="69.3" x2="-0.0" y2="0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-0.0" y1="0.0" x2="40.0" y2="69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="40.0" y1="69.3" x2="-29.3" y2="109.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-29.3" y1="109.3" x2="-69.3" y2="40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-69.3" y1="40.0" x2="-0.0" y2="0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-0.0" y1="0.0" x2="0.0" y2="80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="80.0" x2="-80.0" y2="80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-80.0" y1="80.0" x2="-80.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-80.0" y1="-0.0" x2="-0.0" y2="0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-0.0" y1="0.0" x2="-40.0" y2="69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-40.0" y1="69.3" x2="-109.3" y2="29.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-109.3" y1="29.3" x2="-69.3" y2="-40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-69.3" y1="-40.0" x2="0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-0.0" x2="-69.3" y2="40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-69.3" y1="40.0" x2="-109.3" y2="-29.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-109.3" y1="-29.3" x2="-40.0" y2="-69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-40.0" y1="-69.3" x2="0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-0.0" x2="-80.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-80.0" y1="-0.0" x2="-80.0" y2="-80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-80.0" y1="-80.0" x2="0.0" y2="-80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-80.0" x2="-0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-0.0" y1="-0.0" x2="-69.3" y2="-40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-69.3" y1="-40.0" x2="-29.3" y2="-109.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-29.3" y1="-109.3" x2="40.0" y2="-69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="40.0" y1="-69.3" x2="0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-0.0" x2="-40.0" y2="-69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="-40.0" y1="-69.3" x2="29.3" y2="-109.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="29.3" y1="-109.3" x2="69.3" y2="-40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="69.3" y1="-40.0" x2="0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-0.0" x2="0.0" y2="-80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-80.0" x2="80.0" y2="-80.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="80.0" y1="-80.0" x2="80.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="80.0" y1="-0.0" x2="0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-0.0" x2="40.0" y2="-69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="40.0" y1="-69.3" x2="109.3" y2="-29.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="109.3" y1="-29.3" x2="69.3" y2="40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="69.3" y1="40.0" x2="0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="0.0" y1="-0.0" x2="69.3" y2="-40.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="69.3" y1="-40.0" x2="109.3" y2="29.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="109.3" y1="29.3" x2="40.0" y2="69.3" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/><line x1="40.0" y1="69.3" x2="0.0" y2="-0.0" stroke="#1a9e4b" stroke-width="4.800000000000001" stroke-linecap="round"/></svg><b>★ Квітка</b><span>квадрат 12 разів, після кожного поворот 30: «повторити» всередині «повторити»</span></div></div>
+    <button class="star" data-n="9">☆ Зробив</button>
+  </section>
+
+  <section id="l10">
+    <h2>Рівень 10. Моя картина</h2>
+    <p>Намалюй свою картину. Це може бути будинок із квадрата й трикутника, сніговик із трьох кіл, ялинка з трикутників або сонце над будинком.</p>
+    <p>Щоб перейти в інше місце без лінії: <b>підняти олівець → перемістити в x y → опустити олівець</b>.</p>
+    <p>Коли закінчиш, збережи: <b>Файл → зберегти на комп'ютер</b>, назва <code>Прізвище-урок9</code>.</p>
+    <button class="star" data-n="10">☆ Зробив</button>
+  </section>
+
+  <section>
+    <h2>Якщо не виходить</h2>
+    <div class="wrap"><table>
+      <tr><th>Що сталось</th><th>Що зробити</th></tr>
+      <tr><td>Немає зелених блоків</td><td>Додай розширення «Олівець»: синя кнопка внизу ліворуч.</td></tr>
+      <tr><td>Кіт ходить, а лінії немає</td><td>Забув блок «опустити олівець».</td></tr>
+      <tr><td>Лінія там, де не треба</td><td>Забув блок «підняти олівець». Натисни пропуск і спробуй ще.</td></tr>
+      <tr><td>Фігура вилізла за край</td><td>Натисни пропуск або зменш число кроків.</td></tr>
+      <tr><td>Кіт зник</td><td>Це через «сховати». Відкрий розділ «Вигляд» і клікни блок «показати».</td></tr>
+      <tr><td>Натискаю цифру, а нічого немає</td><td>Подивись, яка цифра стоїть у жовтому блоці.</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест наприкінці уроку</h2>
+    <p>Вчитель скаже, коли почати. Впиши число й натисни «Перевірити».</p>
+    <div class="quiz" id="quiz"></div>
+    <p class="score" id="score">Правильно: 0 з 5</p>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити команди олівця у Scratch: «опустити олівець», «підняти олівець».</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let done = new Set();
+try { done = new Set(JSON.parse(sessionStorage.getItem("kit-stars") || "[]")); } catch (e) {}
+function paint() {
+  $("stars").textContent = "★".repeat(done.size) + "☆".repeat(10 - done.size);
+  $("count").textContent = done.size + " з 10" + (done.size === 10 ? " — покажи вчителю" : "");
+  document.querySelectorAll(".star").forEach(b => {
+    const on = done.has(+b.dataset.n);
+    b.classList.toggle("on", on);
+    b.textContent = on ? "★ Зроблено" : "☆ Зробив";
+    const card = b.closest(".lvl");
+    if (card) card.classList.toggle("done", on);
+  });
+}
+document.querySelectorAll(".star").forEach(b => b.addEventListener("click", () => {
+  const n = +b.dataset.n;
+  if (done.has(n)) done.delete(n); else done.add(n);
+  try { sessionStorage.setItem("kit-stars", JSON.stringify([...done])); } catch (e) {}
+  paint();
+}));
+paint();
+
+const QUIZ = [
+  { q: "Скільки разів треба повторити, щоб намалювати трикутник?", ok: "3" },
+  { q: "На скільки градусів повертає кіт у квадраті?", ok: "90" },
+  { q: "Шестикутник: 360 ÷ 6 = ?", ok: "60" },
+  { q: "Блок «перемістити на 100 кроків» повторили 4 рази. Скільки кроків пройшов кіт?", ok: "400" },
+  { q: "Кіт повертає на 10 градусів. Скільки разів повторити, щоб зробити повне коло?", ok: "36" }
+];
+let right = 0, answered = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <div class="ans">
+      <input id="a${k}" inputmode="numeric" autocomplete="off" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = inp.value.replace(/\s/g, "") === t.ok;
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.ok}`;
+  if (good) right++;
+  answered++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
