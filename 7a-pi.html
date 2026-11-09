@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Число Пі в кольорах</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --a: #7e22ce; --a2: #f5effc; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 20px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .digits { font: 700 26px Consolas, "Courier New", monospace; letter-spacing: 1px; background: #111; color: #ffe066; padding: 6px 12px; border-radius: 6px; margin: 0 0 8px; overflow-x: auto; white-space: nowrap; }
+  .digits span { color: #fff; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; align-items: start; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.3; background: #f4f6f9; border: 2px solid #d5dbe3; border-left: 8px solid var(--a); border-radius: 4px; padding: 6px 10px; margin: 0 0 8px; overflow-x: auto; }
+  .k { color: #b0006e; } .s { color: #0a6e2a; } .n { color: #b45309; }
+  figure { margin: 0; }
+  svg.pic { width: 100%; height: auto; display: block; border-radius: 6px; }
+  figcaption { font-size: 16px; color: #444; margin-top: 3px; }
+  .run { background: #fff6dd; border-left: 5px solid #c79100; padding: 5px 10px; margin: 0 0 8px; }
+  .try { background: var(--a2); border-left: 5px solid var(--a); padding: 5px 10px; margin: 0 0 8px; }
+  .try b { color: var(--a); }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 4px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child code { white-space: nowrap; }
+  .wrap { overflow-x: auto; }
+  .star { background: #eef8ee; border-left: 5px solid #1a7f37; padding: 6px 10px; }
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid var(--a); border-radius: 5px; background: #fff; color: var(--a); font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .quiz { display: grid; gap: 8px; margin-bottom: 8px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 19px Consolas, "Courier New", monospace; width: 5em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q p { margin-bottom: 6px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-weight: 700; font-size: 21px; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Число Пі в кольорах <span>· 7-А · Практична робота № 2 · Python, turtle</span></h1>
+  <p><b>Пі</b> — це число, яке показує, у скільки разів коло довше за свою ширину (діаметр): приблизно в 3,14 раза. Його цифри йдуть без кінця і ніколи не повторюються по колу. Сьогодні 50 перших цифр Пі стануть чотирма картинами.</p>
+  <div class="digits">3<span>,</span>141592653 5897932384 6264338327 9502884197 1693993751</div>
+  <p class="big">Thonny → File → New. Збережи файл як <code>pi.py</code> (тільки не <code>turtle.py</code>!). Переписуй крок за кроком. Після кожного кроку тисни F5: програма вже працює і малює.</p>
+
+  <section>
+    <h2>Як цифра стає картинкою</h2>
+    <div class="wrap"><table>
+      <tr><th>Рядок</th><th>Що робить</th></tr>
+      <tr><td><code>pi = "3141..."</code></td><td>Усі 50 цифр в одному рядку тексту. Звіряй по 10 цифр із чорною смужкою вгорі.</td></tr>
+      <tr><td><code>colors = [...]</code></td><td>Список із 10 кольорів. Кожна цифра має свій колір: 0 — білий, 1 — червоний, 2 — помаранчевий і так далі.</td></tr>
+      <tr><td><code>pi[i]</code></td><td>Цифра під номером <code>i</code>. Рахуємо з нуля: <code>pi[0]</code> — це 3, <code>pi[1]</code> — це 1.</td></tr>
+      <tr><td><code>int(pi[i])</code></td><td>Перетворює текст <code>"4"</code> на число <code>4</code>, з яким можна рахувати.</td></tr>
+      <tr><td><code>colors[d]</code></td><td>Колір для цифри <code>d</code>.</td></tr>
+      <tr><td><code>i % 10</code></td><td>Місце в ряду: 0, 1, 2 … 9, а потім знову 0. Залишок від ділення на 10.</td></tr>
+      <tr><td><code>i // 10</code></td><td>Номер ряду: перші 10 кружечків — ряд 0, наступні 10 — ряд 1. Ділення без остачі.</td></tr>
+      <tr><td><code>t.dot(52, колір)</code></td><td>Кружечок розміром 52.</td></tr>
+      <tr><td><code>t.write(d, ...)</code></td><td>Пише цифру на екрані.</td></tr>
+      <tr><td><code>d * 36</code></td><td>Напрямок прогулянки: 10 цифр — 10 напрямків, бо 360 ÷ 10 = 36.</td></tr>
+      <tr><td><code>pi.count("9")</code></td><td>Рахує, скільки разів у рядку трапляється цифра 9.</td></tr>
+      <tr><td><code>screen.onkey(carpet, "1")</code></td><td>Клавіша 1 малює килимок. Спершу клацни мишкою по вікну з малюнком.</td></tr>
+    </table></div>
+  </section>
+
+  <section id="k1">
+    <h2>Крок 1. Килимок із цифр</h2>
+    <div class="two">
+      <div>
+<pre><span class="k">import</span> turtle
+
+screen = turtle.Screen()
+screen.setup(<span class="n">900</span>, <span class="n">650</span>)
+screen.bgcolor(<span class="s">&quot;black&quot;</span>)
+screen.tracer(<span class="n">0</span>)
+
+t = turtle.Turtle()
+t.hideturtle()
+t.penup()
+
+pi = <span class="s">&quot;31415926535897932384626433832795028841971693993751&quot;</span>
+colors = [<span class="s">&quot;white&quot;</span>, <span class="s">&quot;red&quot;</span>, <span class="s">&quot;orange&quot;</span>, <span class="s">&quot;yellow&quot;</span>, <span class="s">&quot;lime&quot;</span>,
+          <span class="s">&quot;cyan&quot;</span>, <span class="s">&quot;skyblue&quot;</span>, <span class="s">&quot;violet&quot;</span>, <span class="s">&quot;pink&quot;</span>, <span class="s">&quot;tan&quot;</span>]
+
+<span class="k">def</span> carpet():
+    t.clear()
+    <span class="k">for</span> i <span class="k">in</span> range(<span class="n">50</span>):
+        d = int(pi[i])
+        x = <span class="n">-270</span> + i % <span class="n">10</span> * <span class="n">60</span>
+        y = <span class="n">120</span> - i // <span class="n">10</span> * <span class="n">60</span>
+        t.goto(x, y)
+        t.dot(<span class="n">52</span>, colors[d])
+        t.goto(x, y - <span class="n">12</span>)
+        t.color(<span class="s">&quot;black&quot;</span>)
+        t.write(d, align=<span class="s">&quot;center&quot;</span>, font=(<span class="s">&quot;Arial&quot;</span>, <span class="n">16</span>, <span class="s">&quot;bold&quot;</span>))
+    screen.update()
+
+carpet()
+screen.onkey(carpet, <span class="s">&quot;1&quot;</span>)
+screen.listen()
+turtle.done()</pre>
+        <p class="run">Перепиши все й тисни F5. Має з'явитися килимок. Якщо помилка — таблиця «Якщо не працює» внизу.</p>
+        <p class="try"><b>Зміни число:</b> <code>52</code> → <code>30</code> (менші кружечки), потім <code>60</code> → <code>55</code>. Поверни як було.</p>
+      </div>
+      <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="-450 -325 900 650" class="pic" role="img"><rect x="-450" y="-325" width="900" height="650" fill="black"/>
+<circle cx="-270.0" cy="-120.0" r="26.0" fill="yellow"/>
+<text x="-270.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="-210.0" cy="-120.0" r="26.0" fill="red"/>
+<text x="-210.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">1</text>
+<circle cx="-150.0" cy="-120.0" r="26.0" fill="lime"/>
+<text x="-150.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">4</text>
+<circle cx="-90.0" cy="-120.0" r="26.0" fill="red"/>
+<text x="-90.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">1</text>
+<circle cx="-30.0" cy="-120.0" r="26.0" fill="cyan"/>
+<text x="-30.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">5</text>
+<circle cx="30.0" cy="-120.0" r="26.0" fill="tan"/>
+<text x="30.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="90.0" cy="-120.0" r="26.0" fill="orange"/>
+<text x="90.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">2</text>
+<circle cx="150.0" cy="-120.0" r="26.0" fill="skyblue"/>
+<text x="150.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">6</text>
+<circle cx="210.0" cy="-120.0" r="26.0" fill="cyan"/>
+<text x="210.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">5</text>
+<circle cx="270.0" cy="-120.0" r="26.0" fill="yellow"/>
+<text x="270.0" y="-112.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="-270.0" cy="-60.0" r="26.0" fill="cyan"/>
+<text x="-270.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">5</text>
+<circle cx="-210.0" cy="-60.0" r="26.0" fill="pink"/>
+<text x="-210.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">8</text>
+<circle cx="-150.0" cy="-60.0" r="26.0" fill="tan"/>
+<text x="-150.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="-90.0" cy="-60.0" r="26.0" fill="violet"/>
+<text x="-90.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">7</text>
+<circle cx="-30.0" cy="-60.0" r="26.0" fill="tan"/>
+<text x="-30.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="30.0" cy="-60.0" r="26.0" fill="yellow"/>
+<text x="30.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="90.0" cy="-60.0" r="26.0" fill="orange"/>
+<text x="90.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">2</text>
+<circle cx="150.0" cy="-60.0" r="26.0" fill="yellow"/>
+<text x="150.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="210.0" cy="-60.0" r="26.0" fill="pink"/>
+<text x="210.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">8</text>
+<circle cx="270.0" cy="-60.0" r="26.0" fill="lime"/>
+<text x="270.0" y="-52.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">4</text>
+<circle cx="-270.0" cy="0.0" r="26.0" fill="skyblue"/>
+<text x="-270.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">6</text>
+<circle cx="-210.0" cy="0.0" r="26.0" fill="orange"/>
+<text x="-210.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">2</text>
+<circle cx="-150.0" cy="0.0" r="26.0" fill="skyblue"/>
+<text x="-150.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">6</text>
+<circle cx="-90.0" cy="0.0" r="26.0" fill="lime"/>
+<text x="-90.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">4</text>
+<circle cx="-30.0" cy="0.0" r="26.0" fill="yellow"/>
+<text x="-30.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="30.0" cy="0.0" r="26.0" fill="yellow"/>
+<text x="30.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="90.0" cy="0.0" r="26.0" fill="pink"/>
+<text x="90.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">8</text>
+<circle cx="150.0" cy="0.0" r="26.0" fill="yellow"/>
+<text x="150.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="210.0" cy="0.0" r="26.0" fill="orange"/>
+<text x="210.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">2</text>
+<circle cx="270.0" cy="0.0" r="26.0" fill="violet"/>
+<text x="270.0" y="7.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">7</text>
+<circle cx="-270.0" cy="60.0" r="26.0" fill="tan"/>
+<text x="-270.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="-210.0" cy="60.0" r="26.0" fill="cyan"/>
+<text x="-210.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">5</text>
+<circle cx="-150.0" cy="60.0" r="26.0" fill="white"/>
+<text x="-150.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">0</text>
+<circle cx="-90.0" cy="60.0" r="26.0" fill="orange"/>
+<text x="-90.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">2</text>
+<circle cx="-30.0" cy="60.0" r="26.0" fill="pink"/>
+<text x="-30.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">8</text>
+<circle cx="30.0" cy="60.0" r="26.0" fill="pink"/>
+<text x="30.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">8</text>
+<circle cx="90.0" cy="60.0" r="26.0" fill="lime"/>
+<text x="90.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">4</text>
+<circle cx="150.0" cy="60.0" r="26.0" fill="red"/>
+<text x="150.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">1</text>
+<circle cx="210.0" cy="60.0" r="26.0" fill="tan"/>
+<text x="210.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="270.0" cy="60.0" r="26.0" fill="violet"/>
+<text x="270.0" y="67.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">7</text>
+<circle cx="-270.0" cy="120.0" r="26.0" fill="red"/>
+<text x="-270.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">1</text>
+<circle cx="-210.0" cy="120.0" r="26.0" fill="skyblue"/>
+<text x="-210.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">6</text>
+<circle cx="-150.0" cy="120.0" r="26.0" fill="tan"/>
+<text x="-150.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="-90.0" cy="120.0" r="26.0" fill="yellow"/>
+<text x="-90.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="-30.0" cy="120.0" r="26.0" fill="tan"/>
+<text x="-30.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="30.0" cy="120.0" r="26.0" fill="tan"/>
+<text x="30.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">9</text>
+<circle cx="90.0" cy="120.0" r="26.0" fill="yellow"/>
+<text x="90.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">3</text>
+<circle cx="150.0" cy="120.0" r="26.0" fill="violet"/>
+<text x="150.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">7</text>
+<circle cx="210.0" cy="120.0" r="26.0" fill="cyan"/>
+<text x="210.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">5</text>
+<circle cx="270.0" cy="120.0" r="26.0" fill="red"/>
+<text x="270.0" y="127.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="black">1</text>
+</svg><figcaption>Клавіша 1: 50 цифр, 5 рядів по 10.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="k2">
+    <h2>Крок 2. Квітка Пі</h2>
+    <div class="two">
+      <div>
+<pre><span class="k">def</span> flower():
+    t.clear()
+    <span class="k">for</span> i <span class="k">in</span> range(<span class="n">50</span>):
+        d = int(pi[i])
+        t.goto(<span class="n">0</span>, <span class="n">0</span>)
+        t.setheading(i * <span class="n">137</span>)
+        t.forward(<span class="n">10</span> + i * <span class="n">5</span>)
+        t.dot(<span class="n">8</span> + d * <span class="n">4</span>, colors[d])
+    screen.update()</pre>
+        <p class="run">Встав функцію <b>над</b> рядком <code>carpet()</code> внизу. Під <code>screen.onkey(carpet, "1")</code> допиши: <code>screen.onkey(flower, &quot;2&quot;)</code>. F5, клацни по вікну, натисни 2.</p>
+        <p class="try"><b>Зміни число:</b> <code>137</code> → <code>90</code>, потім <code>36</code>, потім <code>100</code>. Що змінюється? Поверни <code>137</code>.</p>
+      </div>
+      <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="-450 -325 900 650" class="pic" role="img"><rect x="-450" y="-325" width="900" height="650" fill="black"/>
+<circle cx="10.0" cy="-0.0" r="10.0" fill="yellow"/>
+<circle cx="-11.0" cy="-10.2" r="6.0" fill="red"/>
+<circle cx="1.4" cy="20.0" r="12.0" fill="lime"/>
+<circle cx="15.7" cy="-19.4" r="6.0" fill="red"/>
+<circle cx="-29.7" cy="4.2" r="14.0" fill="cyan"/>
+<circle cx="28.7" cy="20.1" r="22.0" fill="tan"/>
+<circle cx="-8.3" cy="-39.1" r="8.0" fill="orange"/>
+<circle cx="-23.2" cy="38.6" r="16.0" fill="skyblue"/>
+<circle cx="48.1" cy="-13.8" r="14.0" fill="cyan"/>
+<circle cx="-49.0" cy="-25.0" r="10.0" fill="yellow"/>
+<circle cx="20.5" cy="56.4" r="14.0" fill="cyan"/>
+<circle cx="25.4" cy="-59.8" r="20.0" fill="pink"/>
+<circle cx="-63.9" cy="28.5" r="22.0" fill="tan"/>
+<circle cx="70.9" cy="24.4" r="18.0" fill="violet"/>
+<circle cx="-37.6" cy="-70.6" r="22.0" fill="tan"/>
+<circle cx="-22.0" cy="82.1" r="10.0" fill="yellow"/>
+<circle cx="76.3" cy="-47.7" r="8.0" fill="orange"/>
+<circle cx="-93.3" cy="-18.1" r="10.0" fill="yellow"/>
+<circle cx="58.8" cy="80.9" r="20.0" fill="pink"/>
+<circle cx="12.8" cy="-104.2" r="12.0" fill="lime"/>
+<circle cx="-84.3" cy="70.7" r="16.0" fill="skyblue"/>
+<circle cx="114.8" cy="6.0" r="8.0" fill="orange"/>
+<circle cx="-83.4" cy="-86.3" r="16.0" fill="skyblue"/>
+<circle cx="2.2" cy="125.0" r="12.0" fill="lime"/>
+<circle cx="87.0" cy="-96.6" r="10.0" fill="yellow"/>
+<circle cx="-134.5" cy="11.8" r="10.0" fill="yellow"/>
+<circle cx="110.3" cy="86.2" r="20.0" fill="pink"/>
+<circle cx="-22.7" cy="-143.2" r="10.0" fill="yellow"/>
+<circle cx="-83.9" cy="124.4" r="8.0" fill="orange"/>
+<circle cx="151.0" cy="-34.9" r="18.0" fill="violet"/>
+<circle cx="-138.6" cy="-80.0" r="22.0" fill="tan"/>
+<circle cx="48.2" cy="157.8" r="14.0" fill="cyan"/>
+<circle cx="74.5" cy="-152.8" r="4.0" fill="white"/>
+<circle cx="-163.4" cy="62.7" r="8.0" fill="orange"/>
+<circle cx="166.9" cy="67.4" r="20.0" fill="pink"/>
+<circle cx="-78.2" cy="-167.7" r="20.0" fill="pink"/>
+<circle cx="-58.7" cy="180.7" r="12.0" fill="lime"/>
+<circle cx="170.6" cy="-94.5" r="6.0" fill="red"/>
+<circle cx="-194.1" cy="-48.4" r="22.0" fill="tan"/>
+<circle cx="111.7" cy="171.9" r="18.0" fill="violet"/>
+<circle cx="36.5" cy="-206.8" r="6.0" fill="red"/>
+<circle cx="-171.7" cy="129.4" r="16.0" fill="skyblue"/>
+<circle cx="218.8" cy="23.0" r="22.0" fill="tan"/>
+<circle cx="-147.6" cy="-169.8" r="10.0" fill="yellow"/>
+<circle cx="-8.0" cy="229.9" r="22.0" fill="tan"/>
+<circle cx="166.2" cy="-166.2" r="22.0" fill="tan"/>
+<circle cx="-239.9" cy="8.4" r="10.0" fill="yellow"/>
+<circle cx="184.9" cy="160.7" r="18.0" fill="violet"/>
+<circle cx="-26.1" cy="-248.6" r="14.0" fill="cyan"/>
+<circle cx="-153.5" cy="203.7" r="6.0" fill="red"/>
+</svg><figcaption>Клавіша 2: велика цифра — великий кружечок.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="k3">
+    <h2>Крок 3. Прогулянка Пі</h2>
+    <div class="two">
+      <div>
+<pre><span class="k">def</span> walk():
+    t.clear()
+    t.goto(<span class="n">120</span>, <span class="n">-180</span>)
+    t.width(<span class="n">4</span>)
+    t.pendown()
+    <span class="k">for</span> i <span class="k">in</span> range(<span class="n">50</span>):
+        d = int(pi[i])
+        t.color(colors[d])
+        t.setheading(d * <span class="n">36</span>)
+        t.forward(<span class="n">60</span>)
+        t.dot(<span class="n">12</span>)
+    t.penup()
+    screen.update()</pre>
+        <p class="run">Знову над <code>carpet()</code>. Під клавішею 2 допиши: <code>screen.onkey(walk, &quot;3&quot;)</code>. F5, натисни 3.</p>
+        <p class="try"><b>Зміни число:</b> <code>60</code> → <code>30</code> (короткі кроки), <code>t.width(4)</code> → <code>t.width(8)</code>.</p>
+      </div>
+      <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="-450 -325 900 650" class="pic" role="img"><rect x="-450" y="-325" width="900" height="650" fill="black"/>
+<line x1="120.0" y1="180.0" x2="101.5" y2="122.9" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="101.5" cy="122.9" r="6.0" fill="yellow"/>
+<line x1="101.5" y1="122.9" x2="150.0" y2="87.7" stroke="red" stroke-width="4" stroke-linecap="round"/>
+<circle cx="150.0" cy="87.7" r="6.0" fill="red"/>
+<line x1="150.0" y1="87.7" x2="101.5" y2="52.4" stroke="lime" stroke-width="4" stroke-linecap="round"/>
+<circle cx="101.5" cy="52.4" r="6.0" fill="lime"/>
+<line x1="101.5" y1="52.4" x2="150.0" y2="17.1" stroke="red" stroke-width="4" stroke-linecap="round"/>
+<circle cx="150.0" cy="17.1" r="6.0" fill="red"/>
+<line x1="150.0" y1="17.1" x2="90.0" y2="17.1" stroke="cyan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="90.0" cy="17.1" r="6.0" fill="cyan"/>
+<line x1="90.0" y1="17.1" x2="138.5" y2="52.4" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="138.5" cy="52.4" r="6.0" fill="tan"/>
+<line x1="138.5" y1="52.4" x2="157.1" y2="-4.7" stroke="orange" stroke-width="4" stroke-linecap="round"/>
+<circle cx="157.1" cy="-4.7" r="6.0" fill="orange"/>
+<line x1="157.1" y1="-4.7" x2="108.5" y2="30.6" stroke="skyblue" stroke-width="4" stroke-linecap="round"/>
+<circle cx="108.5" cy="30.6" r="6.0" fill="skyblue"/>
+<line x1="108.5" y1="30.6" x2="48.5" y2="30.6" stroke="cyan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="48.5" cy="30.6" r="6.0" fill="cyan"/>
+<line x1="48.5" y1="30.6" x2="30.0" y2="-26.5" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="30.0" cy="-26.5" r="6.0" fill="yellow"/>
+<line x1="30.0" y1="-26.5" x2="-30.0" y2="-26.5" stroke="cyan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-30.0" cy="-26.5" r="6.0" fill="cyan"/>
+<line x1="-30.0" y1="-26.5" x2="-11.5" y2="30.6" stroke="pink" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-11.5" cy="30.6" r="6.0" fill="pink"/>
+<line x1="-11.5" y1="30.6" x2="37.1" y2="65.9" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="37.1" cy="65.9" r="6.0" fill="tan"/>
+<line x1="37.1" y1="65.9" x2="18.5" y2="122.9" stroke="violet" stroke-width="4" stroke-linecap="round"/>
+<circle cx="18.5" cy="122.9" r="6.0" fill="violet"/>
+<line x1="18.5" y1="122.9" x2="67.1" y2="158.2" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="67.1" cy="158.2" r="6.0" fill="tan"/>
+<line x1="67.1" y1="158.2" x2="48.5" y2="101.1" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="48.5" cy="101.1" r="6.0" fill="yellow"/>
+<line x1="48.5" y1="101.1" x2="67.1" y2="44.1" stroke="orange" stroke-width="4" stroke-linecap="round"/>
+<circle cx="67.1" cy="44.1" r="6.0" fill="orange"/>
+<line x1="67.1" y1="44.1" x2="48.5" y2="-13.0" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="48.5" cy="-13.0" r="6.0" fill="yellow"/>
+<line x1="48.5" y1="-13.0" x2="67.1" y2="44.1" stroke="pink" stroke-width="4" stroke-linecap="round"/>
+<circle cx="67.1" cy="44.1" r="6.0" fill="pink"/>
+<line x1="67.1" y1="44.1" x2="18.5" y2="8.8" stroke="lime" stroke-width="4" stroke-linecap="round"/>
+<circle cx="18.5" cy="8.8" r="6.0" fill="lime"/>
+<line x1="18.5" y1="8.8" x2="-30.0" y2="44.1" stroke="skyblue" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-30.0" cy="44.1" r="6.0" fill="skyblue"/>
+<line x1="-30.0" y1="44.1" x2="-11.5" y2="-13.0" stroke="orange" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-11.5" cy="-13.0" r="6.0" fill="orange"/>
+<line x1="-11.5" y1="-13.0" x2="-60.0" y2="22.3" stroke="skyblue" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-60.0" cy="22.3" r="6.0" fill="skyblue"/>
+<line x1="-60.0" y1="22.3" x2="-108.5" y2="-13.0" stroke="lime" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-108.5" cy="-13.0" r="6.0" fill="lime"/>
+<line x1="-108.5" y1="-13.0" x2="-127.1" y2="-70.0" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-127.1" cy="-70.0" r="6.0" fill="yellow"/>
+<line x1="-127.1" y1="-70.0" x2="-145.6" y2="-127.1" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-145.6" cy="-127.1" r="6.0" fill="yellow"/>
+<line x1="-145.6" y1="-127.1" x2="-127.1" y2="-70.0" stroke="pink" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-127.1" cy="-70.0" r="6.0" fill="pink"/>
+<line x1="-127.1" y1="-70.0" x2="-145.6" y2="-127.1" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-145.6" cy="-127.1" r="6.0" fill="yellow"/>
+<line x1="-145.6" y1="-127.1" x2="-127.1" y2="-184.2" stroke="orange" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-127.1" cy="-184.2" r="6.0" fill="orange"/>
+<line x1="-127.1" y1="-184.2" x2="-145.6" y2="-127.1" stroke="violet" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-145.6" cy="-127.1" r="6.0" fill="violet"/>
+<line x1="-145.6" y1="-127.1" x2="-97.1" y2="-91.8" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-97.1" cy="-91.8" r="6.0" fill="tan"/>
+<line x1="-97.1" y1="-91.8" x2="-157.1" y2="-91.8" stroke="cyan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-157.1" cy="-91.8" r="6.0" fill="cyan"/>
+<line x1="-157.1" y1="-91.8" x2="-97.1" y2="-91.8" stroke="white" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-97.1" cy="-91.8" r="6.0" fill="white"/>
+<line x1="-97.1" y1="-91.8" x2="-78.5" y2="-148.9" stroke="orange" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-78.5" cy="-148.9" r="6.0" fill="orange"/>
+<line x1="-78.5" y1="-148.9" x2="-60.0" y2="-91.8" stroke="pink" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-60.0" cy="-91.8" r="6.0" fill="pink"/>
+<line x1="-60.0" y1="-91.8" x2="-41.5" y2="-34.8" stroke="pink" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-41.5" cy="-34.8" r="6.0" fill="pink"/>
+<line x1="-41.5" y1="-34.8" x2="-90.0" y2="-70.0" stroke="lime" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-90.0" cy="-70.0" r="6.0" fill="lime"/>
+<line x1="-90.0" y1="-70.0" x2="-41.5" y2="-105.3" stroke="red" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-41.5" cy="-105.3" r="6.0" fill="red"/>
+<line x1="-41.5" y1="-105.3" x2="7.1" y2="-70.0" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="7.1" cy="-70.0" r="6.0" fill="tan"/>
+<line x1="7.1" y1="-70.0" x2="-11.5" y2="-13.0" stroke="violet" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-11.5" cy="-13.0" r="6.0" fill="violet"/>
+<line x1="-11.5" y1="-13.0" x2="37.1" y2="-48.3" stroke="red" stroke-width="4" stroke-linecap="round"/>
+<circle cx="37.1" cy="-48.3" r="6.0" fill="red"/>
+<line x1="37.1" y1="-48.3" x2="-11.5" y2="-13.0" stroke="skyblue" stroke-width="4" stroke-linecap="round"/>
+<circle cx="-11.5" cy="-13.0" r="6.0" fill="skyblue"/>
+<line x1="-11.5" y1="-13.0" x2="37.1" y2="22.3" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="37.1" cy="22.3" r="6.0" fill="tan"/>
+<line x1="37.1" y1="22.3" x2="18.5" y2="-34.8" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="18.5" cy="-34.8" r="6.0" fill="yellow"/>
+<line x1="18.5" y1="-34.8" x2="67.1" y2="0.5" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="67.1" cy="0.5" r="6.0" fill="tan"/>
+<line x1="67.1" y1="0.5" x2="115.6" y2="35.8" stroke="tan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="115.6" cy="35.8" r="6.0" fill="tan"/>
+<line x1="115.6" y1="35.8" x2="97.1" y2="-21.3" stroke="yellow" stroke-width="4" stroke-linecap="round"/>
+<circle cx="97.1" cy="-21.3" r="6.0" fill="yellow"/>
+<line x1="97.1" y1="-21.3" x2="78.5" y2="35.8" stroke="violet" stroke-width="4" stroke-linecap="round"/>
+<circle cx="78.5" cy="35.8" r="6.0" fill="violet"/>
+<line x1="78.5" y1="35.8" x2="18.5" y2="35.8" stroke="cyan" stroke-width="4" stroke-linecap="round"/>
+<circle cx="18.5" cy="35.8" r="6.0" fill="cyan"/>
+<line x1="18.5" y1="35.8" x2="67.1" y2="0.5" stroke="red" stroke-width="4" stroke-linecap="round"/>
+<circle cx="67.1" cy="0.5" r="6.0" fill="red"/>
+</svg><figcaption>Клавіша 3: кожна цифра каже, куди йти.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="k4">
+    <h2>Крок 4. Скільки яких цифр</h2>
+    <div class="two">
+      <div>
+<pre><span class="k">def</span> chart():
+    t.clear()
+    t.width(<span class="n">40</span>)
+    <span class="k">for</span> d <span class="k">in</span> range(<span class="n">10</span>):
+        n = pi.count(str(d))
+        x = <span class="n">-270</span> + d * <span class="n">60</span>
+        t.goto(x, <span class="n">-200</span>)
+        t.color(colors[d])
+        t.pendown()
+        t.goto(x, <span class="n">-200</span> + n * <span class="n">40</span>)
+        t.penup()
+        t.goto(x, <span class="n">-170</span> + n * <span class="n">40</span>)
+        t.write(n, align=<span class="s">&quot;center&quot;</span>, font=(<span class="s">&quot;Arial&quot;</span>, <span class="n">16</span>, <span class="s">&quot;bold&quot;</span>))
+        t.goto(x, <span class="n">-240</span>)
+        t.write(d, align=<span class="s">&quot;center&quot;</span>, font=(<span class="s">&quot;Arial&quot;</span>, <span class="n">16</span>, <span class="s">&quot;bold&quot;</span>))
+    screen.update()</pre>
+        <p class="run">Над <code>carpet()</code>. Під клавішею 3 допиши: <code>screen.onkey(chart, &quot;4&quot;)</code>. F5, натисни 4. Тепер працюють клавіші 1, 2, 3, 4.</p>
+        <p class="try"><b>Зміни число:</b> <code>t.width(40)</code> → <code>t.width(20)</code>. Яка цифра трапляється найчастіше? Відповідь знадобиться в тесті.</p>
+      </div>
+      <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="-450 -325 900 650" class="pic" role="img"><rect x="-450" y="-325" width="900" height="650" fill="black"/>
+<line x1="-270.0" y1="200.0" x2="-270.0" y2="160.0" stroke="white" stroke-width="40" stroke-linecap="round"/>
+<text x="-270.0" y="125.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="white">1</text>
+<text x="-270.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="white">0</text>
+<line x1="-210.0" y1="200.0" x2="-210.0" y2="0.0" stroke="red" stroke-width="40" stroke-linecap="round"/>
+<text x="-210.0" y="-34.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="red">5</text>
+<text x="-210.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="red">1</text>
+<line x1="-150.0" y1="200.0" x2="-150.0" y2="0.0" stroke="orange" stroke-width="40" stroke-linecap="round"/>
+<text x="-150.0" y="-34.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="orange">5</text>
+<text x="-150.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="orange">2</text>
+<line x1="-90.0" y1="200.0" x2="-90.0" y2="-160.0" stroke="yellow" stroke-width="40" stroke-linecap="round"/>
+<text x="-90.0" y="-194.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="yellow">9</text>
+<text x="-90.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="yellow">3</text>
+<line x1="-30.0" y1="200.0" x2="-30.0" y2="40.0" stroke="lime" stroke-width="40" stroke-linecap="round"/>
+<text x="-30.0" y="5.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="lime">4</text>
+<text x="-30.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="lime">4</text>
+<line x1="30.0" y1="200.0" x2="30.0" y2="0.0" stroke="cyan" stroke-width="40" stroke-linecap="round"/>
+<text x="30.0" y="-34.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="cyan">5</text>
+<text x="30.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="cyan">5</text>
+<line x1="90.0" y1="200.0" x2="90.0" y2="40.0" stroke="skyblue" stroke-width="40" stroke-linecap="round"/>
+<text x="90.0" y="5.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="skyblue">4</text>
+<text x="90.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="skyblue">6</text>
+<line x1="150.0" y1="200.0" x2="150.0" y2="40.0" stroke="violet" stroke-width="40" stroke-linecap="round"/>
+<text x="150.0" y="5.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="violet">4</text>
+<text x="150.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="violet">7</text>
+<line x1="210.0" y1="200.0" x2="210.0" y2="0.0" stroke="pink" stroke-width="40" stroke-linecap="round"/>
+<text x="210.0" y="-34.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="pink">5</text>
+<text x="210.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="pink">8</text>
+<line x1="270.0" y1="200.0" x2="270.0" y2="-120.0" stroke="tan" stroke-width="40" stroke-linecap="round"/>
+<text x="270.0" y="-154.8" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="tan">8</text>
+<text x="270.0" y="235.2" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="21" fill="tan">9</text>
+</svg><figcaption>Клавіша 4: стовпчик для кожної цифри від 0 до 9.</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Якщо не працює</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що робити</th></tr>
+      <tr><td><code>IndexError: string index out of range</code></td><td>У рядку <code>pi</code> менше 50 цифр. Звір по 10 із чорною смужкою вгорі.</td></tr>
+      <tr><td><code>IndexError: list index out of range</code></td><td>У списку <code>colors</code> не 10 кольорів. Найчастіше забута кома між словами.</td></tr>
+      <tr><td><code>NameError: name '...' is not defined</code></td><td>Помилка в назві. <code>colors</code>, <code>carpet</code>, <code>flower</code> пиши однаково скрізь.</td></tr>
+      <tr><td><code>IndentationError</code>, <code>SyntaxError</code></td><td>Забута двокрапка після <code>def</code> або <code>for</code>, чи немає відступу 4 пробіли.</td></tr>
+      <tr><td>Клавіші нічого не роблять</td><td>Клацни мишкою по вікну з малюнком. Перевір рядки <code>screen.onkey</code> і <code>screen.listen()</code>.</td></tr>
+      <tr><td>Кружечки без кольору, помилка <code>bad color</code></td><td>Помилка в назві кольору: <code>"skyblue"</code>, <code>"violet"</code> пишуться разом і маленькими літерами.</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Для тих, хто вже все зробив ★</h2>
+    <div class="star">
+      <ol>
+        <li>Додай у кінець рядка <code>pi</code> ще 50 цифр Пі: <code>05820974944592307816406286208998628034825342117067</code>. У квітці й прогулянці заміни <code>range(50)</code> на <code>range(100)</code>, а в квітці ще <code>i * 5</code> на <code>i * 3</code>. У діаграмі <code>n * 40</code> заміни на <code>n * 20</code>, щоб стовпчики влізли.</li>
+        <li>Свої кольори: заміни будь-які 3 кольори в списку <code>colors</code>.</li>
+        <li>Клавіша <code>5</code>: квітка з кутом <code>90</code>. Скопіюй <code>flower</code>, назви <code>flower2</code> і зміни число.</li>
+        <li>Замість Пі візьми інше число, наприклад <code>"27182818284590452353602874713526624977572470936999"</code>: це перші 50 цифр числа <i>e</i>. Чим відрізняється діаграма?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>Тест: 5 питань</h2>
+    <p>Відповідай числом. Підказки є в коді та на картинках.</p>
+    <div class="quiz" id="quiz"></div>
+    <p class="score" id="score">Правильно: 0 з 5</p>
+  </section>
+
+  <section>
+    <h2>Практична робота № 2: що показати вчителю</h2>
+    <ul>
+      <li>Програма запускається без помилок, і клавіші 1, 2, 3, 4 малюють чотири картини.</li>
+      <li>Хоча б одне число змінене так, як у рядку «Зміни число».</li>
+      <li>Тест: усі 5 відповідей.</li>
+    </ul>
+    <p>Встиг не все? Покажи те, що працює: кожен готовий крок теж рахується.</p>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити, як у циклі змінювати колір і розмір фігури. Подумати: який узор для писанки можна намалювати з цифр або кружечків? Наступний урок — «Інноваційне писанкарство».</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+  { q: "Скільки разів у 50 цифрах Пі трапляється цифра 9? (діаграма, клавіша 4)", ok: "8" },
+  { q: "pi = \"314159...\". Яка цифра в <code>pi[5]</code>? Пам'ятай: рахуємо з нуля.", ok: "9" },
+  { q: "Скільки буде <code>17 % 10</code>? (місце в ряду)", ok: "7" },
+  { q: "Скільки буде <code>17 // 10</code>? (номер ряду)", ok: "1" },
+  { q: "У прогулянці цифра 5 дає напрямок <code>5 * 36</code>. Скільки це градусів?", ok: "180" }
+];
+let right = 0, answered = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <div class="ans">
+      <input id="a${k}" inputmode="numeric" autocomplete="off" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = inp.value.replace(/\s/g, "") === t.ok;
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.ok}`;
+  if (good) right++;
+  answered++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

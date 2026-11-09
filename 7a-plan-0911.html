@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План: число Пі, 7-А</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #7e22ce; border-bottom: 3px solid #7e22ce; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child { white-space: nowrap; font-weight: 700; color: #7e22ce; font-variant-numeric: tabular-nums; }
+  .wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>План уроку <span>· 7-А · 09.11 · Числа, цифри, фігури і кольори (Пі)</span></h1>
+
+  <p>Тема за КТП: «Числа, цифри, фігури і кольори (Пі)», Практична робота № 2. Сторінка для учнів: <a href="7a-pi.html">yuriihalas.github.io/it/7a-pi.html</a>. Код — 68 рядків у 4 кроках, після кожного кроку програма вже працює. Відповіді лежать лише на Mac, у папці «7 клас».</p>
+
+  <section>
+    <h2>Хід уроку</h2>
+    <div class="wrap"><table>
+      <tr><th>Хв</th><th>Що робимо</th></tr>
+      <tr><td>0–5</td><td>Що таке Пі: обхват кола ділимо на ширину — завжди 3,14… Цифри йдуть без кінця. 14 березня — День числа Пі. Покажи готову програму: клавіші 1, 2, 3, 4.</td></tr>
+      <tr><td>5–20</td><td>Крок 1, килимок. Найдовший крок: рядок із 50 цифр і список кольорів. Поясни <code>pi[i]</code> і <code>i % 10</code> на килимку: «місце в ряду» і «номер ряду».</td></tr>
+      <tr><td>20–27</td><td>Крок 2, квітка. Розмір кружечка залежить від цифри.</td></tr>
+      <tr><td>27–34</td><td>Крок 3, прогулянка. Цифра — напрямок: 10 напрямків по 36°.</td></tr>
+      <tr><td>34–40</td><td>Крок 4, діаграма: <code>pi.count</code>. Хто швидший — завдання ★.</td></tr>
+      <tr><td>40–44</td><td>Тест на сторінці, 5 питань.</td></tr>
+      <tr><td>44–45</td><td>Домашнє, анонс писанок.</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Практична робота № 2: 12 балів</h2>
+    <div class="wrap"><table>
+      <tr><th>Що</th><th>Бали</th><th>Як перевірити</th></tr>
+      <tr><td>Крок 1</td><td>4</td><td>Клавіша 1 — килимок із 50 кружечків і цифрами</td></tr>
+      <tr><td>Крок 2</td><td>2</td><td>Клавіша 2 — квітка</td></tr>
+      <tr><td>Крок 3</td><td>2</td><td>Клавіша 3 — кольорова ламана</td></tr>
+      <tr><td>Крок 4</td><td>2</td><td>Клавіша 4 — 10 стовпчиків із числами</td></tr>
+      <tr><td>Тест і «Зміни число»</td><td>2</td><td>4–5 правильних і хоча б одна зміна — 2, інакше 1</td></tr>
+    </table></div>
+    <p>★ можна рахувати замість пропущеного бала. Щоб код не був просто переписаний, покажи на <code>i % 10</code> або <code>d * 36</code> і спитай, що це робить.</p>
+  </section>
+
+  <section>
+    <h2>На що звернути увагу</h2>
+    <p>Найчастіша помилка — у рядку <code>pi</code> менше 50 цифр, тоді <code>IndexError</code>. Нехай звіряють по 10 цифр із чорною смужкою на сторінці. Файл не можна називати <code>turtle.py</code>. Клавіші працюють після кліку по вікну з малюнком; цифри 1–4 однакові в українській і англійській розкладці.</p>
+  </section>
+
+</div>
+</body>
+</html>
