@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Налагодження програм</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --a: #0b5cad; --a2: #eef4fb; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 20px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .digits { font: 700 26px Consolas, "Courier New", monospace; letter-spacing: 1px; background: #111; color: #ffe066; padding: 6px 12px; border-radius: 6px; margin: 0 0 8px; overflow-x: auto; white-space: nowrap; }
+  .digits span { color: #fff; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.3; background: #f4f6f9; border: 2px solid #d5dbe3; border-left: 8px solid var(--a); border-radius: 4px; padding: 6px 10px; margin: 0 0 8px; overflow-x: auto; }
+  .k { color: #b0006e; } .s { color: #0a6e2a; } .n { color: #b45309; }
+  figure { margin: 0; }
+  svg.pic { width: 100%; height: auto; display: block; border-radius: 6px; }
+  figcaption { font-size: 16px; color: #444; margin-top: 3px; }
+  .run { background: #fff6dd; border-left: 5px solid #c79100; padding: 5px 10px; margin: 0 0 8px; }
+  .try { background: var(--a2); border-left: 5px solid var(--a); padding: 5px 10px; margin: 0 0 8px; }
+  .try b { color: var(--a); }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 4px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child code { white-space: nowrap; }
+  .wrap { overflow-x: auto; }
+  .star { background: #eef8ee; border-left: 5px solid #1a7f37; padding: 6px 10px; }
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid var(--a); border-radius: 5px; background: #fff; color: var(--a); font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .quiz { display: grid; gap: 8px; margin-bottom: 8px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 19px Consolas, "Courier New", monospace; width: 5em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q p { margin-bottom: 6px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-weight: 700; font-size: 21px; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .tasks { display: grid; gap: 8px; margin: 0 0 8px; padding: 0; list-style: none; counter-reset: t; }
+  .tasks li { counter-increment: t; border: 1px solid #d5dae0; border-radius: 6px; padding: 6px 10px 6px 44px; position: relative; margin: 0; }
+  .tasks li::before { content: counter(t); position: absolute; left: 10px; top: 6px; background: var(--a); color: #fff; font-weight: 700; border-radius: 50%; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; font-size: .9em; }
+  .tasks .was { color: #b42318; } .tasks .now { color: #1a7f37; }
+  .quiz { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 820px) { .quiz { grid-template-columns: 1fr; } }
+
+  .kinds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 8px; }
+  .kind { border: 2px solid #d5dae0; border-radius: 8px; padding: 8px 10px; min-width: 0; }
+  .kind h3 { margin: 0 0 4px; font-size: 20px; }
+  .kind pre { font-size: 15px; }
+  .k1 { border-color: #c2410c; } .k1 h3 { color: #c2410c; }
+  .k2 { border-color: #b42318; } .k2 h3 { color: #b42318; }
+  .k3 { border-color: #7e22ce; } .k3 h3 { color: #7e22ce; }
+  .err { background: #fff1f0; border: 1px solid #f5c2c0; color: #8a1c14; font-family: Menlo, Consolas, monospace; font-size: 15px; padding: 6px 10px; border-radius: 4px; white-space: pre-wrap; margin: 0 0 8px; }
+  .out { background: #f0fdf4; border: 1px solid #bbf7d0; font-family: Menlo, Consolas, monospace; font-size: 15px; padding: 6px 10px; border-radius: 4px; white-space: pre-wrap; margin: 0 0 8px; }
+  .bug { border: 2px solid #d5dae0; border-radius: 8px; padding: 8px 12px; margin: 0 0 12px; }
+  .bug h3 { margin: 0 0 6px; font-size: 20px; }
+  .lab { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #6b7280; margin: 4px 0 2px; }
+  .ann td:first-child { white-space: nowrap; }
+  @media (max-width: 820px) { .kinds { grid-template-columns: 1fr; } }
+
+  .sheet img { display: block; max-width: 100%; height: auto; margin: 0 0 14px; -webkit-user-drag: none; user-select: none; }
+  .q p { margin: 0 0 6px; } .q img { margin: 0 !important; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <img src="8a-nalagodzhennia/b00.png" width="1040" height="123" alt="Налагодження програм" draggable="false">
+  <img src="8a-nalagodzhennia/b01.png" width="1080" height="383" alt="Три види помилок" draggable="false">
+  <img src="8a-nalagodzhennia/b02.png" width="1080" height="363" alt="Як читати повідомлення про помилку" draggable="false">
+  <img src="8a-nalagodzhennia/b03.png" width="1080" height="349" alt="Найчастіші повідомлення" draggable="false">
+  <img src="8a-nalagodzhennia/b04.png" width="1080" height="434" alt="Як шукати логічну помилку" draggable="false">
+  <img src="8a-nalagodzhennia/b05.png" width="1080" height="289" alt="Як працювати із завданнями" draggable="false">
+  <img src="8a-nalagodzhennia/b06.png" width="1080" height="1216" alt="Завдання 1–4" draggable="false">
+  <img src="8a-nalagodzhennia/b07.png" width="1080" height="1127" alt="Завдання 5–8" draggable="false">
+  <img src="8a-nalagodzhennia/b08.png" width="1080" height="1489" alt="Завдання 9–12" draggable="false">
+  <img src="8a-nalagodzhennia/b09.png" width="1080" height="185" alt="★ Для тих, хто вже все зробив" draggable="false">
+  <img src="8a-nalagodzhennia/b10.png" width="1080" height="69" alt="Тест: 12 питань" draggable="false">
+  <div class="quiz" id="quiz"></div>
+  <p class="score" id="score">Правильно: 0 з 12</p>
+  <img src="8a-nalagodzhennia/b11.png" width="1080" height="131" alt="Що показати вчителю" draggable="false">
+  <img src="8a-nalagodzhennia/b12.png" width="1080" height="96" alt="Домашнє завдання" draggable="false">
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [{"ok": "1"}, {"ok": "2"}, {"ok": "3"}, {"ok": "2"}, {"ok": "1"}, {"ok": "3"}, {"ok": "2"}, {"ok": "2"}, {"ok": "6"}, {"ok": "12"}, {"ok": "4"}, {"ok": "9"}];
+const IMGS = ["<img src=\"8a-nalagodzhennia/q01.png\" width=\"364\" height=\"28\" alt=\"Питання 1\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q02.png\" width=\"319\" height=\"26\" alt=\"Питання 2\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q03.png\" width=\"508\" height=\"53\" alt=\"Питання 3\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q04.png\" width=\"319\" height=\"27\" alt=\"Питання 4\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q05.png\" width=\"426\" height=\"28\" alt=\"Питання 5\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q06.png\" width=\"500\" height=\"55\" alt=\"Питання 6\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q07.png\" width=\"521\" height=\"54\" alt=\"Питання 7\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q08.png\" width=\"285\" height=\"26\" alt=\"Питання 8\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q09.png\" width=\"539\" height=\"55\" alt=\"Питання 9\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q10.png\" width=\"507\" height=\"54\" alt=\"Питання 10\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q11.png\" width=\"449\" height=\"55\" alt=\"Питання 11\" draggable=\"false\">", "<img src=\"8a-nalagodzhennia/q12.png\" width=\"350\" height=\"27\" alt=\"Питання 12\" draggable=\"false\">"];
+let right = 0, answered = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p>${IMGS[k]}</p>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = inp.value.replace(/\s/g, "") === t.ok;
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.ok}`;
+  if (good) right++;
+  answered++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
