@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Число Пі в кольорах</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --a: #7e22ce; --a2: #f5effc; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 20px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .digits { font: 700 26px Consolas, "Courier New", monospace; letter-spacing: 1px; background: #111; color: #ffe066; padding: 6px 12px; border-radius: 6px; margin: 0 0 8px; overflow-x: auto; white-space: nowrap; }
+  .digits span { color: #fff; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.3; background: #f4f6f9; border: 2px solid #d5dbe3; border-left: 8px solid var(--a); border-radius: 4px; padding: 6px 10px; margin: 0 0 8px; overflow-x: auto; }
+  .k { color: #b0006e; } .s { color: #0a6e2a; } .n { color: #b45309; }
+  figure { margin: 0; }
+  svg.pic { width: 100%; height: auto; display: block; border-radius: 6px; }
+  figcaption { font-size: 16px; color: #444; margin-top: 3px; }
+  .run { background: #fff6dd; border-left: 5px solid #c79100; padding: 5px 10px; margin: 0 0 8px; }
+  .try { background: var(--a2); border-left: 5px solid var(--a); padding: 5px 10px; margin: 0 0 8px; }
+  .try b { color: var(--a); }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 4px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child code { white-space: nowrap; }
+  .wrap { overflow-x: auto; }
+  .star { background: #eef8ee; border-left: 5px solid #1a7f37; padding: 6px 10px; }
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid var(--a); border-radius: 5px; background: #fff; color: var(--a); font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .quiz { display: grid; gap: 8px; margin-bottom: 8px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 19px Consolas, "Courier New", monospace; width: 5em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q p { margin-bottom: 6px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-weight: 700; font-size: 21px; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .tasks { display: grid; gap: 8px; margin: 0 0 8px; padding: 0; list-style: none; counter-reset: t; }
+  .tasks li { counter-increment: t; border: 1px solid #d5dae0; border-radius: 6px; padding: 6px 10px 6px 44px; position: relative; margin: 0; }
+  .tasks li::before { content: counter(t); position: absolute; left: 10px; top: 6px; background: var(--a); color: #fff; font-weight: 700; border-radius: 50%; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; font-size: .9em; }
+  .tasks .was { color: #b42318; } .tasks .now { color: #1a7f37; }
+  .quiz { grid-template-columns: 1fr 1fr; }
+  table.idx td, table.idx th { text-align: center; font-variant-numeric: tabular-nums; }
+  table.idx td { font-family: Menlo, Consolas, monospace; }
+  .two2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .two2 pre { margin: 0; }
+  @media (max-width: 820px) { .quiz { grid-template-columns: 1fr; } }
+
+  .sheet img { display: block; max-width: 100%; height: auto; margin: 0 0 14px; -webkit-user-drag: none; user-select: none; }
+  .q p { margin: 0 0 6px; } .q img { margin: 0 !important; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <img src="7b-pi/b00.png" width="1080" height="196" alt="Число Пі в кольорах" draggable="false">
+  <img src="7b-pi/b01.png" width="1080" height="637" alt="Частина 1. Перепиши і запусти F5" draggable="false">
+  <img src="7b-pi/b02.png" width="1080" height="364" alt="Що означає" draggable="false">
+  <img src="7b-pi/b03.png" width="1080" height="359" alt="Що таке цикл for" draggable="false">
+  <img src="7b-pi/b04.png" width="1080" height="210" alt="Рядок і його елементи" draggable="false">
+  <img src="7b-pi/b05.png" width="1080" height="179" alt="Список і його елементи" draggable="false">
+  <img src="7b-pi/b06.png" width="1080" height="399" alt="% і // : місце в ряду і номер ряду" draggable="false">
+  <img src="7b-pi/b07.png" width="1080" height="457" alt="Що робить комп'ютер у кожному повторі" draggable="false">
+  <img src="7b-pi/b08.png" width="1080" height="413" alt="Частина 2. Змінюй числа" draggable="false">
+  <img src="7b-pi/b09.png" width="1080" height="343" alt="★ Для сильніших: прогулянка Пі" draggable="false">
+  <img src="7b-pi/b10.png" width="1080" height="260" alt="★★ Ще завдання для сильніших" draggable="false">
+  <img src="7b-pi/b11.png" width="1080" height="259" alt="Якщо не працює" draggable="false">
+  <img src="7b-pi/b12.png" width="1080" height="69" alt="Тест: 16 питань" draggable="false">
+  <div class="quiz" id="quiz"></div>
+  <p class="score" id="score">Правильно: 0 з 16</p>
+  <img src="7b-pi/b13.png" width="1080" height="131" alt="Що показати вчителю" draggable="false">
+  <img src="7b-pi/b14.png" width="1080" height="96" alt="Домашнє завдання" draggable="false">
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [{"ok": "50"}, {"ok": "3"}, {"ok": "9"}, {"ok": "10"}, {"ok": "3"}, {"ok": "7"}, {"ok": "1"}, {"ok": "2"}, {"ok": "-90"}, {"ok": "2"}, {"ok": "55"}, {"ok": "8"}, {"ok": "50"}, {"ok": "4"}, {"ok": "60"}, {"ok": "49"}];
+const IMGS = ["<img src=\"7b-pi/q01.png\" width=\"255\" height=\"28\" alt=\"Питання 1\" draggable=\"false\">", "<img src=\"7b-pi/q02.png\" width=\"213\" height=\"28\" alt=\"Питання 2\" draggable=\"false\">", "<img src=\"7b-pi/q03.png\" width=\"359\" height=\"28\" alt=\"Питання 3\" draggable=\"false\">", "<img src=\"7b-pi/q04.png\" width=\"338\" height=\"27\" alt=\"Питання 4\" draggable=\"false\">", "<img src=\"7b-pi/q05.png\" width=\"537\" height=\"53\" alt=\"Питання 5\" draggable=\"false\">", "<img src=\"7b-pi/q06.png\" width=\"365\" height=\"27\" alt=\"Питання 6\" draggable=\"false\">", "<img src=\"7b-pi/q07.png\" width=\"368\" height=\"27\" alt=\"Питання 7\" draggable=\"false\">", "<img src=\"7b-pi/q08.png\" width=\"525\" height=\"53\" alt=\"Питання 8\" draggable=\"false\">", "<img src=\"7b-pi/q09.png\" width=\"442\" height=\"28\" alt=\"Питання 9\" draggable=\"false\">", "<img src=\"7b-pi/q10.png\" width=\"462\" height=\"27\" alt=\"Питання 10\" draggable=\"false\">", "<img src=\"7b-pi/q11.png\" width=\"545\" height=\"27\" alt=\"Питання 11\" draggable=\"false\">", "<img src=\"7b-pi/q12.png\" width=\"496\" height=\"53\" alt=\"Питання 12\" draggable=\"false\">", "<img src=\"7b-pi/q13.png\" width=\"428\" height=\"52\" alt=\"Питання 13\" draggable=\"false\">", "<img src=\"7b-pi/q14.png\" width=\"365\" height=\"28\" alt=\"Питання 14\" draggable=\"false\">", "<img src=\"7b-pi/q15.png\" width=\"531\" height=\"28\" alt=\"Питання 15\" draggable=\"false\">", "<img src=\"7b-pi/q16.png\" width=\"536\" height=\"28\" alt=\"Питання 16\" draggable=\"false\">"];
+let right = 0, answered = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p>${IMGS[k]}</p>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = inp.value.replace(/\s/g, "").replace("−", "-") === t.ok;
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.ok}`;
+  if (good) right++;
+  answered++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
