@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План: тестові дані, 8-А</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child { white-space: nowrap; font-weight: 700; color: #0b5cad; font-variant-numeric: tabular-nums; }
+  .wrap { overflow-x: auto; }
+</style><style>pre{font-family:Menlo,Consolas,monospace;font-size:14px;background:#f4f6f9;padding:6px 10px;margin:4px 0 10px;border-left:5px solid #1a7f37}</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>План уроку <span>· 8-А · 12.11 · Підготовка вхідних даних для тестування програм</span></h1>
+
+  <p>Тема за КТП: «Підготовка вхідних даних для тестування програм». Сторінка для учнів: <a href="8a-testuvannia.html">yuriihalas.github.io/it/8a-testuvannia.html</a>. Код там намальований (canvas), скопіювати не можна — переписують. Відповіді лежать лише на Mac, у папці «8 клас».</p>
+  <section><h2>Що учні мають вивчити</h2><ul>
+    <li>Тест = вхідні дані + очікуваний результат; фактичний результат порівнюємо з очікуваним.</li>
+    <li>Очікуваний результат рахуємо <b>до</b> запуску.</li>
+    <li>4 групи даних: звичайні, межові, особливі (0, від'ємні, однакові, «нічого»), неправильні (abc, 12.5).</li>
+    <li>Межові значення: сама межа і сусід з кожного боку — там помилки найчастіше.</li>
+    <li>Тести показують, що помилка є, але не доводять, що помилок немає.</li>
+  </ul></section>
+  <section><h2>Хід уроку</h2><div class="wrap"><table>
+    <tr><th>Хв</th><th>Що робимо</th></tr>
+    <tr><td>0–5</td><td>Зачіпка: «Програма запустилась без червоного — значить, правильна?» Розкажи, що ти сам працюєш інженером з автоматизації тестування: саме це й робиш щодня — придумуєш дані, на яких програма зламається.</td></tr>
+    <tr><td>5–10</td><td>«Запиши в зошит»: тест, очікуваний, фактичний. 4 групи даних — до кожної клас придумує приклад для умови «вік від 7 до 15».</td></tr>
+    <tr><td>10–15</td><td>Приклад з програмою 1 на проєкторі: заповнюєте таблицю разом, очікуване — до запуску. Введи abc — покажи ValueError.</td></tr>
+    <tr><td>15–37</td><td>Програми 2–5: переписують, таблиця на 5 тестів, шукають дані з помилкою. Ходиш і питаєш: «З якої групи цей тест? Чому взяв саме це число?» Хто швидше — ★.</td></tr>
+    <tr><td>37–43</td><td>Тест на сторінці, 12 питань.</td></tr>
+    <tr><td>43–45</td><td>Домашнє (з КТП): 3 набори даних для програми про парність.</td></tr>
+  </table></div></section>
+  <section><h2>Оцінювання: 12 балів</h2><div class="wrap"><table>
+    <tr><th>Що</th><th>Бали</th><th>Як перевірити</th></tr>
+    <tr><td>Таблиці тестів</td><td>6</td><td>За кожну з програм 2–5: таблиця з тестами з різних груп — 1 бал, знайдено дані з помилкою — ще 0,5</td></tr>
+    <tr><td>Пояснення</td><td>3</td><td>Учень усно каже, з якої групи тест, який виявив помилку, і чому саме він</td></tr>
+    <tr><td>Тест</td><td>3</td><td>11–12 правильних — 3, 8–10 — 2, 5–7 — 1</td></tr>
+  </table></div></section>
+  <section><h2>На що звернути увагу</h2><p>Учні часто пишуть очікуваний результат після запуску, переписуючи те, що вивела програма, — тоді помилку не знайти. Вимагай заповнювати «Очікуваний» до запуску. Програма 3 помиляється лише на однакових найбільших числах (5, 5, 1) — якщо ніхто не знайшов, підкажи групу «особливі».</p></section>
+
+</div>
+</body>
+</html>
