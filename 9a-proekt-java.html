@@ -71,6 +71,11 @@
   .ok { color: #1a7f37; font-weight: 700; } .bad { color: #b42318; font-weight: 700; }
   @media (max-width: 760px) { .groups { grid-template-columns: 1fr; } }
 </style>
+<style>
+  .cb { position: relative; }
+  .cb pre { padding-right: 110px; }
+  .copy { position: absolute; top: 6px; right: 8px; font: 700 14px "Segoe UI", Arial, sans-serif; padding: 3px 10px; border: 2px solid var(--a); border-radius: 5px; background: #fff; color: var(--a); cursor: pointer; }
+</style>
 </head>
 <body>
 <div class="sheet">
@@ -95,36 +100,83 @@
 
   <section>
     <h2>Як запускати</h2>
-    <p>Відкрий <a href="https://www.programiz.com/java-programming/online-compiler/" target="_blank" rel="noopener">онлайн-компілятор Java</a>. Перепиши метод <b>над</b> <code>main</code>, а в <code>main</code> виклич його з даними з питання. Кожен новий виклик — новий рядок <code>System.out.println(...)</code>.</p>
-    <canvas class="code" data-code="&quot;public class Main {\n\n    // сюди переписуєш метод\n\n    public static void main(String[] args) {\n        System.out.println(hint(30, 50));\n    }\n}&quot;"></canvas>
+    <p>Відкрий <a href="https://www.programiz.com/java-programming/online-compiler/" target="_blank" rel="noopener">онлайн-компілятор Java</a>. Скопіюй метод і встав його <b>над</b> <code>main</code>, а в <code>main</code> виклич його з даними з питання. Кожен новий виклик — новий рядок <code>System.out.println(...)</code>.</p>
+    <div class="cb"><button class="copy" type="button">Копіювати</button><pre><span class="k">public</span> <span class="k">class</span> Main {
+
+    <span style="color:#6b7280">// сюди переписуєш метод</span>
+
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="k">String</span>[] args) {
+        System.out.println(hint(<span class="n">30</span>, <span class="n">50</span>));
+    }
+}</pre></div>
   </section>
 
   <section>
     <h2>Шість міні-проєктів</h2>
-    <p>Кожен метод — це головна частина маленького проєкту. Перепиши метод, викликай з даними з питань і відповідай, <b>що він виводить насправді</b>. У завданнях 5 і 6 є прихована помилка, як у справжніх програмах: на одних даних усе правильно, на інших — ні.</p>
+    <p>Кожен метод — це головна частина маленького проєкту. Скопіюй метод, викликай його з даними з питань і відповідай, <b>що він виводить насправді</b>. У завданнях 5 і 6 є прихована помилка, як у справжніх програмах: на одних даних усе правильно, на інших — ні.</p>
     <div class="prog"><h3>Завдання 1. Гра «Вгадай число»</h3>
 <p>Комп'ютер загадав число <code>secret</code>, гравець називає <code>guess</code>. Метод підказує: більше, менше чи вгадав.</p>
-<canvas class="code" data-code="&quot;static String hint(int guess, int secret) {\n    if (guess &lt; secret) {\n        return \&quot;Більше\&quot;;\n    } else if (guess &gt; secret) {\n        return \&quot;Менше\&quot;;\n    }\n    return \&quot;Вгадав!\&quot;;\n}&quot;"></canvas>
+<div class="cb"><button class="copy" type="button">Копіювати</button><pre><span class="k">static</span> <span class="k">String</span> hint(<span class="k">int</span> guess, <span class="k">int</span> secret) {
+    <span class="k">if</span> (guess &lt; secret) {
+        <span class="k">return</span> <span class="s">&quot;Більше&quot;</span>;
+    } <span class="k">else</span> <span class="k">if</span> (guess &gt; secret) {
+        <span class="k">return</span> <span class="s">&quot;Менше&quot;</span>;
+    }
+    <span class="k">return</span> <span class="s">&quot;Вгадав!&quot;</span>;
+}</pre></div>
 <div class="quiz" data-box="t1"></div></div>
 <div class="prog"><h3>Завдання 2. Надійність пароля</h3>
 <p>Пароль отримує бал за кожне: довжина від 8 символів, є цифра, є велика літера. Максимум 3 бали.</p>
-<canvas class="code" data-code="&quot;static int score(String p) {\n    int s = 0;\n    if (p.length() &gt;= 8) s++;\n    for (char c : p.toCharArray()) {\n        if (Character.isDigit(c)) { s++; break; }\n    }\n    for (char c : p.toCharArray()) {\n        if (Character.isUpperCase(c)) { s++; break; }\n    }\n    return s;\n}&quot;"></canvas>
+<div class="cb"><button class="copy" type="button">Копіювати</button><pre><span class="k">static</span> <span class="k">int</span> score(<span class="k">String</span> p) {
+    <span class="k">int</span> s = <span class="n">0</span>;
+    <span class="k">if</span> (p.length() &gt;= <span class="n">8</span>) s++;
+    <span class="k">for</span> (<span class="k">char</span> c : p.toCharArray()) {
+        <span class="k">if</span> (Character.isDigit(c)) { s++; break; }
+    }
+    <span class="k">for</span> (<span class="k">char</span> c : p.toCharArray()) {
+        <span class="k">if</span> (Character.isUpperCase(c)) { s++; break; }
+    }
+    <span class="k">return</span> s;
+}</pre></div>
 <div class="quiz" data-box="t2"></div></div>
 <div class="prog"><h3>Завдання 3. Камінь, ножиці, папір</h3>
 <p>Камінь б'є ножиці, ножиці б'ють папір, папір б'є камінь. Метод каже, хто переміг.</p>
-<canvas class="code" data-code="&quot;static String winner(String a, String b) {\n    if (a.equals(b)) return \&quot;нічия\&quot;;\n    if (a.equals(\&quot;камінь\&quot;) &amp;&amp; b.equals(\&quot;ножиці\&quot;)\n     || a.equals(\&quot;ножиці\&quot;) &amp;&amp; b.equals(\&quot;папір\&quot;)\n     || a.equals(\&quot;папір\&quot;) &amp;&amp; b.equals(\&quot;камінь\&quot;)) {\n        return \&quot;перший\&quot;;\n    }\n    return \&quot;другий\&quot;;\n}&quot;"></canvas>
+<div class="cb"><button class="copy" type="button">Копіювати</button><pre><span class="k">static</span> <span class="k">String</span> winner(<span class="k">String</span> a, <span class="k">String</span> b) {
+    <span class="k">if</span> (a.equals(b)) <span class="k">return</span> <span class="s">&quot;нічия&quot;</span>;
+    <span class="k">if</span> (a.equals(<span class="s">&quot;камінь&quot;</span>) &amp;&amp; b.equals(<span class="s">&quot;ножиці&quot;</span>)
+     || a.equals(<span class="s">&quot;ножиці&quot;</span>) &amp;&amp; b.equals(<span class="s">&quot;папір&quot;</span>)
+     || a.equals(<span class="s">&quot;папір&quot;</span>) &amp;&amp; b.equals(<span class="s">&quot;камінь&quot;</span>)) {
+        <span class="k">return</span> <span class="s">&quot;перший&quot;</span>;
+    }
+    <span class="k">return</span> <span class="s">&quot;другий&quot;</span>;
+}</pre></div>
 <div class="quiz" data-box="t3"></div></div>
 <div class="prog"><h3>Завдання 4. Шифр Цезаря</h3>
 <p>Кожну маленьку латинську літеру зсуваємо на <code>k</code> далі по алфавіту; після <code>z</code> знову йде <code>a</code>. Так шифрував листи Юлій Цезар.</p>
-<canvas class="code" data-code="&quot;static String shift(String s, int k) {\n    String r = \&quot;\&quot;;\n    for (char c : s.toCharArray()) {\n        r += (char) (&#x27;a&#x27; + (c - &#x27;a&#x27; + k) % 26);\n    }\n    return r;\n}&quot;"></canvas>
+<div class="cb"><button class="copy" type="button">Копіювати</button><pre><span class="k">static</span> <span class="k">String</span> shift(<span class="k">String</span> s, <span class="k">int</span> k) {
+    <span class="k">String</span> r = <span class="s">&quot;&quot;</span>;
+    <span class="k">for</span> (<span class="k">char</span> c : s.toCharArray()) {
+        r += (<span class="k">char</span>) (<span class="s">&#x27;a&#x27;</span> + (c - <span class="s">&#x27;a&#x27;</span> + k) % <span class="n">26</span>);
+    }
+    <span class="k">return</span> r;
+}</pre></div>
 <div class="quiz" data-box="t4"></div></div>
 <div class="prog"><h3>Завдання 5. Знижка в магазині</h3>
 <p>Від 500 грн — знижка 5 %, від 1000 грн — знижка 10 %. Метод повертає ціну зі знижкою. <b>У методі є прихована помилка — знайди її тестами.</b></p>
-<canvas class="code" data-code="&quot;static double price(double sum) {\n    if (sum &gt;= 1000) {\n        return sum * 0.9;\n    } else if (sum &gt; 500) {\n        return sum * 0.95;\n    }\n    return sum;\n}&quot;"></canvas>
+<div class="cb"><button class="copy" type="button">Копіювати</button><pre><span class="k">static</span> <span class="k">double</span> price(<span class="k">double</span> sum) {
+    <span class="k">if</span> (sum &gt;= <span class="n">1000</span>) {
+        <span class="k">return</span> sum * <span class="n">0</span>.9;
+    } <span class="k">else</span> <span class="k">if</span> (sum &gt; <span class="n">500</span>) {
+        <span class="k">return</span> sum * <span class="n">0</span>.95;
+    }
+    <span class="k">return</span> sum;
+}</pre></div>
 <div class="quiz" data-box="t5"></div></div>
 <div class="prog"><h3>Завдання 6. Високосний рік</h3>
 <p>Рік високосний, якщо ділиться на 4. Але роки, що діляться на 100, — не високосні, крім тих, що діляться на 400 (2000 — високосний, 1900 — ні). <b>Тут теж прихована помилка.</b></p>
-<canvas class="code" data-code="&quot;static boolean isLeap(int year) {\n    return year % 4 == 0;\n}&quot;"></canvas>
+<div class="cb"><button class="copy" type="button">Копіювати</button><pre><span class="k">static</span> <span class="k">boolean</span> isLeap(<span class="k">int</span> year) {
+    <span class="k">return</span> year % <span class="n">4</span> == <span class="n">0</span>;
+}</pre></div>
 <div class="quiz" data-box="t6"></div></div>
 
   </section>
@@ -213,6 +265,14 @@ function check(k) {
 }
 document.addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
 document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+<script>
+document.addEventListener("click", e => {
+  const b = e.target.closest("button.copy"); if (!b) return;
+  const txt = b.nextElementSibling.innerText;
+  const done = () => { b.textContent = "Скопійовано ✓"; setTimeout(() => b.textContent = "Копіювати", 1500); };
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => { const r = document.createRange(); r.selectNodeContents(b.nextElementSibling); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+});
 </script>
 </body>
 </html>
