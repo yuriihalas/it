@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Міні-проєкти на Java · 9-А</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --a: #b45309; --a2: #fff7ed; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 20px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .digits { font: 700 26px Consolas, "Courier New", monospace; letter-spacing: 1px; background: #111; color: #ffe066; padding: 6px 12px; border-radius: 6px; margin: 0 0 8px; overflow-x: auto; white-space: nowrap; }
+  .digits span { color: #fff; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.3; background: #f4f6f9; border: 2px solid #d5dbe3; border-left: 8px solid var(--a); border-radius: 4px; padding: 6px 10px; margin: 0 0 8px; overflow-x: auto; }
+  .k { color: #b0006e; } .s { color: #0a6e2a; } .n { color: #b45309; }
+  figure { margin: 0; }
+  svg.pic { width: 100%; height: auto; display: block; border-radius: 6px; }
+  figcaption { font-size: 16px; color: #444; margin-top: 3px; }
+  .run { background: #fff6dd; border-left: 5px solid #c79100; padding: 5px 10px; margin: 0 0 8px; }
+  .try { background: var(--a2); border-left: 5px solid var(--a); padding: 5px 10px; margin: 0 0 8px; }
+  .try b { color: var(--a); }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 4px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child code { white-space: nowrap; }
+  .wrap { overflow-x: auto; }
+  .star { background: #eef8ee; border-left: 5px solid #1a7f37; padding: 6px 10px; }
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid var(--a); border-radius: 5px; background: #fff; color: var(--a); font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .quiz { display: grid; gap: 8px; margin-bottom: 8px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 19px Consolas, "Courier New", monospace; width: 5em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q p { margin-bottom: 6px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-weight: 700; font-size: 21px; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; } }
+  .tasks { display: grid; gap: 8px; margin: 0 0 8px; padding: 0; list-style: none; counter-reset: t; }
+  .tasks li { counter-increment: t; border: 1px solid #d5dae0; border-radius: 6px; padding: 6px 10px 6px 44px; position: relative; margin: 0; }
+  .tasks li::before { content: counter(t); position: absolute; left: 10px; top: 6px; background: var(--a); color: #fff; font-weight: 700; border-radius: 50%; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; font-size: .9em; }
+  .tasks .was { color: #b42318; } .tasks .now { color: #1a7f37; }
+  .quiz { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 820px) { .quiz { grid-template-columns: 1fr; } }
+
+  canvas.code { display: block; max-width: 100%; background: #f4f6f9; border-left: 5px solid var(--a); border-radius: 4px; margin: 4px 0 10px; }
+  .groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 8px; }
+  .g { border: 2px solid #d5dae0; border-radius: 8px; padding: 8px 12px; min-width: 0; }
+  .g h3 { margin: 0 0 4px; font-size: 19px; }
+  .g1 { border-color: #1a7f37; } .g1 h3 { color: #1a7f37; }
+  .g2 { border-color: #c2410c; } .g2 h3 { color: #c2410c; }
+  .g3 { border-color: #7e22ce; } .g3 h3 { color: #7e22ce; }
+  .g4 { border-color: #b42318; } .g4 h3 { color: #b42318; }
+  .prog { border: 2px solid #d5dae0; border-radius: 8px; padding: 8px 12px; margin: 0 0 12px; }
+  .prog h3 { margin: 0 0 6px; font-size: 20px; }
+  .note { background: #fffbeb; border-left: 5px solid #d97706; padding: 6px 12px; margin: 0 0 8px; }
+  .tt td, .tt th { text-align: center; }
+  .tt td:nth-child(2), .tt td:nth-child(3) { font-family: Menlo, Consolas, monospace; }
+  .ok { color: #1a7f37; font-weight: 700; } .bad { color: #b42318; font-weight: 700; }
+  @media (max-width: 760px) { .groups { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Свій проєкт на Java <span>· 9-А · 12.11 · Планування проєктної роботи</span></h1>
+
+  <section>
+    <h2>Проєкт — це програма за планом</h2>
+    <p>Минулого разу ми вчили методи. Сьогодні складаємо з них цілі невеликі програми — <b>проєкти</b>. Великий проєкт ніхто не пише одразу: спершу план, потім маленькі методи, кожен з яких робить одну справу, і перевірка кожного.</p>
+  </section>
+
+  <section>
+    <h2>План проєкту в 5 кроках</h2>
+    <div class="wrap"><table>
+      <tr><th>Крок</th><th>Що робимо</th><th>Приклад: гра «Вгадай число»</th></tr>
+      <tr><td>1. Ідея</td><td>Що робить програма і для кого — одне речення</td><td>Комп'ютер загадує число від 1 до 100, гравець вгадує з підказками</td></tr>
+      <tr><td>2. Вхід і вихід</td><td>Що вводить користувач, що він бачить</td><td>Вхід: числа гравця. Вихід: «Більше» / «Менше» / «Вгадав!» і кількість спроб</td></tr>
+      <tr><td>3. Методи</td><td>Розбиваємо на частини — кожен метод робить одну справу</td><td><code>makeSecret()</code>, <code>hint(guess, secret)</code>, <code>main</code> з циклом</td></tr>
+      <tr><td>4. Перша версія</td><td>Найпростіша програма, яка вже працює. Потім покращуємо</td><td>Спершу без лічильника спроб, потім додаємо його і рекорд</td></tr>
+      <tr><td>5. Перевірка</td><td>Тести: вхід → очікуваний результат</td><td>hint(30, 50) → «Більше», hint(50, 50) → «Вгадав!»</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Як запускати</h2>
+    <p>Відкрий <a href="https://www.programiz.com/java-programming/online-compiler/" target="_blank" rel="noopener">онлайн-компілятор Java</a>. Перепиши метод <b>над</b> <code>main</code>, а в <code>main</code> виклич його з даними з питання. Кожен новий виклик — новий рядок <code>System.out.println(...)</code>.</p>
+    <canvas class="code" data-code="&quot;public class Main {\n\n    // сюди переписуєш метод\n\n    public static void main(String[] args) {\n        System.out.println(hint(30, 50));\n    }\n}&quot;"></canvas>
+  </section>
+
+  <section>
+    <h2>Шість міні-проєктів</h2>
+    <p>Кожен метод — це головна частина маленького проєкту. Перепиши метод, викликай з даними з питань і відповідай, <b>що він виводить насправді</b>. У завданнях 5 і 6 є прихована помилка, як у справжніх програмах: на одних даних усе правильно, на інших — ні.</p>
+    <div class="prog"><h3>Завдання 1. Гра «Вгадай число»</h3>
+<p>Комп'ютер загадав число <code>secret</code>, гравець називає <code>guess</code>. Метод підказує: більше, менше чи вгадав.</p>
+<canvas class="code" data-code="&quot;static String hint(int guess, int secret) {\n    if (guess &lt; secret) {\n        return \&quot;Більше\&quot;;\n    } else if (guess &gt; secret) {\n        return \&quot;Менше\&quot;;\n    }\n    return \&quot;Вгадав!\&quot;;\n}&quot;"></canvas>
+<div class="quiz" data-box="t1"></div></div>
+<div class="prog"><h3>Завдання 2. Надійність пароля</h3>
+<p>Пароль отримує бал за кожне: довжина від 8 символів, є цифра, є велика літера. Максимум 3 бали.</p>
+<canvas class="code" data-code="&quot;static int score(String p) {\n    int s = 0;\n    if (p.length() &gt;= 8) s++;\n    for (char c : p.toCharArray()) {\n        if (Character.isDigit(c)) { s++; break; }\n    }\n    for (char c : p.toCharArray()) {\n        if (Character.isUpperCase(c)) { s++; break; }\n    }\n    return s;\n}&quot;"></canvas>
+<div class="quiz" data-box="t2"></div></div>
+<div class="prog"><h3>Завдання 3. Камінь, ножиці, папір</h3>
+<p>Камінь б'є ножиці, ножиці б'ють папір, папір б'є камінь. Метод каже, хто переміг.</p>
+<canvas class="code" data-code="&quot;static String winner(String a, String b) {\n    if (a.equals(b)) return \&quot;нічия\&quot;;\n    if (a.equals(\&quot;камінь\&quot;) &amp;&amp; b.equals(\&quot;ножиці\&quot;)\n     || a.equals(\&quot;ножиці\&quot;) &amp;&amp; b.equals(\&quot;папір\&quot;)\n     || a.equals(\&quot;папір\&quot;) &amp;&amp; b.equals(\&quot;камінь\&quot;)) {\n        return \&quot;перший\&quot;;\n    }\n    return \&quot;другий\&quot;;\n}&quot;"></canvas>
+<div class="quiz" data-box="t3"></div></div>
+<div class="prog"><h3>Завдання 4. Шифр Цезаря</h3>
+<p>Кожну маленьку латинську літеру зсуваємо на <code>k</code> далі по алфавіту; після <code>z</code> знову йде <code>a</code>. Так шифрував листи Юлій Цезар.</p>
+<canvas class="code" data-code="&quot;static String shift(String s, int k) {\n    String r = \&quot;\&quot;;\n    for (char c : s.toCharArray()) {\n        r += (char) (&#x27;a&#x27; + (c - &#x27;a&#x27; + k) % 26);\n    }\n    return r;\n}&quot;"></canvas>
+<div class="quiz" data-box="t4"></div></div>
+<div class="prog"><h3>Завдання 5. Знижка в магазині</h3>
+<p>Від 500 грн — знижка 5 %, від 1000 грн — знижка 10 %. Метод повертає ціну зі знижкою. <b>У методі є прихована помилка — знайди її тестами.</b></p>
+<canvas class="code" data-code="&quot;static double price(double sum) {\n    if (sum &gt;= 1000) {\n        return sum * 0.9;\n    } else if (sum &gt; 500) {\n        return sum * 0.95;\n    }\n    return sum;\n}&quot;"></canvas>
+<div class="quiz" data-box="t5"></div></div>
+<div class="prog"><h3>Завдання 6. Високосний рік</h3>
+<p>Рік високосний, якщо ділиться на 4. Але роки, що діляться на 100, — не високосні, крім тих, що діляться на 400 (2000 — високосний, 1900 — ні). <b>Тут теж прихована помилка.</b></p>
+<canvas class="code" data-code="&quot;static boolean isLeap(int year) {\n    return year % 4 == 0;\n}&quot;"></canvas>
+<div class="quiz" data-box="t6"></div></div>
+
+  </section>
+
+  <section>
+    <h2>★ Для тих, хто вже все зробив</h2>
+    <ol class="tasks">
+      <li>Виправ метод <code>price</code>, щоб для 500 грн виходило 475.0.</li>
+      <li>Виправ <code>isLeap</code>, щоб 1900 був не високосним, а 2000 — високосним. Підказка: <code>&amp;&amp;</code> і <code>||</code>.</li>
+      <li>Збери гру «Вгадай число» повністю: <code>new Random().nextInt(100) + 1</code>, цикл <code>while</code>, <code>Scanner</code> і метод <code>hint</code>. Додай лічильник спроб.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Підсумковий тест: 8 питань</h2>
+    <p>Відповідай числом або словом.</p>
+    <div class="quiz" data-box="final"></div>
+  </section>
+
+  <section>
+    <h2>Що показати вчителю</h2>
+    <p>Загальний рахунок усіх питань — і в міні-проєктах, і в тесті:</p>
+    <p class="score" id="score">Правильно: 0 з 31</p>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Записати план <b>свого</b> проєкту у 5 кроках, як у таблиці вище. Ідеї: вікторина з 5 питань, конвертер валют, калькулятор середньої оцінки, генератор паролів, тренажер таблиці множення — або своя. Цей проєкт ви робитимете до хакатону 10.12.</p>
+  </section>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+// code is drawn on canvas so it has to be retyped
+const KW = /^(public|static|class|void|int|double|boolean|char|String|return|if|else|for|while|new|true|false)$/;
+function drawCode(cv) {
+  const lines = JSON.parse(cv.dataset.code).split("\n");
+  const fs = 17, lh = 26, pad = 12, dpr = window.devicePixelRatio || 1;
+  const ctx = cv.getContext("2d");
+  const font = `${fs}px Menlo, Consolas, "DejaVu Sans Mono", monospace`;
+  ctx.font = font;
+  const cw = ctx.measureText("M").width;
+  const W = Math.ceil(pad * 2 + cw * (Math.max(...lines.map(l => l.length)) + 4));
+  const H = pad * 2 + lh * lines.length - 6;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px";
+  ctx.scale(dpr, dpr); ctx.font = font; ctx.textBaseline = "top";
+  lines.forEach((ln, i) => {
+    const y = pad + i * lh;
+    ctx.fillStyle = "#9ca3af"; ctx.fillText(String(i + 1).padStart(2), pad, y);
+    let x = pad + cw * 4;
+    for (const t of ln.match(/"[^"]*"|\w+|\s+|./g) || []) {
+      ctx.fillStyle = t[0] === '"' ? "#15803d" : KW.test(t) ? "#7e22ce" : /^\d+$/.test(t) ? "#c2410c" : "#111";
+      ctx.fillText(t, x, y); x += cw * t.length;
+    }
+  });
+}
+document.querySelectorAll("canvas.code").forEach(drawCode);
+const QUIZ = [{"box": "t1", "q": "<code>hint(30, 50)</code> — що виведе? <b>1</b> — Більше, <b>2</b> — Менше, <b>3</b> — Вгадав!", "ok": "1", "alt": []}, {"box": "t1", "q": "<code>hint(70, 50)</code> — що виведе? <b>1</b> — Більше, <b>2</b> — Менше, <b>3</b> — Вгадав!", "ok": "2", "alt": []}, {"box": "t1", "q": "<code>hint(50, 50)</code> — що виведе? <b>1</b> — Більше, <b>2</b> — Менше, <b>3</b> — Вгадав!", "ok": "3", "alt": []}, {"box": "t2", "q": "<code>score(\"cat\")</code> — яке число?", "ok": "0", "alt": []}, {"box": "t2", "q": "<code>score(\"cat12345\")</code> — яке число?", "ok": "2", "alt": []}, {"box": "t2", "q": "<code>score(\"Kyiv2026\")</code> — яке число?", "ok": "3", "alt": []}, {"box": "t2", "q": "<code>score(\"PASSWORD\")</code> — яке число?", "ok": "2", "alt": []}, {"box": "t3", "q": "<code>winner(\"камінь\", \"ножиці\")</code> — що виведе? <b>1</b> — перший, <b>2</b> — другий, <b>3</b> — нічия", "ok": "1", "alt": []}, {"box": "t3", "q": "<code>winner(\"папір\", \"ножиці\")</code> — що виведе? <b>1</b> — перший, <b>2</b> — другий, <b>3</b> — нічия", "ok": "2", "alt": []}, {"box": "t3", "q": "<code>winner(\"папір\", \"папір\")</code> — що виведе? <b>1</b> — перший, <b>2</b> — другий, <b>3</b> — нічия", "ok": "3", "alt": []}, {"box": "t3", "q": "<code>winner(\"камінь\", \"папір\")</code> — що виведе? <b>1</b> — перший, <b>2</b> — другий, <b>3</b> — нічия", "ok": "2", "alt": []}, {"box": "t4", "q": "<code>shift(\"abc\", 1)</code> — яке слово? Напиши його.", "ok": "bcd", "alt": []}, {"box": "t4", "q": "<code>shift(\"xyz\", 2)</code> — яке слово?", "ok": "zab", "alt": []}, {"box": "t4", "q": "<code>shift(\"java\", 3)</code> — яке слово?", "ok": "mdyd", "alt": []}, {"box": "t5", "q": "<code>price(1200)</code> — яке число?", "ok": "1080.0", "alt": ["1080", "1080,0"]}, {"box": "t5", "q": "<code>price(600)</code> — яке число?", "ok": "570.0", "alt": ["570", "570,0"]}, {"box": "t5", "q": "<code>price(500)</code> — яке число?", "ok": "500.0", "alt": ["500", "500,0"]}, {"box": "t5", "q": "А скільки <b>мало б</b> вийти для 500 грн за умовою?", "ok": "475.0", "alt": ["475", "475,0"]}, {"box": "t5", "q": "На яких даних метод помиляється? Напиши <b>номер варіанта</b>:<br>варіант 1 — 1200<br>варіант 2 — 600<br>варіант 3 — 500", "ok": "3", "alt": []}, {"box": "t6", "q": "<code>isLeap(2024)</code> — що виведе? Напиши <code>true</code> або <code>false</code>", "ok": "true", "alt": []}, {"box": "t6", "q": "<code>isLeap(2023)</code> — що виведе?", "ok": "false", "alt": []}, {"box": "t6", "q": "<code>isLeap(1900)</code> — що виведе?", "ok": "true", "alt": []}, {"box": "t6", "q": "А 1900 рік насправді високосний? <b>1</b> — так, <b>2</b> — ні", "ok": "2", "alt": []}, {"box": "final", "q": "Скільки кроків у плані проєкту, який ми розібрали?", "ok": "5", "alt": []}, {"box": "final", "q": "Що робимо першим кроком? <b>1</b> — пишемо код, <b>2</b> — формулюємо ідею: що робить програма і для кого, <b>3</b> — тестуємо", "ok": "2", "alt": []}, {"box": "final", "q": "Скільки справ має робити один метод? <b>1</b> — одну, <b>2</b> — усе одразу", "ok": "1", "alt": []}, {"box": "final", "q": "Перша версія проєкту — це: <b>1</b> — найпростіша програма, яка вже працює, <b>2</b> — повна програма з усіма можливостями", "ok": "1", "alt": []}, {"box": "final", "q": "Тест — це вхідні дані + … <b>1</b> — очікуваний результат, <b>2</b> — назва методу", "ok": "1", "alt": []}, {"box": "final", "q": "Яке слово пишуть у заголовку методу, якщо він нічого не повертає?", "ok": "void", "alt": []}, {"box": "final", "q": "Який тип повертає метод <code>hint</code>? <b>1</b> — int, <b>2</b> — String, <b>3</b> — boolean", "ok": "2", "alt": []}, {"box": "final", "q": "Скільки балів дасть <code>score(\"Abcdefg1\")</code>?", "ok": "3", "alt": []}];
+let right = 0, answered = 0;
+document.querySelectorAll(".quiz[data-box]").forEach(el => {
+  let n = 0;
+  el.innerHTML = QUIZ.map((t, k) => t.box !== el.dataset.box ? "" : `
+  <div class="q" id="q${k}">
+    <p><b>${++n}.</b> ${t.q}</p>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" aria-label="Відповідь ${n}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+});
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const v = inp.value.replace(/\s/g, "").toLowerCase();
+  const good = v === t.ok || t.alt.includes(v);
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.ok}`;
+  if (good) right++;
+  answered++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+document.addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
