@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План: проєкт на Python, 9-Б</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child { white-space: nowrap; font-weight: 700; color: #0b5cad; font-variant-numeric: tabular-nums; }
+  .wrap { overflow-x: auto; }
+</style><style>pre{font-family:Menlo,Consolas,monospace;font-size:14px;background:#f4f6f9;padding:6px 10px;margin:4px 0 10px;border-left:5px solid #1a7f37}</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>План уроку <span>· 9-Б · 12.11 · Планування проєктної роботи. Створення простого програмного проєкту</span></h1>
+
+  <p>Сторінка для учнів: <a href="9b-proekt-python.html">yuriihalas.github.io/it/9b-proekt-python.html</a>. Код можна скопіювати кнопкою «Копіювати» і вставити в Thonny. Відповіді лише на Mac, у папці «9 клас».</p>
+  <section><h2>Що учні мають вивчити</h2><ul>
+    <li>План проєкту в 5 кроках: ідея → вхід і вихід → функції → перша версія → перевірка.</li>
+    <li>Одна функція — одна справа; програму збирають з маленьких функцій.</li>
+    <li>Спершу найпростіша робоча версія, потім покращення.</li>
+    <li>Кожну функцію перевіряють тестами, бо помилка може ховатися на окремих даних (межа 500, рік 1900).</li>
+  </ul></section>
+  <section><h2>Хід уроку</h2><div class="wrap"><table>
+    <tr><th>Хв</th><th>Що робимо</th></tr>
+    <tr><td>0–4</td><td>«Хто хоче зробити свою гру чи програму?» Проєкт — це програма за планом. Нагадай функції з 05.11.</td></tr>
+    <tr><td>4–10</td><td>Таблиця «План у 5 кроках» на прикладі «Вгадай число». Спитай: «Які ще функції знадобились би, якщо додати рекорд?»</td></tr>
+    <tr><td>10–12</td><td>Як запускати в Thonny: функція зверху, під нею print(hint(30, 50)). Покажи на проєкторі завдання 1.</td></tr>
+    <tr><td>12–38</td><td>Міні-проєкти 1–6, відповіді на сторінці (23 питання). Ходиш, питаєш: «Що мало б вийти? А що вийшло?» Хто швидше — ★.</td></tr>
+    <tr><td>38–43</td><td>Підсумковий тест, 8 питань.</td></tr>
+    <tr><td>43–45</td><td>Домашнє: план свого проєкту в 5 кроках (до хакатону 10.12).</td></tr>
+  </table></div></section>
+  <section><h2>Оцінювання: 12 балів</h2><div class="wrap"><table>
+    <tr><th>Що</th><th>Бали</th><th>Як перевірити</th></tr>
+    <tr><td>Усі питання на сторінці (31)</td><td>10</td><td>Рахунок внизу сторінки: 30–31 — 10, 27–29 — 9, 24–26 — 8, 21–23 — 7, 18–20 — 6, 15–17 — 5, 12–14 — 4, 9–11 — 3, 6–8 — 2, до 5 — 1</td></tr>
+    <tr><td>Пояснення</td><td>2</td><td>Учень усно пояснює приховану помилку в завданні 5 або 6: на яких даних і чому</td></tr>
+  </table></div></section>
+  <section><h2>На що звернути увагу</h2><p>Найчастіша помилка — виклик <code>print(...)</code> з відступом: тоді він стає частиною функції і нічого не друкує. Виклики пишуть <b>без відступу</b>, під функцією. Питання «що виведе» — це фактичний результат, навіть неправильний (price(500) → 500). Python друкує <code>True</code>/<code>False</code> з великої літери; на сторінці регістр не важливий.</p></section>
+
+</div>
+</body>
+</html>
