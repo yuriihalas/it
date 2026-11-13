@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Рівняння в таблицях</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Розв'язування рівнянь <span>· 10-Б · 13.11 · робота на оцінку, 12 балів</span></h1>
+
+  <p class="big">Тема: розв'язування рівнянь в електронних таблицях. Працюємо в Excel або LibreOffice Calc. За урок — 12 балів.</p>
+
+  <section>
+    <h2>Що таке підбір параметра</h2>
+    <p>Розв'язати рівняння означає знайти таке <b>x</b>, щоб ліва частина дорівнювала правій. У таблиці <b>x</b> записуємо в одну клітинку, а формулу з цим x — в іншу. Тоді таблиця сама змінює x, поки формула не дасть потрібне число. Ця команда називається <b>Підбір параметра</b>.</p>
+    <div class="wrap"><table>
+      <tr><th>Програма</th><th>Де знайти</th></tr>
+      <tr><td>Excel</td><td><b>Дані → Аналіз «що коли» → Підбір параметра</b> (англійською: Data → What-If Analysis → Goal Seek)</td></tr>
+      <tr><td>LibreOffice Calc</td><td><b>Сервіс → Підбір параметра</b> (Tools → Goal Seek)</td></tr>
+    </table></div>
+    <p>У вікні три поля:</p>
+    <ol>
+      <li><b>Встановити в клітинці</b> — клітинка з <b>формулою</b>;</li>
+      <li><b>Значення</b> — число, якому формула має дорівнювати;</li>
+      <li><b>Змінюючи клітинку</b> — клітинка з <b>x</b>.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Крок 1: лінійне рівняння 3x + 7 = 25 <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div>
+        <p>Заповни клітинки на новому аркуші:</p>
+        <div class="wrap"><table class="cells">
+          <tr><th></th><th>A</th><th>B</th></tr>
+          <tr><td>1</td><td>x</td><td>3x + 7</td></tr>
+          <tr><td>2</td><td>0</td><td>=3*A2+7</td></tr>
+        </table></div>
+        <p>У B2 зараз 7, бо x = 0. Тепер відкрий <b>Підбір параметра</b>:</p>
+        <ul>
+          <li>Встановити в клітинці: <code>B2</code></li>
+          <li>Значення: <code>25</code></li>
+          <li>Змінюючи клітинку: <code>A2</code></li>
+        </ul>
+        <p>Натисни <b>OK</b>.</p>
+      </div>
+      <div>
+        <p>Має вийти:</p>
+<pre class="out">A2 = 6
+B2 = 25</pre>
+        <p><b>Перевір вручну:</b> 3 · 6 + 7 = 18 + 7 = 25. ✓</p>
+        <p>Без таблиці: 3x = 25 − 7 = 18, x = 18 : 3 = 6.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 2: квадратне рівняння x² − 5x + 6 = 0 <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div>
+        <p>На тому ж аркуші, нижче:</p>
+        <div class="wrap"><table class="cells">
+          <tr><th></th><th>A</th><th>B</th></tr>
+          <tr><td>4</td><td>x</td><td>x² − 5x + 6</td></tr>
+          <tr><td>5</td><td>0</td><td>=A5^2-5*A5+6</td></tr>
+          <tr><td>6</td><td>5</td><td>=A6^2-5*A6+6</td></tr>
+        </table></div>
+        <p>Зроби підбір параметра <b>двічі</b>:</p>
+        <ol>
+          <li>B5, значення <code>0</code>, змінюючи A5;</li>
+          <li>B6, значення <code>0</code>, змінюючи A6.</li>
+        </ol>
+        <p>Знак <code>^</code> — це степінь: <code>A5^2</code> означає A5².</p>
+      </div>
+      <div>
+        <p>Має вийти:</p>
+<pre class="out">A5 ≈ 2
+A6 ≈ 3</pre>
+        <p>У рівняння <b>два корені</b>: 2 і 3. Підбір параметра знаходить <b>один</b> — той, що ближче до початкового x. Тому ми почали з 0 і з 5.</p>
+        <p>Якщо бачиш 1,99999 або 3,00001, це нормально: таблиця шукає наближено. Округли.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 3: таблиця значень і графік <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div>
+        <p>Як побачити всі корені одразу? Порахуй формулу для різних x. Справа від попереднього, у стовпцях D і E:</p>
+        <div class="wrap"><table class="cells">
+          <tr><th></th><th>D</th><th>E</th></tr>
+          <tr><td>1</td><td>x</td><td>y</td></tr>
+          <tr><td>2</td><td>0</td><td>=D2^2-5*D2+6</td></tr>
+          <tr><td>3</td><td>1</td><td>скопіюй формулу вниз</td></tr>
+          <tr><td>…</td><td>…</td><td>…</td></tr>
+          <tr><td>7</td><td>5</td><td></td></tr>
+        </table></div>
+        <ol>
+          <li>Впиши x від 0 до 5 у D2:D7.</li>
+          <li>Формулу з E2 протягни за правий нижній кут до E7.</li>
+          <li>Виділи D1:E7 → <b>Вставка → Діаграма → Точкова з лініями</b>.</li>
+        </ol>
+      </div>
+      <div>
+        <p>У стовпці E має вийти:</p>
+<pre class="out">6  2  0  0  2  6</pre>
+        <p>Корені там, де <b>y = 0</b>: x = 2 і x = 3. На графіку це точки, де крива торкається осі x.</p>
+        <p>Підпиши діаграму: «y = x² − 5x + 6».</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 4: задача з життя <span class="pts">1 бал</span></h2>
+    <p>Оля має 900 грн і щомісяця відкладає 450 грн. Навушники коштують 3600 грн. <b>Через скільки місяців вона назбирає?</b></p>
+    <p>Склади рівняння <code>900 + 450 · x = 3600</code>, запиши його у таблицю як у кроці 1 і зроби підбір параметра. Відповідь впиши в тест, питання 5.</p>
+    <p><b>★ Для швидших.</b> На депозит поклали 10 000 грн під 12% річних. Формула: <code>=10000*(1+12/100)^A10</code>, де A10 — кількість років. Через скільки років буде 15 000 грн? Підбір дасть дробове число. Подумай, скільки повних років треба чекати.</p>
+  </section>
+
+  <section>
+    <h2>Якщо щось не так</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td>«Клітинка має містити формулу»</td><td>У полі «Встановити в клітинці» має бути клітинка з формулою (B2), а не з x</td></tr>
+      <tr><td>Формула показується як текст</td><td>Формула починається зі знака <code>=</code>, без пробілу перед ним</td></tr>
+      <tr><td>#ІМ'Я? / #NAME?</td><td>Помилка в адресі: латинські A, B, D, E, а не кириличні</td></tr>
+      <tr><td>Знайшовся лише один корінь</td><td>Так і має бути. Для другого кореня почни з іншого x</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити, як розв'язати лінійне рівняння. Вивчити, що таке підбір параметра: які три поля у вікні і що в них писати.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Розв'яжи рівняння 2x + 4 = 10. x = ?",
+"code": "",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "2x = 10 − 4 = 6, x = 6 : 2 = 3."
+},
+{
+"q": "У A2 записано 4. Що покаже B2?",
+"code": "B2:  =A2*A2-1",
+"ok": [
+"MTU="
+],
+"show": "15",
+"why": "4 · 4 − 1 = 16 − 1 = 15."
+},
+{
+"q": "У B2 формула =3*A2+7, а x записано в A2. Що пишемо в полі «Змінюючи клітинку»?",
+"code": "",
+"ok": [
+"YTI=",
+"JUQwJUIwMg==",
+"JTI0YSUyNDI=",
+"JTI0JUQwJUIwJTI0Mg=="
+],
+"show": "A2",
+"why": "Змінюємо клітинку з x. Формула в B2 — її пишемо в поле «Встановити в клітинці»."
+},
+{
+"q": "Скільки коренів має рівняння x² − 5x + 6 = 0?",
+"code": "",
+"ok": [
+"Mg==",
+"JUQwJUI0JUQwJUIyJUQwJUIw"
+],
+"show": "2",
+"why": "Корені 2 і 3: 4 − 10 + 6 = 0 і 9 − 15 + 6 = 0."
+},
+{
+"q": "Крок 4: через скільки місяців Оля назбирає на навушники?",
+"code": "900 + 450 · x = 3600",
+"ok": [
+"Ng=="
+],
+"show": "6",
+"why": "450x = 3600 − 900 = 2700, x = 2700 : 450 = 6."
+},
+{
+"q": "Для x² − 5x + 6 = 0 почали підбір з x = 5. Який корінь знайде таблиця?",
+"code": "",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "Підбір знаходить корінь, ближчий до початкового значення. 3 ближче до 5, ніж 2."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

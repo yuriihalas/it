@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План: рівняння, 10-Б</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child { white-space: nowrap; font-weight: 700; color: #0b5cad; font-variant-numeric: tabular-nums; }
+  .wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="sheet">
+<h1>План уроку <span>· 10-Б · 13.11 · розв'язування рівнянь</span></h1>
+
+<p>Тема за КТП: «Розв'язування рівнянь». 10-Б: 1 група на 0 уроці, 2 група на 7 уроці, урок однаковий. Сторінка для учнів: <a href="10b-rivniannia.html">yuriihalas.github.io/it/10b-rivniannia.html</a>.</p>
+
+<section>
+<h2>Хід уроку</h2>
+<div class="wrap"><table>
+<tr><th>Хв</th><th>Що робимо</th></tr>
+<tr><td>0–5</td><td>Що означає розв'язати рівняння. Покажи на дошці 3x + 7 = 25. Ідея: таблиця сама підбирає x.</td></tr>
+<tr><td>5–15</td><td>Крок 1. Покажи на своєму екрані, де «Підбір параметра» і що писати в три поля. Учні повторюють.</td></tr>
+<tr><td>15–25</td><td>Крок 2. Квадратне рівняння, два запуски. Спитай: чому вийшли різні відповіді?</td></tr>
+<tr><td>25–35</td><td>Крок 3. Таблиця значень і точкова діаграма. Де y = 0, там корені.</td></tr>
+<tr><td>35–40</td><td>Крок 4. Задача про навушники. Швидші — депозит.</td></tr>
+<tr><td>40–44</td><td>Тест на сторінці, 6 питань.</td></tr>
+<tr><td>44–45</td><td>Домашнє.</td></tr>
+</table></div>
+</section>
+
+<section>
+<h2>Оцінювання: 12 балів</h2>
+<div class="wrap"><table>
+<tr><th>Що</th><th>Бали</th><th>Як перевірити</th></tr>
+<tr><td>Крок 1</td><td>3</td><td>A2 = 6, B2 = 25</td></tr>
+<tr><td>Крок 2</td><td>3</td><td>A5 ≈ 2, A6 ≈ 3. Пояснює, чому два різні корені</td></tr>
+<tr><td>Крок 3</td><td>3</td><td>У E2:E7: 6 2 0 0 2 6, є діаграма з підписом</td></tr>
+<tr><td>Крок 4</td><td>1</td><td>6 місяців</td></tr>
+<tr><td>Тест</td><td>2</td><td>5–6 правильних — 2 бали, 3–4 — 1 бал</td></tr>
+</table></div>
+</section>
+
+<section>
+<h2>Відповіді</h2>
+<p>Тест: 3, 15, A2, 2, 6, 3. ★ Депозит: підбір дає ≈ 3,58 року, тобто треба чекати 4 повні роки (після 3 років буде лише 14 049,28 грн).</p>
+</section>
+
+<section>
+<h2>Типові помилки</h2>
+<ul>
+<li>У «Встановити в клітинці» пишуть клітинку з x, а не з формулою.</li>
+<li>Кирилична «А» в адресі: формула не працює, з'являється #ІМ'Я?.</li>
+<li>Десятковий роздільник: в українському Excel — кома (1,5), тому у формулі депозиту ми пишемо 12/100, а не 0.12.</li>
+<li>Якщо на комп'ютері лише Google Таблиці: вбудованого підбору параметра там немає. Тоді кроки 1–2 роблять підбором вручну (змінюють A2, поки B2 не стане 25), а крок 3 — як є.</li>
+</ul>
+</section>
+
+</div>
+</body>
+</html>
