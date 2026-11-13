@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Системи й оптимізація</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Системи рівнянь і оптимізація <span>· 10-А · 13.11 · практична робота № 1, 12 балів</span></h1>
+
+  <p class="big">Практична робота № 1. Системи рівнянь і задачі на найбільше значення в Excel або LibreOffice Calc. Збережи файл як <code>Прізвище-ПР1</code>. За роботу — 12 балів.</p>
+
+  <section>
+    <h2>Що згадати</h2>
+    <div class="wrap"><table>
+      <tr><th>Слово</th><th>Що означає</th></tr>
+      <tr><td>Система рівнянь</td><td>Два рівняння, для яких шукаємо <b>одну спільну пару</b> x і y</td></tr>
+      <tr><td>Графічний спосіб</td><td>Будуємо обидві прямі. Точка перетину — це розв'язок</td></tr>
+      <tr><td>Підбір параметра</td><td>Таблиця змінює одну клітинку, поки формула не дасть потрібне число (минулий урок)</td></tr>
+      <tr><td>Оптимізаційна задача</td><td>Шукаємо <b>найбільше</b> або <b>найменше</b> значення: найбільша площа, найбільша виручка, найменші витрати</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Завдання 1: система графічно <span class="pts">3 бали</span></h2>
+    <p>Розв'яжи систему: <b>x + y = 10</b> і <b>x − y = 2</b>. Вирази y з кожного рівняння: y = 10 − x і y = x − 2.</p>
+    <div class="two">
+      <div>
+        <p>Аркуш 1, назви його <b>Графік</b>:</p>
+        <div class="wrap"><table class="cells">
+          <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+          <tr><td>1</td><td>x</td><td>y = 10 − x</td><td>y = x − 2</td></tr>
+          <tr><td>2</td><td>0</td><td>=10-A2</td><td>=A2-2</td></tr>
+          <tr><td>3</td><td>1</td><td colspan="2">скопіюй формули вниз</td></tr>
+          <tr><td>…</td><td>…</td><td></td><td></td></tr>
+          <tr><td>12</td><td>10</td><td></td><td></td></tr>
+        </table></div>
+        <ol>
+          <li>Впиши x від 0 до 10 у A2:A12.</li>
+          <li>Протягни формули B2 і C2 до 12 рядка.</li>
+          <li>Виділи A1:C12 → <b>Вставка → Діаграма → Точкова з прямими лініями</b>.</li>
+        </ol>
+      </div>
+      <div>
+        <p>Знайди рядок, де <b>B = C</b>. Це і є розв'язок.</p>
+<pre class="out">x = 6, y = 4</pre>
+        <p>На діаграмі дві прямі перетинаються в точці (6; 4).</p>
+        <p><b>Перевір:</b> 6 + 4 = 10 ✓, 6 − 4 = 2 ✓.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання 2: система підбором параметра <span class="pts">3 бали</span></h2>
+    <p>Нова система: <b>2x + y = 11</b> і <b>x − y = 1</b>. Цілих чисел у таблиці може й не бути, тому шукаємо підбором.</p>
+    <div class="two">
+      <div>
+        <p>Аркуш 2, назви його <b>Підбір</b>:</p>
+        <div class="wrap"><table class="cells">
+          <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+          <tr><td>1</td><td>x</td><td>y = 11 − 2x</td><td>x − y</td></tr>
+          <tr><td>2</td><td>0</td><td>=11-2*A2</td><td>=A2-B2</td></tr>
+        </table></div>
+        <p>y виразили з першого рівняння. Тепер треба, щоб друге рівняння виконалось: <b>x − y = 1</b>.</p>
+        <p><b>Підбір параметра:</b> встановити в <code>C2</code>, значення <code>1</code>, змінюючи <code>A2</code>.</p>
+      </div>
+      <div>
+        <p>Має вийти:</p>
+<pre class="out">A2 = 4   (x)
+B2 = 3   (y)
+C2 = 1</pre>
+        <p><b>Перевір:</b> 2 · 4 + 3 = 11 ✓, 4 − 3 = 1 ✓.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання 3: найбільший город <span class="pts">3 бали</span></h2>
+    <p>Є 40 м сітки. Треба загородити прямокутний город <b>найбільшої площі</b>. Якщо ширина x, то довжина 20 − x (бо периметр 2 · (x + довжина) = 40).</p>
+    <div class="two">
+      <div>
+        <p>Аркуш 3, назви його <b>Город</b>:</p>
+        <div class="wrap"><table class="cells">
+          <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+          <tr><td>1</td><td>ширина</td><td>довжина</td><td>площа</td></tr>
+          <tr><td>2</td><td>1</td><td>=20-A2</td><td>=A2*B2</td></tr>
+          <tr><td>…</td><td>…</td><td colspan="2">протягни до 20 рядка</td></tr>
+          <tr><td>20</td><td>19</td><td></td><td></td></tr>
+          <tr><td>22</td><td>Найбільша:</td><td></td><td>=MAX(C2:C20)</td></tr>
+        </table></div>
+        <p>Побудуй діаграму «ширина — площа» (точкова з лініями).</p>
+      </div>
+      <div>
+        <p>Має вийти:</p>
+<pre class="out">найбільша площа: 100 м²
+ширина 10 м, довжина 10 м</pre>
+        <p>Найвигідніший прямокутник — <b>квадрат</b>. На діаграмі це вершина «гірки».</p>
+        <p>Якщо <code>MAX</code> не працює, напиши <code>=МАКС(C2:C20)</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання 4: шкільний ярмарок <span class="pts">1 бал</span></h2>
+    <p>Клас продає печиво. Якщо ціна p грн, то покупців буде <b>100 − 5p</b>. Виручка = p · (100 − 5p). <b>Яка ціна дасть найбільшу виручку?</b></p>
+    <p>Аркуш 4, <b>Ярмарок</b>: ціни p від 0 до 20 у стовпці A, у B формула <code>=A2*(100-5*A2)</code>, знайди MAX. Відповідь впиши в тест, питання 5.</p>
+    <p><b>★ Для швидших.</b> Розв'яжи завдання 3 командою <b>Пошук рішення</b> (Excel: Дані → Пошук рішення; якщо немає — Файл → Параметри → Надбудови → «Пошук рішення»). У LibreOffice: Сервіс → Розв'язувач. Ціль — клітинка з площею, «максимум», змінювати ширину, обмеження: ширина ≤ 20.</p>
+  </section>
+
+  <section>
+    <h2>Якщо щось не так</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td>#ІМ'Я? / #NAME?</td><td>Кирилична літера в адресі (А2 замість A2) або функцію треба писати <code>МАКС</code></td></tr>
+      <tr><td>Підбір пише «розв'язок не знайдено»</td><td>У «Встановити в клітинці» має бути C2 з формулою, у «Змінюючи» — A2 з числом</td></tr>
+      <tr><td>На діаграмі не дві прямі, а щось дивне</td><td>Тип — «Точкова», а виділити треба разом зі стовпцем x</td></tr>
+      <tr><td>Протягнута формула дає однакові числа</td><td>Знак <code>$</code> в адресі: тут він не потрібен</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити, що таке система рівнянь і що таке оптимізаційна задача. Навести 1 приклад оптимізаційної задачі з життя.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Розв'язок системи x + y = 10, x − y = 2. Чому дорівнює x?",
+"code": "",
+"ok": [
+"Ng=="
+],
+"show": "6",
+"why": "Додаємо рівняння: 2x = 12, x = 6, тоді y = 4."
+},
+{
+"q": "Як знайти розв'язок системи на діаграмі? Впиши одне слово: точка …",
+"code": "",
+"ok": [
+"JUQwJUJGJUQwJUI1JUQxJTgwJUQwJUI1JUQxJTgyJUQwJUI4JUQwJUJEJUQxJTgz",
+"JUQwJUJGJUQwJUI1JUQxJTgwJUQwJUI1JUQxJTgyJUQwJUI4JUQwJUJE",
+"JUQxJTgyJUQwJUJFJUQxJTg3JUQwJUJBJUQwJUIwJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUI1JUQxJTgyJUQwJUI4JUQwJUJEJUQxJTgz"
+],
+"show": "перетину",
+"why": "Розв'язок — точка, що лежить на обох прямих одночасно."
+},
+{
+"q": "Завдання 2. Чому дорівнює y?",
+"code": "2x + y = 11\nx − y = 1",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "x = 4, y = 11 − 8 = 3."
+},
+{
+"q": "Завдання 3. Яка найбільша площа городу в м²?",
+"code": "",
+"ok": [
+"MTAw"
+],
+"show": "100",
+"why": "Квадрат 10 × 10 = 100. Наприклад, 9 × 11 = 99 — менше."
+},
+{
+"q": "Завдання 4. Яка ціна печива дасть найбільшу виручку, грн?",
+"code": "виручка = p · (100 − 5p)",
+"ok": [
+"MTA="
+],
+"show": "10",
+"why": "При p = 10: 10 · 50 = 500 грн. При 9 і 11 — 495 грн."
+},
+{
+"q": "Яку функцію пишемо, щоб знайти найбільше число в діапазоні C2:C20?",
+"code": "",
+"ok": [
+"bWF4",
+"JUQwJUJDJUQwJUIwJUQwJUJBJUQxJTgx",
+"JTNEbWF4KGMyJTNBYzIwKQ==",
+"JTNEJUQwJUJDJUQwJUIwJUQwJUJBJUQxJTgxKGMyJTNBYzIwKQ==",
+"bWF4KGMyJTNBYzIwKQ==",
+"JUQwJUJDJUQwJUIwJUQwJUJBJUQxJTgxKGMyJTNBYzIwKQ=="
+],
+"show": "MAX",
+"why": "MAX (у деяких версіях МАКС) повертає найбільше значення діапазону."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
