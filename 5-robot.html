@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Робот-художник</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 21px; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+
+  .bar { position: sticky; top: 0; z-index: 5; background: #0b5cad; color: #fff; font-weight: 700; padding: 6px 14px; margin: 8px 0 0; border-radius: 5px; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
+  .bar .stars { color: #ffd34d; font-size: 24px; letter-spacing: 2px; line-height: 1; }
+
+  .sb { color: #fff; font-weight: 600; font-size: 16px; border-radius: 5px; padding: 4px 9px; margin-bottom: 2px; white-space: nowrap; }
+  .hat { border-radius: 15px 15px 5px 5px; padding-top: 7px; }
+  .ev { background: #e6a800; }
+  .mot { background: #4c97ff; }
+  .pen { background: #0da57a; }
+  .lks { background: #9966ff; }
+  .val { background: #fff; color: #333; border-radius: 10px; padding: 0 7px; margin: 0 2px; }
+  .sw { display: inline-block; width: 1.3em; height: .95em; border-radius: 8px; border: 2px solid #fff; vertical-align: -2px; margin-left: 2px; }
+  .cond { background: #5cb1d6; display: inline-block; padding: 1px 12px; margin: 0 2px; clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0 50%); }
+  .stack { display: inline-flex; flex-direction: column; align-items: flex-start; }
+  .stacks { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; min-width: 0; overflow-x: auto; }
+  .c { background: #ffab19; color: #fff; font-weight: 600; font-size: 16px; border-radius: 5px; margin-bottom: 2px; }
+  .c > .head { padding: 4px 9px; white-space: nowrap; }
+  .c > .in { margin-left: 14px; background: #fff; padding: 2px 0 0 3px; display: flex; flex-direction: column; align-items: flex-start; }
+  .c > .foot { height: 11px; }
+
+  .levels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  .lvl { border: 2px solid #d5dae0; border-radius: 8px; padding: 10px 12px; min-width: 0; }
+  .lvl.done { border-color: #e0a800; background: #fffbea; }
+  .n { background: #0b5cad; color: #fff; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-flex; align-items: center; justify-content: center; font-size: .9em; flex: none; }
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 12px; align-items: start; margin-bottom: 8px; }
+  #l8 .pair { grid-template-columns: 1fr; }
+  #l8 svg.stage { max-width: 170px; }
+  svg.stage { width: 100%; display: block; background: #fff; border: 2px solid #9aa4ae; border-radius: 5px; }
+
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .star.on { background: #ffd34d; border-color: #b98900; color: #4a3800; }
+
+  .chs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 8px; }
+  .ch { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .ch span { font-size: 16px; color: #333; }
+
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .quiz { display: grid; gap: 8px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 19px Consolas, "Courier New", monospace; width: 5em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q p { margin-bottom: 6px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 900px) { .levels { grid-template-columns: 1fr; } .chs { grid-template-columns: 1fr 1fr; } .sheet { padding: 12px 16px; } }
+  @media (max-width: 520px) { .pair { grid-template-columns: 1fr; } svg.stage { max-width: 240px; } }
+  .cond.sen { background: #5cb1d6; }
+  .levels { grid-template-columns: 1fr; }
+  .rob .stacks { overflow-x: visible; }
+  .rob { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: start; }
+  .grid { display: grid; gap: 2px; background: #9aa4ae; padding: 2px; border-radius: 4px; user-select: none; width: max-content; }
+  .cell { width: 38px; height: 38px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; position: relative; }
+  .cell.b { background: #4c7dff; } .cell.r { background: #e6194b; }
+  .cell.bad { outline: 3px solid #b42318; outline-offset: -3px; }
+  .cell .mk { color: #c79100; font-weight: 700; pointer-events: none; }
+  .cell .bot { position: absolute; inset: 4px; pointer-events: none; }
+  .tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0; }
+  .pal { width: 34px; height: 30px; border-radius: 5px; border: 3px solid #fff; outline: 2px solid #9aa4ae; cursor: pointer; padding: 0; }
+  .pal.on { outline: 3px solid #111; }
+  .msg { font-weight: 700; min-height: 1.4em; }
+  .msg.ok { color: #1a7f37; } .msg.no { color: #b42318; }
+  select { font: inherit; font-size: 16px; font-weight: 700; color: #333; border-radius: 10px; padding: 0 4px; }
+  @media (max-width: 760px) { .rob { grid-template-columns: 1fr; } .cell { width: 32px; height: 32px; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Робот-художник <span>· 5 клас · розгалуження без Scratch</span></h1>
+  <p class="big">Розгалуження — це вибір. Робот на кожному кроці перевіряє умову: <b>якщо</b> вона правдива — робить одне, <b>інакше</b> — інше. Сьогодні робот — це ти: виконай алгоритм замість нього.</p>
+
+  <div class="bar"><span>Мої зірки:</span><span class="stars" id="stars">☆☆☆☆☆☆</span><span id="count">0 з 6</span></div>
+
+  <section>
+    <h2>Як грати</h2>
+    <ol>
+      <li>Робот — синя стрілка. Вона показує, куди він дивиться.</li>
+      <li>Читай алгоритм згори вниз. «Повторити 4» — усе всередині робиться 4 рази.</li>
+      <li><b>Крок</b> — на одну клітинку вперед. Якщо попереду край поля, робот стоїть на місці.</li>
+      <li>Вибери колір на палітрі і клікай по клітинках, які робот зафарбує. Гумка стирає.</li>
+      <li>«Перевірити» — помилкові клітинки обведуться червоним. «Показати робота» — побачиш, як він ішов. Зірку дають, якщо перевірка пройшла <b>без</b> підглядання.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Рівні</h2>
+    <div class="levels">
+    <article class="lvl" id="l1">
+      <h3><span class="n">1</span> Квадрат</h3>
+      <p>Розминка без розгалуження. Робот стоїть на стрілці. «Крок» — на одну клітинку вперед. Зафарбуй клітинки, які зафарбує робот, і натисни «Перевірити».</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">4</span></div><div class="in"><div class="c"><div class="head">повторити <span class="val">3</span></div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div><div class="sb mot">крок</div></div><div class="foot"></div></div><div class="sb mot">поворот ↺ ліворуч</div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="1"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="1">Перевірити</button><button data-act="show" data-lv="1">Показати робота</button><button data-act="clear" data-lv="1">Стерти</button></div>
+      <p class="msg" id="msg1"></p>
+      <button class="star" data-n="1" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l2">
+      <h3><span class="n">2</span> Зірочки</h3>
+      <p>Тепер робот <b>вирішує</b>: на зірочці фарбує червоним, інакше — синім. Обери колір на палітрі, потім клікай.</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">8</span></div><div class="in"><div class="c"><div class="head">якщо <span class="cond">стою на ★?</span> то</div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#e6194b"></span></div></div><div class="head">інакше</div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div></div><div class="foot"></div></div><div class="sb mot">крок</div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="2"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="2">Перевірити</button><button data-act="show" data-lv="2">Показати робота</button><button data-act="clear" data-lv="2">Стерти</button></div>
+      <p class="msg" id="msg2"></p>
+      <button class="star" data-n="2" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l3">
+      <h3><span class="n">3</span> Рамка</h3>
+      <p>«Попереду стіна» — це край поля. Якщо стіна — робот повертає, інакше йде далі.</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">32</span></div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div><div class="c"><div class="head">якщо <span class="cond">попереду стіна?</span> то</div><div class="in"><div class="sb mot">поворот ↺ ліворуч</div></div><div class="head">інакше</div><div class="in"><div class="sb mot">крок</div></div><div class="foot"></div></div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="3"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="3">Перевірити</button><button data-act="show" data-lv="3">Показати робота</button><button data-act="clear" data-lv="3">Стерти</button></div>
+      <p class="msg" id="msg3"></p>
+      <button class="star" data-n="3" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l4">
+      <h3><span class="n">4</span> Сходинки</h3>
+      <p>Дві умови підряд. На зірочці робот повертає ліворуч, на кружечку — праворуч.</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">14</span></div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div><div class="c"><div class="head">якщо <span class="cond">стою на ★?</span> то</div><div class="in"><div class="sb mot">поворот ↺ ліворуч</div></div><div class="foot"></div></div><div class="c"><div class="head">якщо <span class="cond">стою на ●?</span> то</div><div class="in"><div class="sb mot">поворот ↻ праворуч</div></div><div class="foot"></div></div><div class="sb mot">крок</div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="4"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="4">Перевірити</button><button data-act="show" data-lv="4">Показати робота</button><button data-act="clear" data-lv="4">Стерти</button></div>
+      <p class="msg" id="msg4"></p>
+      <button class="star" data-n="4" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l5">
+      <h3><span class="n">5</span> Червоні кути</h3>
+      <p>У гілці «то» дві команди. Подумай, що робот робить на зірочці, а що — на звичайній клітинці.</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">16</span></div><div class="in"><div class="c"><div class="head">якщо <span class="cond">стою на ★?</span> то</div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#e6194b"></span></div><div class="sb mot">поворот ↺ ліворуч</div></div><div class="head">інакше</div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div></div><div class="foot"></div></div><div class="sb mot">крок</div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="5"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="5">Перевірити</button><button data-act="show" data-lv="5">Показати робота</button><button data-act="clear" data-lv="5">Стерти</button></div>
+      <p class="msg" id="msg5"></p>
+      <button class="star" data-n="5" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l6">
+      <h3><span class="n">6</span> Склади сам</h3>
+      <p>Тут ти — програміст. Справа малюнок, який має вийти. Вибери числа й команди у віконцях і натисни «Запустити».</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <select id="f_n"><option>?</option><option>12</option><option>16</option><option>18</option><option>20</option></select></div><div class="in"><div class="c"><div class="head">якщо <span class="cond">стою на ★?</span> то</div><div class="in"><div class="sb pen">фарбувати <select id="f_c1"><option>?</option><option>синім</option><option>червоним</option></select></div><div class="sb mot">поворот <select id="f_t"><option>?</option><option>↺ ліворуч</option><option>↻ праворуч</option></select></div></div><div class="head">інакше</div><div class="in"><div class="sb pen">фарбувати <select id="f_c2"><option>?</option><option>синім</option><option>червоним</option></select></div></div><div class="foot"></div></div><div class="sb mot">крок</div></div><div class="foot"></div></div></div></div><div><p style="margin:0 0 4px"><b>Має вийти:</b></p><div class="grid" data-lv="6t"></div><p style="margin:8px 0 4px"><b>Що вийшло:</b></p><div class="grid" data-lv="6"></div></div></div>
+      <div class="tools"><button data-act="run6">Запустити</button></div>
+      <p class="msg" id="msg6"></p>
+      <button class="star" data-n="6" disabled>☆ Зірка за рівень</button>
+    </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>У парі, в зошиті</h2>
+    <p>Намалюй у зошиті поле 8 × 8 і розстав 3–4 зірочки. Сусід диктує алгоритм з «якщо … то … інакше», а ти малюєш. Потім міняйтеся.</p>
+  </section>
+
+  <section>
+    <h2>Тест наприкінці уроку</h2>
+    <p>Вчитель скаже, коли почати. Впиши число й натисни «Перевірити».</p>
+    <div class="quiz" id="quiz"></div>
+    <p class="score" id="score">Правильно: 0 з 5</p>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити, як побудувати квадрат: 4 рази «вперед» і «повернути на 90°». Придумати один алгоритм з життя зі словами «якщо … то … інакше».</p>
+  </section>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const LV = {"1": {"size": 8, "start": [1, 6, "R"], "marks": {}, "prog": [["rep", 4, [["rep", 3, [["paint", "b"], "step"]], "left"]]]}, "2": {"size": 8, "start": [0, 3, "R"], "marks": {"1,3": "★", "4,3": "★", "6,3": "★"}, "prog": [["rep", 8, [["if", "star", [["paint", "r"]], [["paint", "b"]]], "step"]]]}, "3": {"size": 8, "start": [0, 7, "R"], "marks": {}, "prog": [["rep", 32, [["paint", "b"], ["if", "wall", ["left"], ["step"]]]]]}, "4": {"size": 8, "start": [0, 7, "R"], "marks": {"2,7": "★", "4,5": "★", "6,3": "★", "2,5": "●", "4,3": "●", "6,1": "●"}, "prog": [["rep", 14, [["paint", "b"], ["if", "star", ["left"], null], ["if", "dot", ["right"], null], "step"]]]}, "5": {"size": 8, "start": [2, 6, "R"], "marks": {"5,6": "★", "5,2": "★", "1,2": "★", "1,6": "★"}, "prog": [["rep", 16, [["if", "star", [["paint", "r"], "left"], [["paint", "b"]]], "step"]]]}, "6": {"size": 8, "start": [2, 1, "R"], "marks": {"6,1": "★", "6,6": "★", "1,6": "★", "1,1": "★"}, "prog": [["rep", 20, [["if", "star", [["paint", "r"], "right"], [["paint", "b"]]], "step"]]]}};
+const DIR = { R: [1, 0], U: [0, -1], L: [-1, 0], D: [0, 1] };
+const LEFT = { R: "U", U: "L", L: "D", D: "R" }, RIGHT = { R: "D", D: "L", L: "U", U: "R" };
+function run(lv) {
+  const L = LV[lv], paint = {}, path = [];
+  let [x, y, d] = L.start;
+  const wall = () => { const nx = x + DIR[d][0], ny = y + DIR[d][1]; return nx < 0 || ny < 0 || nx >= L.size || ny >= L.size; };
+  const cond = c => c === "star" ? L.marks[x + "," + y] === "★" : c === "dot" ? L.marks[x + "," + y] === "●" : wall();
+  const ex = prog => { for (const c of prog) {
+    if (c === "step") { if (!wall()) { x += DIR[d][0]; y += DIR[d][1]; } }
+    else if (c === "left") d = LEFT[d];
+    else if (c === "right") d = RIGHT[d];
+    else if (c[0] === "paint") { paint[x + "," + y] = c[1]; path.push([x + "," + y, c[1]]); }
+    else if (c[0] === "rep") for (let i = 0; i < c[1]; i++) ex(c[2]);
+    else if (c[0] === "if") { if (cond(c[1])) ex(c[2]); else if (c[3]) ex(c[3]); }
+  } };
+  ex(L.prog);
+  return { paint, path };
+}
+const ARROW = { R: 0, D: 90, L: 180, U: 270 };
+function draw(el, lv, colors) {
+  const L = LV[lv]; el.style.gridTemplateColumns = `repeat(${L.size}, auto)`;
+  let h = "";
+  for (let y = 0; y < L.size; y++) for (let x = 0; x < L.size; x++) {
+    const k = x + "," + y, m = L.marks[k] || "", c = colors[k] || "";
+    const bot = (x === L.start[0] && y === L.start[1]) ? `<svg class="bot" viewBox="0 0 30 30" style="transform:rotate(${ARROW[L.start[2]]}deg)"><polygon points="4,7 26,15 4,23 10,15" fill="#0b2a6b" stroke="#fff" stroke-width="1.5"/></svg>` : "";
+    h += `<div class="cell ${c}" data-k="${k}">${m ? `<span class="mk">${m}</span>` : ""}${bot}</div>`;
+  }
+  el.innerHTML = h;
+}
+const state = {}, peeked = {}, brush = {};
+document.querySelectorAll(".grid[data-lv]").forEach(g => {
+  const lv = g.dataset.lv;
+  if (lv === "6t") { draw(g, "6", run("6").paint); return; }
+  state[lv] = {}; draw(g, lv, state[lv]);
+});
+document.querySelectorAll(".lvl").forEach(a => { brush[a.id.slice(1)] = "b"; });
+document.addEventListener("click", e => {
+  const pal = e.target.closest(".pal");
+  if (pal) { const art = pal.closest(".lvl"); art.querySelectorAll(".pal").forEach(p => p.classList.toggle("on", p === pal)); brush[art.id.slice(1)] = pal.dataset.c; return; }
+  const cell = e.target.closest(".cell");
+  if (cell) { const g = cell.closest(".grid"), lv = g.dataset.lv; if (lv === "6" || lv === "6t") return;
+    const c = brush[lv]; if (c) state[lv][cell.dataset.k] = c; else delete state[lv][cell.dataset.k];
+    cell.className = "cell " + (c || ""); return; }
+  const btn = e.target.closest("button[data-act]"); if (!btn) return;
+  const act = btn.dataset.act, lv = btn.dataset.lv, g = document.querySelector(`.grid[data-lv="${lv}"]`), msg = $("msg" + lv);
+  if (act === "clear") { state[lv] = {}; draw(g, lv, state[lv]); msg.textContent = ""; msg.className = "msg"; }
+  if (act === "check") {
+    const want = run(lv).paint, have = state[lv]; let bad = 0;
+    draw(g, lv, have);
+    const keys = new Set([...Object.keys(want), ...Object.keys(have)]);
+    keys.forEach(k => { if ((want[k] || "") !== (have[k] || "")) { bad++; g.querySelector(`[data-k="${k}"]`).classList.add("bad"); } });
+    if (bad === 0) { msg.textContent = "✓ Правильно! Ти виконав алгоритм як робот."; msg.className = "msg ok"; if (!peeked[lv]) giveStar(lv); }
+    else { msg.textContent = `✗ Помилкових клітинок: ${bad}. Вони обведені червоним.`; msg.className = "msg no"; }
+  }
+  if (act === "show") {
+    peeked[lv] = true; const { path } = run(lv); const shown = {}; let i = 0;
+    msg.textContent = "Дивись, як іде робот…"; msg.className = "msg";
+    const t = setInterval(() => { if (i >= path.length) { clearInterval(t); msg.textContent = `Робот зробив ${path.length} фарбувань. Натисни «Стерти» і спробуй сам на наступному рівні.`; return; }
+      shown[path[i][0]] = path[i][1]; draw(g, lv, shown); i++; }, 160);
+  }
+  if (act === "run6") {
+    const n = $("f_n").value, c1 = $("f_c1").value, t = $("f_t").value, c2 = $("f_c2").value;
+    if ([n, c1, t, c2].includes("?")) { $("msg6").textContent = "Заповни всі віконця зі знаком «?»."; $("msg6").className = "msg no"; return; }
+    const col = s => s === "синім" ? "b" : "r";
+    const mine = { ...LV["6"], prog: [["rep", +n, [["if", "star", [["paint", col(c1)], t.includes("праворуч") ? "right" : "left"], [["paint", col(c2)]]], "step"]]] };
+    LV["6m"] = mine; const got = run("6m").paint, want = run("6").paint;
+    draw(document.querySelector('.grid[data-lv="6"]'), "6", got);
+    const same = Object.keys({ ...got, ...want }).every(k => got[k] === want[k]);
+    $("msg6").textContent = same ? "✓ Вийшло точно як треба!" : "✗ Не збігається. Порівняй малюнки і зміни щось у віконцях.";
+    $("msg6").className = "msg " + (same ? "ok" : "no");
+    if (same) giveStar("6");
+  }
+});
+
+let done = new Set();
+try { done = new Set(JSON.parse(sessionStorage.getItem("robot-stars") || "[]")); } catch (e) {}
+function paintStars() {
+  $("stars").textContent = "★".repeat(done.size) + "☆".repeat(6 - done.size);
+  $("count").textContent = done.size + " з 6" + (done.size === 6 ? " — покажи вчителю" : "");
+  document.querySelectorAll(".star").forEach(b => { const on = done.has(+b.dataset.n); b.classList.toggle("on", on); b.textContent = on ? "★ Зірка є" : "☆ Зірка за рівень"; const card = b.closest(".lvl"); if (card) card.classList.toggle("done", on); });
+}
+function giveStar(n) { done.add(+n); try { sessionStorage.setItem("robot-stars", JSON.stringify([...done])); } catch (e) {} paintStars(); }
+paintStars();
+
+const QUIZ = [
+  { q: "Рівень 2. Скільки клітинок робот зафарбував червоним?", ok: ["3"], show: "3" },
+  { q: "Рівень 3. Скільки клітинок у рамці?", ok: ["28"], show: "28" },
+  { q: "Рівень 5. Скільки червоних клітинок?", ok: ["4"], show: "4" },
+  { q: "Робот стоїть на ★. Алгоритм: «якщо стою на ★ то поворот ліворуч, інакше крок». Скільки команд він виконає: 1 чи 2?", ok: ["1"], show: "1 — виконується тільки одна гілка" },
+  { q: "Рівень 6. Скільки разів треба повторити?", ok: ["20"], show: "20" }
+];
+let right = 0, answered = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <div class="ans">
+      <input id="a${k}" inputmode="numeric" autocomplete="off" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(inp.value.replace(/\s/g, ""));
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  answered++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
