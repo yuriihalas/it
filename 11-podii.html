@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Події та обробники</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Події та обробники подій <span>· 11 клас · 13.11 · JavaScript, 12 балів</span></h1>
+
+  <p class="big">Подія — це те, що робить користувач: клікає, натискає клавішу, наводить мишку. Обробник — функція, яка запускається, коли подія сталася.</p>
+
+  <section>
+    <h2>Як це записати</h2>
+    <div class="two">
+      <div>
+<pre>a.el.addEventListener("click", function () {
+  a.color = "gold";
+  a.draw();
+});</pre>
+      </div>
+      <div>
+        <div class="wrap"><table>
+          <tr><th>Що</th><th>Що означає</th></tr>
+          <tr><td><code>a.el</code></td><td>Де слухаємо: коло <code>a</code> на сторінці</td></tr>
+          <tr><td><code>addEventListener</code></td><td>«Додай слухача події»</td></tr>
+          <tr><td><code>"click"</code></td><td>Яку подію чекаємо</td></tr>
+          <tr><td><code>function () {…}</code></td><td>Обробник. Виконається <b>кожного разу</b>, коли клікнуть</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="wrap"><table>
+      <tr><th>Подія</th><th>Коли стається</th></tr>
+      <tr><td><code>click</code></td><td>клік мишкою</td></tr>
+      <tr><td><code>keydown</code></td><td>натиснули клавішу. Яку — у <code>e.key</code></td></tr>
+      <tr><td><code>mouseover</code></td><td>мишка заїхала на елемент</td></tr>
+      <tr><td><code>dblclick</code></td><td>подвійний клік</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Робота на 12 балів</h2>
+    <p><a class="get" href="11-podii-baza.html" download="podii.html"><b>Завантажити файл podii.html</b></a></p>
+    <ol>
+      <li>Відкрий файл у <b>Блокноті</b> (права кнопка → «Відкрити за допомогою») і в <b>браузері</b> (подвійний клік).</li>
+      <li>Клас <code>Ball</code> і два м'ячі <code>a</code> та <code>b</code> вже є у файлі. Це те, що ви писали минулого разу, плюс метод <code>move(dx, dy)</code>.</li>
+      <li>Пиши код між <code>ПИШИ СВІЙ КОД ТУТ</code> і <code>ДАЛІ НІЧОГО НЕ ЗМІНЮЙ</code>.</li>
+      <li>Після кожного кроку: у Блокноті <b>Ctrl + S</b>, у браузері <b>F5</b>. Помилку браузер покаже червоним.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Крок 1: клік по м'ячу <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div>
+<pre>a.el.addEventListener("click", function () {
+  a.color = "gold";
+  a.draw();
+});</pre>
+      </div>
+      <div>
+        <p><b>Має вийти:</b> клікнеш по червоному м'ячу — він стане золотим.</p>
+        <p>Без <code>a.draw()</code> колір у властивості зміниться, а на екрані — ні. Перевір: прибери цей рядок, збережи, F5.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 2: кнопка «Більше» <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div>
+<pre>document.getElementById("grow").addEventListener("click", function () {
+  a.r = a.r + 10;
+  a.draw();
+});</pre>
+      </div>
+      <div>
+        <p><b>Має вийти:</b> кожен клік по кнопці «Більше» збільшує м'яч на 10.</p>
+        <p>Кнопку знаходимо за її <code>id</code>, як коло. Подія та сама — <code>click</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 3: стрілки на клавіатурі <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div>
+<pre>document.addEventListener("keydown", function (e) {
+  if (e.key === "ArrowRight") a.move(10, 0);
+  if (e.key === "ArrowLeft") a.move(-10, 0);
+  if (e.key === "ArrowUp") a.move(0, -10);
+  if (e.key === "ArrowDown") a.move(0, 10);
+});</pre>
+      </div>
+      <div>
+        <p><b>Має вийти:</b> стрілки рухають м'яч <code>a</code>.</p>
+        <p>Клавішу слухає вся сторінка: <code>document</code>. Обробник отримує <code>e</code> — опис події. У <code>e.key</code> назва клавіші.</p>
+        <p>Вгору — це <b>мінус</b> по y: у SVG y росте донизу.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 4: лічильник і «Скинути» <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div>
+<pre>let clicks = 0;
+b.el.addEventListener("click", function () {
+  clicks = clicks + 1;
+  document.getElementById("info").textContent = "Кліків по b: " + clicks;
+});</pre>
+      </div>
+      <div>
+        <p><b>Має вийти:</b> під полем рахуються кліки по зеленому м'ячу.</p>
+        <p><b>Сам:</b> напиши обробник для кнопки з id <code>reset</code>. Він повертає м'ячу <code>a</code> x = 150, y = 150, r = 40, колір <code>"tomato"</code> і малює його.</p>
+      </div>
+    </div>
+    <p><b>★ Для швидших.</b> Зроби м'яч <code>b</code> «втікачем»: на подію <code>mouseover</code> він стрибає в випадкове місце. Підказка: <code>Math.random() * 520 + 40</code> дає випадкове число від 40 до 560.</p>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td>Нічого не стається, помилки немає</td><td>Забув <code>a.draw()</code> або назву події з помилкою: <code>"click"</code>, не <code>"Click"</code></td></tr>
+      <tr><td><code>Cannot read properties of null</code></td><td>Неправильний id: <code>"grow"</code>, <code>"reset"</code>, <code>"info"</code></td></tr>
+      <tr><td>Стрілки не працюють</td><td>Клікни один раз по сторінці, щоб вона мала фокус. Перевір <code>"ArrowRight"</code>: великі A і R</td></tr>
+      <tr><td><code>Unexpected token</code> / <code>missing )</code></td><td>Кожен обробник закінчується на <code>});</code></td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити, що таке обробник події. Назвати 3 події і коли кожна стається.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Як називається функція, яка запускається, коли сталася подія?",
+"code": "",
+"ok": [
+"JUQwJUJFJUQwJUIxJUQxJTgwJUQwJUJFJUQwJUIxJUQwJUJEJUQwJUI4JUQwJUJB",
+"JUQwJUJFJUQwJUIxJUQxJTgwJUQwJUJFJUQwJUIxJUQwJUJEJUQwJUI4JUQwJUJBJUQwJUJGJUQwJUJFJUQwJUI0JUQxJTk2JUQxJTk3",
+"JUQwJUJFJUQwJUIxJUQxJTgwJUQwJUJFJUQwJUIxJUQwJUJEJUQwJUI4JUQwJUJBJUQwJUJGJUQwJUJFJUQwJUI0JUQxJTk2JUQwJUI5"
+],
+"show": "обробник",
+"why": "Обробник події — функція в addEventListener."
+},
+{
+"q": "Яку подію слухаємо, щоб дізнатися, яку клавішу натиснули?",
+"code": "",
+"ok": [
+"a2V5ZG93bg=="
+],
+"show": "keydown",
+"why": "keydown, а назва клавіші в e.key."
+},
+{
+"q": "На початку a.r = 40. Натиснули «Більше» 3 рази. Чому дорівнює a.r?",
+"code": "document.getElementById(\"grow\").addEventListener(\"click\", function () {\n  a.r = a.r + 10;\n  a.draw();\n});",
+"ok": [
+"NzA="
+],
+"show": "70",
+"why": "40 + 10 + 10 + 10 = 70. Обробник спрацьовує на кожен клік."
+},
+{
+"q": "На початку a.x = 150. Натиснули → тричі і ← один раз. Чому дорівнює a.x?",
+"code": "if (e.key === \"ArrowRight\") a.move(10, 0);\nif (e.key === \"ArrowLeft\") a.move(-10, 0);",
+"ok": [
+"MTcw"
+],
+"show": "170",
+"why": "150 + 30 − 10 = 170."
+},
+{
+"q": "По кнопці клікнули 4 рази. Чому дорівнює n?",
+"code": "let n = 0;\nbtn.addEventListener(\"click\", function () {\n  n = n + 2;\n});",
+"ok": [
+"OA=="
+],
+"show": "8",
+"why": "Кожен клік додає 2: 4 · 2 = 8."
+},
+{
+"q": "Що виведе консоль одразу після завантаження сторінки, ще до кліків?",
+"code": "let n = 0;\nbtn.addEventListener(\"click\", function () {\n  n = n + 1;\n});\nconsole.log(n);",
+"ok": [
+"MA=="
+],
+"show": "0",
+"why": "addEventListener лише реєструє обробник. Сам обробник ще не запускався, тому n = 0."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

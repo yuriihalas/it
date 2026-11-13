@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <title>Мої події</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 760px; margin: 20px auto; font-size: 18px; }
+    svg { background: #f2f4f7; border: 1px solid #bbb; display: block; }
+    circle { cursor: pointer; }
+    button { font-size: 18px; padding: 4px 14px; margin: 8px 8px 8px 0; }
+    #error { color: #b42318; font-weight: bold; }
+    #info { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Мої події</h1>
+  <svg width="600" height="300">
+    <circle id="a"></circle>
+    <circle id="b"></circle>
+  </svg>
+  <button id="grow">Більше</button>
+  <button id="reset">Скинути</button>
+  <p id="info">Кліків по b: 0</p>
+  <p id="error"></p>
+
+  <script>
+    window.addEventListener("error", function (e) {
+      document.getElementById("error").textContent = "Помилка в рядку " + e.lineno + ": " + e.message;
+    });
+
+    class Ball {
+      constructor(id, x, y, r, color) {
+        this.el = document.getElementById(id);
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.color = color;
+      }
+      draw() {
+        this.el.setAttribute("cx", this.x);
+        this.el.setAttribute("cy", this.y);
+        this.el.setAttribute("r", this.r);
+        this.el.setAttribute("fill", this.color);
+      }
+      move(dx, dy) {
+        this.x = this.x + dx;
+        this.y = this.y + dy;
+        this.draw();
+      }
+    }
+
+    const a = new Ball("a", 150, 150, 40, "tomato");
+    const b = new Ball("b", 450, 150, 30, "teal");
+    a.draw();
+    b.draw();
+  </script>
+
+  <script>
+    // ===== ПИШИ СВІЙ КОД ТУТ =====
+
+
+
+    // ===== ДАЛІ НІЧОГО НЕ ЗМІНЮЙ =====
+  </script>
+</body>
+</html>

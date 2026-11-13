@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План: події, 11 клас</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 900px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  td:first-child { white-space: nowrap; font-weight: 700; color: #0b5cad; font-variant-numeric: tabular-nums; }
+  .wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="sheet">
+<h1>План уроку <span>· 11 клас · 13.11 · події та обробники</span></h1>
+
+<p>Тема за КТП: «Події та обробники подій». 2 урок, 09:55–10:40. Сторінка для учнів: <a href="11-podii.html">yuriihalas.github.io/it/11-podii.html</a>. Файл для роботи: podii.html, качають зі сторінки. Розв'язок лише на Mac: «02 Уроки/11 клас/11-13.11-події-розвʼязок.html».</p>
+
+<section>
+<h2>Хід уроку</h2>
+<div class="wrap"><table>
+<tr><th>Хв</th><th>Що робимо</th></tr>
+<tr><td>0–5</td><td>Що таке подія. Приклади з телефона: натиснув — сталося. Обробник — функція, що чекає.</td></tr>
+<tr><td>5–8</td><td>Качають podii.html, відкривають у Блокноті й браузері. Показати, що клас Ball уже є.</td></tr>
+<tr><td>8–16</td><td>Крок 1: клік по м'ячу. Спитай: що буде без a.draw()?</td></tr>
+<tr><td>16–22</td><td>Крок 2: кнопка «Більше».</td></tr>
+<tr><td>22–31</td><td>Крок 3: стрілки, e.key. Чому вгору — мінус.</td></tr>
+<tr><td>31–39</td><td>Крок 4: лічильник і «Скинути» самостійно. Швидші — «втікач».</td></tr>
+<tr><td>39–44</td><td>Тест на сторінці, 6 питань.</td></tr>
+<tr><td>44–45</td><td>Домашнє.</td></tr>
+</table></div>
+</section>
+
+<section>
+<h2>Оцінювання: 12 балів</h2>
+<div class="wrap"><table>
+<tr><th>Що</th><th>Бали</th><th>Як перевірити</th></tr>
+<tr><td>Крок 1</td><td>3</td><td>Клік по червоному м'ячу — золотий</td></tr>
+<tr><td>Крок 2</td><td>2</td><td>«Більше» збільшує м'яч</td></tr>
+<tr><td>Крок 3</td><td>3</td><td>Стрілки рухають м'яч у 4 боки</td></tr>
+<tr><td>Крок 4</td><td>2</td><td>Лічильник працює (1 бал), «Скинути» написав сам (1 бал)</td></tr>
+<tr><td>Тест</td><td>2</td><td>5–6 правильних — 2 бали, 3–4 — 1 бал</td></tr>
+</table></div>
+<p>Щоб код не був лише скопійований, покажи на addEventListener і спитай: що тут подія, а що обробник?</p>
+</section>
+
+<section>
+<h2>Відповіді</h2>
+<p>Тест: обробник, keydown, 70, 170, 8, 0.</p>
+<p>«Скинути»:</p>
+<pre>document.getElementById("reset").addEventListener("click", function () {
+  a.x = 150;
+  a.y = 150;
+  a.r = 40;
+  a.color = "tomato";
+  a.draw();
+});</pre>
+</section>
+
+<section>
+<h2>Типові помилки</h2>
+<ul>
+<li>"Click" з великої — подія не спрацьовує, а помилки немає.</li>
+<li>Забули a.draw() — властивість змінилась, а на екрані ні.</li>
+<li>Стрілки «не працюють», бо фокус в адресному рядку. Клікнути по сторінці.</li>
+<li>Не закрили обробник: треба }); в кінці.</li>
+</ul>
+</section>
+
+</div>
+</body>
+</html>
