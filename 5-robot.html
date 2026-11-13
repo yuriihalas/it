@@ -95,7 +95,7 @@
   <h1>Робот-художник <span>· 5 клас · розгалуження без Scratch</span></h1>
   <p class="big">Розгалуження — це вибір. Робот на кожному кроці перевіряє умову: <b>якщо</b> вона правдива — робить одне, <b>інакше</b> — інше. Сьогодні робот — це ти: виконай алгоритм замість нього.</p>
 
-  <div class="bar"><span>Мої зірки:</span><span class="stars" id="stars">☆☆☆☆☆☆</span><span id="count">0 з 6</span></div>
+  <div class="bar"><span>Мої зірки:</span><span class="stars" id="stars">☆☆☆☆☆☆☆☆☆☆</span><span id="count">0 з 10</span></div>
 
   <section>
     <h2>Як грати</h2>
@@ -160,9 +160,44 @@
       <h3><span class="n">6</span> Склади сам</h3>
       <p>Тут ти — програміст. Справа малюнок, який має вийти. Вибери числа й команди у віконцях і натисни «Запустити».</p>
       <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <select id="f_n"><option>?</option><option>12</option><option>16</option><option>18</option><option>20</option></select></div><div class="in"><div class="c"><div class="head">якщо <span class="cond">стою на ★?</span> то</div><div class="in"><div class="sb pen">фарбувати <select id="f_c1"><option>?</option><option>синім</option><option>червоним</option></select></div><div class="sb mot">поворот <select id="f_t"><option>?</option><option>↺ ліворуч</option><option>↻ праворуч</option></select></div></div><div class="head">інакше</div><div class="in"><div class="sb pen">фарбувати <select id="f_c2"><option>?</option><option>синім</option><option>червоним</option></select></div></div><div class="foot"></div></div><div class="sb mot">крок</div></div><div class="foot"></div></div></div></div><div><p style="margin:0 0 4px"><b>Має вийти:</b></p><div class="grid" data-lv="6t"></div><p style="margin:8px 0 4px"><b>Що вийшло:</b></p><div class="grid" data-lv="6"></div></div></div>
-      <div class="tools"><button data-act="run6">Запустити</button></div>
+      <div class="tools"><button data-act="runfree" data-lv="6">Запустити</button></div>
       <p class="msg" id="msg6"></p>
       <button class="star" data-n="6" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l7">
+      <h3><span class="n">7</span> Змійка</h3>
+      <p>Робот повзе змійкою: на зірочці повертає ліворуч, на кружечку — праворуч. Що вийде, коли він закінчить?</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">25</span></div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div><div class="c"><div class="head">якщо <span class="cond">стою на ★?</span> то</div><div class="in"><div class="sb mot">поворот ↺ ліворуч</div></div><div class="foot"></div></div><div class="c"><div class="head">якщо <span class="cond">стою на ●?</span> то</div><div class="in"><div class="sb mot">поворот ↻ праворуч</div></div><div class="foot"></div></div><div class="sb mot">крок</div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="7"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="7">Перевірити</button><button data-act="show" data-lv="7">Показати робота</button><button data-act="clear" data-lv="7">Стерти</button></div>
+      <p class="msg" id="msg7"></p>
+      <button class="star" data-n="7" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l8">
+      <h3><span class="n">8</span> Літера</h3>
+      <p>Робот дивиться <b>вгору</b>. Біля стіни повертає праворуч. Яку літеру він намалює?</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">15</span></div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div><div class="c"><div class="head">якщо <span class="cond">попереду стіна?</span> то</div><div class="in"><div class="sb mot">поворот ↻ праворуч</div></div><div class="head">інакше</div><div class="in"><div class="sb mot">крок</div></div><div class="foot"></div></div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="8"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="8">Перевірити</button><button data-act="show" data-lv="8">Показати робота</button><button data-act="clear" data-lv="8">Стерти</button></div>
+      <p class="msg" id="msg8"></p>
+      <button class="star" data-n="8" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l9">
+      <h3><span class="n">9</span> Рамка із зірками</h3>
+      <p>Два розгалуження в одному повторенні: перше вибирає колір, друге — йти чи повертати.</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <span class="val">32</span></div><div class="in"><div class="c"><div class="head">якщо <span class="cond">стою на ★?</span> то</div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#e6194b"></span></div></div><div class="head">інакше</div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div></div><div class="foot"></div></div><div class="c"><div class="head">якщо <span class="cond">попереду стіна?</span> то</div><div class="in"><div class="sb mot">поворот ↺ ліворуч</div></div><div class="head">інакше</div><div class="in"><div class="sb mot">крок</div></div><div class="foot"></div></div></div><div class="foot"></div></div></div></div><div><div class="grid" data-lv="9"></div></div></div>
+      <div class="tools"><button class="pal on" data-c="b" style="background:#4c7dff" aria-label="Синій"></button><button class="pal" data-c="r" style="background:#e6194b" aria-label="Червоний"></button><button class="pal" data-c="" style="background:#fff" aria-label="Гумка"></button>
+        <button data-act="check" data-lv="9">Перевірити</button><button data-act="show" data-lv="9">Показати робота</button><button data-act="clear" data-lv="9">Стерти</button></div>
+      <p class="msg" id="msg9"></p>
+      <button class="star" data-n="9" disabled>☆ Зірка за рівень</button>
+    </article>
+    <article class="lvl" id="l10">
+      <h3><span class="n">10</span> Склади сам: рамка</h3>
+      <p>Робот стоїть у лівому верхньому куті й дивиться праворуч. Вибери, скільки разів повторити і куди повертати, щоб вийшла рамка.</p>
+      <div class="rob"><div class="stacks"><div class="stack"><div class="sb hat ev">старт</div><div class="c"><div class="head">повторити <select id="f10_n"><option>?</option><option>16</option><option>24</option><option>28</option><option>32</option></select></div><div class="in"><div class="sb pen">фарбувати <span class="sw" style="background:#4c7dff"></span></div><div class="c"><div class="head">якщо <span class="cond">попереду стіна?</span> то</div><div class="in"><div class="sb mot">поворот <select id="f10_t"><option>?</option><option>↺ ліворуч</option><option>↻ праворуч</option></select></div></div><div class="head">інакше</div><div class="in"><div class="sb mot">крок</div></div><div class="foot"></div></div></div><div class="foot"></div></div></div></div><div><p style="margin:0 0 4px"><b>Має вийти:</b></p><div class="grid" data-lv="10t"></div><p style="margin:8px 0 4px"><b>Що вийшло:</b></p><div class="grid" data-lv="10"></div></div></div>
+      <div class="tools"><button data-act="runfree" data-lv="10">Запустити</button></div>
+      <p class="msg" id="msg10"></p>
+      <button class="star" data-n="10" disabled>☆ Зірка за рівень</button>
     </article>
     </div>
   </section>
@@ -176,7 +211,7 @@
     <h2>Тест наприкінці уроку</h2>
     <p>Вчитель скаже, коли почати. Впиши число й натисни «Перевірити».</p>
     <div class="quiz" id="quiz"></div>
-    <p class="score" id="score">Правильно: 0 з 5</p>
+    <p class="score" id="score">Правильно: 0 з 10</p>
   </section>
 
   <section>
@@ -186,7 +221,7 @@
 </div>
 <script>
 const $ = id => document.getElementById(id);
-const LV = {"1": {"size": 8, "start": [1, 6, "R"], "marks": {}, "prog": [["rep", 4, [["rep", 3, [["paint", "b"], "step"]], "left"]]]}, "2": {"size": 8, "start": [0, 3, "R"], "marks": {"1,3": "★", "4,3": "★", "6,3": "★"}, "prog": [["rep", 8, [["if", "star", [["paint", "r"]], [["paint", "b"]]], "step"]]]}, "3": {"size": 8, "start": [0, 7, "R"], "marks": {}, "prog": [["rep", 32, [["paint", "b"], ["if", "wall", ["left"], ["step"]]]]]}, "4": {"size": 8, "start": [0, 7, "R"], "marks": {"2,7": "★", "4,5": "★", "6,3": "★", "2,5": "●", "4,3": "●", "6,1": "●"}, "prog": [["rep", 14, [["paint", "b"], ["if", "star", ["left"], null], ["if", "dot", ["right"], null], "step"]]]}, "5": {"size": 8, "start": [2, 6, "R"], "marks": {"5,6": "★", "5,2": "★", "1,2": "★", "1,6": "★"}, "prog": [["rep", 16, [["if", "star", [["paint", "r"], "left"], [["paint", "b"]]], "step"]]]}, "6": {"size": 8, "start": [2, 1, "R"], "marks": {"6,1": "★", "6,6": "★", "1,6": "★", "1,1": "★"}, "prog": [["rep", 20, [["if", "star", [["paint", "r"], "right"], [["paint", "b"]]], "step"]]]}};
+const LV = {"1": {"size": 8, "start": [1, 6, "R"], "marks": {}, "prog": [["rep", 4, [["rep", 3, [["paint", "b"], "step"]], "left"]]]}, "2": {"size": 8, "start": [0, 3, "R"], "marks": {"1,3": "★", "4,3": "★", "6,3": "★"}, "prog": [["rep", 8, [["if", "star", [["paint", "r"]], [["paint", "b"]]], "step"]]]}, "3": {"size": 8, "start": [0, 7, "R"], "marks": {}, "prog": [["rep", 32, [["paint", "b"], ["if", "wall", ["left"], ["step"]]]]]}, "4": {"size": 8, "start": [0, 7, "R"], "marks": {"2,7": "★", "4,5": "★", "6,3": "★", "2,5": "●", "4,3": "●", "6,1": "●"}, "prog": [["rep", 14, [["paint", "b"], ["if", "star", ["left"], null], ["if", "dot", ["right"], null], "step"]]]}, "5": {"size": 8, "start": [2, 6, "R"], "marks": {"5,6": "★", "5,2": "★", "1,2": "★", "1,6": "★"}, "prog": [["rep", 16, [["if", "star", [["paint", "r"], "left"], [["paint", "b"]]], "step"]]]}, "7": {"size": 8, "start": [1, 7, "R"], "marks": {"5,7": "★", "5,6": "★", "5,5": "★", "5,4": "★", "1,6": "●", "1,5": "●", "1,4": "●", "1,3": "●"}, "prog": [["rep", 25, [["paint", "b"], ["if", "star", ["left"], null], ["if", "dot", ["right"], null], "step"]]]}, "8": {"size": 8, "start": [1, 7, "U"], "marks": {}, "prog": [["rep", 15, [["paint", "b"], ["if", "wall", ["right"], ["step"]]]]]}, "9": {"size": 8, "start": [0, 7, "R"], "marks": {"3,7": "★", "7,3": "★", "4,0": "★", "0,4": "★"}, "prog": [["rep", 32, [["if", "star", [["paint", "r"]], [["paint", "b"]]], ["if", "wall", ["left"], ["step"]]]]]}, "6": {"size": 8, "start": [2, 1, "R"], "marks": {"6,1": "★", "6,6": "★", "1,6": "★", "1,1": "★"}, "prog": [["rep", 20, [["if", "star", [["paint", "r"], "right"], [["paint", "b"]]], "step"]]]}, "10": {"size": 8, "start": [0, 0, "R"], "marks": {}, "prog": [["rep", 32, [["paint", "b"], ["if", "wall", ["right"], ["step"]]]]]}};
 const DIR = { R: [1, 0], U: [0, -1], L: [-1, 0], D: [0, 1] };
 const LEFT = { R: "U", U: "L", L: "D", D: "R" }, RIGHT = { R: "D", D: "L", L: "U", U: "R" };
 function run(lv) {
@@ -219,7 +254,7 @@ function draw(el, lv, colors) {
 const state = {}, peeked = {}, brush = {};
 document.querySelectorAll(".grid[data-lv]").forEach(g => {
   const lv = g.dataset.lv;
-  if (lv === "6t") { draw(g, "6", run("6").paint); return; }
+  if (lv.endsWith("t")) { draw(g, lv.slice(0, -1), run(lv.slice(0, -1)).paint); return; }
   state[lv] = {}; draw(g, lv, state[lv]);
 });
 document.querySelectorAll(".lvl").forEach(a => { brush[a.id.slice(1)] = "b"; });
@@ -227,7 +262,7 @@ document.addEventListener("click", e => {
   const pal = e.target.closest(".pal");
   if (pal) { const art = pal.closest(".lvl"); art.querySelectorAll(".pal").forEach(p => p.classList.toggle("on", p === pal)); brush[art.id.slice(1)] = pal.dataset.c; return; }
   const cell = e.target.closest(".cell");
-  if (cell) { const g = cell.closest(".grid"), lv = g.dataset.lv; if (lv === "6" || lv === "6t") return;
+  if (cell) { const g = cell.closest(".grid"), lv = g.dataset.lv; if (lv === "6" || lv === "10" || lv.endsWith("t")) return;
     const c = brush[lv]; if (c) state[lv][cell.dataset.k] = c; else delete state[lv][cell.dataset.k];
     cell.className = "cell " + (c || ""); return; }
   const btn = e.target.closest("button[data-act]"); if (!btn) return;
@@ -247,25 +282,29 @@ document.addEventListener("click", e => {
     const t = setInterval(() => { if (i >= path.length) { clearInterval(t); msg.textContent = `Робот зробив ${path.length} фарбувань. Натисни «Стерти» і спробуй сам на наступному рівні.`; return; }
       shown[path[i][0]] = path[i][1]; draw(g, lv, shown); i++; }, 160);
   }
-  if (act === "run6") {
-    const n = $("f_n").value, c1 = $("f_c1").value, t = $("f_t").value, c2 = $("f_c2").value;
-    if ([n, c1, t, c2].includes("?")) { $("msg6").textContent = "Заповни всі віконця зі знаком «?»."; $("msg6").className = "msg no"; return; }
-    const col = s => s === "синім" ? "b" : "r";
-    const mine = { ...LV["6"], prog: [["rep", +n, [["if", "star", [["paint", col(c1)], t.includes("праворуч") ? "right" : "left"], [["paint", col(c2)]]], "step"]]] };
-    LV["6m"] = mine; const got = run("6m").paint, want = run("6").paint;
-    draw(document.querySelector('.grid[data-lv="6"]'), "6", got);
+  if (act === "runfree") {
+    const col = v => v === "синім" ? "b" : "r", turn = v => v.includes("праворуч") ? "right" : "left";
+    let vals, prog;
+    if (lv === "6") { vals = ["f_n", "f_c1", "f_t", "f_c2"].map(id => $(id).value);
+      prog = [["rep", +vals[0], [["if", "star", [["paint", col(vals[1])], turn(vals[2])], [["paint", col(vals[3])]]], "step"]]]; }
+    else { vals = ["f10_n", "f10_t"].map(id => $(id).value);
+      prog = [["rep", +vals[0], [["paint", "b"], ["if", "wall", [turn(vals[1])], ["step"]]]]]; }
+    if (vals.includes("?")) { msg.textContent = "Заповни всі віконця зі знаком «?»."; msg.className = "msg no"; return; }
+    LV[lv + "m"] = { ...LV[lv], prog };
+    const got = run(lv + "m").paint, want = run(lv).paint;
+    draw(g, lv, got);
     const same = Object.keys({ ...got, ...want }).every(k => got[k] === want[k]);
-    $("msg6").textContent = same ? "✓ Вийшло точно як треба!" : "✗ Не збігається. Порівняй малюнки і зміни щось у віконцях.";
-    $("msg6").className = "msg " + (same ? "ok" : "no");
-    if (same) giveStar("6");
+    msg.textContent = same ? "✓ Вийшло точно як треба!" : "✗ Не збігається. Порівняй малюнки і зміни щось у віконцях.";
+    msg.className = "msg " + (same ? "ok" : "no");
+    if (same) giveStar(lv);
   }
 });
 
 let done = new Set();
 try { done = new Set(JSON.parse(sessionStorage.getItem("robot-stars") || "[]")); } catch (e) {}
 function paintStars() {
-  $("stars").textContent = "★".repeat(done.size) + "☆".repeat(6 - done.size);
-  $("count").textContent = done.size + " з 6" + (done.size === 6 ? " — покажи вчителю" : "");
+  $("stars").textContent = "★".repeat(done.size) + "☆".repeat(10 - done.size);
+  $("count").textContent = done.size + " з 10" + (done.size === 10 ? " — покажи вчителю" : "");
   document.querySelectorAll(".star").forEach(b => { const on = done.has(+b.dataset.n); b.classList.toggle("on", on); b.textContent = on ? "★ Зірка є" : "☆ Зірка за рівень"; const card = b.closest(".lvl"); if (card) card.classList.toggle("done", on); });
 }
 function giveStar(n) { done.add(+n); try { sessionStorage.setItem("robot-stars", JSON.stringify([...done])); } catch (e) {} paintStars(); }
@@ -276,14 +315,19 @@ const QUIZ = [
   { q: "Рівень 3. Скільки клітинок у рамці?", ok: ["28"], show: "28" },
   { q: "Рівень 5. Скільки червоних клітинок?", ok: ["4"], show: "4" },
   { q: "Робот стоїть на ★. Алгоритм: «якщо стою на ★ то поворот ліворуч, інакше крок». Скільки команд він виконає: 1 чи 2?", ok: ["1"], show: "1 — виконується тільки одна гілка" },
-  { q: "Рівень 6. Скільки разів треба повторити?", ok: ["20"], show: "20" }
+  { q: "Рівень 6. Скільки разів треба повторити?", ok: ["20"], show: "20" },
+  { q: "Рівень 7. Скільки клітинок зафарбує робот-змійка?", ok: ["25"], show: "25" },
+  { q: "Рівень 8. Яку літеру намалював робот?", ok: ["г"], show: "Г" },
+  { q: "Рівень 8. Скільки клітинок у цій літері?", ok: ["14"], show: "14" },
+  { q: "Рівень 9. Скільки клітинок рамки червоні?", ok: ["4"], show: "4" },
+  { q: "Рівень 10. Скільки разів треба повторити?", ok: ["32"], show: "32" }
 ];
 let right = 0, answered = 0;
 $("quiz").innerHTML = QUIZ.map((t, k) => `
   <div class="q" id="q${k}">
     <p><b>${k + 1}.</b> ${t.q}</p>
     <div class="ans">
-      <input id="a${k}" inputmode="numeric" autocomplete="off" aria-label="Відповідь ${k + 1}">
+      <input id="a${k}" autocomplete="off" aria-label="Відповідь ${k + 1}">
       <button data-q="${k}">Перевірити</button>
       <span class="mark" id="m${k}"></span>
     </div>
@@ -292,7 +336,7 @@ function check(k) {
   const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
   if (box.classList.contains("yes") || box.classList.contains("no")) return;
   if (!inp.value.trim()) { inp.focus(); return; }
-  const good = t.ok.includes(inp.value.replace(/\s/g, ""));
+  const good = t.ok.includes(inp.value.replace(/\s/g, "").toLowerCase());
   box.classList.add(good ? "yes" : "no");
   inp.readOnly = true;
   box.querySelector("button").disabled = true;
