@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Системи в Python</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Системи рівнянь і оптимізація в Python <span>· 10-А · 13.11 · практична робота № 1, 12 балів</span></h1>
+
+  <p class="big">Практична робота № 1. Системи рівнянь і задачі на найбільше значення розв'язуємо програмою в Thonny. Файл <code>Прізвище_PR1.py</code>. Переписуй код частинами і запускай після кожного кроку. За роботу — 12 балів.</p>
+
+  <section>
+    <h2>Завдання 1: система перебором пар <span class="pts">3 бали</span></h2>
+    <p>Система: <b>x + y = 10</b> і <b>x − y = 2</b>. Перебираємо всі пари x і y від 0 до 10 і шукаємо ту, де виконуються <b>обидва</b> рівняння.</p>
+    <div class="two">
+      <div><pre>for x in range(0, 11):
+    for y in range(0, 11):
+        if x + y == 10 and x - y == 2:
+            print(&quot;x =&quot;, x, &quot;y =&quot;, y)</pre></div>
+      <div><p>Має вивести:</p>
+<pre class="out">x = 6 y = 4</pre>
+        <p>Цикл у циклі: для кожного x перебираються всі y. <code>and</code> — «і»: обидві умови мають бути правдиві.</p>
+        <p>Перевір: 6 + 4 = 10, 6 − 4 = 2.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання 2: система підстановкою <span class="pts">3 бали</span></h2>
+    <p>Система: <b>2x + y = 11</b> і <b>x − y = 1</b>. З першого рівняння y = 11 − 2x. Тепер перебираємо лише x — програма працює швидше.</p>
+    <div class="two">
+      <div><pre>for x in range(-20, 21):
+    y = 11 - 2 * x
+    if x - y == 1:
+        print(&quot;x =&quot;, x, &quot;y =&quot;, y)</pre></div>
+      <div><p>Має вивести:</p>
+<pre class="out">x = 4 y = 3</pre>
+        <p>Перевір: 2 · 4 + 3 = 11, 4 − 3 = 1.</p>
+        <p>Порахуй: скільки разів перевіряється умова в завданні 1, а скільки тут? (121 і 41.)</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання 3: найбільший город <span class="pts">3 бали</span></h2>
+    <p>Є 40 м сітки на прямокутний город. Ширина w, тоді довжина 20 − w. Яка ширина дає найбільшу площу?</p>
+    <div class="two">
+      <div><pre>best = 0
+best_w = 0
+for w in range(1, 20):
+    area = w * (20 - w)
+    print(w, 20 - w, area)
+    if area &gt; best:
+        best = area
+        best_w = w
+print(&quot;Найбільша площа:&quot;, best, &quot;при ширині&quot;, best_w)</pre></div>
+      <div><p>Має вивести:</p>
+<pre class="out">1 19 19
+2 18 36
+…
+10 10 100
+…
+19 1 19
+Найбільша площа: 100 при ширині 10</pre>
+        <p>Змінна <code>best</code> пам'ятає найкращий результат. Якщо нова площа більша — запам'ятовуємо її і ширину. Так шукають максимум.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання 4: шкільний ярмарок <span class="pts">1 бал</span></h2>
+    <p>Печиво коштує p грн, покупців буде 100 − 5p, виручка p · (100 − 5p). Ціни від 0 до 20 грн. <b>Напиши програму сам</b> за зразком завдання 3: знайди ціну з найбільшою виручкою. Відповідь — у тест, питання 5.</p>
+    <p><b>★ Для швидших.</b> Скільки пар цілих чисел x, y від 0 до 20 задовольняють рівняння x + 2y = 20? Напиши програму з двома циклами і лічильником.</p>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td><code>IndentationError</code></td><td>Відступ: 4 пробіли всередині <code>for</code>, <code>if</code>, <code>while</code>, <code>def</code></td></tr>
+      <tr><td><code>SyntaxError</code></td><td>Забута двокрапка після <code>for</code>, <code>if</code>, <code>while</code> або дужка</td></tr>
+      <tr><td><code>NameError</code></td><td>Помилка в імені змінної: перевір літери</td></tr>
+      <tr><td>Нічого не вивелось</td><td><code>print</code> стоїть не там: перевір відступ. Або в <code>if</code> помилка в числах</td></tr>
+      <tr><td>Програма не зупиняється</td><td>Цикл <code>while</code> без зміни змінної. Натисни червону кнопку «Стоп» у Thonny</td></tr>
+    </table></div>
+  </section>
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити, що таке система рівнянь і що таке оптимізаційна задача. Навести 1 приклад оптимізаційної задачі з життя.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Завдання 1. Чому дорівнює x?",
+"code": "",
+"ok": [
+"Ng=="
+],
+"show": "6",
+"why": "x = 6, y = 4."
+},
+{
+"q": "Що виведе програма?",
+"code": "n = 0\nfor x in range(0, 11):\n    for y in range(0, 11):\n        n = n + 1\nprint(n)",
+"ok": [
+"MTIx"
+],
+"show": "121",
+"why": "11 значень x · 11 значень y = 121."
+},
+{
+"q": "Завдання 2. Чому дорівнює y?",
+"code": "",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "y = 11 − 2 · 4 = 3."
+},
+{
+"q": "Завдання 3. Найбільша площа городу в м²?",
+"code": "",
+"ok": [
+"MTAw"
+],
+"show": "100",
+"why": "Квадрат 10 × 10."
+},
+{
+"q": "Завдання 4. Найкраща ціна печива, грн?",
+"code": "",
+"ok": [
+"MTA="
+],
+"show": "10",
+"why": "10 · 50 = 500 грн, при 9 і 11 — по 495."
+},
+{
+"q": "Що виведе програма?",
+"code": "print(5 > 3 and 2 > 4)",
+"ok": [
+"ZmFsc2U="
+],
+"show": "False",
+"why": "and правдиве, лише якщо обидві умови правдиві. 2 > 4 — неправда."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

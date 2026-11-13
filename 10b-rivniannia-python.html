@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Рівняння в Python</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Розв'язування рівнянь у Python <span>· 10-Б · 13.11 · робота на оцінку, 12 балів</span></h1>
+
+  <p class="big">Розв'язуємо рівняння програмою: комп'ютер сам перебирає x або звужує проміжок, поки не знайде корінь. Працюємо в Thonny, файл <code>rivniannia.py</code>. Переписуй код частинами і запускай після кожного кроку. За урок — 12 балів.</p>
+
+  <section>
+    <h2>Крок 1: перебір для 3x + 7 = 25 <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div><pre>for x in range(-20, 21):
+    if 3 * x + 7 == 25:
+        print(&quot;Корінь:&quot;, x)</pre></div>
+      <div><p>Має вивести:</p>
+<pre class="out">Корінь: 6</pre>
+        <p><code>range(-20, 21)</code> — числа від −20 до 20. Для кожного x програма перевіряє, чи ліва частина дорівнює 25. Знак порівняння — <b>два</b> знаки <code>==</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 2: квадратне рівняння x² − 5x + 6 = 0 <span class="pts">3 бали</span></h2>
+    <div class="two">
+      <div><pre>for x in range(-10, 11):
+    if x * x - 5 * x + 6 == 0:
+        print(&quot;x =&quot;, x)
+
+import math
+a = 1
+b = -5
+c = 6
+D = b * b - 4 * a * c
+print(&quot;D =&quot;, D)
+if D &gt; 0:
+    x1 = (-b + math.sqrt(D)) / (2 * a)
+    x2 = (-b - math.sqrt(D)) / (2 * a)
+    print(&quot;Два корені:&quot;, x1, x2)
+elif D == 0:
+    print(&quot;Один корінь:&quot;, -b / (2 * a))
+else:
+    print(&quot;Коренів немає&quot;)</pre></div>
+      <div><p>Має вивести:</p>
+<pre class="out">x = 2
+x = 3
+D = 1
+Два корені: 3.0 2.0</pre>
+        <p>Спочатку перебір знайшов обидва корені. Потім — те саме через <b>дискримінант</b> D = b² − 4ac, як на алгебрі. <code>math.sqrt</code> — квадратний корінь.</p>
+        <p>Зміни <code>c = 6</code> на <code>c = 10</code>. Що виведе? (Коренів немає, бо D &lt; 0.)</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 3: корінь, якого перебір не знайде <span class="pts">3 бали</span></h2>
+    <p>Рівняння x³ + x − 5 = 0. Корінь не ціле число, тому <code>range</code> його пропустить. Беремо проміжок [0; 5] і щоразу ділимо його <b>навпіл</b>, залишаючи ту половину, де функція змінює знак. Так працює «підбір параметра» в таблицях.</p>
+    <div class="two">
+      <div><pre>def f(x):
+    return x ** 3 + x - 5
+
+left = 0
+right = 5
+for i in range(30):
+    mid = (left + right) / 2
+    if f(left) * f(mid) &lt;= 0:
+        right = mid
+    else:
+        left = mid
+print(&quot;x ≈&quot;, round(mid, 4))
+print(&quot;Перевірка:&quot;, round(f(mid), 4))</pre></div>
+      <div><p>Має вивести:</p>
+<pre class="out">x ≈ 1.516
+Перевірка: 0.0</pre>
+        <div class="wrap"><table>
+          <tr><th>Код</th><th>Що робить</th></tr>
+          <tr><td><code>def f(x):</code></td><td>Функція — ліва частина рівняння</td></tr>
+          <tr><td><code>mid</code></td><td>Середина проміжку</td></tr>
+          <tr><td><code>f(left) * f(mid) &lt;= 0</code></td><td>Знаки різні — корінь у лівій половині</td></tr>
+          <tr><td><code>range(30)</code></td><td>30 разів ділимо навпіл — точність до мільйонних</td></tr>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 4: задача з життя <span class="pts">1 бал</span></h2>
+    <p>Оля має 900 грн і щомісяця відкладає 450 грн. Навушники коштують 3600 грн. Через скільки місяців вона назбирає?</p>
+    <div class="two">
+      <div><pre>money = 900
+months = 0
+while money &lt; 3600:
+    money = money + 450
+    months = months + 1
+print(&quot;Місяців:&quot;, months)</pre></div>
+      <div><p>Має вивести:</p>
+<pre class="out">Місяців: 6</pre>
+        <p><code>while</code> повторює, <b>поки</b> умова правдива. Відповідь впиши в тест, питання 5.</p>
+      </div>
+    </div>
+    <p><b>★ Для швидших.</b> На депозит поклали 10 000 грн під 12 % річних (щороку сума множиться на 1.12). Напиши програму, яка рахує, через скільки років буде не менше 15 000 грн.</p>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td><code>IndentationError</code></td><td>Відступ: 4 пробіли всередині <code>for</code>, <code>if</code>, <code>while</code>, <code>def</code></td></tr>
+      <tr><td><code>SyntaxError</code></td><td>Забута двокрапка після <code>for</code>, <code>if</code>, <code>while</code> або дужка</td></tr>
+      <tr><td><code>NameError</code></td><td>Помилка в імені змінної: перевір літери</td></tr>
+      <tr><td>Нічого не вивелось</td><td><code>print</code> стоїть не там: перевір відступ. Або в <code>if</code> помилка в числах</td></tr>
+      <tr><td>Програма не зупиняється</td><td>Цикл <code>while</code> без зміни змінної. Натисни червону кнопку «Стоп» у Thonny</td></tr>
+    </table></div>
+  </section>
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Повторити, як розв'язати лінійне рівняння. Вивчити, що таке підбір параметра і як програма знаходить корінь перебором.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Що виведе програма?",
+"code": "for x in range(0, 10):\n    if 2 * x + 4 == 10:\n        print(x)",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "2 · 3 + 4 = 10."
+},
+{
+"q": "Що виведе програма?",
+"code": "x = 7\nprint(x * x - 5 * x + 6)",
+"ok": [
+"MjA="
+],
+"show": "20",
+"why": "49 − 35 + 6 = 20. Отже, 7 — не корінь."
+},
+{
+"q": "Що виведе програма?",
+"code": "a = 1\nb = 2\nc = 1\nprint(b * b - 4 * a * c)",
+"ok": [
+"MA=="
+],
+"show": "0",
+"why": "D = 4 − 4 = 0: один корінь."
+},
+{
+"q": "Скільки рядків «x = …» виведе перебір у кроці 2?",
+"code": "",
+"ok": [
+"Mg==",
+"JUQwJUI0JUQwJUIyJUQwJUIw"
+],
+"show": "2",
+"why": "Два корені: 2 і 3."
+},
+{
+"q": "Крок 4: через скільки місяців Оля назбирає на навушники?",
+"code": "",
+"ok": [
+"Ng=="
+],
+"show": "6",
+"why": "900 + 6 · 450 = 3600."
+},
+{
+"q": "Що виведе програма?",
+"code": "money = 1000\nn = 0\nwhile money < 3000:\n    money = money + 500\n    n = n + 1\nprint(n)",
+"ok": [
+"NA=="
+],
+"show": "4",
+"why": "1500, 2000, 2500, 3000 — чотири повторення."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
