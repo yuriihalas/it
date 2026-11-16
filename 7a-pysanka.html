@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Інноваційне писанкарство</title>
+<title>Писанка і основи Python</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
@@ -25,26 +25,25 @@
 </head>
 <body>
 <div class="sheet">
-  <img src="7a-pysanka/b00.png" width="1080" height="406" alt="Інноваційне писанкарство" draggable="false">
-  <img src="7a-pysanka/b01.png" width="1080" height="507" alt="Крок 1. Яйце" draggable="false">
-  <img src="7a-pysanka/b02.png" width="1080" height="587" alt="Що означають нові команди" draggable="false">
-  <img src="7a-pysanka/b03.png" width="1080" height="507" alt="Крок 2. Два пояси" draggable="false">
-  <img src="7a-pysanka/b04.png" width="1080" height="507" alt="Крок 3. Безконечник" draggable="false">
-  <img src="7a-pysanka/b05.png" width="1080" height="531" alt="Крок 4. Дві рожі" draggable="false">
-  <img src="7a-pysanka/b06.png" width="1080" height="477" alt="Крок 5. Горошки" draggable="false">
-  <img src="7a-pysanka/b07.png" width="1080" height="597" alt="Крок 6. Моя писанка" draggable="false">
-  <img src="7a-pysanka/b08.png" width="1080" height="387" alt="Якщо не працює" draggable="false">
-  <img src="7a-pysanka/b09.png" width="1080" height="86" alt="Тест: 12 питань" draggable="false">
+  <img src="7a-pysanka/b00.png" width="1080" height="406" alt="Писанка і основи Python" draggable="false">
+  <img src="7a-pysanka/b01.png" width="1080" height="1067" alt="Перепиши і запусти F5" draggable="false">
+  <img src="7a-pysanka/b02.png" width="1080" height="1590" alt="Змінюй і дивись" draggable="false">
+  <img src="7a-pysanka/b03.png" width="1080" height="1150" alt="Допиши нове" draggable="false">
+  <img src="7a-pysanka/b04.png" width="1080" height="561" alt="Читаємо разом 1. Змінна і знак =" draggable="false">
+  <img src="7a-pysanka/b05.png" width="1080" height="599" alt="Читаємо разом 2. Типи даних" draggable="false">
+  <img src="7a-pysanka/b06.png" width="1080" height="559" alt="Читаємо разом 3. Цикл for" draggable="false">
+  <img src="7a-pysanka/b07.png" width="1080" height="537" alt="Якщо не працює" draggable="false">
+  <img src="7a-pysanka/b08.png" width="1080" height="86" alt="Тест" draggable="false">
   <div class="quiz" id="quiz"></div>
   <p class="score" id="score">Правильно: 0 з 12</p>
-  <img src="7a-pysanka/b10.png" width="1080" height="229" alt="Що показати вчителю" draggable="false">
-  <img src="7a-pysanka/b11.png" width="1080" height="116" alt="Домашнє завдання" draggable="false">
+  <img src="7a-pysanka/b09.png" width="1080" height="229" alt="Що показати вчителю" draggable="false">
+  <img src="7a-pysanka/b10.png" width="1080" height="116" alt="Домашнє завдання" draggable="false">
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
-const QUIZ = [{"ok": ["320"], "show": "320"}, {"ok": ["240"], "show": "240"}, {"ok": ["4"], "show": "4"}, {"ok": ["10"], "show": "10"}, {"ok": ["200"], "show": "200"}, {"ok": ["135"], "show": "135"}, {"ok": ["3"], "show": "3"}, {"ok": ["16"], "show": "16"}, {"ok": ["14"], "show": "14"}, {"ok": ["60"], "show": "60"}, {"ok": ["10"], "show": "10"}, {"ok": ["darkred"], "show": "darkred"}];
-const IMGS = ["<img src=\"7a-pysanka/q01.png\" width=\"520\" height=\"65\" alt=\"Питання 1\" draggable=\"false\">", "<img src=\"7a-pysanka/q02.png\" width=\"520\" height=\"35\" alt=\"Питання 2\" draggable=\"false\">", "<img src=\"7a-pysanka/q03.png\" width=\"520\" height=\"35\" alt=\"Питання 3\" draggable=\"false\">", "<img src=\"7a-pysanka/q04.png\" width=\"520\" height=\"35\" alt=\"Питання 4\" draggable=\"false\">", "<img src=\"7a-pysanka/q05.png\" width=\"520\" height=\"65\" alt=\"Питання 5\" draggable=\"false\">", "<img src=\"7a-pysanka/q06.png\" width=\"520\" height=\"65\" alt=\"Питання 6\" draggable=\"false\">", "<img src=\"7a-pysanka/q07.png\" width=\"520\" height=\"65\" alt=\"Питання 7\" draggable=\"false\">", "<img src=\"7a-pysanka/q08.png\" width=\"520\" height=\"63\" alt=\"Питання 8\" draggable=\"false\">", "<img src=\"7a-pysanka/q09.png\" width=\"520\" height=\"35\" alt=\"Питання 9\" draggable=\"false\">", "<img src=\"7a-pysanka/q10.png\" width=\"520\" height=\"60\" alt=\"Питання 10\" draggable=\"false\">", "<img src=\"7a-pysanka/q11.png\" width=\"520\" height=\"65\" alt=\"Питання 11\" draggable=\"false\">", "<img src=\"7a-pysanka/q12.png\" width=\"520\" height=\"63\" alt=\"Питання 12\" draggable=\"false\">"];
+const QUIZ = [{"ok": ["5"], "show": "5"}, {"ok": ["5"], "show": "5"}, {"ok": ["int"], "show": "int"}, {"ok": ["float"], "show": "float"}, {"ok": ["str"], "show": "str"}, {"ok": ["list"], "show": "list"}, {"ok": ["55"], "show": "55"}, {"ok": ["10"], "show": "10"}, {"ok": ["3"], "show": "3"}, {"ok": ["4"], "show": "4"}, {"ok": ["5"], "show": "5"}, {"ok": ["true"], "show": "True"}];
+const IMGS = ["<img src=\"7a-pysanka/q01.png\" width=\"520\" height=\"35\" alt=\"Питання 1\" draggable=\"false\">", "<img src=\"7a-pysanka/q02.png\" width=\"520\" height=\"124\" alt=\"Питання 2\" draggable=\"false\">", "<img src=\"7a-pysanka/q03.png\" width=\"520\" height=\"35\" alt=\"Питання 3\" draggable=\"false\">", "<img src=\"7a-pysanka/q04.png\" width=\"520\" height=\"35\" alt=\"Питання 4\" draggable=\"false\">", "<img src=\"7a-pysanka/q05.png\" width=\"520\" height=\"35\" alt=\"Питання 5\" draggable=\"false\">", "<img src=\"7a-pysanka/q06.png\" width=\"520\" height=\"35\" alt=\"Питання 6\" draggable=\"false\">", "<img src=\"7a-pysanka/q07.png\" width=\"520\" height=\"35\" alt=\"Питання 7\" draggable=\"false\">", "<img src=\"7a-pysanka/q08.png\" width=\"520\" height=\"35\" alt=\"Питання 8\" draggable=\"false\">", "<img src=\"7a-pysanka/q09.png\" width=\"520\" height=\"61\" alt=\"Питання 9\" draggable=\"false\">", "<img src=\"7a-pysanka/q10.png\" width=\"520\" height=\"65\" alt=\"Питання 10\" draggable=\"false\">", "<img src=\"7a-pysanka/q11.png\" width=\"520\" height=\"63\" alt=\"Питання 11\" draggable=\"false\">", "<img src=\"7a-pysanka/q12.png\" width=\"520\" height=\"35\" alt=\"Питання 12\" draggable=\"false\">"];
 const norm = v => v.trim().toLowerCase().replace(/[\s"'«»]/g, "").replace(",", ".");
 let right = 0, answered = 0;
 $("quiz").innerHTML = QUIZ.map((t, k) => `
