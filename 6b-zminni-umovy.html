@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Змінні та умови</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; } h3 { margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Змінні, умови і вкладені умови <span>· 6-Б · Python, без малювання</span></h1>
+
+  <p class="big">Сьогодні без малювання — лише текст. Крок за кроком: <b>1) змінні → тест, 2) умови → тест, 3) вкладені умови → тест.</b> Працюємо в Thonny: переписуй код, натискай <b>F5</b>, дивись на результат унизу.</p>
+
+  <section>
+    <h2>Частина 1. Змінні</h2>
+    <div class="two">
+      <div>
+        <p><b>Змінна</b> — це коробочка з назвою. У неї кладемо число або текст, щоб потім використати.</p>
+        <p><code>age = 11</code> читаємо: «у коробочку <code>age</code> поклади 11». Знак <code>=</code> тут не «дорівнює», а <b>«поклади»</b>.</p>
+        <p><code>print(...)</code> — виведи на екран.</p>
+        <p>Текст пишемо в лапках: <code>"Оля"</code>. Числа — без лапок: <code>11</code>.</p>
+        <p><code>age = age + 1</code> — візьми те, що в коробочці, додай 1 і поклади назад.</p>
+      </div>
+      <div><pre>name = &quot;Оля&quot;
+age = 11
+print(&quot;Привіт,&quot;, name)
+print(&quot;Тобі&quot;, age, &quot;років&quot;)
+age = age + 1
+print(&quot;Через рік буде&quot;, age)</pre><p>Має вийти:</p><pre class="out">Привіт, Оля
+Тобі 11 років
+Через рік буде 12</pre></div>
+    </div>
+    <p><b>Завдання 1.</b> Зміни ім'я і вік на свої. Запусти.</p>
+    <p><b>Завдання 2.</b> Перепиши ще одну програму:</p>
+    <div class="two"><div><pre>apples = 5
+pears = 3
+total = apples + pears
+print(&quot;Усього фруктів:&quot;, total)</pre></div><div><p>Має вийти:</p><pre class="out">Усього фруктів: 8</pre><p>Зміни: <code style="color:#b42318">apples = 5</code> → <code style="color:#1a7f37">apples = 10</code>. Скільки тепер фруктів? Додай змінну <code>plums = 4</code> і порахуй усі разом.</p></div></div>
+    <h3>Тест 1: змінні</h3>
+    <div class="half" id="q1"></div><div class="score" id="q1s">Правильно: 0 з 4</div>
+  </section>
+
+  <section>
+    <h2>Частина 2. Умови: if і else</h2>
+    <div class="two">
+      <div>
+        <p><b>Умова</b> — це питання, на яке відповідь «так» або «ні».</p>
+        <p><code>if</code> — «якщо». Якщо умова правдива, виконується те, що під нею з відступом.<br><code>else</code> — «інакше»: виконується, коли умова неправдива.</p>
+        <div class="wrap"><table>
+          <tr><th>Знак</th><th>Що означає</th></tr>
+          <tr><td><code>&gt;</code> / <code>&lt;</code></td><td>більше / менше</td></tr>
+          <tr><td><code>&gt;=</code> / <code>&lt;=</code></td><td>більше або дорівнює / менше або дорівнює</td></tr>
+          <tr><td><code>==</code></td><td><b>дорівнює?</b> (два знаки — це перевірка)</td></tr>
+        </table></div>
+        <p>Після <code>if</code> і <code>else</code> — <b>двокрапка</b>. Рядок під ними — з відступом <b>4 пробіли</b>.</p>
+      </div>
+      <div><pre>temp = 25
+if temp &gt; 20:
+    print(&quot;Тепло: футболка&quot;)
+else:
+    print(&quot;Холодно: куртка&quot;)</pre><p>Має вийти:</p><pre class="out">Тепло: футболка</pre>
+        <p><b>Завдання 3.</b> <code style="color:#b42318">temp = 25</code> → <code style="color:#1a7f37">temp = 10</code>. Що вийде? А якщо <code>temp = 20</code>? Подумай: 20 більше за 20?</p></div>
+    </div>
+    <p><b>Завдання 4.</b> Тепер число вводить людина. <code>input</code> питає, а <code>int(...)</code> перетворює відповідь на число:</p>
+    <div class="two"><div><pre>age = int(input(&quot;Скільки тобі років? &quot;))
+if age &gt;= 12:
+    print(&quot;Можна дивитись фільм 12+&quot;)
+else:
+    print(&quot;Ще рано&quot;)</pre></div><div><p>Запусти двічі: введи 11, потім 12.</p><pre class="out">Скільки тобі років? 11
+Ще рано</pre><pre class="out">Скільки тобі років? 12
+Можна дивитись фільм 12+</pre></div></div>
+    <h3>Тест 2: умови</h3>
+    <div class="half" id="q2"></div><div class="score" id="q2s">Правильно: 0 з 4</div>
+  </section>
+
+  <section>
+    <h2>Частина 3. Вкладені умови</h2>
+    <div class="two">
+      <div>
+        <p><b>Вкладена умова</b> — це <code>if</code> усередині іншого <code>if</code>. Друге питання ставимо, <b>лише коли</b> на перше відповіли «так».</p>
+        <p>Як у житті: <i>якщо сьогодні вихідний — тоді дивлюсь у вікно: якщо сонце, йду гуляти, інакше граю вдома. Якщо не вихідний — іду до школи.</i></p>
+        <p>Відступи: перший <code>if</code> — без відступу, вкладений — <b>4</b> пробіли, <code>print</code> під ним — <b>8</b>.</p>
+      </div>
+      <div><pre>day = 6
+weather = &quot;дощ&quot;
+if day &gt;= 6:
+    if weather == &quot;сонце&quot;:
+        print(&quot;Йду гуляти&quot;)
+    else:
+        print(&quot;Граю вдома&quot;)
+else:
+    print(&quot;Йду до школи&quot;)</pre><p>Має вийти:</p><pre class="out">Граю вдома</pre></div>
+    </div>
+    <p><b>Завдання 5.</b> Змінюй і вгадуй, що виведе: <code style="color:#b42318">weather = &quot;дощ&quot;</code> → <code style="color:#1a7f37">weather = &quot;сонце&quot;</code>; потім <code style="color:#b42318">day = 6</code> → <code style="color:#1a7f37">day = 3</code>. Чому при <code>day = 3</code> погода вже не важлива?</p>
+    <p><b>Завдання 6.</b> Оцінка: спершу перевіряємо, чи вона 4 і вище, а потім — чи 10 і вище.</p>
+    <div class="two"><div><pre>mark = int(input(&quot;Оцінка: &quot;))
+if mark &gt;= 4:
+    if mark &gt;= 10:
+        print(&quot;Високий рівень!&quot;)
+    else:
+        print(&quot;Добре, але можна краще&quot;)
+else:
+    print(&quot;Треба підтягнути&quot;)</pre></div><div><p>Запусти тричі: 11, 7, 3.</p><pre class="out">Оцінка: 11
+Високий рівень!</pre><pre class="out">Оцінка: 7
+Добре, але можна краще</pre><pre class="out">Оцінка: 3
+Треба підтягнути</pre></div></div>
+    <p><b>★ Для швидших.</b> Напиши програму «Кінотеатр»: змінна <code>age</code> і змінна <code>money</code>. Якщо <code>age &gt;= 12</code>: якщо <code>money &gt;= 100</code> — «Купуй квиток», інакше — «Не вистачає грошей». Інакше — «Фільм 12+, не можна».</p>
+    <h3>Тест 3: вкладені умови</h3>
+    <div class="half" id="q3"></div><div class="score" id="q3s">Правильно: 0 з 4</div>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td><code>IndentationError</code></td><td>Відступ: під <code>if</code> і <code>else</code> — 4 пробіли, під вкладеним — 8</td></tr>
+      <tr><td><code>SyntaxError</code></td><td>Забута двокрапка після <code>if</code> / <code>else</code>, лапка або дужка. Або <code>=</code> замість <code>==</code> в умові</td></tr>
+      <tr><td><code>NameError</code></td><td>Назва змінної написана по-різному: <code>age</code> і <code>Age</code> — різні</td></tr>
+      <tr><td><code>ValueError</code></td><td>У <code>input</code> ввели не число</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Що показати вчителю</h2>
+    <ol><li>Завдання 2 зі своєю змінною <code>plums</code>.</li><li>Завдання 6: три запуски.</li><li>Три тести.</li></ol>
+    <h2 style="margin-top:12px">Домашнє завдання</h2>
+    <p>Вивчити, що таке змінна, умова і вкладена умова. Придумати свій приклад вкладеної умови з життя: «якщо …, то якщо …».</p>
+  </section>
+</div>
+<script>
+const DATA = {"q1": [{"q": "Що виведе програма?", "code": "x = 4\nx = x + 3\nprint(x)", "ok": ["Nw=="], "show": "7"}, {"q": "Що виведе програма?", "code": "a = 2\nb = 5\nprint(a + b)", "ok": ["Nw=="], "show": "7"}, {"q": "Що лежить у змінній n після цих рядків?", "code": "n = 10\nn = 3", "ok": ["Mw=="], "show": "3"}, {"q": "Знак = у програмі означає: 1) «дорівнює» чи 2) «поклади в змінну»? Впиши 1 або 2", "code": "", "ok": ["Mg=="], "show": "2"}], "q2": [{"q": "Що виведе програма?", "code": "temp = 20\nif temp > 20:\n    print(\"футболка\")\nelse:\n    print(\"куртка\")", "ok": ["JUQwJUJBJUQxJTgzJUQxJTgwJUQxJTgyJUQwJUJBJUQwJUIw"], "show": "куртка"}, {"q": "Що виведе програма?", "code": "a = 7\nif a == 7:\n    print(\"так\")\nelse:\n    print(\"ні\")", "ok": ["JUQxJTgyJUQwJUIwJUQwJUJB"], "show": "так"}, {"q": "Скільки пробілів відступу пишемо під if?", "code": "", "ok": ["NA=="], "show": "4"}, {"q": "Яким знаком закінчується рядок з if?", "code": "", "ok": ["JTNB", "JUQwJUI0JUQwJUIyJUQwJUJFJUQwJUJBJUQxJTgwJUQwJUIwJUQwJUJGJUQwJUJBJUQwJUIw", "JUQwJUI0JUQwJUIyJUQwJUJFJUQwJUJBJUQxJTgwJUQwJUIwJUQwJUJGJUQwJUJBJUQwJUJFJUQxJThF"], "show": ":"}], "q3": [{"q": "Що виведе програма?", "code": "day = 3\nweather = \"сонце\"\nif day >= 6:\n    if weather == \"сонце\":\n        print(\"гуляю\")\n    else:\n        print(\"граю вдома\")\nelse:\n    print(\"школа\")", "ok": ["JUQxJTg4JUQwJUJBJUQwJUJFJUQwJUJCJUQwJUIw"], "show": "школа"}, {"q": "Що виведе програма?", "code": "day = 7\nweather = \"сонце\"\nif day >= 6:\n    if weather == \"сонце\":\n        print(\"гуляю\")\n    else:\n        print(\"граю вдома\")\nelse:\n    print(\"школа\")", "ok": ["JUQwJUIzJUQxJTgzJUQwJUJCJUQxJThGJUQxJThF"], "show": "гуляю"}, {"q": "Програма з оцінкою: людина ввела 10. Що виведе? Впиши номер: 1) Високий рівень! 2) Добре, але можна краще 3) Треба підтягнути", "code": "", "ok": ["MQ=="], "show": "1"}, {"q": "Програма з оцінкою: людина ввела 2. Скільки умов (if) перевірить комп'ютер?", "code": "", "ok": ["MQ=="], "show": "1"}]};
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+for (const g in DATA) {
+  const box = document.getElementById(g); let right = 0, done = 0;
+  box.innerHTML = DATA[g].map((t, k) => `<div class="q" id="${g}-${k}"><p><b>${k + 1}.</b> ${t.q}</p><pre>${esc(t.code)}</pre>
+    <div class="ans"><input autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}"><button>Перевірити</button><span class="mark"></span></div></div>`).join("");
+  box.querySelectorAll(".q").forEach((q, k) => {
+    const inp = q.querySelector("input"), btn = q.querySelector("button");
+    const check = () => {
+      if (q.classList.contains("yes") || q.classList.contains("no") || !inp.value.trim()) return;
+      const good = DATA[g][k].ok.includes(enc(norm(inp.value)));
+      q.classList.add(good ? "yes" : "no"); inp.readOnly = true; btn.disabled = true;
+      q.querySelector(".mark").textContent = good ? "✓ Правильно" : "✗ Правильно: " + DATA[g][k].show;
+      if (good) right++; done++;
+      document.getElementById(g + "s").textContent = `Правильно: ${right} з ${DATA[g].length}` + (done === DATA[g].length ? " — покажи вчителю" : "");
+    };
+    btn.addEventListener("click", check); inp.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+  });
+}
+</script>
+</body>
+</html>
