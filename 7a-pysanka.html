@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Інноваційне писанкарство</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1110px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px; }
+  .sheet > img { display: block; width: 100%; height: auto; margin: 0 0 14px; -webkit-user-select: none; user-select: none; }
+  .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; margin: 0 0 12px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; min-width: 0; }
+  .q p { margin: 0 0 6px; } .q img { max-width: 100%; height: auto; -webkit-user-select: none; user-select: none; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-size: 22px; font-weight: 700; margin: 0 0 14px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 760px) { .quiz { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <img src="7a-pysanka/b00.png" width="1080" height="406" alt="Інноваційне писанкарство" draggable="false">
+  <img src="7a-pysanka/b01.png" width="1080" height="507" alt="Крок 1. Яйце" draggable="false">
+  <img src="7a-pysanka/b02.png" width="1080" height="587" alt="Що означають нові команди" draggable="false">
+  <img src="7a-pysanka/b03.png" width="1080" height="507" alt="Крок 2. Два пояси" draggable="false">
+  <img src="7a-pysanka/b04.png" width="1080" height="507" alt="Крок 3. Безконечник" draggable="false">
+  <img src="7a-pysanka/b05.png" width="1080" height="531" alt="Крок 4. Дві рожі" draggable="false">
+  <img src="7a-pysanka/b06.png" width="1080" height="477" alt="Крок 5. Горошки" draggable="false">
+  <img src="7a-pysanka/b07.png" width="1080" height="597" alt="Крок 6. Моя писанка" draggable="false">
+  <img src="7a-pysanka/b08.png" width="1080" height="387" alt="Якщо не працює" draggable="false">
+  <img src="7a-pysanka/b09.png" width="1080" height="86" alt="Тест: 12 питань" draggable="false">
+  <div class="quiz" id="quiz"></div>
+  <p class="score" id="score">Правильно: 0 з 12</p>
+  <img src="7a-pysanka/b10.png" width="1080" height="229" alt="Що показати вчителю" draggable="false">
+  <img src="7a-pysanka/b11.png" width="1080" height="116" alt="Домашнє завдання" draggable="false">
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [{"ok": ["320"], "show": "320"}, {"ok": ["240"], "show": "240"}, {"ok": ["4"], "show": "4"}, {"ok": ["10"], "show": "10"}, {"ok": ["200"], "show": "200"}, {"ok": ["135"], "show": "135"}, {"ok": ["3"], "show": "3"}, {"ok": ["16"], "show": "16"}, {"ok": ["14"], "show": "14"}, {"ok": ["60"], "show": "60"}, {"ok": ["10"], "show": "10"}, {"ok": ["darkred"], "show": "darkred"}];
+const IMGS = ["<img src=\"7a-pysanka/q01.png\" width=\"520\" height=\"65\" alt=\"Питання 1\" draggable=\"false\">", "<img src=\"7a-pysanka/q02.png\" width=\"520\" height=\"35\" alt=\"Питання 2\" draggable=\"false\">", "<img src=\"7a-pysanka/q03.png\" width=\"520\" height=\"35\" alt=\"Питання 3\" draggable=\"false\">", "<img src=\"7a-pysanka/q04.png\" width=\"520\" height=\"35\" alt=\"Питання 4\" draggable=\"false\">", "<img src=\"7a-pysanka/q05.png\" width=\"520\" height=\"65\" alt=\"Питання 5\" draggable=\"false\">", "<img src=\"7a-pysanka/q06.png\" width=\"520\" height=\"65\" alt=\"Питання 6\" draggable=\"false\">", "<img src=\"7a-pysanka/q07.png\" width=\"520\" height=\"65\" alt=\"Питання 7\" draggable=\"false\">", "<img src=\"7a-pysanka/q08.png\" width=\"520\" height=\"63\" alt=\"Питання 8\" draggable=\"false\">", "<img src=\"7a-pysanka/q09.png\" width=\"520\" height=\"35\" alt=\"Питання 9\" draggable=\"false\">", "<img src=\"7a-pysanka/q10.png\" width=\"520\" height=\"60\" alt=\"Питання 10\" draggable=\"false\">", "<img src=\"7a-pysanka/q11.png\" width=\"520\" height=\"65\" alt=\"Питання 11\" draggable=\"false\">", "<img src=\"7a-pysanka/q12.png\" width=\"520\" height=\"63\" alt=\"Питання 12\" draggable=\"false\">"];
+const norm = v => v.trim().toLowerCase().replace(/[\s"'«»]/g, "").replace(",", ".");
+let right = 0, answered = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p>${IMGS[k]}</p>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(norm(inp.value));
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  answered++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
