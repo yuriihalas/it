@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Фінансові розрахунки</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Фінансові розрахунки в Python <span>· 10-А · програмні засоби для обчислень, 12 балів</span></h1>
+
+  <p class="big">Відсотки, кредит, депозит — це формули, які банк рахує щодня. Сьогодні рахуємо їх у Python і дивимось, як те саме роблять функції електронних таблиць. Thonny, файл <code>finansy.py</code>. За урок — 12 балів.</p>
+
+  <section>
+    <h2>Три фінансові функції електронних таблиць</h2>
+    <div class="wrap"><table>
+      <tr><th>Функція (Excel / Google Таблиці)</th><th>Що рахує</th><th>Приклад</th><th>У Python — завдання</th></tr>
+      <tr><td><code>БС</code> (FV) — майбутня вартість</td><td>скільки буде на рахунку через кілька періодів</td><td><code>=БС(12%;3;;-10000)</code> → 14&nbsp;049,28</td><td>1 і 2</td></tr>
+      <tr><td><code>ПЛТ</code> (PMT) — платіж</td><td>скільки платити щомісяця за кредитом</td><td><code>=ПЛТ(2%;12;-24000)</code> → 2&nbsp;269,43</td><td>3</td></tr>
+      <tr><td><code>КПЕР</code> (NPER) — кількість періодів</td><td>скільки місяців чи років потрібно, щоб досягти суми</td><td><code>=КПЕР(1%;-1500;0;20000)</code> → 12,6</td><td>4</td></tr>
+    </table></div>
+    <p>Мінус у таблицях означає «гроші йдуть від тебе». У Python ми просто рахуємо крок за кроком у циклі.</p>
+  </section>
+
+  <section>
+    <h2>Завдання 1: депозит <span class="pts">2 бали</span></h2>
+    <p>10 000 грн на 3 роки під 12 % річних. Щороку сума множиться на 1,12 — відсотки нараховуються і на відсотки (<b>складні відсотки</b>).</p>
+    <div class="two"><div><pre>money = 10000
+rate = 12
+for year in range(1, 4):
+    money = money * (1 + rate / 100)
+    print(&quot;Рік&quot;, year, &quot;:&quot;, round(money, 2))</pre></div><div><p>Має вивести:</p>
+<pre class="out">Рік 1 : 11200.0
+Рік 2 : 12544.0
+Рік 3 : 14049.28</pre><p>Змін <code>rate = 12</code> на <code>rate = 15</code>. Скільки буде через 3 роки?</p></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 2: відкладаю щомісяця <span class="pts">2 бали</span></h2>
+    <p>Кладеш 500 грн щомісяця, банк додає 1 % на місяць. Скільки буде через рік?</p>
+    <div class="two"><div><pre>money = 0
+for month in range(1, 13):
+    money = money * 1.01 + 500
+print(&quot;Через рік:&quot;, round(money, 2))
+print(&quot;Вклав сам:&quot;, 500 * 12)
+print(&quot;Відсотки від банку:&quot;, round(money - 500 * 12, 2))</pre></div><div><p>Має вивести:</p>
+<pre class="out">Через рік: 6341.25
+Вклав сам: 6000
+Відсотки від банку: 341.25</pre><p>Порядок важливий: спершу відсотки на те, що вже є (<code>* 1.01</code>), потім новий внесок (<code>+ 500</code>).</p></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 3: розстрочка на телефон <span class="pts">3 бали</span></h2>
+    <p>Телефон за 24 000 грн у кредит на 12 місяців під 2 % на місяць. Скільки платити щомісяця і скільки переплатиш?</p>
+    <div class="two"><div><pre>price = 24000
+r = 2 / 100
+n = 12
+pay = price * r / (1 - (1 + r) ** -n)
+print(&quot;Платіж на місяць:&quot;, round(pay, 2))
+print(&quot;Усього заплатиш:&quot;, round(pay * n, 2))
+print(&quot;Переплата:&quot;, round(pay * n - price, 2))</pre></div><div><p>Має вивести:</p>
+<pre class="out">Платіж на місяць: 2269.43
+Усього заплатиш: 27233.16
+Переплата: 3233.16</pre>
+      <p>Формула ануїтету — та сама, що в <code>ПЛТ</code>: платіж = сума · r / (1 − (1 + r)<sup>−n</sup>).</p>
+      <p><code>**</code> — піднесення до степеня, <code>** -n</code> — до мінус n-го.</p></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 4: скільки місяців збирати <span class="pts">2 бали</span></h2>
+    <p>Мета — 20 000 грн на ноутбук. Кладеш 1500 грн щомісяця під 1 % на місяць.</p>
+    <div class="two"><div><pre>money = 0
+months = 0
+while money &lt; 20000:
+    money = money * 1.01 + 1500
+    months = months + 1
+print(&quot;Місяців:&quot;, months)
+print(&quot;На рахунку:&quot;, round(money, 2))</pre></div><div><p>Має вивести:</p>
+<pre class="out">Місяців: 13
+На рахунку: 20713.99</pre><p><code>while</code> — коли <b>не знаємо</b>, скільки повторів. Це те, що рахує <code>КПЕР</code>: 12,6 місяця — тобто 13 повних.</p></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 5: аналіз витрат <span class="pts">1 бал</span></h2>
+    <p>Витрати за тиждень, грн. Чому середнє і медіана такі різні?</p>
+    <div class="two"><div><pre>import statistics
+
+spend = [320, 150, 900, 210, 180, 2500, 260]
+print(&quot;Усього:&quot;, sum(spend))
+print(&quot;Середнє:&quot;, round(statistics.mean(spend), 2))
+print(&quot;Медіана:&quot;, statistics.median(spend))
+print(&quot;Найбільша:&quot;, max(spend))</pre></div><div><p>Має вивести:</p>
+<pre class="out">Усього: 4520
+Середнє: 645.71
+Медіана: 260
+Найбільша: 2500</pre><p>Одна велика покупка (2500) «тягне» середнє вгору. <b>Медіана</b> — середнє за місцем у відсортованому списку — її не помічає. Тому про «звичайні» витрати краще говорить медіана.</p></div></div>
+    <p><b>★ Для швидших.</b> Ціна товару 100 грн, інфляція 8 % на рік. Напиши програму: через скільки років ціна подвоїться? Відповідь — у тест, питання 6.</p>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td><code>IndentationError</code></td><td>Відступ: 4 пробіли всередині <code>for</code>, <code>if</code>, <code>while</code>, <code>def</code></td></tr>
+      <tr><td><code>SyntaxError</code></td><td>Забута двокрапка після <code>for</code>, <code>if</code>, <code>while</code> або дужка</td></tr>
+      <tr><td><code>NameError</code></td><td>Помилка в імені змінної: перевір літери</td></tr>
+      <tr><td>Нічого не вивелось</td><td><code>print</code> стоїть не там: перевір відступ. Або в <code>if</code> помилка в числах</td></tr>
+      <tr><td>Програма не зупиняється</td><td>Цикл <code>while</code> без зміни змінної. Натисни червону кнопку «Стоп» у Thonny</td></tr>
+    </table></div>
+  </section>""
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити 3 фінансові функції електронних таблиць (БС, ПЛТ, КПЕР) і що вони обчислюють. Знайти на сайті будь-якого банку умови депозиту і порахувати в Python, скільки буде через рік на 10 000 грн.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Що виведе програма?",
+"code": "money = 1000\nfor year in range(2):\n    money = money * 1.1\nprint(round(money, 2))",
+"ok": [
+"MTIxMC4w",
+"MTIxMA=="
+],
+"show": "1210.0",
+"why": "1000 · 1,1 · 1,1 = 1210."
+},
+{
+"q": "Завдання 4: скільки місяців збирати на ноутбук?",
+"code": "",
+"ok": [
+"MTM="
+],
+"show": "13",
+"why": "Після 12 місяців ще не вистачає, після 13-го — 20 713,99."
+},
+{
+"q": "Завдання 3: скільки гривень переплатиш за телефон?",
+"code": "",
+"ok": [
+"MzIzMy4xNg==",
+"MzIzMyUyQzE2"
+],
+"show": "3233.16",
+"why": "12 · 2269,43 − 24 000."
+},
+{
+"q": "Що виведе програма?",
+"code": "import statistics\nprint(statistics.median([5, 1, 9]))",
+"ok": [
+"NQ=="
+],
+"show": "5",
+"why": "Відсортовано: 1, 5, 9 — посередині 5."
+},
+{
+"q": "Як називається функція таблиць, що рахує щомісячний платіж за кредитом?",
+"code": "",
+"ok": [
+"JUQwJUJGJUQwJUJCJUQxJTgy",
+"cG10"
+],
+"show": "ПЛТ",
+"why": "ПЛТ (PMT) — платіж."
+},
+{
+"q": "★ Через скільки років ціна подвоїться при інфляції 8 %?",
+"code": "",
+"ok": [
+"MTA="
+],
+"show": "10",
+"why": "1,08⁹ ≈ 1,999 — ще трохи менше 2, тому 10 років."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
