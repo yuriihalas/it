@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Документація і коментарі</title>
+<title>Документація й оформлення коду</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
@@ -49,9 +49,9 @@
 </head>
 <body>
 <div class="sheet">
-  <h1>Документація проєкту і коментарі <span>· 9-Б · 19.11 · Python</span></h1>
+  <h1>Документація, коментарі й оформлення коду <span>· 9-Б · 19.11 · Python</span></h1>
 
-  <p class="big">Програму читають частіше, ніж пишуть: учитель, однокласник, ти сам через місяць. Сьогодні — як зробити проєкт зрозумілим: <b>документація</b> (опис для людей) і <b>коментарі</b> в коді.</p>
+  <p class="big">Програму читають частіше, ніж пишуть: учитель, однокласник, ти сам через місяць. Сьогодні — як зробити проєкт зрозумілим: <b>документація</b> (опис для людей), <b>коментарі</b> в коді і <b>оформлення</b> коду за правилами.</p>
 
   <section>
     <h2>Два види пояснень</h2>
@@ -151,19 +151,47 @@ print(f(&quot;abc&quot;, 1))</pre>
   </section>
 
   <section>
+    <h2>Частина 2. Оформлення коду</h2>
+    <p>Коментарі — половина справи. Друга половина — <b>оформлення</b>: однакові правила запису коду для всіх, хто його пише. Тоді будь-хто відкриває чужий код і читає його легко, як книжку.</p>
+    <p>У Python ці правила записані в документі <b>PEP 8</b> — його знає кожен Python-програміст. На роботі код, оформлений не за правилами, просто не приймуть.</p>
+    <div class="wrap"><table>
+      <tr><th>Що</th><th>Правило</th><th>Приклад</th></tr>
+      <tr><td><b>Змінні й функції</b></td><td><b>snake_case</b>: малими літерами, слова через <code>_</code></td><td><code>tries_count</code>, <code>get_balance()</code></td></tr><tr><td><b>Класи</b></td><td><b>PascalCase</b>: кожне слово з великої</td><td><code>BankAccount</code></td></tr><tr><td><b>Константи</b></td><td>ВЕЛИКИМИ, слова через <code>_</code>, на початку програми</td><td><code>MAX_MARK = 12</code></td></tr><tr><td><b>Відступ</b></td><td>4 пробіли під <code>for</code>, <code>while</code>, <code>if</code>, <code>def</code></td><td>Thonny ставить їх сам після <code>:</code></td></tr><tr><td><b>Пробіли</b></td><td>навколо <code>=</code> <code>+</code> <code>&lt;</code> <code>&gt;=</code>, після коми</td><td><code>total = total + mark</code></td></tr><tr><td><b>Рядки</b></td><td>одна команда — один рядок; 2 порожні рядки між функціями</td><td>не <code>if x: print(x)</code> в одному рядку</td></tr><tr><td><b>Назви-пастки</b></td><td>не називай змінні <code>sum</code>, <code>list</code>, <code>max</code>, <code>str</code> — це вже вбудовані функції</td><td><code>total</code> замість <code>sum</code></td></tr><tr><td><b>«Магічні числа»</b></td><td>незрозуміле число → константа з назвою</td><td><code>average &gt;= HIGH</code>, а не <code>average &gt;= 10</code></td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Завдання 4. «Причеши» код</h2>
+    <p>Програма рахує середню оцінку. Вона <b>працює</b>, але читати її важко. Перепиши її в Thonny за правилами з таблиці.</p>
+    <div class="two"><div><pre>M=[10,12,9,7]
+S=0
+for i in M:S=S+i
+Avg=S/4
+if Avg&gt;=10:print(&quot;Високий&quot;)
+else:print(&quot;Не високий&quot;)
+print(Avg)</pre>
+      <p>Вивід — до і після змін має бути <b>однаковим</b>:</p>
+      <pre class="out">Не високий
+9.5</pre></div>
+      <div><ol><li>Одна команда — один рядок: тіло <code>for</code>, <code>if</code> і <code>else</code> — на новому рядку з відступом 4 пробіли.</li><li>Назви: <code>M</code> → <code>marks</code>, <code>S</code> → <code>total</code> (не <code>sum</code>!), <code>Avg</code> → <code>average</code>, <code>i</code> → <code>mark</code>.</li><li>Пробіли навколо <code>=</code>, <code>+</code>, <code>&gt;=</code> і після ком у списку.</li><li>Замість <code>4</code> — кількість оцінок: <code>total / len(marks)</code>. Тепер код працює для будь-якої кількості оцінок.</li><li>Число <code>10</code> → константа на початку: <code>HIGH = 10</code></li><li>Додай <b>один</b> коментар «навіщо» — над рядком із діленням.</li></ol></div>
+    </div>
+    <p><b>★</b> Зміни оцінки на <code>[12, 11, 10]</code>. Програма має сама порахувати правильно, без інших змін. Яку частину коду ти вже не мусив чіпати і чому?</p>
+  </section>
+
+  <section>
     <h2>Тест <span class="pts">2 бали</span></h2>
     <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
     <div class="half" id="quiz"></div>
-    <div class="score" id="score">Правильно: 0 з 8</div>
+    <div class="score" id="score">Правильно: 0 з 12</div>
   </section>
 
   <section>
     <h2>Що показати вчителю</h2>
-    <ol><li>Завдання 2: код з новими назвами, docstring і коментарем — і що він досі працює.</li><li>README у зошиті.</li><li>Результат тесту.</li></ol>
+    <ol><li>Завдання 2: код з новими назвами, docstring і коментарем — і що він досі працює.</li><li>README у зошиті.</li><li>Завдання 4: «причесаний» код — і що вивід не змінився.</li><li>Результат тесту.</li></ol>
   </section>
   <section>
     <h2>Домашнє завдання</h2>
-    <p>Вивчити 3 правила гарного коментаря. Додати docstring до 2 функцій свого проєкту.</p>
+    <p>Вивчити 3 правила гарного коментаря. Додати docstring до 2 функцій свого проєкту. Оформити код свого проєкту за правилами PEP 8 з таблиці «Оформлення коду».</p>
   </section>
 </div>
 
@@ -245,6 +273,46 @@ const QUIZ = [
 ],
 "show": "abc",
 "why": "x→a, y→b, z→c: після z знову a."
+},
+{
+"q": "Як за PEP 8 назвати змінну «кількість спроб»? Впиши 1, 2 або 3",
+"code": "1) triesCount\n2) tries_count\n3) TriesCount",
+"ok": [
+"Mg==",
+"dHJpZXNfY291bnQ="
+],
+"show": "2",
+"why": "Змінні в Python — snake_case: tries_count."
+},
+{
+"q": "Яка назва — для класу? Впиши 1, 2 або 3",
+"code": "1) bank_account\n2) BANK_ACCOUNT\n3) BankAccount",
+"ok": [
+"Mw==",
+"YmFua2FjY291bnQ="
+],
+"show": "3",
+"why": "Класи — PascalCase: BankAccount."
+},
+{
+"q": "Скільки пробілів в одному відступі?",
+"code": "",
+"ok": [
+"NA==",
+"JUQxJTg3JUQwJUJFJUQxJTgyJUQwJUI4JUQxJTgwJUQwJUI4"
+],
+"show": "4",
+"why": "PEP 8: 4 пробіли."
+},
+{
+"q": "Завдання 4: яке число програма виводить останнім рядком?",
+"code": "",
+"ok": [
+"OS41",
+"OSUyQzU="
+],
+"show": "9.5",
+"why": "(10 + 12 + 9 + 7) / 4 = 9.5. Після «причісування» вивід той самий."
 }
 ];
 const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");

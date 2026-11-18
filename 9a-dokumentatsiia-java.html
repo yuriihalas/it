@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Документація і коментарі</title>
+<title>Документація й оформлення коду</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
@@ -49,9 +49,9 @@
 </head>
 <body>
 <div class="sheet">
-  <h1>Документація проєкту і коментарі <span>· 9-А · 19.11 · Java</span></h1>
+  <h1>Документація, коментарі й оформлення коду <span>· 9-А · 19.11 · Java</span></h1>
 
-  <p class="big">Програму читають частіше, ніж пишуть: учитель, однокласник, ти сам через місяць. Сьогодні — як зробити проєкт зрозумілим: <b>документація</b> (опис для людей) і <b>коментарі</b> в коді.</p>
+  <p class="big">Програму читають частіше, ніж пишуть: учитель, однокласник, ти сам через місяць. Сьогодні — як зробити проєкт зрозумілим: <b>документація</b> (опис для людей), <b>коментарі</b> в коді і <b>оформлення</b> коду за правилами.</p>
 
   <section>
     <h2>Два види пояснень</h2>
@@ -156,19 +156,47 @@ Java і натиснути Run.
   </section>
 
   <section>
+    <h2>Частина 2. Оформлення коду</h2>
+    <p>Коментарі — половина справи. Друга половина — <b>оформлення</b>: однакові правила запису коду для всіх, хто його пише. Тоді будь-хто відкриває чужий код і читає його легко, як книжку.</p>
+    <p>У Java ці правила звуться <b>Java Code Conventions</b>. Великі компанії пишуть свої, наприклад Google Java Style. На роботі код, оформлений не за правилами, просто не приймуть.</p>
+    <div class="wrap"><table>
+      <tr><th>Що</th><th>Правило</th><th>Приклад</th></tr>
+      <tr><td><b>Змінні й методи</b></td><td><b>camelCase</b>: з малої літери, кожне нове слово — з великої</td><td><code>triesCount</code>, <code>getBalance()</code></td></tr><tr><td><b>Класи</b></td><td><b>PascalCase</b>: кожне слово з великої</td><td><code>BankAccount</code>, <code>Main</code></td></tr><tr><td><b>Константи</b></td><td>ВЕЛИКИМИ, слова через <code>_</code>, зі <code>static final</code></td><td><code>static final int MAX_MARK = 12;</code></td></tr><tr><td><b>Відступ</b></td><td>4 пробіли всередині кожних <code>{ }</code></td><td>тіло циклу — на 4 пробіли правіше за <code>for</code></td></tr><tr><td><b>Пробіли</b></td><td>навколо <code>=</code> <code>+</code> <code>&lt;</code> <code>&gt;=</code>, після коми, перед <code>{</code></td><td><code>sum = sum + marks[i];</code></td></tr><tr><td><b>Рядки</b></td><td>одна команда — один рядок; порожній рядок між методами</td><td>не <code>int s=0;int i=1;</code></td></tr><tr><td><b>«Магічні числа»</b></td><td>незрозуміле число → константа з назвою</td><td><code>average &gt;= HIGH</code>, а не <code>average &gt;= 10</code></td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Завдання 4. «Причеши» код</h2>
+    <p>Програма рахує середню оцінку. Вона <b>працює</b>, але читати її важко. Перепиши її в онлайн-компілятор Java за правилами з таблиці.</p>
+    <div class="two"><div><pre>public class Main{
+public static void main(String[] args){
+int[] M={10,12,9,7};int S=0;
+for(int i=0;i&lt;M.length;i++){S=S+M[i];}
+double Avg=S/4.0;
+if(Avg&gt;=10){System.out.println(&quot;Високий&quot;);}else{System.out.println(&quot;Не високий&quot;);}
+System.out.println(Avg);}}</pre>
+      <p>Вивід — до і після змін має бути <b>однаковим</b>:</p>
+      <pre class="out">Не високий
+9.5</pre></div>
+      <div><ol><li>Одна команда — один рядок, відступи по 4 пробіли, <code>}</code> — на окремому рядку.</li><li>Назви: <code>M</code> → <code>marks</code>, <code>S</code> → <code>sum</code>, <code>Avg</code> → <code>average</code>.</li><li>Пробіли навколо <code>=</code>, <code>+</code>, <code>&lt;</code>, <code>&gt;=</code> і після ком у масиві.</li><li>Замість <code>4.0</code> — кількість оцінок: <code>sum / (double) marks.length</code>. Тепер код працює для будь-якої кількості оцінок.</li><li>Число <code>10</code> → константа над <code>main</code>: <code>static final int HIGH = 10;</code></li><li>Додай <b>один</b> коментар «навіщо» — над рядком із діленням.</li></ol></div>
+    </div>
+    <p><b>★</b> Зміни оцінки на <code>{12, 11, 10}</code>. Програма має сама порахувати правильно, без інших змін. Яку частину коду ти вже не мусив чіпати і чому?</p>
+  </section>
+
+  <section>
     <h2>Тест <span class="pts">2 бали</span></h2>
     <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
     <div class="half" id="quiz"></div>
-    <div class="score" id="score">Правильно: 0 з 8</div>
+    <div class="score" id="score">Правильно: 0 з 12</div>
   </section>
 
   <section>
     <h2>Що показати вчителю</h2>
-    <ol><li>Завдання 2: код з новими назвами, Javadoc і коментарем — і що він досі працює.</li><li>README у зошиті.</li><li>Результат тесту.</li></ol>
+    <ol><li>Завдання 2: код з новими назвами, Javadoc і коментарем — і що він досі працює.</li><li>README у зошиті.</li><li>Завдання 4: «причесаний» код — і що вивід не змінився.</li><li>Результат тесту.</li></ol>
   </section>
   <section>
     <h2>Домашнє завдання</h2>
-    <p>Вивчити 3 правила гарного коментаря. Додати Javadoc до 2 функцій свого проєкту.</p>
+    <p>Вивчити 3 правила гарного коментаря. Додати Javadoc до 2 функцій свого проєкту. Оформити код свого проєкту за правилами з таблиці «Оформлення коду».</p>
   </section>
 </div>
 
@@ -250,6 +278,46 @@ const QUIZ = [
 ],
 "show": "abc",
 "why": "x→a, y→b, z→c: після z знову a."
+},
+{
+"q": "Як за правилами Java назвати змінну «кількість спроб»? Впиши 1, 2 або 3",
+"code": "1) tries_count\n2) triesCount\n3) TriesCount",
+"ok": [
+"Mg==",
+"dHJpZXNjb3VudA=="
+],
+"show": "2",
+"why": "Змінні в Java — camelCase: triesCount."
+},
+{
+"q": "Яка назва — для константи? Впиши 1, 2 або 3",
+"code": "1) maxMark\n2) MaxMark\n3) MAX_MARK",
+"ok": [
+"Mw==",
+"bWF4X21hcms="
+],
+"show": "3",
+"why": "Константи — ВЕЛИКИМИ, через _: MAX_MARK."
+},
+{
+"q": "Скільки пробілів в одному відступі?",
+"code": "",
+"ok": [
+"NA==",
+"JUQxJTg3JUQwJUJFJUQxJTgyJUQwJUI4JUQxJTgwJUQwJUI4"
+],
+"show": "4",
+"why": "Стандарт — 4 пробіли."
+},
+{
+"q": "Завдання 4: яке число програма виводить останнім рядком?",
+"code": "",
+"ok": [
+"OS41",
+"OSUyQzU="
+],
+"show": "9.5",
+"why": "(10 + 12 + 9 + 7) / 4 = 9.5. Після «причісування» вивід той самий."
 }
 ];
 const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
