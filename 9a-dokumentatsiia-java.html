@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Документація і коментарі</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Документація проєкту і коментарі <span>· 9-А · 19.11 · Java</span></h1>
+
+  <p class="big">Програму читають частіше, ніж пишуть: учитель, однокласник, ти сам через місяць. Сьогодні — як зробити проєкт зрозумілим: <b>документація</b> (опис для людей) і <b>коментарі</b> в коді.</p>
+
+  <section>
+    <h2>Два види пояснень</h2>
+    <div class="half">
+      <div><h3>Документація проєкту</h3><p>Окремий текст про програму: <b>що робить, як запустити, приклад</b>, хто автор. Зазвичай це файл <code>README</code>. Його читають, не відкриваючи код.</p></div>
+      <div><h3>Коментарі в коді</h3><p>Пояснення прямо в програмі. Java їх пропускає. Однорядковий: <code>//</code>. Документаційний (Javadoc): <code>/** ... */</code>.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Три правила гарного коментаря</h2>
+    <div class="wrap"><table>
+      <tr><th>Правило</th><th>Погано</th><th>Добре</th></tr>
+      <tr><td><b>1. Пояснюй «навіщо», а не «що»</b>. Що робить рядок, і так видно з коду.</td><td><code>// додаємо 1 до tries</code></td><td><code>// рахуємо спроби, щоб похвалити за швидку гру</code></td></tr>
+      <tr><td><b>2. Коментар має бути правдою</b>. Змінив код — зміни коментар.</td><td><code>// знижка 5 %</code> над <code>total * 0.9</code></td><td><code>// знижка 10 %</code></td></tr>
+      <tr><td><b>3. Коротко, грамотно, окремим рядком над кодом</b></td><td><code>// тут шось робимо з r</code></td><td><code>// після z знову йде a</code></td></tr>
+    </table></div>
+    <p>І ще: найкращий коментар — <b>зрозуміла назва</b>. <code>shift(text, k)</code> не треба пояснювати, а <code>f(a, b)</code> — треба.</p>
+  </section>
+
+  <section>
+    <h2>Зразок: так виглядає задокументований код</h2>
+    <div class="two">
+      <div><pre>/**
+ * Шифр Цезаря: зсуває кожну малу
+ * латинську літеру на k позицій.
+ *
+ * @param text слово з малих латинських літер
+ * @param k на скільки позицій зсунути
+ * @return зашифроване слово
+ */
+static String shift(String text, int k) {
+    String result = &quot;&quot;;
+    for (char c : text.toCharArray()) {
+        // номер літери від 0 до 25;
+        // % 26: після z знову йде a
+        int n = (c - &#x27;a&#x27; + k) % 26;
+        result = result + (char) (&#x27;a&#x27; + n);
+    }
+    return result;
+}</pre></div>
+      <div><p>Javadoc — коментар <code>/** ... */</code> <b>над</b> методом. Теги: <code>@param</code> — що означає параметр, <code>@return</code> — що метод повертає. З них програма <code>javadoc</code> робить сторінку документації, як на docs.oracle.com.</p><p>Коментар усередині пояснює <b>навіщо</b> <code>% 26</code> — це не видно з коду одразу.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Завдання 1. Знайди погані коментарі</h2>
+    <p>Прочитай код. Один коментар <b>бреше</b>, один просто <b>повторює код</b>. Відповіді — у тест, питання 1 і 2. Рахуй коментарі зверху: перший, другий…</p>
+    <div class="two"><div><pre>// ціна зі знижкою для кошика покупця
+static double price(double total) {
+    // якщо total &gt;= 1000
+    if (total &gt;= 1000) {
+        // знижка 5 %
+        return total * 0.9;
+    }
+    // знижка 5 %
+    if (total &gt;= 500) {
+        return total * 0.95;
+    }
+    // менше 500 грн — без знижки
+    return total;
+}</pre></div><div><p>Перевір себе: запусти з 1200 і з 600. Яка знижка насправді?</p></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 2. Зроби код зрозумілим</h2>
+    <p>Це той самий шифр Цезаря з 12.11, але написаний «для себе». Перепиши його в онлайн-компілятор Java і:</p>
+    <pre>static String f(String a, int b) {
+    String r = &quot;&quot;;
+    for (char c : a.toCharArray()) {
+        r = r + (char) (&#x27;a&#x27; + (c - &#x27;a&#x27; + b) % 26);
+    }
+    return r;
+}</pre>
+    <div><div><ol>
+        <li>Дай зрозумілі назви: <code>f</code> → <code>shift</code>, <code>a</code> → <code>text</code>, <code>b</code> → <code>k</code>, <code>r</code> → <code>result</code>.</li>
+        <li>Додай Javadoc: що робить, що означають параметри, що повертає.</li>
+        <li>Додай <b>один</b> коментар про <code>% 26</code>.</li>
+        <li>Запусти: <code>shift("abc", 1)</code> має дати <code>bcd</code>. Код після змін працює так само!<br>Як у 12.11: метод — над <code>main</code>, а в <code>main</code> — <code>System.out.println(shift("abc", 1));</code></li>
+      </ol></div>
+    </div>
+    <p><b>★</b> Напиши Javadoc і для методу <code>price</code>: що означає <code>total</code> і що метод повертає.</p>
+  </section>
+
+  <section>
+    <h2>Завдання 3. README свого проєкту</h2>
+    <p>Для проєкту з 12.11 (або міні-проєкту, який сподобався) напиши в зошит README за зразком:</p>
+    <div class="two"><div><pre># Вгадай число
+
+Що робить: комп&#x27;ютер загадує число від 1 до 100,
+гравець вгадує, програма підказує «більше» чи «менше».
+
+Як запустити: вставити код в онлайн-компілятор
+Java і натиснути Run.
+
+Приклад:
+  ввів 50 → «Більше»
+  ввів 75 → «Менше»
+  ввів 62 → «Вгадав!»
+
+Автор: Ім&#x27;я Прізвище, 9-А, 2026</pre></div><div><p>5 частин: <b>назва, що робить, як запустити, приклад, автор</b>.</p><p>Приклад — справжній: запусти програму і перепиши, що вона вивела.</p></div></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 8</div>
+  </section>
+
+  <section>
+    <h2>Що показати вчителю</h2>
+    <ol><li>Завдання 2: код з новими назвами, Javadoc і коментарем — і що він досі працює.</li><li>README у зошиті.</li><li>Результат тесту.</li></ol>
+  </section>
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити 3 правила гарного коментаря. Додати Javadoc до 2 функцій свого проєкту.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Завдання 1: який за рахунком коментар бреше?",
+"code": "",
+"ok": [
+"Mw==",
+"JUQxJTgyJUQxJTgwJUQwJUI1JUQxJTgyJUQxJTk2JUQwJUI5"
+],
+"show": "3",
+"why": "Над total * 0.9 написано «5 %», а насправді знижка 10 %."
+},
+{
+"q": "Завдання 1: який за рахунком коментар просто повторює код?",
+"code": "",
+"ok": [
+"Mg==",
+"JUQwJUI0JUQxJTgwJUQxJTgzJUQwJUIzJUQwJUI4JUQwJUI5"
+],
+"show": "2",
+"why": "«якщо total >= 1000» — і так видно з рядка під ним."
+},
+{
+"q": "Який коментар кращий? Впиши 1 або 2",
+"code": "// 1) ділимо на 60\n// 2) переводимо хвилини в години",
+"ok": [
+"Mg=="
+],
+"show": "2",
+"why": "Другий пояснює навіщо."
+},
+{
+"q": "Скільки частин у README за зразком?",
+"code": "",
+"ok": [
+"NQ==",
+"JUQwJUJGJUQxJThGJUQxJTgyJUQxJThD"
+],
+"show": "5",
+"why": "Назва, що робить, як запустити, приклад, автор."
+},
+{
+"q": "Якими символами починається однорядковий коментар у Java?",
+"code": "",
+"ok": [
+"JTJGJTJG"
+],
+"show": "//",
+"why": "Усе після // до кінця рядка компілятор пропускає."
+},
+{
+"q": "Який тег Javadoc описує, що метод повертає? (без @)",
+"code": "",
+"ok": [
+"cmV0dXJu",
+"JTQwcmV0dXJu"
+],
+"show": "@return",
+"why": "@param — параметр, @return — результат."
+},
+{
+"q": "Що виведе програма?",
+"code": "// System.out.println(\"Привіт\");\n/* System.out.println(\"Бувай\"); */\nSystem.out.println(\"Кінець\");",
+"ok": [
+"JUQwJUJBJUQxJTk2JUQwJUJEJUQwJUI1JUQxJTg2JUQxJThD"
+],
+"show": "Кінець",
+"why": "Два перші рядки — коментарі."
+},
+{
+"q": "Що виведе System.out.println(f(\"xyz\", 3)); ?",
+"code": "static String f(String a, int b) {\n    String r = \"\";\n    for (char c : a.toCharArray()) {\n        r = r + (char) ('a' + (c - 'a' + b) % 26);\n    }\n    return r;\n}",
+"ok": [
+"YWJj"
+],
+"show": "abc",
+"why": "x→a, y→b, z→c: після z знову a."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

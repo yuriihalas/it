@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проєкт: ідея і перша версія</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+  .dlg .inp { color: #0b5cad; background: #e6f0fb; border-radius: 3px; padding: 0 3px; }
+  .card { border: 2px solid #d5dae0; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; }
+  .card h3 { font-size: 21px; margin: 0 0 6px; color: #0b5cad; }
+  .lv { margin: 0 0 8px; padding-left: 1.3em; }
+  .lv li b { white-space: nowrap; }
+  .steps { counter-reset: s; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .steps li { counter-increment: s; border: 1px solid #d5dae0; border-radius: 6px; padding: 6px 10px 6px 40px; position: relative; margin: 0; }
+  .steps li::before { content: counter(s); position: absolute; left: 10px; top: 6px; background: #0b5cad; color: #fff; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Свій проєкт: ідея і перша версія <span>· 8-А · 17.11 · Python</span></h1>
+
+  <p class="big">Сьогодні і в четвер ти робиш <b>свій проєкт</b> — програму, яка розв'язує одну задачу від початку до кінця. Захист проєкту — <b>24.11</b>, оцінка до 12 балів.</p>
+
+  <section>
+    <h2>Шлях проєкту</h2>
+    <ol class="steps">
+      <li><b>Ідея:</b> що робить програма, для кого</li>
+      <li><b>Вхід і вихід:</b> що людина вводить, що бачить</li>
+      <li><b>План:</b> 5–7 кроків словами</li>
+      <li><b>Версія 1:</b> найпростіша, але робоча</li>
+      <li><b>Тести:</b> звичайні, граничні, неправильні дані</li>
+      <li><b>Покращення:</b> рівні 2 і 3</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Сьогодні на уроці</h2>
+    <ol>
+      <li>Обери <b>один</b> проєкт із шести нижче. Свою ідею можна — погодь з учителем.</li>
+      <li>У зошит — <b>картка проєкту</b>: назва, вхід, вихід, план у 5–7 кроках.</li>
+      <li>У Thonny створи файл <code>proekt.py</code>, почни з коду «Почни з цього» і зроби <b>рівень 1</b>.</li>
+      <li>Наприкінці уроку — тест на сторінці.</li>
+    </ol>
+    <div class="half">
+      <div><p><b>Приклад картки:</b></p>
+<pre>Назва: Вгадай число
+Вхід: числа, які вводить гравець
+Вихід: «Більше», «Менше», «Вгадав! Спроб: 4»
+План:
+1. Загадати випадкове число 1–100
+2. Повторювати, поки не вгадав:
+3.   спитати число
+4.   порівняти і підказати
+5. Вивести кількість спроб</pre></div>
+      <div><p><b>Команди, які знадобляться:</b></p>
+        <div class="wrap"><table>
+          <tr><th>Команда</th><th>Що робить</th></tr>
+          <tr><td><code>import random</code></td><td>підключити випадкові числа (перший рядок)</td></tr>
+          <tr><td><code>random.randint(1, 100)</code></td><td>випадкове ціле від 1 до 100</td></tr>
+          <tr><td><code>random.choice(items)</code></td><td>випадковий елемент списку</td></tr>
+          <tr><td><code>int(input(...))</code> / <code>float(...)</code></td><td>ввести ціле / дробове число</td></tr>
+          <tr><td><code>round(x, 2)</code></td><td>округлити до 2 знаків</td></tr>
+          <tr><td><code>len(p)</code></td><td>довжина рядка</td></tr>
+          <tr><td><code>while умова:</code></td><td>повторювати, поки умова правдива</td></tr>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Шість проєктів на вибір</h2>
+    
+    <div class="card">
+      <h3>1. Вгадай число</h3>
+      <p>Комп'ютер загадує число від 1 до 100, гравець вгадує, програма підказує «більше» чи «менше». <b>Вхід:</b> число гравця (кілька разів). <b>Вихід:</b> підказки, кількість спроб.</p>
+      <div class="half">
+        <div><ul class="lv"><li><b>Рівень 1 (6 б):</b> загадати число, цикл <code>while</code>, підказки «Більше» / «Менше», «Вгадав».</li><li><b>Рівень 2 (+3 б):</b> лічильник спроб і похвала, якщо вгадав за 7 спроб або менше.</li><li><b>Рівень 3 ★ (+1 б):</b> не більше 10 спроб, після кінця — «Зіграти ще? (так/ні)».</li></ul><p><b>Почни з цього:</b></p><pre>import random
+
+secret = random.randint(1, 100)
+guess = 0
+while guess != secret:
+    guess = int(input(&quot;Твоє число: &quot;))</pre></div>
+        <div><p><b>Приклад роботи</b> (синім — що вводить людина):</p><pre class="out dlg">Я загадав число від 1 до 100
+Твоє число: <span class="inp">50</span>
+Більше
+Твоє число: <span class="inp">75</span>
+Менше
+Твоє число: <span class="inp">62</span>
+Менше
+Твоє число: <span class="inp">60</span>
+Вгадав! Спроб: 4
+Супер!</pre></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>2. Калькулятор оцінок</h3>
+      <p>Вводиш оцінки за тиждень — програма рахує середню, найвищу, найнижчу і рівень. <b>Вхід:</b> кількість оцінок, оцінки 1–12. <b>Вихід:</b> середня, найвища, найнижча, рівень.</p>
+      <div class="half">
+        <div><ul class="lv"><li><b>Рівень 1 (6 б):</b> ввести n оцінок у циклі <code>for</code>, вивести суму і середню (округлити до 0,1).</li><li><b>Рівень 2 (+3 б):</b> найвища, найнижча оцінка і рівень: високий / достатній / середній / початковий.</li><li><b>Рівень 3 ★ (+1 б):</b> не приймати оцінку 0 або 13: «Такої оцінки немає», ввести ще раз.</li></ul><p><b>Почни з цього:</b></p><pre>n = int(input(&quot;Скільки оцінок? &quot;))
+total = 0
+for i in range(n):
+    m = int(input(&quot;Оцінка: &quot;))
+    total = total + m</pre></div>
+        <div><p><b>Приклад роботи</b> (синім — що вводить людина):</p><pre class="out dlg">Скільки оцінок? <span class="inp">4</span>
+Оцінка: <span class="inp">10</span>
+Оцінка: <span class="inp">12</span>
+Оцінка: <span class="inp">9</span>
+Оцінка: <span class="inp">7</span>
+Середня: 9.5
+Найвища: 12 Найнижча: 7
+Рівень: достатній</pre></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>3. Тренажер множення</h3>
+      <p>10 випадкових прикладів на таблицю множення, рахунок правильних і оцінка. <b>Вхід:</b> відповіді гравця. <b>Вихід:</b> «Правильно» / правильна відповідь, рахунок, оцінка.</p>
+      <div class="half">
+        <div><ul class="lv"><li><b>Рівень 1 (6 б):</b> 10 прикладів у циклі, перевірка відповіді, лічильник правильних.</li><li><b>Рівень 2 (+3 б):</b> після помилки показати правильну відповідь; оцінка в кінці.</li><li><b>Рівень 3 ★ (+1 б):</b> на початку питати рівень: 1 — числа до 5, 2 — до 9, 3 — до 12.</li></ul><p><b>Почни з цього:</b></p><pre>import random
+
+score = 0
+for i in range(10):
+    a = random.randint(2, 9)
+    b = random.randint(2, 9)</pre></div>
+        <div><p><b>Приклад роботи</b> (синім — що вводить людина):</p><pre class="out dlg">5 x 4 = <span class="inp">20</span>
+Правильно!
+7 x 9 = <span class="inp">64</span>
+Ні, правильно 63
+3 x 2 = <span class="inp">6</span>
+Правильно!
+...
+Правильних: 9 з 10
+Оцінка: 11</pre></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>4. Обмінник валют</h3>
+      <p>Меню: гривні в долари, долари в гривні. Працює, поки не вибереш 0. <b>Вхід:</b> пункт меню, сума. <b>Вихід:</b> сума в іншій валюті.</p>
+      <div class="half">
+        <div><ul class="lv"><li><b>Рівень 1 (6 б):</b> курс у змінній, меню з пунктами 1, 2, 0 у циклі <code>while</code>.</li><li><b>Рівень 2 (+3 б):</b> округлення до копійок, повідомлення «Немає такого пункту».</li><li><b>Рівень 3 ★ (+1 б):</b> додати євро (пункти 3 і 4) і не приймати від'ємну суму.</li></ul><p><b>Почни з цього:</b></p><pre>rate = 41.5
+choice = -1
+while choice != 0:
+    print(&quot;1 — гривні в долари, 2 — долари в гривні, 0 — вихід&quot;)
+    choice = int(input(&quot;Вибір: &quot;))</pre></div>
+        <div><p><b>Приклад роботи</b> (синім — що вводить людина):</p><pre class="out dlg">1 — гривні в долари, 2 — долари в гривні, 0 — вихід
+Вибір: <span class="inp">1</span>
+Гривень: <span class="inp">415</span>
+Доларів: 10.0
+1 — гривні в долари, 2 — долари в гривні, 0 — вихід
+Вибір: <span class="inp">2</span>
+Доларів: <span class="inp">10</span>
+Гривень: 415.0
+1 — гривні в долари, 2 — долари в гривні, 0 — вихід
+Вибір: <span class="inp">0</span>
+До побачення!</pre></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>5. Перевірка пароля</h3>
+      <p>Програма просить пароль, поки він не стане надійним, і пояснює, чого бракує. <b>Вхід:</b> пароль (кілька спроб). <b>Вихід:</b> що не так із паролем, «надійний».</p>
+      <div class="half">
+        <div><ul class="lv"><li><b>Рівень 1 (6 б):</b> цикл, поки довжина менша за 8: <code>len(p)</code>.</li><li><b>Рівень 2 (+3 б):</b> перевірити, чи є цифра (<code>ch.isdigit()</code>) і велика літера (<code>ch.isupper()</code>).</li><li><b>Рівень 3 ★ (+1 б):</b> не приймати пароль, у якому є слово «password» або «12345».</li></ul><p><b>Почни з цього:</b></p><pre>ok = False
+while not ok:
+    p = input(&quot;Придумай пароль: &quot;)
+    if len(p) &lt; 8:
+        print(&quot;Закороткий&quot;)
+    else:
+        ok = True
+print(&quot;Пароль прийнято&quot;)</pre></div>
+        <div><p><b>Приклад роботи</b> (синім — що вводить людина):</p><pre class="out dlg">Придумай пароль: <span class="inp">kit123</span>
+Закороткий: треба щонайменше 8 символів
+Придумай пароль: <span class="inp">kotyk2026</span>
+Додай хоча б одну велику літеру
+Придумай пароль: <span class="inp">Kotyk2026</span>
+Пароль надійний!</pre></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>6. Камінь, ножиці, папір</h3>
+      <p>Гра з комп'ютером до 3 перемог. <b>Вхід:</b> хід гравця. <b>Вихід:</b> хід комп'ютера, хто виграв раунд, рахунок.</p>
+      <div class="half">
+        <div><ul class="lv"><li><b>Рівень 1 (6 б):</b> один раунд: <code>random.choice</code>, хто виграв, нічия.</li><li><b>Рівень 2 (+3 б):</b> цикл до 3 перемог, рахунок після кожного раунду.</li><li><b>Рівень 3 ★ (+1 б):</b> приймати «Камінь» з великої (<code>p.lower()</code>) і відповідати на неіснуючий хід.</li></ul><p><b>Почни з цього:</b></p><pre>import random
+
+items = [&quot;камінь&quot;, &quot;ножиці&quot;, &quot;папір&quot;]
+p = input(&quot;камінь, ножиці чи папір? &quot;)
+c = random.choice(items)
+print(&quot;Комп&#x27;ютер:&quot;, c)</pre></div>
+        <div><p><b>Приклад роботи</b> (синім — що вводить людина):</p><pre class="out dlg">камінь, ножиці чи папір? <span class="inp">камінь</span>
+Комп&#x27;ютер: папір
+Комп&#x27;ютер виграв раунд
+Рахунок 0 : 1
+камінь, ножиці чи папір? <span class="inp">папір</span>
+Комп&#x27;ютер: ножиці
+Комп&#x27;ютер виграв раунд
+Рахунок 0 : 2
+камінь, ножиці чи папір? <span class="inp">ножиці</span>
+Комп&#x27;ютер: папір
+Ти виграв раунд!
+Рахунок 1 : 2
+камінь, ножиці чи папір? <span class="inp">камінь</span>
+Комп&#x27;ютер: ножиці
+Ти виграв раунд!
+Рахунок 2 : 2
+камінь, ножиці чи папір? <span class="inp">папір</span>
+Комп&#x27;ютер: папір
+Нічия
+Рахунок 2 : 2
+камінь, ножиці чи папір? <span class="inp">ножиці</span>
+Комп&#x27;ютер: папір
+Ти виграв раунд!
+Рахунок 3 : 2
+Перемога!</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Дописати картку проєкту: ідея, що програма приймає на вхід і що виводить. Якщо рівень 1 не встиг — доробити вдома або на перерві.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Що з цього — ВХІД програми «Обмінник валют»? Впиши номер: 1) курс 41.5 у коді, 2) сума, яку вводить людина, 3) повідомлення «До побачення!»",
+"code": "",
+"ok": [
+"Mg=="
+],
+"show": "2",
+"why": "Вхід — те, що вводить людина під час роботи програми."
+},
+{
+"q": "Що виведе програма?",
+"code": "total = 0\nfor m in [10, 12, 9, 7]:\n    total = total + m\nprint(total / 4)",
+"ok": [
+"OS41"
+],
+"show": "9.5",
+"why": "38 / 4 = 9.5."
+},
+{
+"q": "Скільки разів спитає число?",
+"code": "secret = 7\nguess = 0\nn = 0\nwhile guess != secret:\n    guess = int(input())\n    n = n + 1\nprint(n)\n# людина вводить: 3, 9, 7",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "Цикл крутиться, поки не введуть 7: три введення."
+},
+{
+"q": "Що виведе програма?",
+"code": "p = \"kotyk2026\"\nprint(len(p))",
+"ok": [
+"OQ=="
+],
+"show": "9",
+"why": "5 літер + 4 цифри."
+},
+{
+"q": "Що виведе програма?",
+"code": "print(round(415 / 41.5, 2))",
+"ok": [
+"MTAuMA==",
+"MTA="
+],
+"show": "10.0",
+"why": "415 / 41.5 = 10, round повертає 10.0."
+},
+{
+"q": "Скільки разів виконається тіло циклу?",
+"code": "me = 0\nwhile me < 3:\n    me = me + 1",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "me = 0, 1, 2 — тричі, потім 3 < 3 — неправда."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
