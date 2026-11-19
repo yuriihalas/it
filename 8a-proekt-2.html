@@ -60,7 +60,7 @@
 <div class="sheet">
   <h1>Свій проєкт: тести і налагодження <span>· 8-А · 19.11 · Python</span></h1>
 
-  <p class="big">Сьогодні: доробляєш рівні 2–3, <b>тестуєш</b> програму і виправляєш помилки. У вівторок, 24.11 — захист.</p>
+  <p class="big">Сьогодні: доробляєш рівні 2–3, <b>тестуєш</b> програму в Thonny і виправляєш помилки.</p>
 
   <section>
     <h2>1. Доробити рівні</h2>
@@ -69,7 +69,11 @@
 
   <section>
     <h2>2. Тестуємо в Thonny</h2>
-    <p>Як 12.11: перевіряємо чотири групи вхідних даних — прямо в Thonny. Запускаєш програму, вводиш дані з таблиці й дивишся: <b>що ввів</b> → <b>що очікую</b> → <b>що вийшло</b>. Як це робити — на скрінах нижче.</p>
+    <p>Як 12.11: перевіряємо чотири групи вхідних даних — прямо в Thonny. Запускаєш програму, вводиш дані з таблиці й дивишся: <b>що ввів</b> → <b>що очікую</b> → <b>що вийшло</b>.</p>
+    <div class="half">
+      <div><p><b>Крок 1.</b> Відкрий <code>proekt.py</code> у Thonny і натисни зелену кнопку <b>▶</b> (або клавішу F5). Якщо програма зависла — червона кнопка <b>STOP</b>.</p><a href="8a-proekt-2/run.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/run.png" alt="Thonny: зелена кнопка запуску і кнопка STOP" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div>
+      <div><p><b>Крок 2.</b> Унизу, в «Оболонці», вводь дані з таблиці й тисни Enter. Порівняй, що вийшло, з колонкою «Очікую». Збіглося — тест пройдено ✔.</p><a href="8a-proekt-2/test.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/test.png" alt="Thonny: введено 4 оцінки, вийшло Середня: 9.5" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div>
+    </div>
     <div class="wrap"><table>
       <tr><th>Група</th><th>Калькулятор оцінок</th><th>Очікую</th><th>Обмінник</th><th>Очікую</th></tr>
       <tr><td>Звичайні</td><td>4 оцінки: 10, 12, 9, 7</td><td>Середня: 9.5</td><td>1, 415 грн</td><td>Доларів: 10.0</td></tr>
@@ -77,61 +81,136 @@
       <tr><td>Неправильні</td><td>оцінка 13</td><td>«Такої оцінки немає» (★)</td><td>пункт 7</td><td>«Немає такого пункту»</td></tr>
       <tr><td>Особливі</td><td>0 оцінок</td><td>не має «впасти»</td><td>сума «сто»</td><td>не має «впасти»</td></tr>
     </table></div>
-    <p>Перевір останній рядок у своїй програмі. Калькулятор з 0 оцінок «впаде» з <code>ZeroDivisionError</code>: ділимо на 0. Це і є знахідка тестування — виправ її через <code>if n == 0:</code>.</p>
+    <p>Перевір останній рядок у своїй програмі. Калькулятор з 0 оцінок «впаде» з <code>ZeroDivisionError</code>: ділимо на 0. Це і є знахідка тестування — як виправити, дивись нижче, помилка 2.</p>
   </section>
 
   <section>
-    <h2>3. Типові помилки в проєктах</h2>
-    <div class="wrap"><table>
-      <tr><th>Що бачиш</th><th>Чому</th><th>Як виправити</th></tr>
-      <tr><td><code>ValueError: invalid literal for int()</code></td><td>ввели літери замість числа</td><td>на захисті — пояснити; ★ перевірити <code>s.isdigit()</code> перед <code>int(s)</code></td></tr>
-      <tr><td><code>ZeroDivisionError</code></td><td>ділення на 0</td><td><code>if n &gt; 0:</code> перед діленням</td></tr>
-      <tr><td>Програма не зупиняється</td><td>у <code>while</code> не змінюється змінна з умови</td><td>знайди, де змінна має змінитися; червона кнопка «Стоп»</td></tr>
-      <tr><td>«Камінь» не працює, «камінь» — так</td><td>рядки з великої та малої — різні</td><td><code>p = p.lower()</code></td></tr>
-      <tr><td>Рахунок завжди 0</td><td><code>score = 0</code> стоїть <b>всередині</b> циклу</td><td>перенеси над цикл</td></tr>
-      <tr><td><code>IndentationError</code></td><td>відступи</td><td>4 пробіли під <code>for</code>, <code>while</code>, <code>if</code></td></tr>
-    </table></div>
-  </section>
-
-  <section>
-    <h2>4. Як буде захист 24.11</h2>
-    <div class="half">
-      <div>
-        <ol>
-          <li>Запускаєш програму, показуєш звичайний тест.</li>
-          <li>Учитель вводить свої дані — граничні або неправильні.</li>
-          <li>Пояснюєш один цикл і одне розгалуження: що вони роблять.</li>
-          <li>Розповідаєш план програми і показуєш у Thonny 4 тести з таблиці.</li>
-        </ol>
-      </div>
-      <div class="wrap"><table>
-        <tr><th>Що</th><th>Бали</th></tr>
-        <tr><td>Рівень 1 працює</td><td>6</td></tr>
-        <tr><td>Рівень 2</td><td>3</td></tr>
-        <tr><td>Рівень 3 ★</td><td>1</td></tr>
-        <tr><td>4 тести в Thonny</td><td>1</td></tr>
-        <tr><td>Пояснив свій код</td><td>1</td></tr>
-      </table></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>5. Уже все працює? Покращ проєкт</h2>
-    <p>Якщо рівні готові і всі 4 тести проходять, вибери одне покращення. Воно дає плюс на захисті: програма стає «стійкою» до помилок користувача.</p>
-    <div class="half">
-      <div><h3>А. Програма не «падає» від літер</h3><pre>s = input(&quot;Оцінка: &quot;)
+    <h2>3. Типові помилки: як їх отримати і як виправити</h2>
+    <p>Кожну помилку можна спіймати самому. У Thonny: <b>Файл → Новий</b>, набери короткий код, натисни <b>▶</b> і введи те, що написано. Побачиш помилку, як на скріні. Потім виправ код і запусти знову.</p>
+    <p class="big">Червоний текст — не страшно. Читай <b>останній рядок</b>: там назва помилки. Трохи вище, після <code>line</code>, — <b>номер рядка</b>, де вона сталася.</p>
+    <div class="card"><h3>1. Ввели літери замість числа — <code>ValueError</code></h3><div class="half">
+      <div><p><b>Як отримати:</b> набери код, натисни ▶ і введи <code>сто</code>.</p><pre>mark = int(input(&quot;Оцінка: &quot;))
+print(&quot;Твоя оцінка:&quot;, mark)</pre><p><b>Чому:</b> <code>int()</code> перетворює на число тільки цифри. «сто» — це літери.</p><p><b>Як виправити:</b> питати знову, поки не введуть цифри (докладно — у розділі 4, покращення А).</p><pre>s = input(&quot;Оцінка: &quot;)
 while not s.isdigit():
     print(&quot;Треба ввести число&quot;)
     s = input(&quot;Оцінка: &quot;)
-mark = int(s)</pre><p>Поки введено не число, питаємо знову. <code>isdigit()</code> — «чи всі символи цифри».</p></div>
-      <div><h3>Б. «Ще раз?»</h3><pre>again = &quot;так&quot;
+mark = int(s)
+print(&quot;Твоя оцінка:&quot;, mark)</pre><p>Тепер на «сто» програма каже «Треба ввести число» і питає ще раз.</p></div>
+      <div><a href="8a-proekt-2/e1.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e1.png" alt="ValueError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+    <div class="card"><h3>2. Ділення на 0 — <code>ZeroDivisionError</code></h3><div class="half">
+      <div><p><b>Як отримати:</b> набери калькулятор, натисни ▶ і на питання «Скільки оцінок?» введи <code>0</code>.</p><pre>n = int(input(&quot;Скільки оцінок? &quot;))
+total = 0
+for i in range(n):
+    m = int(input(&quot;Оцінка: &quot;))
+    total = total + m
+print(&quot;Середня:&quot;, round(total / n, 1))</pre><p><b>Чому:</b> оцінок 0, і в рядку 6 ділимо <code>total / n</code>, тобто на 0. На 0 ділити не можна.</p><p><b>Як виправити:</b> перед діленням перевірити, чи <code>n</code> не 0.</p><pre>n = int(input(&quot;Скільки оцінок? &quot;))
+total = 0
+for i in range(n):
+    m = int(input(&quot;Оцінка: &quot;))
+    total = total + m
+if n == 0:
+    print(&quot;Немає оцінок&quot;)
+else:
+    print(&quot;Середня:&quot;, round(total / n, 1))</pre><p>Тепер на 0 програма пише «Немає оцінок», а на 4 оцінки — як раніше, 9.5.</p></div>
+      <div><a href="8a-proekt-2/e2.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e2.png" alt="ZeroDivisionError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+    <div class="card"><h3>3. Програма не зупиняється</h3><div class="half">
+      <div><p><b>Як отримати:</b> набери код і натисни ▶. Одиниці біжать без кінця — зупини червоною кнопкою <b>STOP</b>.</p><pre>n = 1
+while n &lt;= 5:
+    print(n)</pre><p><b>Чому:</b> у циклі <code>n</code> не змінюється, завжди 1. Умова <code>n &lt;= 5</code> завжди правда — цикл ніколи не закінчиться.</p><p><b>Як виправити:</b> усередині циклу збільшувати <code>n</code>.</p><pre>n = 1
+while n &lt;= 5:
+    print(n)
+    n = n + 1</pre><p>Тепер друкує 1 2 3 4 5 і зупиняється.</p></div>
+      <div><a href="8a-proekt-2/e3.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e3.png" alt="Нескінченний цикл у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+    <div class="card"><h3>4. «Камінь» не працює, а «камінь» — так</h3><div class="half">
+      <div><p><b>Як отримати:</b> набери код, натисни ▶ і введи <code>Камінь</code> з великої букви.</p><pre>p = input(&quot;Камінь, ножиці чи папір? &quot;)
+if p == &quot;камінь&quot;:
+    print(&quot;Ти обрав камінь&quot;)
+else:
+    print(&quot;Не знаю такого&quot;)</pre><p><b>Чому:</b> для Python «К» і «к» — різні букви, тому «Камінь» ≠ «камінь».</p><p><b>Як виправити:</b> перетворити введене на малі букви: <code>.lower()</code> у кінці рядка з <code>input</code>.</p><pre>p = input(&quot;Камінь, ножиці чи папір? &quot;).lower()
+if p == &quot;камінь&quot;:
+    print(&quot;Ти обрав камінь&quot;)
+else:
+    print(&quot;Не знаю такого&quot;)</pre><p>Тепер «Камінь», «КАМІНЬ» і «камінь» працюють однаково.</p></div>
+      <div><a href="8a-proekt-2/e4.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e4.png" alt="Камінь з великої літери не впізнано" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+    <div class="card"><h3>5. Рахунок не росте</h3><div class="half">
+      <div><p><b>Як отримати:</b> набери код, натисни ▶ і тричі введи правильну відповідь <code>4</code>.</p><pre>for i in range(3):
+    score = 0
+    a = int(input(&quot;2 + 2 = &quot;))
+    if a == 4:
+        score = score + 1
+print(&quot;Правильних:&quot;, score)</pre><p><b>Чому:</b> <code>score = 0</code> стоїть <b>усередині</b> циклу: на кожному кроці рахунок обнуляється.</p><p><b>Як виправити:</b> перенести <code>score = 0</code> над цикл, без відступу.</p><pre>score = 0
+for i in range(3):
+    a = int(input(&quot;2 + 2 = &quot;))
+    if a == 4:
+        score = score + 1
+print(&quot;Правильних:&quot;, score)</pre><p>Тепер після трьох правильних — «Правильних: 3».</p></div>
+      <div><a href="8a-proekt-2/e5.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e5.png" alt="Рахунок 1 замість 3" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+    <div class="card"><h3>6. Відступи — <code>IndentationError</code></h3><div class="half">
+      <div><p><b>Як отримати:</b> набери код без пробілів перед <code>print</code> і натисни ▶.</p><pre>for i in range(3):
+print(&quot;Привіт&quot;)</pre><p><b>Чому:</b> після <code>for</code>, <code>while</code>, <code>if</code>, <code>else</code> рядки всередині мають бути з відступом.</p><p><b>Як виправити:</b> поставити курсор перед <code>print</code> і натиснути Tab (4 пробіли).</p><pre>for i in range(3):
+    print(&quot;Привіт&quot;)</pre><p>Тепер тричі друкує «Привіт».</p></div>
+      <div><a href="8a-proekt-2/e6.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e6.png" alt="IndentationError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+  </section>
+
+  <section>
+    <h2>4. Уже все працює? Покращ проєкт</h2>
+    <p>Якщо рівні готові і всі тести проходять, вибери одне покращення. Нижче — по кроках, на прикладі калькулятора оцінок. У твоїй програмі все так само, тільки свої рядки.</p>
+    <div class="card"><h3>А. Програма не «падає», якщо ввели літери</h3>
+      <p><b>Що буде:</b> замість червоної помилки програма каже «Треба ввести число» і питає знову. Підходить усім, де вводять числа.</p>
+      <div class="half"><div><ol>
+        <li>Знайди рядок, де є <code>int(input(...))</code>. У калькуляторі це <code>m = int(input("Оцінка: "))</code>.</li>
+        <li>Спочатку просто читаємо текст, без <code>int</code>: <code>s = input("Оцінка: ")</code>.</li>
+        <li>Під ним цикл <code>while not s.isdigit():</code> — «поки в <code>s</code> не самі цифри». Усередині, з відступом: <code>print("Треба ввести число")</code> і знову <code>s = input("Оцінка: ")</code>.</li>
+        <li>Після циклу перетвори на число: <code>m = int(s)</code>.</li>
+        <li>Рядок був усередині <code>for</code>? Тоді всі нові рядки теж мають відступ, як на прикладі.</li>
+        <li>Перевір: ▶, введи <code>десять</code> — має попросити ще раз; введи <code>10</code> — рахує далі.</li>
+      </ol></div><div><p><b>Було → стало</b> (нові рядки 4–8):</p><pre>n = int(input(&quot;Скільки оцінок? &quot;))
+total = 0
+for i in range(n):
+    s = input(&quot;Оцінка: &quot;)
+    while not s.isdigit():
+        print(&quot;Треба ввести число&quot;)
+        s = input(&quot;Оцінка: &quot;)
+    m = int(s)
+    total = total + m
+print(&quot;Середня:&quot;, round(total / n, 1))</pre></div></div></div>
+    <div class="card"><h3>Б. «Ще раз?» — програма починається знову</h3>
+      <p><b>Що буде:</b> після кінця програма питає «Ще раз?». Відповів «так» — усе спочатку, без кнопки ▶. «ні» — «До побачення!».</p>
+      <div class="half"><div><ol>
+        <li>На самий верх програми (якщо є <code>import random</code> — під ним) допиши два рядки: <code>again = "так"</code> і <code>while again == "так":</code></li>
+        <li>Виділи мишкою <b>весь інший код</b> і натисни Tab — він зсунеться вправо і опиниться всередині циклу.</li>
+        <li>У самий кінець, теж з відступом: <code>again = input("Ще раз? (так/ні) ").lower()</code></li>
+        <li>Останній рядок — без відступу: <code>print("До побачення!")</code></li>
+        <li>Перевір: ▶, на «Ще раз?» введи <code>так</code> — програма починається знову; <code>ні</code> — прощається.</li>
+      </ol><p><code>.lower()</code> — щоб «Так» і «так» спрацювали однаково.</p></div><div><pre>again = &quot;так&quot;
 while again == &quot;так&quot;:
-    # тут твоя програма
+    n = int(input(&quot;Скільки оцінок? &quot;))
+    total = 0
+    for i in range(n):
+        m = int(input(&quot;Оцінка: &quot;))
+        total = total + m
+    print(&quot;Середня:&quot;, round(total / n, 1))
     again = input(&quot;Ще раз? (так/ні) &quot;).lower()
-print(&quot;До побачення!&quot;)</pre><p>Увесь код проєкту — всередину циклу, з відступом. <code>lower()</code>: «Так» і «так» спрацюють однаково.</p></div>
-    </div>
-    <p><b>★ В.</b> Рахуй, скільки разів грали або скільки обмінів зробили, і виведи це при виході: <code>Ігор зіграно: 3</code>.</p>
-    <p>Після покращення <b>перевір його в Thonny</b>: натисни ▶, введи «сто» — має вийти «Треба ввести число», а програма не «падає».</p>
+print(&quot;До побачення!&quot;)</pre></div></div></div>
+    <div class="card"><h3>★ В. Лічильник: скільки разів грали</h3>
+      <p><b>Що буде:</b> на прощання програма пише, скільки разів ти грав або рахував. Робиться після покращення Б.</p>
+      <div class="half"><div><ol>
+        <li>На самий верх: <code>games = 0</code> — поки 0 разів.</li>
+        <li>Усередині циклу, перед питанням «Ще раз?»: <code>games = games + 1</code> — ще один раз.</li>
+        <li>Замість «До побачення!» (або після): <code>print("Порахували разів:", games)</code></li>
+        <li>Перевір: двічі скажи «так», потім «ні» — має вийти 3.</li>
+      </ol><p>Для гри можна написати <code>"Ігор зіграно:"</code>.</p></div><div><pre>games = 0
+again = &quot;так&quot;
+while again == &quot;так&quot;:
+    n = int(input(&quot;Скільки оцінок? &quot;))
+    total = 0
+    for i in range(n):
+        m = int(input(&quot;Оцінка: &quot;))
+        total = total + m
+    print(&quot;Середня:&quot;, round(total / n, 1))
+    games = games + 1
+    again = input(&quot;Ще раз? (так/ні) &quot;).lower()
+print(&quot;Порахували разів:&quot;, games)</pre></div></div></div>
   </section>
 
   <section>
@@ -143,7 +222,7 @@ print(&quot;До побачення!&quot;)</pre><p>Увесь код проєк
 
   <section>
     <h2>Домашнє завдання</h2>
-    <p>Підготуватися до захисту 24.11: файл <code>proekt.py</code> має бути на комп'ютері в класі або на флешці. Повтор, що роблять цикл і розгалуження у твоїй програмі — на захисті їх треба пояснити.</p>
+    <p>Обов'язкового немає. Хочеш — доробляй проєкт удома, якщо є комп'ютер. Файл <code>proekt.py</code> має бути на комп'ютері в класі або на флешці.</p>
   </section>
 </div>
 
