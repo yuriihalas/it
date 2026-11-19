@@ -71,8 +71,8 @@
     <h2>2. Тестуємо в Thonny</h2>
     <p>Як 12.11: перевіряємо чотири групи вхідних даних — прямо в Thonny. Запускаєш програму, вводиш дані з таблиці й дивишся: <b>що ввів</b> → <b>що очікую</b> → <b>що вийшло</b>.</p>
     <div class="half">
-      <div><p><b>Крок 1.</b> Відкрий <code>proekt.py</code> у Thonny і натисни зелену кнопку <b>▶</b> (або клавішу F5). Якщо програма зависла — червона кнопка <b>STOP</b>.</p><a href="8a-proekt-2/run.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/run.png" alt="Thonny: зелена кнопка запуску і кнопка STOP" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div>
-      <div><p><b>Крок 2.</b> Унизу, в «Оболонці», вводь дані з таблиці й тисни Enter. Порівняй, що вийшло, з колонкою «Очікую». Збіглося — тест пройдено ✔.</p><a href="8a-proekt-2/test.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/test.png" alt="Thonny: введено 4 оцінки, вийшло Середня: 9.5" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div>
+      <div><p><b>Крок 1.</b> Відкрий <code>proekt.py</code> у Thonny і натисни зелену кнопку <b>▶</b> (або клавішу F5). Якщо програма зависла — червона кнопка <b>STOP</b>.</p><a href="8a-proekt-2/run.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/run.png" alt="Thonny: зелена кнопка запуску і кнопка STOP" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div>
+      <div><p><b>Крок 2.</b> Унизу, в «Оболонці», вводь дані з таблиці й тисни Enter. Порівняй, що вийшло, з колонкою «Очікую». Збіглося — тест пройдено ✔.</p><a href="8a-proekt-2/test.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/test.png" alt="Thonny: введено 4 оцінки, вийшло Середня: 9.5" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div>
     </div>
     <div class="wrap"><table>
       <tr><th>Група</th><th>Калькулятор оцінок</th><th>Очікую</th><th>Обмінник</th><th>Очікую</th></tr>
@@ -96,7 +96,7 @@ while not s.isdigit():
     s = input(&quot;Оцінка: &quot;)
 mark = int(s)
 print(&quot;Твоя оцінка:&quot;, mark)</pre><p>Тепер на «сто» програма каже «Треба ввести число» і питає ще раз.</p></div>
-      <div><a href="8a-proekt-2/e1.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e1.png" alt="ValueError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+      <div><a href="8a-proekt-2/e1.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/e1.png" alt="ValueError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
     <div class="card"><h3>2. Ділення на 0 — <code>ZeroDivisionError</code></h3><div class="half">
       <div><p><b>Як отримати:</b> набери калькулятор, натисни ▶ і на питання «Скільки оцінок?» введи <code>0</code>.</p><pre>n = int(input(&quot;Скільки оцінок? &quot;))
 total = 0
@@ -112,7 +112,7 @@ if n == 0:
     print(&quot;Немає оцінок&quot;)
 else:
     print(&quot;Середня:&quot;, round(total / n, 1))</pre><p>Тепер на 0 програма пише «Немає оцінок», а на 4 оцінки — як раніше, 9.5.</p></div>
-      <div><a href="8a-proekt-2/e2.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e2.png" alt="ZeroDivisionError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+      <div><a href="8a-proekt-2/e2.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/e2.png" alt="ZeroDivisionError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
     <div class="card"><h3>3. Програма не зупиняється</h3><div class="half">
       <div><p><b>Як отримати:</b> набери код і натисни ▶. Одиниці біжать без кінця — зупини червоною кнопкою <b>STOP</b>.</p><pre>n = 1
 while n &lt;= 5:
@@ -120,7 +120,7 @@ while n &lt;= 5:
 while n &lt;= 5:
     print(n)
     n = n + 1</pre><p>Тепер друкує 1 2 3 4 5 і зупиняється.</p></div>
-      <div><a href="8a-proekt-2/e3.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e3.png" alt="Нескінченний цикл у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+      <div><a href="8a-proekt-2/e3.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/e3.png" alt="Нескінченний цикл у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
     <div class="card"><h3>4. «Камінь» не працює, а «камінь» — так</h3><div class="half">
       <div><p><b>Як отримати:</b> набери код, натисни ▶ і введи <code>Камінь</code> з великої букви.</p><pre>p = input(&quot;Камінь, ножиці чи папір? &quot;)
 if p == &quot;камінь&quot;:
@@ -131,7 +131,7 @@ if p == &quot;камінь&quot;:
     print(&quot;Ти обрав камінь&quot;)
 else:
     print(&quot;Не знаю такого&quot;)</pre><p>Тепер «Камінь», «КАМІНЬ» і «камінь» працюють однаково.</p></div>
-      <div><a href="8a-proekt-2/e4.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e4.png" alt="Камінь з великої літери не впізнано" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+      <div><a href="8a-proekt-2/e4.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/e4.png" alt="Камінь з великої літери не впізнано" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
     <div class="card"><h3>5. Рахунок не росте</h3><div class="half">
       <div><p><b>Як отримати:</b> набери код, натисни ▶ і тричі введи правильну відповідь <code>4</code>.</p><pre>for i in range(3):
     score = 0
@@ -144,12 +144,12 @@ for i in range(3):
     if a == 4:
         score = score + 1
 print(&quot;Правильних:&quot;, score)</pre><p>Тепер після трьох правильних — «Правильних: 3».</p></div>
-      <div><a href="8a-proekt-2/e5.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e5.png" alt="Рахунок 1 замість 3" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+      <div><a href="8a-proekt-2/e5.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/e5.png" alt="Рахунок 1 замість 3" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
     <div class="card"><h3>6. Відступи — <code>IndentationError</code></h3><div class="half">
       <div><p><b>Як отримати:</b> набери код без пробілів перед <code>print</code> і натисни ▶.</p><pre>for i in range(3):
 print(&quot;Привіт&quot;)</pre><p><b>Чому:</b> після <code>for</code>, <code>while</code>, <code>if</code>, <code>else</code> рядки всередині мають бути з відступом.</p><p><b>Як виправити:</b> поставити курсор перед <code>print</code> і натиснути Tab (4 пробіли).</p><pre>for i in range(3):
     print(&quot;Привіт&quot;)</pre><p>Тепер тричі друкує «Привіт».</p></div>
-      <div><a href="8a-proekt-2/e6.png" target="_blank" title="ÐÑÐ´ÐºÑÐ¸ÑÐ¸ Ð±ÑÐ»ÑÑÐ¸Ð¼"><img src="8a-proekt-2/e6.png" alt="IndentationError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
+      <div><a href="8a-proekt-2/e6.png" target="_blank" title="Відкрити більшим"><img src="8a-proekt-2/e6.png" alt="IndentationError у Thonny" style="width:100%;height:auto;display:block;margin:0 0 8px"></a></div></div></div>
   </section>
 
   <section>
