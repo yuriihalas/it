@@ -50,6 +50,11 @@
   .ans input { font: 700 18px Consolas, monospace; width: 6em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
   .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
   .q .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .cheat td, .cheat th { text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .cheat th { text-align: left; }
+  .cheat tr:nth-child(2) td { font-weight: 700; color: #b35900; }
+  .cheat tr:nth-child(3) td { font-weight: 700; color: #0b5cad; }
+  .blk select { font: 700 17px Consolas, monospace; padding: 2px 4px; border: 0; border-radius: 10px; color: #111; background: #fff; cursor: pointer; }
   .card { display: block; width: 100%; max-width: 760px; height: auto; border-radius: 10px; border: 4px solid #1d2b4f; background: #0f1d3d; margin: 6px 0 4px; }
   .cardcap { font-weight: 700; font-size: 18px; }
   .story { font-style: italic; color: #333; margin: 0 0 2px; }
@@ -61,8 +66,13 @@
 <div class="sheet">
   <h1>Зимова листівка кота <span>· фігури з повторенням · 5 клас · практична робота № 2 · 12 балів</span></h1>
   <p class="big">Кіт хоче намалювати зимову листівку: будинок, віконце, місяць, зірку, сніжинку. Але кожну частину він малює блоком «повторити», як у Scratch, і не знає, які числа вписати. Допоможи йому! Кожна правильна фігура одразу з'явиться на листівці.</p>
-  <p><b>Як працювати:</b> біля кожного завдання є сіра фігура — це те, що треба отримати. Впиши числа в білі віконця, натисни «Намалювати» — кіт намалює червону лінію. Збігається із сірою? Натисни «Перевірити».</p>
-  <p><b>Головне правило:</b> щоб кіт обійшов фігуру і повернувся, він має повернутися разом на <b>360°</b>. Тому <b>кут = 360 : кількість сторін</b>. Квадрат: 360 : 4 = 90.</p>
+  <p><b>Як працювати:</b> біля кожного завдання є сіра фігура — це те, що треба отримати. У білих віконцях <b>вибери число зі списку</b>, натисни «Намалювати» — кіт намалює червону лінію. Збігається із сірою? Натисни «Перевірити».</p>
+  <p><b>Таблиця-підказка.</b> Порахуй, скільки сторін у фігури, і знайди в таблиці, на скільки градусів повертати кота. Рахувати не треба — все вже є тут.</p>
+  <div style="overflow-x:auto"><table class="cheat">
+    <tr><th>Фігура</th><td>трикутник</td><td>квадрат</td><td>п'ятикутник</td><td>шестикутник</td><td>восьмикутник</td><td>12 квадратів у колі</td><td>коло</td></tr>
+    <tr><th>Сторін (повторити)</th><td>3</td><td>4</td><td>5</td><td>6</td><td>8</td><td>12</td><td>36</td></tr>
+    <tr><th>Поворот (градусів)</th><td>120</td><td>90</td><td>72</td><td>60</td><td>45</td><td>30</td><td>10</td></tr>
+  </table></div>
   <p class="hint">Сітка: одна клітинка — 10 кроків. Товсті лінії — кожні 50 кроків.</p>
   <canvas class="card" id="card" width="760" height="400" aria-label="Зимова листівка: тут з'являються фігури, які ти склав"></canvas>
   <p class="cardcap" id="cardcap">На листівці поки 0 частин з 9. Блідий контур — частина, якої ще немає.</p>
@@ -75,7 +85,7 @@
   <div class="task" id="free"></div>
 
   <h2>Тест <span style="font-weight:400;font-size:17px">(2 бали)</span></h2>
-  <p>Впиши число і натисни «Перевірити». Перевірити можна лише <b>один раз</b>.</p>
+  <p>Вибери відповідь зі списку і натисни «Перевірити». Перевірити можна лише <b>один раз</b>.</p>
   <div class="quiz" id="quiz"></div>
   <p class="score" id="qs" style="position:static">Тест: 0 з 4</p>
 
@@ -92,15 +102,15 @@
 
 <script>
 const T = [
-  { title: "Стіна будинку", story: "Кіт починає з будинку. Стіна — квадрат.", hint: "4 сторони. Кут = 360 : 4 = ?", kind: "poly", fix: { n: 4, d: 100 }, ans: { a: 90 } },
-  { title: "Дах", story: "На стіну треба дах — трикутник.", hint: "3 сторони. 360 : 3 = ?", kind: "poly", fix: { n: 3, d: 100 }, ans: { a: 120 } },
-  { title: "Будка для кота", bug: true, story: "Кіт сам склав будку-п'ятикутник, але вписав кут 70. Натисни «Намалювати» — фігура не замкнулася!", hint: "Знайди помилку і виправ одне число. 360 : 5 = ?", kind: "poly", fix: { n: 5, d: 60 }, pre: { a: 70 }, ans: { a: 72 } },
-  { title: "Кругле віконце", story: "У стіні буде віконце — восьмикутник.", hint: "Порахуй сторони і клітинки (1 клітинка = 10 кроків). Усі три числа — твої.", kind: "poly", fix: {}, ans: { n: 8, d: 40, a: 45 } },
-  { title: "Місяць", story: "На небі світить місяць — це коло з 36 маленьких кроків.", hint: "36 сторін. 360 : 36 = ?", kind: "poly", fix: { n: 36, d: 10 }, ans: { a: 10 } },
-  { title: "Зірка", story: "Біля місяця — яскрава зірка.", hint: "Кут зірки 144. Порахуй промені.", kind: "poly", fix: { d: 150, a: 144 }, ans: { n: 5 } },
-  { title: "Ковзанка", story: "На снігу замерзла ковзанка-шестикутник.", hint: "Кут 60. Скільки разів повторити?", kind: "poly", fix: { d: 70, a: 60 }, ans: { n: 6 } },
-  { title: "Ґанок", story: "До будинку ведуть сходинки.", hint: "Порахуй сходинки і клітинки.", kind: "stairs", fix: {}, ans: { n: 4, d: 40 } },
-  { title: "Сніжинка", story: "Падає велика сніжинка — вона складається з квадратів.", hint: "Квадрат повторюється 12 разів. Після кожного квадрата — поворот: 360 : 12 = ?", kind: "flower", fix: { m: 4, d: 60, a: 90 }, ans: { n: 12, b: 30 } },
+  { title: "Стіна будинку", story: "Кіт починає з будинку. Стіна — квадрат.", hint: "У квадрата 4 сторони. Знайди в таблиці поворот для 4 сторін.", kind: "poly", fix: { n: 4, d: 100 }, ans: { a: 90 }, opt: { a: [45, 60, 90, 120] } },
+  { title: "Дах", story: "На стіну треба дах — трикутник.", hint: "У трикутника 3 сторони. Знайди в таблиці поворот для 3 сторін.", kind: "poly", fix: { n: 3, d: 100 }, ans: { a: 120 }, opt: { a: [60, 72, 90, 120] } },
+  { title: "Будка для кота", bug: true, story: "Кіт сам склав будку-п'ятикутник, але вибрав поворот 70. Натисни «Намалювати» — фігура не замкнулася!", hint: "У п'ятикутника 5 сторін. Знайди в таблиці правильний поворот і вибери його замість 70.", kind: "poly", fix: { n: 5, d: 60 }, pre: { a: 70 }, ans: { a: 72 }, opt: { a: [60, 70, 72, 90] } },
+  { title: "Кругле віконце", story: "У стіні буде віконце — восьмикутник.", hint: "Порахуй сторони на сірій фігурі. Одна сторона — 4 клітинки, а 1 клітинка = 10 кроків. Поворот — у таблиці.", kind: "poly", fix: {}, ans: { n: 8, d: 40, a: 45 }, opt: { n: [5, 6, 8, 10], d: [20, 40, 60, 80], a: [45, 60, 72, 90] } },
+  { title: "Місяць", story: "На небі світить місяць — це коло з 36 маленьких кроків.", hint: "Коло — 36 сторін. Знайди поворот у таблиці.", kind: "poly", fix: { n: 36, d: 10 }, ans: { a: 10 }, opt: { a: [10, 30, 36, 90] } },
+  { title: "Зірка", story: "Біля місяця — яскрава зірка.", hint: "Порахуй гострі промені зірки на сірій фігурі.", kind: "poly", fix: { d: 150, a: 144 }, ans: { n: 5 }, opt: { n: [4, 5, 6, 8] } },
+  { title: "Ковзанка", story: "На снігу замерзла ковзанка-шестикутник.", hint: "Шестикутник — скільки в нього сторін? Подивись у таблиці.", kind: "poly", fix: { d: 70, a: 60 }, ans: { n: 6 }, opt: { n: [4, 5, 6, 8] } },
+  { title: "Ґанок", story: "До будинку ведуть сходинки.", hint: "Порахуй сходинки на сірій фігурі. Одна сходинка — 4 клітинки = 40 кроків.", kind: "stairs", fix: {}, ans: { n: 4, d: 40 }, opt: { n: [2, 3, 4, 5], d: [20, 30, 40, 50] } },
+  { title: "Сніжинка", story: "Падає велика сніжинка — вона складається з 12 квадратів.", hint: "Після кожного квадрата кіт повертається. У таблиці знайди поворот для 12 квадратів у колі.", kind: "flower", fix: { n: 12, m: 4, d: 60, a: 90 }, ans: { b: 30 }, opt: { b: [30, 45, 60, 90] } },
 ];
 const ORDER = { poly: ["n", "d", "a"], stairs: ["n", "d"], flower: ["n", "m", "d", "a", "b"] };
 
@@ -142,7 +152,9 @@ function lines(c, seg, f, color, w, upto) {
 }
 function cat(c, x, y) { c.fillStyle = "#e6a21a"; c.beginPath(); c.arc(x, y, 5, 0, 7); c.fill(); }
 
-const box = (t, k) => t.fix[k] !== undefined ? `<span class="fix">${t.fix[k]}</span>` : `<input data-k="${k}" inputmode="numeric" aria-label="${k}"${t.pre && t.pre[k] !== undefined ? ` value="${t.pre[k]}"` : ""}>`;
+const NAMES = { n: "скільки разів повторити", m: "скільки разів повторити", d: "скільки кроків", a: "на скільки градусів", b: "на скільки градусів" };
+const sel = (k, list, cur) => `<select data-k="${k}" aria-label="${NAMES[k]}"><option value="">?</option>${list.map(v => `<option${String(v) === String(cur) ? " selected" : ""}>${v}</option>`).join("")}</select>`;
+const box = (t, k) => t.fix[k] !== undefined ? `<span class="fix">${t.fix[k]}</span>` : sel(k, t.opt[k], t.pre ? t.pre[k] : undefined);
 function blocks(t) {
   if (t.kind === "poly") return `<div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити ${box(t, "n")}</div><div class="inner"><div class="blk mot">перемістити на ${box(t, "d")} кроків</div><br><div class="blk mot">поворот ↻ на ${box(t, "a")} градусів</div></div><div class="end"></div></div>`;
   if (t.kind === "stairs") return `<div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити ${box(t, "n")}</div><div class="inner"><div class="blk mot">перемістити на ${box(t, "d")} кроків</div><br><div class="blk mot">поворот ↺ на <span class="fix">90</span> градусів</div><br><div class="blk mot">перемістити на ${box(t, "d").replace('data-k="d"', 'data-k="d" data-twin="1"')} кроків</div><br><div class="blk mot">поворот ↻ на <span class="fix">90</span> градусів</div></div><div class="end"></div></div>`;
@@ -211,8 +223,8 @@ T.forEach((t, i) => {
   t._target = target; t._f = f;
   const base = () => { grid(c); lines(c, target, f, "#b8bec7", 7); cat(c, f.ox, f.oy); };
   base();
-  const vals = () => { const v = Object.assign({}, t.fix); el.querySelectorAll("input[data-k]").forEach(inp => { if (!inp.dataset.twin) v[inp.dataset.k] = inp.value.trim().replace(",", "."); }); return v; };
-  el.querySelectorAll("input[data-twin]").forEach(tw => { const m = el.querySelector('input[data-k="d"]:not([data-twin])'); m.addEventListener("input", () => { tw.value = m.value; }); tw.addEventListener("input", () => { m.value = tw.value; }); });
+  const vals = () => { const v = Object.assign({}, t.fix); el.querySelectorAll("select[data-k]").forEach(inp => { if (!inp.dataset.twin) v[inp.dataset.k] = inp.value.trim().replace(",", "."); }); return v; };
+  el.querySelectorAll("select[data-twin]").forEach(tw => { const m = el.querySelector('select[data-k="d"]:not([data-twin])'); m.addEventListener("change", () => { tw.value = m.value; }); tw.addEventListener("change", () => { m.value = tw.value; }); });
   let timer = null;
   const draw = then => {
     clearInterval(timer); base();
@@ -223,14 +235,14 @@ T.forEach((t, i) => {
   const msg = el.querySelector(".msg");
   el.querySelector(".draw").addEventListener("click", () => { msg.textContent = ""; msg.className = "msg"; draw(); });
   el.querySelector(".chk").addEventListener("click", () => {
-    const empty = [...el.querySelectorAll("input[data-k]")].some(x => x.value.trim() === "");
-    if (empty) { msg.textContent = "Заповни всі білі віконця."; msg.className = "msg bad"; return; }
+    const empty = [...el.querySelectorAll("select[data-k]")].some(x => x.value === "");
+    if (empty) { msg.textContent = "Вибери число в кожному білому віконці."; msg.className = "msg bad"; return; }
     draw(s => {
       if (same(s, target)) { msg.textContent = "✓ Так! " + t.title + " вже на листівці."; msg.className = "msg ok"; el.classList.add("done"); done.add(i); store(); scoreUpd(); }
       else { msg.textContent = "✗ Ще ні. Порівняй свою червону лінію із сірою фігурою."; msg.className = "msg bad"; }
     });
   });
-  el._fill = v => { el.querySelectorAll("input[data-k]").forEach(inp => { inp.value = v[inp.dataset.k]; }); };
+  el._fill = v => { el.querySelectorAll("select[data-k]").forEach(inp => { inp.value = v[inp.dataset.k]; }); };
 });
 try { (JSON.parse(sessionStorage.getItem("5-lystivka") || "[]")).forEach(i => { if (T[i]) { done.add(i); document.getElementById("t" + i).classList.add("done"); document.getElementById("t" + i).querySelector(".msg").textContent = "✓ Уже зроблено"; document.getElementById("t" + i).querySelector(".msg").className = "msg ok"; } }); } catch (e) {}
 scoreUpd(); card();
@@ -238,15 +250,15 @@ document.getElementById("reset").addEventListener("click", () => { if (!confirm(
 
 // ----- task 10: free figure -----
 const fr = document.getElementById("free");
-fr.innerHTML = `<p>Кіт хоче прикрасити листівку візерунком. Впиши будь-які числа і натисни «Намалювати». Спробуй: <b>повторити 18, 100 кроків, поворот 100</b> або <b>повторити 8, 60 кроків, поворот 135</b>, або <b>повторити 36, 100 кроків, поворот 170</b>. Знайди найгарніший, натисни «На листівку» — і покажи вчителю.</p>
-  <div class="row"><canvas width="260" height="260"></canvas><div><div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити <input data-k="n" value="18"></div><div class="inner"><div class="blk mot">перемістити на <input data-k="d" value="100"> кроків</div><br><div class="blk mot">поворот ↻ на <input data-k="a" value="100"> градусів</div></div><div class="end"></div></div>
+fr.innerHTML = `<p>Кіт хоче прикрасити листівку візерунком. Вибирай різні числа зі списків і натискай «Намалювати». Спробуй: <b>повторити 18, 100 кроків, поворот 100</b> або <b>повторити 8, 60 кроків, поворот 135</b>, або <b>повторити 36, 100 кроків, поворот 170</b>. Знайди найгарніший, натисни «На листівку» — і покажи вчителю.</p>
+  <div class="row"><canvas width="260" height="260"></canvas><div><div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити ${sel("n", [5, 8, 9, 12, 18, 36], 18)}</div><div class="inner"><div class="blk mot">перемістити на ${sel("d", [60, 80, 100], 100)} кроків</div><br><div class="blk mot">поворот ↻ на ${sel("a", [80, 100, 135, 144, 160, 170], 100)} градусів</div></div><div class="end"></div></div>
   <div class="btns"><button class="go">Намалювати</button><button class="put">На листівку</button></div></div></div>`;
 (() => {
   const c = fr.querySelector("canvas").getContext("2d"); grid(c);
   let last = null;
   fr.querySelector(".put").addEventListener("click", () => { if (last && last.length) { freeSeg = last; card(); document.getElementById("card").scrollIntoView({ behavior: "smooth", block: "center" }); } });
   fr.querySelector("button.go").addEventListener("click", () => {
-    const v = {}; fr.querySelectorAll("input").forEach(i => v[i.dataset.k] = i.value);
+    const v = {}; fr.querySelectorAll("select").forEach(i => v[i.dataset.k] = i.value);
     const s = walk("poly", v); last = s; const f = frame(s); grid(c);
     const cols = ["#e03a1e", "#e6a21a", "#1a7f37", "#0b5cad", "#8e44ad"];
     s.forEach((seg, k) => lines(c, [seg], f, cols[k % cols.length], 3));
@@ -255,18 +267,18 @@ fr.innerHTML = `<p>Кіт хоче прикрасити листівку віз�
 
 // ----- quiz -----
 const Q = [
-  ["Кіт малює стіну-квадрат. Скільки разів треба повторити? Впиши число.", "4"],
-  ["Кіт малює дах-трикутник. На скільки градусів повертати кота? Впиши число.", "120"],
-  ["Кіт хоче намалювати ялинкову прикрасу — десятикутник (10 сторін). На скільки градусів повертати? 360 : 10 = ? Впиши число.", "36"],
-  ["Сніжинка: 12 квадратів, у кожному 4 сторони. Скільки всього разів кіт виконає блок «перемістити»? Впиши число.", "48"],
+  ["Кіт малює стіну-квадрат. Скільки разів треба повторити? Вибери число.", "4", [3, 4, 5, 6]],
+  ["Кіт малює дах-трикутник. На скільки градусів повертати кота? Подивись у таблицю і вибери.", "120", [60, 90, 120, 144]],
+  ["Скільки сторін у шестикутника? Вибери число.", "6", [5, 6, 7, 8]],
+  ["Кіт склав: повторити 4, перемістити на 100, поворот 90. Що він намалює? Вибери.", "квадрат", ["трикутник", "квадрат", "коло", "зірку"]],
 ];
 let qr = 0, qd = 0;
-document.getElementById("quiz").innerHTML = Q.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q[0]}</p><div class="ans"><input id="a${k}" inputmode="numeric" aria-label="Відповідь ${k + 1}"><button data-q="${k}">Перевірити</button><span class="mark" id="m${k}"></span></div></div>`).join("");
+document.getElementById("quiz").innerHTML = Q.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q[0]}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}" style="font:700 18px Consolas,monospace;padding:4px 8px;border:2px solid #9aa4ae;border-radius:5px"><option value="">?</option>${q[2].map(v => `<option>${v}</option>`).join("")}</select><button data-q="${k}">Перевірити</button><span class="mark" id="m${k}"></span></div></div>`).join("");
 function qcheck(k) {
   const box = document.getElementById("q" + k), inp = document.getElementById("a" + k);
   if (box.classList.contains("yes") || box.classList.contains("no") || !inp.value.trim()) return;
   const good = inp.value.trim() === Q[k][1];
-  box.classList.add(good ? "yes" : "no"); inp.readOnly = true; box.querySelector("button").disabled = true;
+  box.classList.add(good ? "yes" : "no"); inp.disabled = true; box.querySelector("button").disabled = true;
   document.getElementById("m" + k).textContent = good ? "✓ Правильно" : "✗ Правильно: " + Q[k][1];
   if (good) qr++; qd++;
   document.getElementById("qs").textContent = `Тест: ${qr} з ${Q.length}` + (qd === Q.length ? " — покажи вчителю" : "");
