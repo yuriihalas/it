@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Зимова листівка кота</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1100px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 22px 20px; }
+  h1 { font-size: 30px; margin: 0 0 6px; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 18px 0 8px; color: #b35900; border-bottom: 3px solid #b35900; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 6px solid #c79100; padding: 8px 12px; border-radius: 4px; }
+  .score { position: sticky; top: 0; z-index: 5; background: #fff; border: 2px solid #1a7f37; border-radius: 8px; padding: 6px 12px; font-size: 22px; font-weight: 700; display: flex; gap: 18px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+  .stars { color: #c79100; letter-spacing: 2px; }
+  .tasks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .task { border: 2px solid #d5dae0; border-radius: 10px; padding: 10px 12px; min-width: 0; }
+  .task.done { border-color: #1a7f37; background: #f3faf4; }
+  .task h3 { margin: 0 0 4px; font-size: 21px; }
+  .task h3 .n { display: inline-flex; width: 30px; height: 30px; border-radius: 50%; background: #b35900; color: #fff; align-items: center; justify-content: center; font-size: 17px; margin-right: 6px; }
+  .task.done h3 .n { background: #1a7f37; }
+  .hint { color: #444; font-size: 17px; }
+  .row { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+  canvas { border: 1px solid #c9ced3; border-radius: 6px; background: #fff; width: 260px; height: 260px; }
+  .blocks { font: 700 17px/1 "Segoe UI", Arial, sans-serif; color: #fff; }
+  .blk { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 6px; margin: 2px 0; white-space: nowrap; }
+  .ctrl { background: #e6a21a; }
+  .mot { background: #4c97ff; }
+  .pen { background: #0fbd8c; }
+  .ev { background: #ffbf00; color: #333; border-radius: 14px 14px 6px 6px; }
+  .inner { border-left: 14px solid #e6a21a; padding-left: 4px; margin: 0 0 0 0; }
+  .end { width: 90px; height: 12px; background: #e6a21a; border-radius: 0 0 6px 6px; margin-bottom: 2px; }
+  .blk input, .blk select { font: 700 17px Consolas, monospace; width: 3.4em; padding: 2px 4px; border: 0; border-radius: 10px; text-align: center; color: #111; }
+  .blk select { width: auto; }
+  .blk .fix { background: #fff; color: #111; border-radius: 10px; padding: 2px 8px; font-family: Consolas, monospace; }
+  .btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  button { font: inherit; font-size: 17px; font-weight: 700; padding: 5px 12px; border: 2px solid #0b5cad; border-radius: 6px; background: #fff; color: #0b5cad; cursor: pointer; }
+  button.go { background: #0b5cad; color: #fff; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .msg { font-weight: 700; min-height: 1.4em; margin-top: 6px; }
+  .msg.ok { color: #1a7f37; } .msg.bad { color: #b42318; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 8px; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+  .ans { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .ans input { font: 700 18px Consolas, monospace; width: 6em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
+  .q .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .card { display: block; width: 100%; max-width: 760px; height: auto; border-radius: 10px; border: 4px solid #1d2b4f; background: #0f1d3d; margin: 6px 0 4px; }
+  .cardcap { font-weight: 700; font-size: 18px; }
+  .story { font-style: italic; color: #333; margin: 0 0 2px; }
+  .task h3 .tag { font-size: 14px; font-weight: 700; color: #fff; background: #b42318; border-radius: 10px; padding: 2px 8px; margin-left: 6px; vertical-align: 3px; }
+  @media (max-width: 820px) { .tasks, .quiz { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Зимова листівка кота <span>· фігури з повторенням · 5 клас · практична робота № 2 · 12 балів</span></h1>
+  <p class="big">Кіт хоче намалювати зимову листівку: будинок, віконце, місяць, зірку, сніжинку. Але кожну частину він малює блоком «повторити», як у Scratch, і не знає, які числа вписати. Допоможи йому! Кожна правильна фігура одразу з'явиться на листівці.</p>
+  <p><b>Як працювати:</b> біля кожного завдання є сіра фігура — це те, що треба отримати. Впиши числа в білі віконця, натисни «Намалювати» — кіт намалює червону лінію. Збігається із сірою? Натисни «Перевірити».</p>
+  <p><b>Головне правило:</b> щоб кіт обійшов фігуру і повернувся, він має повернутися разом на <b>360°</b>. Тому <b>кут = 360 : кількість сторін</b>. Квадрат: 360 : 4 = 90.</p>
+  <p class="hint">Сітка: одна клітинка — 10 кроків. Товсті лінії — кожні 50 кроків.</p>
+  <canvas class="card" id="card" width="760" height="400" aria-label="Зимова листівка: тут з'являються фігури, які ти склав"></canvas>
+  <p class="cardcap" id="cardcap">На листівці поки 0 частин з 9. Блідий контур — частина, якої ще немає.</p>
+  <div class="score"><span id="sc">Фігури: 0 з 9</span><span class="stars" id="st">☆☆☆☆☆☆☆☆☆</span><button id="reset" style="margin-left:auto;font-size:15px">Почати заново</button></div>
+
+  <h2>Завдання 1–9: намалюй частину листівки <span style="font-weight:400;font-size:17px">(по 1 балу)</span></h2>
+  <div class="tasks" id="tasks"></div>
+
+  <h2>Завдання 10: чарівний візерунок <span style="font-weight:400;font-size:17px">(1 бал)</span></h2>
+  <div class="task" id="free"></div>
+
+  <h2>Тест <span style="font-weight:400;font-size:17px">(2 бали)</span></h2>
+  <p>Впиши число і натисни «Перевірити». Перевірити можна лише <b>один раз</b>.</p>
+  <div class="quiz" id="quiz"></div>
+  <p class="score" id="qs" style="position:static">Тест: 0 з 4</p>
+
+  <h2>Як оцінюється</h2>
+  <table>
+    <tr><th>Що</th><th>Бали</th></tr>
+    <tr><td>Кожна фігура 1–9, яку прийняла перевірка</td><td>по 1 (до 9)</td></tr>
+    <tr><td>Моя фігура (завдання 10) — показати вчителю</td><td>1</td></tr>
+    <tr><td>Тест: 4 правильні — 2 бали, 2–3 — 1 бал</td><td>2</td></tr>
+  </table>
+  <h2>Домашнє завдання</h2>
+  <p>Придумати, що ще кіт міг би намалювати на зимовій листівці блоком «повторити» (наприклад, ялинку з трикутників або сніговика з кіл), і на уроці розказати: скільки разів повторити, скільки кроків, який кут.</p>
+</div>
+
+<script>
+const T = [
+  { title: "Стіна будинку", story: "Кіт починає з будинку. Стіна — квадрат.", hint: "4 сторони. Кут = 360 : 4 = ?", kind: "poly", fix: { n: 4, d: 100 }, ans: { a: 90 } },
+  { title: "Дах", story: "На стіну треба дах — трикутник.", hint: "3 сторони. 360 : 3 = ?", kind: "poly", fix: { n: 3, d: 100 }, ans: { a: 120 } },
+  { title: "Будка для кота", bug: true, story: "Кіт сам склав будку-п'ятикутник, але вписав кут 70. Натисни «Намалювати» — фігура не замкнулася!", hint: "Знайди помилку і виправ одне число. 360 : 5 = ?", kind: "poly", fix: { n: 5, d: 60 }, pre: { a: 70 }, ans: { a: 72 } },
+  { title: "Кругле віконце", story: "У стіні буде віконце — восьмикутник.", hint: "Порахуй сторони і клітинки (1 клітинка = 10 кроків). Усі три числа — твої.", kind: "poly", fix: {}, ans: { n: 8, d: 40, a: 45 } },
+  { title: "Місяць", story: "На небі світить місяць — це коло з 36 маленьких кроків.", hint: "36 сторін. 360 : 36 = ?", kind: "poly", fix: { n: 36, d: 10 }, ans: { a: 10 } },
+  { title: "Зірка", story: "Біля місяця — яскрава зірка.", hint: "Кут зірки 144. Порахуй промені.", kind: "poly", fix: { d: 150, a: 144 }, ans: { n: 5 } },
+  { title: "Ковзанка", story: "На снігу замерзла ковзанка-шестикутник.", hint: "Кут 60. Скільки разів повторити?", kind: "poly", fix: { d: 70, a: 60 }, ans: { n: 6 } },
+  { title: "Ґанок", story: "До будинку ведуть сходинки.", hint: "Порахуй сходинки і клітинки.", kind: "stairs", fix: {}, ans: { n: 4, d: 40 } },
+  { title: "Сніжинка", story: "Падає велика сніжинка — вона складається з квадратів.", hint: "Квадрат повторюється 12 разів. Після кожного квадрата — поворот: 360 : 12 = ?", kind: "flower", fix: { m: 4, d: 60, a: 90 }, ans: { n: 12, b: 30 } },
+];
+const ORDER = { poly: ["n", "d", "a"], stairs: ["n", "d"], flower: ["n", "m", "d", "a", "b"] };
+
+function walk(kind, v) {
+  let x = 0, y = 0, h = 0; const seg = [];
+  const fd = s => { const nx = x + s * Math.cos(h * Math.PI / 180), ny = y + s * Math.sin(h * Math.PI / 180); seg.push([x, y, nx, ny]); x = nx; y = ny; };
+  const rt = a => { h += a; };
+  const N = (k, max) => Math.max(0, Math.min(max, Math.round(+v[k] || 0)));
+  if (kind === "poly") { for (let i = 0; i < N("n", 400); i++) { fd(+v.d || 0); rt(+v.a || 0); } }
+  if (kind === "stairs") { for (let i = 0; i < N("n", 60); i++) { fd(+v.d || 0); rt(-90); fd(+v.d || 0); rt(90); } }
+  if (kind === "flower") { for (let i = 0; i < N("n", 100); i++) { for (let j = 0; j < N("m", 40); j++) { fd(+v.d || 0); rt(+v.a || 0); } rt(+v.b || 0); } }
+  return seg;
+}
+const key = s => { const r = v => (Math.round(v * 2) / 2).toFixed(1); const a = r(s[0]) + "," + r(s[1]), b = r(s[2]) + "," + r(s[3]); return a < b ? a + "|" + b : b + "|" + a; };
+function same(s1, s2) {
+  const A = new Set(s1.filter(s => Math.hypot(s[2] - s[0], s[3] - s[1]) > 0.01).map(key));
+  const B = new Set(s2.filter(s => Math.hypot(s[2] - s[0], s[3] - s[1]) > 0.01).map(key));
+  if (A.size !== B.size) return false;
+  for (const k of A) if (!B.has(k)) return false;
+  const e1 = s1[s1.length - 1], e2 = s2[s2.length - 1];
+  return Math.hypot(e1[2] - e2[2], e1[3] - e2[3]) < 1;
+}
+function frame(seg) {
+  let x0 = 0, y0 = 0, x1 = 0, y1 = 0;
+  for (const s of seg) { x0 = Math.min(x0, s[0], s[2]); x1 = Math.max(x1, s[0], s[2]); y0 = Math.min(y0, s[1], s[3]); y1 = Math.max(y1, s[1], s[3]); }
+  return { ox: Math.round((260 - (x1 - x0)) / 2 / 10) * 10 - Math.round(x0 / 10) * 10, oy: Math.round((260 - (y1 - y0)) / 2 / 10) * 10 - Math.round(y0 / 10) * 10 };
+}
+function grid(c) {
+  c.clearRect(0, 0, 260, 260);
+  for (let i = 0; i <= 260; i += 10) {
+    c.strokeStyle = i % 50 === 0 ? "#c4cad3" : "#eceff3"; c.lineWidth = 1;
+    c.beginPath(); c.moveTo(i + .5, 0); c.lineTo(i + .5, 260); c.stroke();
+    c.beginPath(); c.moveTo(0, i + .5); c.lineTo(260, i + .5); c.stroke();
+  }
+}
+function lines(c, seg, f, color, w, upto) {
+  c.strokeStyle = color; c.lineWidth = w; c.lineCap = "round";
+  seg.slice(0, upto === undefined ? seg.length : upto).forEach(s => { c.beginPath(); c.moveTo(s[0] + f.ox, s[1] + f.oy); c.lineTo(s[2] + f.ox, s[3] + f.oy); c.stroke(); });
+}
+function cat(c, x, y) { c.fillStyle = "#e6a21a"; c.beginPath(); c.arc(x, y, 5, 0, 7); c.fill(); }
+
+const box = (t, k) => t.fix[k] !== undefined ? `<span class="fix">${t.fix[k]}</span>` : `<input data-k="${k}" inputmode="numeric" aria-label="${k}"${t.pre && t.pre[k] !== undefined ? ` value="${t.pre[k]}"` : ""}>`;
+function blocks(t) {
+  if (t.kind === "poly") return `<div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити ${box(t, "n")}</div><div class="inner"><div class="blk mot">перемістити на ${box(t, "d")} кроків</div><br><div class="blk mot">поворот ↻ на ${box(t, "a")} градусів</div></div><div class="end"></div></div>`;
+  if (t.kind === "stairs") return `<div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити ${box(t, "n")}</div><div class="inner"><div class="blk mot">перемістити на ${box(t, "d")} кроків</div><br><div class="blk mot">поворот ↺ на <span class="fix">90</span> градусів</div><br><div class="blk mot">перемістити на ${box(t, "d").replace('data-k="d"', 'data-k="d" data-twin="1"')} кроків</div><br><div class="blk mot">поворот ↻ на <span class="fix">90</span> градусів</div></div><div class="end"></div></div>`;
+  return `<div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити ${box(t, "n")}</div><div class="inner"><div class="blk ctrl">повторити ${box(t, "m")}</div><div class="inner"><div class="blk mot">перемістити на ${box(t, "d")} кроків</div><br><div class="blk mot">поворот ↻ на ${box(t, "a")} градусів</div></div><div class="end"></div><div class="blk mot">поворот ↻ на ${box(t, "b")} градусів</div></div><div class="end"></div></div>`;
+}
+const done = new Set();
+function store() { try { sessionStorage.setItem("5-lystivka", JSON.stringify([...done])); } catch (e) {} }
+// ----- postcard -----
+const SLOT = [
+  { x: 330, y: 190, w: 130, h: 130, col: "#f4c27a" },            // wall
+  { x: 330, y: 77, w: 130, h: 113, col: "#ff6b4a", flip: 1 },    // roof
+  { x: 560, y: 252, w: 72, h: 69, col: "#ff9fd0", flip: 1 },     // cat house
+  { x: 365, y: 215, w: 60, h: 60, col: "#ffe36b" },              // window
+  { x: 620, y: 28, w: 80, h: 80, col: "#fff3b0" },               // moon
+  { x: 500, y: 40, w: 70, h: 67, col: "#ffd400" },               // star
+  { x: 60, y: 318, w: 100, h: 72, col: "#7fd3ff", sq: .8 },     // rink
+  { x: 240, y: 240, w: 80, h: 80, col: "#d7b48a" },              // porch
+  { x: 90, y: 60, w: 120, h: 120, col: "#bfe6ff" },              // snowflake
+];
+const FREE = { x: 40, y: 200, w: 90, h: 90 };
+let freeSeg = null;
+function fit(seg, box, flip, sq) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (const q of seg) { x0 = Math.min(x0, q[0], q[2]); x1 = Math.max(x1, q[0], q[2]); y0 = Math.min(y0, q[1], q[3]); y1 = Math.max(y1, q[1], q[3]); }
+  const k = Math.min(box.w / Math.max(1, x1 - x0), box.h / Math.max(1, (y1 - y0) * (sq || 1)));
+  const dx = box.x + (box.w - (x1 - x0) * k) / 2, dy = box.y + (box.h - (y1 - y0) * k * (sq || 1)) / 2;
+  const P = (x, y) => [dx + (x - x0) * k, flip ? dy + (y1 - y) * k * (sq || 1) : dy + (y - y0) * k * (sq || 1)];
+  return seg.map(q => P(q[0], q[1]).concat(P(q[2], q[3])));
+}
+function card() {
+  const cv = document.getElementById("card"), c = cv.getContext("2d");
+  c.fillStyle = "#0f1d3d"; c.fillRect(0, 0, 760, 400);
+  c.fillStyle = "#e8f1ff"; c.beginPath(); c.moveTo(0, 322); c.quadraticCurveTo(380, 300, 760, 322); c.lineTo(760, 400); c.lineTo(0, 400); c.fill();
+  c.fillStyle = "rgba(255,255,255,.55)"; [[30,30],[250,40],[440,20],[720,150],[600,180],[230,150],[480,140],[700,260],[20,150]].forEach(p => { c.beginPath(); c.arc(p[0], p[1], 2, 0, 7); c.fill(); });
+  T.forEach((t, i) => {
+    const sl = SLOT[i], seg = fit(t._target, sl, sl.flip, sl.sq), ok = done.has(i);
+    c.save(); c.lineCap = "round"; c.lineJoin = "round";
+    if (ok) { c.strokeStyle = sl.col; c.lineWidth = 3.5; c.shadowColor = sl.col; c.shadowBlur = 8; }
+    else { c.strokeStyle = i === 6 || i === 7 || i === 2 ? "rgba(15,29,61,.25)" : "rgba(255,255,255,.18)"; c.lineWidth = 2; c.setLineDash([5, 6]); }
+    seg.forEach(q => { c.beginPath(); c.moveTo(q[0], q[1]); c.lineTo(q[2], q[3]); c.stroke(); });
+    c.restore();
+  });
+  if (freeSeg && freeSeg.length) {
+    const seg = fit(freeSeg, FREE), cols = ["#ff6b4a", "#ffd400", "#7fd3ff", "#ff9fd0", "#9be37a"];
+    c.lineWidth = 2; seg.forEach((q, k) => { c.strokeStyle = cols[k % cols.length]; c.beginPath(); c.moveTo(q[0], q[1]); c.lineTo(q[2], q[3]); c.stroke(); });
+  }
+  if (done.size === T.length) {
+    c.fillStyle = "#1d2b4f"; c.font = "700 28px 'Segoe UI', Arial, sans-serif"; c.textAlign = "center";
+    c.fillText("Зимова листівка готова!", 400, 375);
+  }
+  document.getElementById("cardcap").textContent = done.size === T.length ? "Листівка готова! Покажи її вчителю." : `На листівці поки ${done.size} частин з ${T.length}. Блідий контур — частина, якої ще немає.`;
+}
+function scoreUpd() {
+  if (T[0]._target) card();
+  document.getElementById("sc").textContent = `Фігури: ${done.size} з ${T.length}`;
+  document.getElementById("st").textContent = "★".repeat(done.size) + "☆".repeat(T.length - done.size);
+}
+const tasksEl = document.getElementById("tasks");
+T.forEach((t, i) => {
+  const el = document.createElement("div"); el.className = "task"; el.id = "t" + i;
+  el.innerHTML = `<h3><span class="n">${i + 1}</span>${t.title}${t.bug ? '<span class="tag">кіт помилився</span>' : ""}</h3><p class="story">${t.story}</p><p class="hint">${t.hint}</p>
+    <div class="row"><canvas width="260" height="260"></canvas><div>${blocks(t)}
+    <div class="btns"><button class="draw">Намалювати</button><button class="go chk">Перевірити</button></div><div class="msg"></div></div></div>`;
+  tasksEl.appendChild(el);
+  const target = walk(t.kind, Object.assign({}, t.fix, t.ans)), f = frame(target), c = el.querySelector("canvas").getContext("2d");
+  t._target = target; t._f = f;
+  const base = () => { grid(c); lines(c, target, f, "#b8bec7", 7); cat(c, f.ox, f.oy); };
+  base();
+  const vals = () => { const v = Object.assign({}, t.fix); el.querySelectorAll("input[data-k]").forEach(inp => { if (!inp.dataset.twin) v[inp.dataset.k] = inp.value.trim().replace(",", "."); }); return v; };
+  el.querySelectorAll("input[data-twin]").forEach(tw => { const m = el.querySelector('input[data-k="d"]:not([data-twin])'); m.addEventListener("input", () => { tw.value = m.value; }); tw.addEventListener("input", () => { m.value = tw.value; }); });
+  let timer = null;
+  const draw = then => {
+    clearInterval(timer); base();
+    const s = walk(t.kind, vals()); let k = 0; const step = Math.max(1, Math.ceil(s.length / 60));
+    if (!s.length) { if (then) then(s); return; }
+    timer = setInterval(() => { k = Math.min(s.length, k + step); base(); lines(c, s, f, "#e03a1e", 3, k); const e = s[k - 1]; cat(c, e[2] + f.ox, e[3] + f.oy); if (k >= s.length) { clearInterval(timer); if (then) then(s); } }, 30);
+  };
+  const msg = el.querySelector(".msg");
+  el.querySelector(".draw").addEventListener("click", () => { msg.textContent = ""; msg.className = "msg"; draw(); });
+  el.querySelector(".chk").addEventListener("click", () => {
+    const empty = [...el.querySelectorAll("input[data-k]")].some(x => x.value.trim() === "");
+    if (empty) { msg.textContent = "Заповни всі білі віконця."; msg.className = "msg bad"; return; }
+    draw(s => {
+      if (same(s, target)) { msg.textContent = "✓ Так! " + t.title + " вже на листівці."; msg.className = "msg ok"; el.classList.add("done"); done.add(i); store(); scoreUpd(); }
+      else { msg.textContent = "✗ Ще ні. Порівняй свою червону лінію із сірою фігурою."; msg.className = "msg bad"; }
+    });
+  });
+  el._fill = v => { el.querySelectorAll("input[data-k]").forEach(inp => { inp.value = v[inp.dataset.k]; }); };
+});
+try { (JSON.parse(sessionStorage.getItem("5-lystivka") || "[]")).forEach(i => { if (T[i]) { done.add(i); document.getElementById("t" + i).classList.add("done"); document.getElementById("t" + i).querySelector(".msg").textContent = "✓ Уже зроблено"; document.getElementById("t" + i).querySelector(".msg").className = "msg ok"; } }); } catch (e) {}
+scoreUpd(); card();
+document.getElementById("reset").addEventListener("click", () => { if (!confirm("Стерти всі зірочки і почати заново?")) return; try { sessionStorage.removeItem("5-lystivka"); } catch (e) {} location.reload(); });
+
+// ----- task 10: free figure -----
+const fr = document.getElementById("free");
+fr.innerHTML = `<p>Кіт хоче прикрасити листівку візерунком. Впиши будь-які числа і натисни «Намалювати». Спробуй: <b>повторити 18, 100 кроків, поворот 100</b> або <b>повторити 8, 60 кроків, поворот 135</b>, або <b>повторити 36, 100 кроків, поворот 170</b>. Знайди найгарніший, натисни «На листівку» — і покажи вчителю.</p>
+  <div class="row"><canvas width="260" height="260"></canvas><div><div class="blocks"><div class="blk ev">коли прапорець натиснуто</div><br><div class="blk pen">опустити олівець</div><br><div class="blk ctrl">повторити <input data-k="n" value="18"></div><div class="inner"><div class="blk mot">перемістити на <input data-k="d" value="100"> кроків</div><br><div class="blk mot">поворот ↻ на <input data-k="a" value="100"> градусів</div></div><div class="end"></div></div>
+  <div class="btns"><button class="go">Намалювати</button><button class="put">На листівку</button></div></div></div>`;
+(() => {
+  const c = fr.querySelector("canvas").getContext("2d"); grid(c);
+  let last = null;
+  fr.querySelector(".put").addEventListener("click", () => { if (last && last.length) { freeSeg = last; card(); document.getElementById("card").scrollIntoView({ behavior: "smooth", block: "center" }); } });
+  fr.querySelector("button.go").addEventListener("click", () => {
+    const v = {}; fr.querySelectorAll("input").forEach(i => v[i.dataset.k] = i.value);
+    const s = walk("poly", v); last = s; const f = frame(s); grid(c);
+    const cols = ["#e03a1e", "#e6a21a", "#1a7f37", "#0b5cad", "#8e44ad"];
+    s.forEach((seg, k) => lines(c, [seg], f, cols[k % cols.length], 3));
+  });
+})();
+
+// ----- quiz -----
+const Q = [
+  ["Кіт малює стіну-квадрат. Скільки разів треба повторити? Впиши число.", "4"],
+  ["Кіт малює дах-трикутник. На скільки градусів повертати кота? Впиши число.", "120"],
+  ["Кіт хоче намалювати ялинкову прикрасу — десятикутник (10 сторін). На скільки градусів повертати? 360 : 10 = ? Впиши число.", "36"],
+  ["Сніжинка: 12 квадратів, у кожному 4 сторони. Скільки всього разів кіт виконає блок «перемістити»? Впиши число.", "48"],
+];
+let qr = 0, qd = 0;
+document.getElementById("quiz").innerHTML = Q.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q[0]}</p><div class="ans"><input id="a${k}" inputmode="numeric" aria-label="Відповідь ${k + 1}"><button data-q="${k}">Перевірити</button><span class="mark" id="m${k}"></span></div></div>`).join("");
+function qcheck(k) {
+  const box = document.getElementById("q" + k), inp = document.getElementById("a" + k);
+  if (box.classList.contains("yes") || box.classList.contains("no") || !inp.value.trim()) return;
+  const good = inp.value.trim() === Q[k][1];
+  box.classList.add(good ? "yes" : "no"); inp.readOnly = true; box.querySelector("button").disabled = true;
+  document.getElementById("m" + k).textContent = good ? "✓ Правильно" : "✗ Правильно: " + Q[k][1];
+  if (good) qr++; qd++;
+  document.getElementById("qs").textContent = `Тест: ${qr} з ${Q.length}` + (qd === Q.length ? " — покажи вчителю" : "");
+}
+document.getElementById("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) qcheck(+b.dataset.q); });
+document.getElementById("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) qcheck(+e.target.id.slice(1)); });
+
+// ----- self test (only with #selftest) -----
+if (location.hash === "#selftest") {
+  const res = T.map(t => {
+    const good = same(walk(t.kind, Object.assign({}, t.fix, t.ans)), t._target);
+    const wrong = {}; for (const k in t.ans) wrong[k] = t.ans[k] + 1;
+    const bad = same(walk(t.kind, Object.assign({}, t.fix, wrong)), t._target);
+    return t.title + ":" + good + "/" + bad;
+  });
+  const alt = [same(walk("poly", { n: 10, d: 150, a: 144 }), T[5]._target), same(walk("poly", { n: 12, d: 70, a: 60 }), T[6]._target), same(walk("poly", { n: 4, d: 100, a: 270 }), T[0]._target)];
+  document.body.setAttribute("data-selftest", res.join(";") + "|alt:" + alt.join(","));
+}
+</script>
+</body>
+</html>
