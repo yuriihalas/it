@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сценарій гри</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1100px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 22px 20px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 22px 0 8px; color: #7a3db8; border-bottom: 3px solid #7a3db8; padding-bottom: 2px; }
+  p { margin: 0 0 8px; }
+  .big { font-weight: 700; background: #f4ecfc; border-left: 6px solid #7a3db8; padding: 8px 12px; border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 8px; }
+  td, th { border: 1px solid #c9ced3; padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #f1ecf7; }
+  .wrap { overflow-x: auto; }
+  .parts td:first-child { font-weight: 700; white-space: nowrap; }
+  .num { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; background: #7a3db8; color: #fff; align-items: center; justify-content: center; font-size: 16px; margin-right: 6px; }
+  .game { display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); gap: 16px; align-items: start; }
+  canvas { width: 100%; max-width: 600px; height: auto; border-radius: 10px; border: 3px solid #2d2340; display: block; touch-action: none; }
+  .btns { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+  button { font: inherit; font-size: 17px; font-weight: 700; padding: 6px 14px; border: 2px solid #7a3db8; border-radius: 6px; background: #fff; color: #7a3db8; cursor: pointer; }
+  button.go { background: #7a3db8; color: #fff; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, select:focus-visible, canvas:focus-visible { outline: 3px solid #f5b400; outline-offset: 2px; }
+  select { font: 700 18px "Segoe UI", Arial, sans-serif; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 6px; background: #fff; color: #111; max-width: 100%; }
+  .form { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 10px; align-items: center; }
+  .form label { font-weight: 700; }
+  .card { border: 3px dashed #7a3db8; border-radius: 12px; padding: 10px 14px; background: #fcf9ff; margin-top: 10px; }
+  .card h3 { margin: 0 0 6px; font-size: 22px; }
+  .card ol { margin: 0; padding-left: 26px; }
+  .card li { margin: 3px 0; }
+  .msg { font-weight: 700; min-height: 1.4em; margin-top: 6px; }
+  .msg.ok { color: #1a7f37; } .msg.bad { color: #b42318; }
+  .hint { color: #444; font-size: 17px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; min-width: 0; }
+  .q p { margin: 0 0 6px; }
+  .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+  .ans { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-size: 22px; font-weight: 700; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; margin: 10px 0; }
+  @media (max-width: 860px) { .game, .quiz { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Сценарій гри <span>· 6 клас · спочатку придумуємо, потім граємо</span></h1>
+  <p class="big">Перш ніж знімати мультфільм, хтось пише сценарій: хто герой, що він робить, що йому заважає і чим усе закінчиться. Перш ніж програмувати гру, теж потрібен сценарій. Сьогодні ти розгадаєш сценарій готової гри, складеш свій — і одразу в нього зіграєш!</p>
+
+  <h2>Що таке сценарій гри</h2>
+  <p><b>Сценарій гри</b> — це план гри простими словами. Він відповідає на 5 питань. Якщо бодай одного немає — гра не працює: незрозуміло, що робити або коли гра закінчиться.</p>
+  <div class="wrap"><table class="parts">
+    <tr><th>Частина</th><th>На яке питання відповідає</th><th>Приклад</th></tr>
+    <tr><td><span class="num">1</span>Герой</td><td>Ким я граю? Де все відбувається?</td><td>Кіт у лісі</td></tr>
+    <tr><td><span class="num">2</span>Мета</td><td>Що герой має робити?</td><td>Ловити яблука, які падають згори</td></tr>
+    <tr><td><span class="num">3</span>Небезпека</td><td>Що заважає?</td><td>Падають бджоли — їх треба оминати</td></tr>
+    <tr><td><span class="num">4</span>Очки</td><td>За що даються очки?</td><td>За кожне спіймане яблуко +1 очко</td></tr>
+    <tr><td><span class="num">5</span>Перемога і програш</td><td>Коли гра закінчується?</td><td>10 очок — перемога. Тричі вжалила бджола — програш</td></tr>
+  </table></div>
+
+  <h2>Завдання 1: розгадай сценарій</h2>
+  <p>Зіграй у гру нижче. Керуй героєм стрілками <b>← →</b> на клавіатурі (або води мишкою над грою). Уважно дивись: хто герой, що треба ловити, чого боятися, скільки очок треба для перемоги і скільки в тебе життів (сердечка). Потім вибери відповіді у списках праворуч.</p>
+  <div class="game">
+    <div>
+      <canvas id="g1" width="600" height="380" tabindex="0" aria-label="Гра для завдання 1"></canvas>
+      <div class="btns"><button class="go" id="g1go">▶ Грати</button></div>
+    </div>
+    <div>
+      <div class="form" id="f1"></div>
+      <div class="btns"><button class="go" id="f1chk">Перевірити сценарій</button></div>
+      <div class="msg" id="f1msg"></div>
+    </div>
+  </div>
+
+  <h2>Завдання 2: склади свій сценарій і зіграй</h2>
+  <p>Тепер ти — автор гри. Вибери в кожному списку те, що тобі подобається. Внизу сам собою складеться сценарій з 5 речень. Натисни «Зіграти мій сценарій» — і гра буде саме такою, як ти придумав. Не подобається? Зміни щось і зіграй ще раз.</p>
+  <div class="game">
+    <div>
+      <div class="form" id="f2"></div>
+      <div class="card" id="card"></div>
+    </div>
+    <div>
+      <canvas id="g2" width="600" height="380" tabindex="0" aria-label="Гра за твоїм сценарієм"></canvas>
+      <div class="btns"><button class="go" id="g2go">▶ Зіграти мій сценарій</button></div>
+    </div>
+  </div>
+  <p><b>Покажи вчителю</b> свою гру і прочитай уголос свій сценарій. Розкажи, чому вибрав саме такого героя і таку небезпеку.</p>
+
+  <h2>Від сценарію до програми</h2>
+  <p>Наступного уроку ми будемо самі створювати таку гру. Кожна частина сценарію стане частиною програми:</p>
+  <div class="wrap"><table>
+    <tr><th>У сценарії</th><th>Що треба буде навчити комп'ютер робити</th></tr>
+    <tr><td>Герой</td><td>Намалювати героя і рухати його стрілками ← →</td></tr>
+    <tr><td>Мета</td><td>Предмети з'являються вгорі й падають донизу</td></tr>
+    <tr><td>Небезпека</td><td>Небезпеки теж падають; якщо герой торкнувся — мінус одне життя</td></tr>
+    <tr><td>Очки</td><td>Лічильник «очки»: герой торкнувся предмета — очки стають на 1 більші</td></tr>
+    <tr><td>Перемога і програш</td><td>Перевіряти: очок досить — «Перемога!»; життів не лишилося — «Гру закінчено»</td></tr>
+  </table></div>
+
+  <h2>Тест</h2>
+  <p>Вибери відповідь у списку і натисни «Перевірити». Перевірити можна лише <b>один раз</b>.</p>
+  <div class="quiz" id="quiz"></div>
+  <p class="score" id="qs">Тест: 0 з 5</p>
+
+  <h2>Домашнє завдання</h2>
+  <p>Придумай сценарій для своєї гри з 5 частин: герой, мета, небезпека, очки, перемога і програш. Можна взяти ідею з завдання 2 або придумати зовсім нову. На наступному уроці розкажеш його вчителю — і почнемо створювати цю гру.</p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const norm = v => String(v).trim().toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(norm(v)));
+
+const HERO = [["кіт", "🐱"], ["їжачок", "🦔"], ["ракета", "🚀"], ["робот", "🤖"], ["дракончик", "🐉"], ["пінгвін", "🐧"]];
+const ITEM = [["яблука", "🍎", "кожне яблуко"], ["зірки", "⭐", "кожну зірку"], ["рибки", "🐟", "кожну рибку"], ["печиво", "🍪", "кожне печиво"], ["кристали", "💎", "кожен кристал"], ["сніжинки", "❄️", "кожну сніжинку"]];
+const BAD = [["бджоли", "🐝"], ["метеорити", "☄️"], ["бомбочки", "💣"], ["кактуси", "🌵"], ["блискавки", "⚡"], ["привиди", "👻"]];
+const PLACE = [["ліс", "у лісі", ["#bfe6b0", "#e9f7e1"]], ["космос", "у космосі", ["#0f1d3d", "#2a3a6b"]], ["море", "біля моря", ["#7cc8f0", "#d9f1fc"]], ["зима", "взимку на снігу", ["#cfe0f5", "#ffffff"]]];
+const SPEED = [["повільно", 1.6], ["середньо", 2.4], ["швидко", 3.3]];
+const pick = (list, name) => list.find(x => x[0] === name);
+
+// ---------- game engine ----------
+let running = null;
+function makeGame(cv) {
+  const c = cv.getContext("2d"), W = cv.width, H = cv.height;
+  const g = { cv };
+  function bg(place) {
+    const p = pick(PLACE, place)[2], gr = c.createLinearGradient(0, 0, 0, H);
+    gr.addColorStop(0, p[0]); gr.addColorStop(1, p[1]); c.fillStyle = gr; c.fillRect(0, 0, W, H);
+  }
+  function hud(s) {
+    c.font = "700 20px 'Segoe UI', Arial, sans-serif"; c.textAlign = "left"; c.textBaseline = "top";
+    const dark = s.place === "космос";
+    c.fillStyle = dark ? "rgba(255,255,255,.85)" : "rgba(255,255,255,.8)"; c.fillRect(8, 8, 300, 34);
+    c.fillStyle = "#2d2340"; c.fillText("Очки: " + g.score + " з " + s.win, 16, 14);
+    c.font = "20px 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif";
+    c.fillText("❤️".repeat(Math.max(0, g.lives)) + "🤍".repeat(Math.max(0, s.lives - g.lives)), 150, 13);
+  }
+  function emoji(ch, x, y, size) {
+    c.font = size + "px 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif";
+    c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(ch, x, y);
+  }
+  function banner(text, sub) {
+    c.fillStyle = "rgba(45,35,64,.82)"; c.fillRect(0, H / 2 - 60, W, 120);
+    c.fillStyle = "#fff"; c.textAlign = "center"; c.textBaseline = "middle";
+    c.font = "700 36px 'Segoe UI', Arial, sans-serif"; c.fillText(text, W / 2, H / 2 - 14);
+    c.font = "20px 'Segoe UI', Arial, sans-serif"; c.fillText(sub, W / 2, H / 2 + 28);
+  }
+  g.preview = s => { bg(s.place); g.score = 0; g.lives = s.lives; emoji(pick(HERO, s.hero)[1], W / 2, H - 40, 48); hud(s); banner("Натисни «Грати»", "← → або мишка"); };
+  g.start = s => {
+    if (running && running !== g) running.stop();
+    running = g; g.stop && g.stop();
+    const speed = pick(SPEED, s.speed)[1];
+    let x = W / 2, keys = {}, objs = [], t = 0, raf = 0, over = false, hit = 0;
+    g.score = 0; g.lives = s.lives;
+    const kd = e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { keys[e.key] = true; e.preventDefault(); } };
+    const ku = e => { keys[e.key] = false; };
+    const mv = e => { const r = cv.getBoundingClientRect(), p = e.touches ? e.touches[0] : e; x = (p.clientX - r.left) * W / r.width; };
+    addEventListener("keydown", kd); addEventListener("keyup", ku); cv.addEventListener("mousemove", mv); cv.addEventListener("touchmove", mv, { passive: true });
+    g.stop = () => { cancelAnimationFrame(raf); removeEventListener("keydown", kd); removeEventListener("keyup", ku); cv.removeEventListener("mousemove", mv); cv.removeEventListener("touchmove", mv); g.stop = null; };
+    const hero = pick(HERO, s.hero)[1], item = pick(ITEM, s.item)[1], bad = pick(BAD, s.bad)[1];
+    function frame() {
+      t++;
+      if (keys.ArrowLeft) x -= 7; if (keys.ArrowRight) x += 7;
+      x = Math.max(28, Math.min(W - 28, x));
+      if (t % Math.round(70 / speed) === 0) objs.push({ x: 30 + Math.random() * (W - 60), y: -20, good: true, v: speed + Math.random() });
+      if (t % Math.round(130 / speed) === 0) objs.push({ x: 30 + Math.random() * (W - 60), y: -20, good: false, v: speed + 0.5 + Math.random() });
+      bg(s.place);
+      for (const o of objs) {
+        o.y += o.v;
+        if (!o.done && Math.abs(o.x - x) < 38 && Math.abs(o.y - (H - 40)) < 34) {
+          o.done = true;
+          if (o.good) g.score++; else { g.lives--; hit = 12; }
+        }
+        if (!o.done) emoji(o.good ? item : bad, o.x, o.y, 34);
+      }
+      objs = objs.filter(o => !o.done && o.y < H + 30);
+      if (hit > 0) { hit--; c.fillStyle = "rgba(220,40,40,.18)"; c.fillRect(0, 0, W, H); }
+      emoji(hero, x, H - 40, 48);
+      hud(s);
+      if (g.score >= s.win) { over = true; banner("Перемога! 🎉", "Очки: " + g.score + ". Натисни кнопку, щоб зіграти ще"); }
+      else if (g.lives <= 0) { over = true; banner("Гру закінчено", "Життів не лишилося. Спробуй ще раз"); }
+      if (over) { g.stop(); running = null; return; }
+      raf = requestAnimationFrame(frame);
+    }
+    cv.focus({ preventScroll: true });
+    raf = requestAnimationFrame(frame);
+  };
+  return g;
+}
+
+// ---------- task 1 ----------
+const S1 = { hero: "ракета", item: "зірки", bad: "метеорити", place: "космос", win: 5, lives: 3, speed: "середньо" };
+const g1 = makeGame($("g1")); g1.preview(S1);
+$("g1go").addEventListener("click", () => { g1.start(S1); $("g1go").textContent = "▶ Грати ще раз"; });
+const F1 = [
+  ["Хто герой?", HERO.map(h => h[0]), "JUQxJTgwJUQwJUIwJUQwJUJBJUQwJUI1JUQxJTgyJUQwJUIw"],
+  ["Що треба ловити?", ITEM.map(h => h[0]), "JUQwJUI3JUQxJTk2JUQxJTgwJUQwJUJBJUQwJUI4"],
+  ["Що треба оминати?", BAD.map(h => h[0]), "JUQwJUJDJUQwJUI1JUQxJTgyJUQwJUI1JUQwJUJFJUQxJTgwJUQwJUI4JUQxJTgyJUQwJUI4"],
+  ["Скільки очок для перемоги?", [5, 10, 15], "NQ=="],
+  ["Скільки життів (сердечок)?", [1, 3, 5], "Mw=="],
+];
+$("f1").innerHTML = F1.map((f, k) => `<label for="s1_${k}">${f[0]}</label><select id="s1_${k}"><option value="">— вибери —</option>${f[1].map(v => `<option>${v}</option>`).join("")}</select>`).join("");
+$("f1chk").addEventListener("click", () => {
+  let good = 0, empty = 0;
+  F1.forEach((f, k) => { const el = $("s1_" + k); if (!el.value) empty++; else if (enc(el.value) === f[2]) { good++; el.style.borderColor = "#1a7f37"; } else el.style.borderColor = "#b42318"; });
+  const m = $("f1msg");
+  if (empty) { m.textContent = "Вибери відповідь у кожному списку."; m.className = "msg bad"; return; }
+  if (good === F1.length) { m.textContent = "✓ Так! Ти розгадав увесь сценарій: 5 з 5."; m.className = "msg ok"; }
+  else { m.textContent = `Правильно ${good} з 5. Червоні — ще раз подивись у грі і зміни.`; m.className = "msg bad"; }
+});
+
+// ---------- task 2 ----------
+const F2 = [
+  ["hero", "Герой", HERO.map(h => [h[0], h[1] + " " + h[0]]), "кіт"],
+  ["place", "Де?", PLACE.map(h => [h[0], h[0]]), "ліс"],
+  ["item", "Що ловить", ITEM.map(h => [h[0], h[1] + " " + h[0]]), "яблука"],
+  ["bad", "Небезпека", BAD.map(h => [h[0], h[1] + " " + h[0]]), "бджоли"],
+  ["win", "Очок для перемоги", [[5, "5"], [10, "10"], [15, "15"]], 10],
+  ["lives", "Життів", [[1, "1"], [3, "3"], [5, "5"]], 3],
+  ["speed", "Швидкість", SPEED.map(h => [h[0], h[0]]), "повільно"],
+];
+$("f2").innerHTML = F2.map(f => `<label for="s2_${f[0]}">${f[1]}</label><select id="s2_${f[0]}">${f[2].map(o => `<option value="${o[0]}"${String(o[0]) === String(f[3]) ? " selected" : ""}>${o[1]}</option>`).join("")}</select>`).join("");
+const g2 = makeGame($("g2"));
+function scen() { const s = {}; F2.forEach(f => { const v = $("s2_" + f[0]).value; s[f[0]] = (f[0] === "win" || f[0] === "lives") ? +v : v; }); return s; }
+const times = n => n === 1 ? "1 раз" : n + (n < 5 ? " рази" : " разів");
+function cardUpd() {
+  const s = scen(), h = pick(HERO, s.hero), it = pick(ITEM, s.item), b = pick(BAD, s.bad), p = pick(PLACE, s.place);
+  $("card").innerHTML = `<h3>Мій сценарій: «${h[1]} ${h[0][0].toUpperCase() + h[0].slice(1)} і ${it[0]}»</h3><ol>
+    <li><b>Герой:</b> ${h[1]} ${h[0]}, гра відбувається ${p[1]}.</li>
+    <li><b>Мета:</b> ловити ${it[1]} ${it[0]}, які падають згори.</li>
+    <li><b>Небезпека:</b> ${b[1]} ${b[0]} — їх треба оминати.</li>
+    <li><b>Очки:</b> за ${it[2]} — +1 очко.</li>
+    <li><b>Перемога і програш:</b> ${s.win} очок — перемога. Зіткнувся з небезпекою ${times(s.lives)} — програш. Швидкість: ${s.speed}.</li></ol>`;
+  if (!g2.stop) g2.preview(s);
+}
+$("f2").addEventListener("change", cardUpd); cardUpd();
+$("g2go").addEventListener("click", () => { g2.start(scen()); $("g2go").textContent = "▶ Зіграти ще раз"; });
+
+// ---------- quiz ----------
+const Q = [
+  ["Що таке сценарій гри? Вибери.", ["малюнок героя", "план гри", "назва гри"], "JUQwJUJGJUQwJUJCJUQwJUIwJUQwJUJEJUQwJUIzJUQxJTgwJUQwJUI4"],
+  ["Сценарій: «Їжачок ловить яблука. За кожне яблуко +1 очко. 10 очок — перемога». Чого в ньому НЕ вистачає? Вибери.", ["героя", "мети", "небезпеки і програшу"], "JUQwJUJEJUQwJUI1JUQwJUIxJUQwJUI1JUQwJUI3JUQwJUJGJUQwJUI1JUQwJUJBJUQwJUI4JUQxJTk2JUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQxJTg4JUQxJTgz"],
+  ["Ракета ловить зірки, а згори летять метеорити. Метеорити в цій грі — це… Вибери.", ["герой", "мета", "небезпека"], "JUQwJUJEJUQwJUI1JUQwJUIxJUQwJUI1JUQwJUI3JUQwJUJGJUQwJUI1JUQwJUJBJUQwJUIw"],
+  ["Скільки частин у нашому сценарії гри? Вибери число.", ["3", "4", "5", "6"], "NQ=="],
+  ["Гравець спіймав яблуко. Що стається з очками? Вибери.", ["+1 очко", "−1 очко", "гра закінчується"], "JTJCMSVEMCVCRSVEMSU4NyVEMCVCQSVEMCVCRQ=="],
+];
+let qr = 0, qd = 0;
+$("quiz").innerHTML = Q.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q[0]}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}"><option value="">— вибери —</option>${q[1].map(v => `<option>${v}</option>`).join("")}</select><button data-q="${k}">Перевірити</button><span class="mark" id="m${k}"></span></div></div>`).join("");
+$("quiz").addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  const k = +b.dataset.q, box = $("q" + k), sel = $("a" + k);
+  if (!sel.value || box.classList.contains("yes") || box.classList.contains("no")) return;
+  const good = enc(sel.value) === Q[k][2];
+  box.classList.add(good ? "yes" : "no"); sel.disabled = true; b.disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : "✗ Ні";
+  if (good) qr++; qd++;
+  $("qs").textContent = `Тест: ${qr} з ${Q.length}` + (qd === Q.length ? " — покажи вчителю" : "");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ряди і тренди</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+  .shot { width: 100%; max-width: 640px; height: auto; display: block; border-radius: 6px; }
+  .kinds td:first-child { font-weight: 700; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Ряди і тренди: малюємо графік у Python <span>· 10-А · візуалізація рядів і трендів даних, 12 балів</span></h1>
+
+  <p class="big">Шкільний YouTube-канал рахує підписників щотижня. Чи канал росте? Скільки буде через місяць? Сьогодні намалюємо графік у Python, побачимо тренд і проведемо лінію тренду — таку саму, як будує Excel. Thonny, файл <code>trendy.py</code>. За урок — 12 балів.</p>
+
+  <section>
+    <h2>Що треба знати</h2>
+    <div class="wrap"><table>
+      <tr><th>Слово</th><th>Що означає</th><th>Приклад</th></tr>
+      <tr><td><b>Ряд даних</b></td><td>числа, виміряні по порядку в часі: щодня, щотижня, щороку</td><td>підписники за 8 тижнів: 120, 135, 150, …</td></tr>
+      <tr><td><b>Тренд</b></td><td>загальний напрям ряду: <b>зростає</b>, <b>спадає</b> або <b>стоїть</b>. Дрібні стрибки не рахуються</td><td>за 4-й тиждень стало менше на 2, але загалом канал росте — тренд зростає</td></tr>
+      <tr><td><b>Лінійна діаграма</b> (графік)</td><td>точки ряду, з'єднані лінією по порядку. Саме вона показує тренд</td><td>завдання 3</td></tr>
+      <tr><td><b>Лінія тренду</b></td><td>пряма <code>y = k · x + b</code>, що проходить «посередині» між точками. <code>k</code> — на скільки в середньому змінюється за один крок</td><td>завдання 4</td></tr>
+      <tr><td><b>Прогноз</b></td><td>продовжити лінію тренду вперед і подивитися, яке буде значення</td><td>скільки підписників буде на 10-му тижні</td></tr>
+    </table></div>
+    <h3>Яка діаграма для чого</h3>
+    <div class="wrap"><table class="kinds">
+      <tr><td>Лінійна</td><td>зміни в часі, тренд: температура за тиждень, ціна за рік, підписники</td></tr>
+      <tr><td>Стовпчикова</td><td>порівняти окремі величини: скільки учнів у кожному класі</td></tr>
+      <tr><td>Кругова</td><td>частки від цілого: на що йдуть кишенькові гроші</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Як працювати в Thonny</h2>
+    <div class="two"><div><img src="10a-trendy/run.png" alt="Thonny: код угорі, кнопка запуску, результат унизу" style="width:100%;height:auto;display:block"></div>
+    <div><ol>
+      <li><b>Файл → Новий</b>, збережи файл як <code>trendy.py</code>.</li>
+      <li>Набери код завдання 1.</li>
+      <li>Запусти зеленою кнопкою <b>▶</b> (або F5). Результат з'являється <b>унизу</b>, в «Оболонці».</li>
+      <li>Порівняй з «Має вивести». Збігається — набирай код наступного завдання <b>під</b> попереднім.</li>
+      <li>З завдання 3 відкривається ще й вікно з малюнком. Щоб запустити знову, спершу <b>закрий це вікно</b>.</li>
+      <li>Програма зависла — червона кнопка <b>STOP</b>.</li>
+    </ol></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 1: ряд даних <span class="pts">2 бали</span></h2>
+    <p>Ряд даних у Python — це список. <code>subs[0]</code> — перший елемент, <code>subs[-1]</code> — останній, <code>len</code> — скільки елементів.</p>
+    <div class="two"><div><pre>subs = [120, 135, 150, 148, 170, 185, 190, 210]
+print(&quot;Тижнів:&quot;, len(subs))
+print(&quot;Перший тиждень:&quot;, subs[0])
+print(&quot;Останній тиждень:&quot;, subs[-1])
+print(&quot;Найменше:&quot;, min(subs))
+print(&quot;Найбільше:&quot;, max(subs))
+print(&quot;Приріст за весь час:&quot;, subs[-1] - subs[0])</pre></div><div><p>Має вивести:</p>
+<pre class="out">Тижнів: 8
+Перший тиждень: 120
+Останній тиждень: 210
+Найменше: 120
+Найбільше: 210
+Приріст за весь час: 90</pre></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 2: тренд словами <span class="pts">2 бали</span></h2>
+    <p>Порівнюємо кожен тиждень з попереднім: <code>subs[i] - subs[i - 1]</code>. Плюс — зросло, мінус — спало. Яких змін більше, такий і тренд. Набери під завданням 1.</p>
+    <div class="two"><div><pre>up = 0
+down = 0
+for i in range(1, len(subs)):
+    change = subs[i] - subs[i - 1]
+    print(&quot;Тиждень&quot;, i + 1, &quot;:&quot;, change)
+    if change &gt; 0:
+        up = up + 1
+    elif change &lt; 0:
+        down = down + 1
+print(&quot;Зростань:&quot;, up)
+print(&quot;Спадів:&quot;, down)
+if up &gt; down:
+    print(&quot;Тренд: зростає&quot;)
+elif up &lt; down:
+    print(&quot;Тренд: спадає&quot;)
+else:
+    print(&quot;Тренду немає&quot;)</pre></div><div><p>Має вивести:</p>
+<pre class="out">Тиждень 2 : 15
+Тиждень 3 : 15
+Тиждень 4 : -2
+Тиждень 5 : 22
+Тиждень 6 : 15
+Тиждень 7 : 5
+Тиждень 8 : 20
+Зростань: 6
+Спадів: 1
+Тренд: зростає</pre><p>На 4-му тижні −2, але це лише стрибок: зростань 6, спадів 1 — тренд зростає.</p></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 3: лінійна діаграма <span class="pts">3 бали</span></h2>
+    <p>Малюємо графік черепашкою. Рядок <code>screen.setworldcoordinates(0, 100, 9, 230)</code> робить у вікні «координати діаграми»: зліва направо — тижні від 0 до 9, знизу вгору — підписники від 100 до 230. Тому <code>t.goto(тиждень, значення)</code> одразу ставить точку на своє місце. Набери під завданням 2, а <b>останнім рядком</b> файлу — <code>turtle.done()</code>.</p>
+    <div class="two"><div><pre>import turtle
+
+screen = turtle.Screen()
+screen.setworldcoordinates(0, 100, 9, 230)
+t = turtle.Turtle()
+t.hideturtle()
+t.speed(0)
+
+t.penup()
+t.goto(0.5, 110)
+t.pendown()
+t.goto(8.5, 110)
+t.penup()
+for w in range(1, 9):
+    t.goto(w, 103)
+    t.write(w)
+
+t.color(&quot;blue&quot;)
+t.width(3)
+for i in range(len(subs)):
+    t.goto(i + 1, subs[i])
+    t.pendown()
+    t.dot(8)
+
+turtle.done()</pre></div><div><p>Має вийти (у вікні з малюнком):</p>
+<img class="shot" src="10a-trendy/chart.png" alt="Лінійна діаграма: сині точки з'єднані лінією, вона йде вгору">
+<p>Чорна лінія — вісь тижнів 1–8. Синя ламана — ряд даних. Видно, що загалом вона йде вгору.</p></div></div>
+  </section>
+
+  <section>
+    <h2>Завдання 4: лінія тренду і прогноз <span class="pts">3 бали</span></h2>
+    <p>Лінія тренду — пряма <code>y = k · x + b</code>, від якої точки ряду в сумі відхиляються найменше (так її будує і Excel). <code>mx</code> і <code>my</code> — середній тиждень і середня кількість підписників. Цикл рахує, як разом змінюються тиждень і підписники, — з цього виходить нахил <code>k</code>. Потім <code>b</code> підбирається так, щоб пряма пройшла через середню точку.</p>
+    <p>Набери ці рядки <b>перед</b> <code>turtle.done()</code> — він має лишитися останнім.</p>
+    <div class="two"><div><pre>n = len(subs)
+mx = (n + 1) / 2
+my = sum(subs) / n
+top = 0
+bottom = 0
+for i in range(n):
+    x = i + 1
+    top = top + (x - mx) * (subs[i] - my)
+    bottom = bottom + (x - mx) ** 2
+k = top / bottom
+b = my - k * mx
+print(&quot;Лінія тренду: y =&quot;, round(k, 2), &quot;* x +&quot;, round(b, 2))
+print(&quot;Прогноз на 10 тиждень:&quot;, round(k * 10 + b))
+
+t.penup()
+t.color(&quot;red&quot;)
+t.width(2)
+t.goto(0.5, k * 0.5 + b)
+t.pendown()
+t.goto(8.5, k * 8.5 + b)</pre></div><div><p>Додатково має вивести:</p>
+<pre class="out">Лінія тренду: y = 12.29 * x + 108.21
+Прогноз на 10 тиждень: 231</pre>
+<img class="shot" src="10a-trendy/trend.png" alt="Та сама діаграма з червоною прямою лінією тренду">
+<p><b>k ≈ 12,29</b> — канал щотижня в середньому отримує ~12 нових підписників. Прогноз: підстав <code>x = 10</code> у рівняння.</p></div></div>
+    <p><b>★ Для швидших.</b> Перший рядок заміни на ряд переглядів реклами: <code>subs = [210, 200, 205, 180, 175, 160, 150, 140]</code> і запусти. Який тренд тепер, яке <code>k</code> і який прогноз на 10 тиждень? Прогноз — у тест, питання 6.</p>
+  </section>
+
+  <section>
+    <h2>Те саме в електронних таблицях</h2>
+    <ol>
+      <li>У стовпчик A — тижні 1–8, у стовпчик B — підписники.</li>
+      <li>Виділи обидва стовпчики → <b>Вставлення → Діаграма → Лінійна</b>.</li>
+      <li>Клацни правою кнопкою на лінію → <b>Додати лінію тренду</b> → тип <b>Лінійна</b>, познач <b>«Показувати рівняння на діаграмі»</b>.</li>
+    </ol>
+    <p>Таблиця покаже те саме рівняння, яке порахував Python у завданні 4.</p>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td><code>IndentationError</code></td><td>Відступ: 4 пробіли всередині <code>for</code>, <code>if</code>, <code>elif</code>, <code>else</code></td></tr>
+      <tr><td><code>SyntaxError</code></td><td>Забута двокрапка після <code>for</code>, <code>if</code>, <code>elif</code>, <code>else</code> або дужка</td></tr>
+      <tr><td><code>NameError: name 'subs'</code> або <code>'t'</code></td><td>Код набрано вище за той, де створюється <code>subs</code> чи <code>t</code>. Порядок у файлі: завдання 1, 2, 3, 4, а в кінці <code>turtle.done()</code></td></tr>
+      <tr><td>Вікно з малюнком порожнє, лінії тренду немає</td><td>Рядки завдання 4 стоять <b>після</b> <code>turtle.done()</code> — перенеси їх вище</td></tr>
+      <tr><td>Друга спроба не запускається</td><td>Закрий вікно з малюнком, тоді знову ▶</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 6</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити, що таке тренд і яка діаграма його показує. Подивитися прогноз погоди на тиждень і на уроці сказати, який тренд у температури: зростає, спадає чи стоїть.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Яка діаграма найкраще показує тренд — зміну в часі? Впиши одне слово: <b>лінійна</b>, <b>стовпчикова</b> або <b>кругова</b>.",
+"code": "",
+"ok": [
+"JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJEJUQwJUIw",
+"JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJEJUQxJTgz",
+"JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5",
+"JUQwJUIzJUQxJTgwJUQwJUIwJUQxJTg0JUQxJTk2JUQwJUJB",
+"JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUIwJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUIw"
+],
+"show": "лінійна",
+"why": "Лінійна діаграма (графік) з'єднує точки по порядку в часі — видно, куди йде ряд."
+},
+{
+"q": "Що виведе програма? Впиши число.",
+"code": "s = [5, 8, 6, 9]\nprint(s[-1] - s[0])",
+"ok": [
+"NA=="
+],
+"show": "4",
+"why": "Останній елемент 9 мінус перший 5 = 4."
+},
+{
+"q": "Що виведе програма? Вона рахує, скільки разів число <b>зросло</b> порівняно з попереднім. Впиши число.",
+"code": "s = [3, 5, 4, 6, 7]\nup = 0\nfor i in range(1, len(s)):\n    if s[i] > s[i - 1]:\n        up = up + 1\nprint(up)",
+"ok": [
+"Mw=="
+],
+"show": "3",
+"why": "3→5 зросло, 5→4 ні, 4→6 зросло, 6→7 зросло: 3 рази."
+},
+{
+"q": "Завдання 4. Яке число k (перше число після <code>y =</code>) вивів Python у рядку «Лінія тренду»? Впиши його так, як надрукував Python, з крапкою.",
+"code": "",
+"ok": [
+"MTIuMjk=",
+"MTIlMkMyOQ=="
+],
+"show": "12.29",
+"why": "k — на скільки підписників у середньому більшає щотижня."
+},
+{
+"q": "Лінія тренду: <code>y = 3 * x + 50</code>. Який прогноз для <code>x = 10</code>? Впиши число.",
+"code": "",
+"ok": [
+"ODA="
+],
+"show": "80",
+"why": "3 · 10 + 50 = 80."
+},
+{
+"q": "★ Яке число вивела програма в рядку «Прогноз на 10 тиждень» для переглядів реклами (завдання ★)? Впиши число.",
+"code": "",
+"ok": [
+"MTIw"
+],
+"show": "120",
+"why": "Тренд спадає: k від'ємне, тому прогноз менший за останнє значення 140."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

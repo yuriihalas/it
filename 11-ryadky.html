@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Рядки як масиви символів</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 18px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1080px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 28px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 18px; }
+  h2 { font-size: 22px; margin: 0 0 8px; color: #0b5cad; border-bottom: 3px solid #0b5cad; padding-bottom: 2px; }
+  h3 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 18px; line-height: 1.35; background: #f2f4f7; border-left: 5px solid #0b5cad; padding: 6px 8px; margin: 0 0 8px; overflow-x: auto; }
+  .out { color: #1a7f37; border-left-color: #1a7f37; background: #f3faf4; font-size: 16px; }
+  .two { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px 24px; align-items: start; }
+  .half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; align-items: start; }
+  .two > div, .half > div { min-width: 0; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  .pts { font-size: 15px; font-weight: 700; color: #fff; background: #1a7f37; border-radius: 4px; padding: 1px 8px; margin-left: 6px; }
+  button { font: inherit; font-size: 16px; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 5px; background: #fff; color: #0b5cad; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q pre { font-size: 16px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 18px Consolas, "Courier New", monospace; width: 7em; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .why { font-size: 16px; margin: 6px 0 0; color: #333; display: none; }
+  .q.answered .why { display: block; }
+  .score { font-size: 22px; font-weight: 700; margin-top: 10px; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 860px) { .two, .half { grid-template-columns: 1fr; } }
+  .cells td:first-child, .cells th:first-child { background: #eef2f6; font-weight: 700; width: 3em; text-align: center; }
+  .cells td { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .q pre:empty { display: none; }
+  .shot { max-width: 100%; border: 1px solid #c9ced3; border-radius: 4px; display: block; }
+  .self { background: #f6f8fb; border-left: 5px solid #6b7785; padding: 6px 10px; margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Рядки як масиви символів <span>· 11 клас · практична робота № 5 · JavaScript, 12 балів</span></h1>
+
+  <p class="big">Масив — це список значень під однією назвою, і кожне має номер — <b>індекс</b>, що починається з <b>нуля</b>. Рядок тексту влаштований так само: це <b>масив символів</b>. Тому до кожної літери можна звернутися за індексом, порахувати літери, перевернути слово чи сховати в ньому таємне повідомлення.</p>
+
+  <section>
+    <h2>Як влаштований рядок</h2>
+    <div class="two">
+      <div>
+        <pre>const word = &quot;ІНФОРМАТИКА&quot;;</pre>
+        <div class="wrap"><table class="cells">
+          <tr><th>Індекс</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr>
+          <tr><th>Символ</th><td>І</td><td>Н</td><td>Ф</td><td>О</td><td>Р</td><td>М</td><td>А</td><td>Т</td><td>И</td><td>К</td><td>А</td></tr>
+        </table></div>
+        <p>11 символів, тому індекси від 0 до 10. Пробіл, кома, цифра — теж символи, і в кожного свій індекс.</p>
+      </div>
+      <div>
+        <div class="wrap"><table>
+          <tr><th>Код</th><th>Що дає</th></tr>
+          <tr><td><code>word[0]</code></td><td>перший символ: І</td></tr>
+          <tr><td><code>word.length</code></td><td>скільки символів: 11</td></tr>
+          <tr><td><code>word[word.length - 1]</code></td><td>останній: А</td></tr>
+          <tr><td><code>for (const ch of word)</code></td><td>пройти всі символи по черзі</td></tr>
+          <tr><td><code>word.toLowerCase()</code></td><td>той самий текст малими літерами</td></tr>
+          <tr><td><code>a + b</code></td><td>склеїти два рядки в новий</td></tr>
+        </table></div>
+        <p><b>Відмінність від масиву:</b> літеру в рядку не можна замінити (<code>word[0] = "Х"</code> нічого не зробить). Новий текст ми <b>збираємо</b> з символів у новий рядок.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Робота на 12 балів</h2>
+    <div class="two">
+      <div>
+        <p><a href="11-ryadky-baza.html" download="ryadky.html"><b>Завантажити файл ryadky.html</b></a></p>
+        <ol>
+          <li>Відкрий файл у <b>Блокноті</b> і в <b>браузері</b>. У браузері є поле «Літера», кнопка «Вгадати» і чорне віконце виводу.</li>
+          <li><code>show(...)</code> виводить рядок у чорне віконце.</li>
+          <li>Пиши код між <code>ПИШИ СВІЙ КОД ТУТ</code> і <code>ДАЛІ НІЧОГО НЕ ЗМІНЮЙ</code>. Кожен крок — <b>під</b> попереднім.</li>
+          <li>Після кожного кроку: у Блокноті <b>Ctrl + S</b>, у браузері <b>F5</b>.</li>
+          <li>Якщо щось не так, під віконцем червоним з'явиться номер рядка з помилкою.</li>
+        </ol>
+      </div>
+      <div><p><b>Так виглядає браузер після кроку 1:</b></p><img class="shot" src="11-ryadky/krok1.png" alt="Браузер: поле Літера, кнопка Вгадати і чорне віконце з виводом І, О, 11, А"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 1: символ за індексом <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div><pre>const word = &quot;ІНФОРМАТИКА&quot;;
+show(word[0]);
+show(word[3]);
+show(word.length);
+show(word[word.length - 1]);</pre></div>
+      <div><p><b>Має вийти:</b></p><pre class="out">І
+О
+11
+А</pre><p><code>word[3]</code> — це <b>четверта</b> літера, бо рахуємо з нуля: І(0), Н(1), Ф(2), О(3).</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 2: порахувати і перевернути <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div><pre>let count = 0;
+for (let i = 0; i &lt; word.length; i++) {
+  if (word[i] === &quot;А&quot;) {
+    count = count + 1;
+  }
+}
+show(&quot;Літер А: &quot; + count);
+
+let back = &quot;&quot;;
+for (let i = word.length - 1; i &gt;= 0; i--) {
+  back = back + word[i];
+}
+show(&quot;Навпаки: &quot; + back);</pre></div>
+      <div><p><b>Має вийти:</b></p><pre class="out">Літер А: 2
+Навпаки: АКИТАМРОФНІ</pre><p>Перший цикл іде по індексах 0, 1, 2 … 10 і рахує літери «А».</p><p>Другий іде <b>з кінця</b>: <code>i</code> = 10, 9 … 0, і доклеює символи до рядка <code>back</code>. Так виходить слово навпаки.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 3: паліндром <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div><pre>function reverse(text) {
+  let r = &quot;&quot;;
+  for (const ch of text) {
+    r = ch + r;
+  }
+  return r;
+}
+
+function isPalindrome(text) {
+  const clean = text.toLowerCase().replaceAll(&quot; &quot;, &quot;&quot;);
+  return clean === reverse(clean);
+}
+
+show(isPalindrome(&quot;радар&quot;));
+show(isPalindrome(&quot;масив&quot;));
+show(isPalindrome(&quot;Кит на морі романтик&quot;));
+show(isPalindrome(&quot;Я несу гусеня&quot;));</pre></div>
+      <div><p><b>Має вийти:</b></p><pre class="out">true
+false
+true
+true</pre><p><b>Паліндром</b> — текст, який однаково читається з обох боків: «радар», «Я несу гусеня».</p><p><code>reverse</code> перевертає текст: кожен символ ставимо <b>на початок</b> нового рядка. <code>isPalindrome</code> робить усі літери малими, прибирає пробіли і порівнює текст із перевернутим.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Крок 4: таємне повідомлення <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div><pre>const msg = &quot;ПкЕоРдЕлРаВмА&quot;;
+let secret = &quot;&quot;;
+for (let i = 0; i &lt; msg.length; i = i + 2) {
+  secret = secret + msg[i];
+}
+show(&quot;Таємне слово: &quot; + secret);</pre></div>
+      <div><p><b>Має вийти:</b></p><pre class="out">Таємне слово: ПЕРЕРВА</pre><p>Слово сховане у <b>кожній другій</b> літері: індекси 0, 2, 4 … Тому крок циклу <code>i = i + 2</code>.</p></div>
+    </div>
+    <p class="self"><b>Сам (1 бал з 2).</b> Під кодом кроку 4 додай рядок <code>const msg2 = "КщфОюяДжц";</code>. Тут друге слово сховане в <b>кожній третій</b> літері, починаючи з індексу 0. Напиши цикл, який збирає це слово в новий рядок, і виведи його через <code>show</code>.</p>
+  </section>
+
+  <section>
+    <h2>Крок 5: гра «Вгадай слово» <span class="pts">2 бали</span></h2>
+    <div class="two">
+      <div><pre>const hidden = &quot;БРАУЗЕР&quot;;
+const opened = [];
+
+function mask() {
+  let m = &quot;&quot;;
+  for (const ch of hidden) {
+    if (opened.includes(ch)) {
+      m = m + ch + &quot; &quot;;
+    } else {
+      m = m + &quot;_ &quot;;
+    }
+  }
+  return m;
+}
+
+show(mask());
+
+document.getElementById(&quot;guess&quot;).addEventListener(&quot;click&quot;, function () {
+  const ch = document.getElementById(&quot;letter&quot;).value.toUpperCase();
+  opened.push(ch);
+  show(ch + &quot;: &quot; + mask());
+  document.getElementById(&quot;letter&quot;).value = &quot;&quot;;
+});</pre></div>
+      <div><p><b>Має вийти:</b></p><pre class="out">_ _ _ _ _ _ _</pre><p>Після цього впиши в поле літеру, наприклад <b>Р</b>, і натисни «Вгадати». У віконці з'явиться <code>Р: _ Р _ _ _ _ Р</code> — відкрилися всі літери Р.</p><p><code>opened</code> — масив уже названих літер. <code>mask()</code> проходить слово по символах: якщо літеру вже назвали, показує її, інакше — <code>_</code>. <code>opened.includes(ch)</code> перевіряє, чи є літера в масиві.</p></div>
+    </div>
+    <p class="self"><b>Сам (1 бал з 2).</b> Зроби лічильник спроб: створи <code>let tries = 0;</code> і збільшуй його на 1 при кожному натисканні кнопки. Коли в <code>mask()</code> не залишилося жодного <code>_</code> (перевір через <code>mask().includes("_")</code>), виведи <code>Вгадав за … спроб!</code> з числом спроб.</p>
+    <p><b>Пограй з сусідом:</b> заміни слово в <code>hidden</code> на своє (великими літерами), а сусід нехай вгадує.</p>
+  </section>
+
+  <section>
+    <h2>★ Для швидших: шифр зсуву</h2>
+    <p>Кожну літеру замінюємо на ту, що стоїть в абетці на 1 далі: А → Б, К → Л. Абетка — теж рядок, тому номер літери в ній дає <code>ABC.indexOf(ch)</code> (−1, якщо такої немає).</p>
+    <pre>const ABC = &quot;АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ&quot;;</pre>
+    <p>Напиши функцію <code>caesar(text, k)</code>, яка зсуває кожну літеру на <code>k</code> позицій і повертає новий рядок. Символи, яких немає в абетці (пробіл, кома), залишай як є. Після <b>Я</b> знову йде <b>А</b> — для цього стане в пригоді остача від ділення: <code>(p + k) % ABC.length</code>.</p>
+    <p><b>Перевір:</b> <code>show(caesar("КІТ", 1))</code> має вивести <code>ЛЇУ</code>.</p>
+  </section>
+
+  <section>
+    <h2>Якщо помилка</h2>
+    <div class="wrap"><table>
+      <tr><th>Що бачиш</th><th>Що не так</th></tr>
+      <tr><td>Виводить <code>undefined</code></td><td>Індекс за межами: у слові з 11 символів останній має індекс 10, а не 11</td></tr>
+      <tr><td>Літер А: 0, хоча вони є</td><td>У коді латинська «A» замість української «А» — вони виглядають однаково, але це різні символи. Перенабери літеру на українській розкладці</td></tr>
+      <tr><td><code>Identifier 'word' has already been declared</code></td><td>Двічі написали <code>const word</code>. Кожну назву створюємо один раз</td></tr>
+      <tr><td><code>Assignment to constant variable</code></td><td>Змінну <code>const</code> не можна змінити. Для <code>count</code>, <code>back</code>, <code>secret</code>, які ростуть у циклі, — <code>let</code></td></tr>
+      <tr><td>Навпаки виходить те саме слово</td><td>Перевір цикл: має бути <code>i = word.length - 1</code>, <code>i &gt;= 0</code>, <code>i--</code></td></tr>
+      <tr><td>Кнопка «Вгадати» нічого не робить</td><td>Перевір назви: <code>"guess"</code> і <code>"letter"</code> — малими латинськими літерами, як у файлі</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Тест <span class="pts">2 бали</span></h2>
+    <p>Впиши відповідь і натисни «Перевірити» або Enter. Великі чи малі літери — неважливо. <b>Перевірити можна лише один раз.</b></p>
+    <div class="half" id="quiz"></div>
+    <div class="score" id="score">Правильно: 0 з 8</div>
+  </section>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Вивчити, як звернутися до символу рядка за індексом: перший — <code>word[0]</code>, останній — <code>word[word.length - 1]</code>. Знайти одне слово або речення-паліндром, якого не було на уроці, і розказати на наступному уроці.</p>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const QUIZ = [
+{
+"q": "Що виведе show(w[0])? Впиши одну літеру.",
+"code": "const w = \"ДИСК\";\nshow(w[0]);",
+"ok": [
+"JUQwJUI0"
+],
+"show": "Д",
+"why": "Індекс 0 — перший символ."
+},
+{
+"q": "Що виведе show(w.length)? Впиши число.",
+"code": "const w = \"ДИСК\";\nshow(w.length);",
+"ok": [
+"NA=="
+],
+"show": "4",
+"why": "У слові ДИСК 4 символи."
+},
+{
+"q": "Що виведе show(w[w.length - 1])? Впиши одну літеру.",
+"code": "const w = \"ДИСК\";\nshow(w[w.length - 1]);",
+"ok": [
+"JUQwJUJB"
+],
+"show": "К",
+"why": "Останній символ має індекс length − 1 = 3."
+},
+{
+"q": "Що виведе show(w[4])? Впиши слово, яке виведе JavaScript, коли такого символу немає.",
+"code": "const w = \"ДИСК\";\nshow(w[4]);",
+"ok": [
+"dW5kZWZpbmVk"
+],
+"show": "undefined",
+"why": "Символи мають індекси 0–3, індексу 4 немає."
+},
+{
+"q": "Що виведе show(k)? Впиши число.",
+"code": "const s = \"банан\";\nlet k = 0;\nfor (const ch of s) {\n  if (ch === \"а\") {\n    k = k + 1;\n  }\n}\nshow(k);",
+"ok": [
+"Mg=="
+],
+"show": "2",
+"why": "У слові «банан» дві літери «а»."
+},
+{
+"q": "Що виведе show(r)? Впиши слово.",
+"code": "const t = \"кіт\";\nlet r = \"\";\nfor (let i = t.length - 1; i >= 0; i--) {\n  r = r + t[i];\n}\nshow(r);",
+"ok": [
+"JUQxJTgyJUQxJTk2JUQwJUJB"
+],
+"show": "тік",
+"why": "Цикл іде з кінця: т, і, к."
+},
+{
+"q": "Що виведе show(x)? Впиши слово.",
+"code": "const m = \"ДаОбМв\";\nlet x = \"\";\nfor (let i = 0; i < m.length; i = i + 2) {\n  x = x + m[i];\n}\nshow(x);",
+"ok": [
+"JUQwJUI0JUQwJUJFJUQwJUJD"
+],
+"show": "ДОМ",
+"why": "Беремо символи з індексами 0, 2, 4: Д, О, М."
+},
+{
+"q": "Що виведе show(z)? Впиши слово.",
+"code": "let z = \"кіт\";\nz[0] = \"р\";\nshow(z);",
+"ok": [
+"JUQwJUJBJUQxJTk2JUQxJTgy"
+],
+"show": "кіт",
+"why": "Рядок не можна змінити по одній літері: z[0] = … нічого не робить. Щоб змінити, треба зібрати новий рядок."
+}
+];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0, done = 0;
+$("quiz").innerHTML = QUIZ.map((t, k) => `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <pre>${esc(t.code)}</pre>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+    <p class="why">${t.why}</p>
+  </div>`).join("");
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("answered")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add("answered", good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  done++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (done === QUIZ.length ? " — покажи вчителю" : "");
+  const next = $("a" + (k + 1));
+  if (next) next.focus();
+}
+$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+$("quiz").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>

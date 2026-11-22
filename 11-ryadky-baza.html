@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <title>Рядки</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 760px; margin: 20px auto; font-size: 18px; }
+    input { font-size: 20px; width: 3em; text-align: center; text-transform: uppercase; }
+    button { font-size: 18px; padding: 4px 14px; margin: 8px 8px 8px 0; }
+    #out { font-family: Consolas, monospace; background: #111; color: #9f9; padding: 8px 12px; min-height: 60px; white-space: pre-wrap; }
+    #error { color: #b42318; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Рядки</h1>
+  <p>Літера: <input id="letter" maxlength="1"> <button id="guess">Вгадати</button></p>
+  <div id="out"></div>
+  <p id="error"></p>
+
+  <script>
+    window.addEventListener("error", function (e) {
+      document.getElementById("error").textContent = "Помилка в рядку " + e.lineno + ": " + e.message;
+    });
+
+    function show(text) {
+      document.getElementById("out").textContent += text + "\n";
+    }
+  </script>
+
+  <script>
+    // ===== ПИШИ СВІЙ КОД ТУТ =====
+
+
+
+    // ===== ДАЛІ НІЧОГО НЕ ЗМІНЮЙ =====
+  </script>
+</body>
+</html>
