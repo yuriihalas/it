@@ -47,9 +47,17 @@
   .res.ok { color: #1a7f37; }
   .steps { margin: 0 0 8px; }
   .shot { display: block; max-width: 760px; width: 100%; height: auto; border: 1px solid #d5dae0; border-radius: 6px; margin: 4px 0 10px; }
-  .checks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 12px; margin: 0 0 8px; }
-  .checks label { display: flex; gap: 8px; align-items: center; border: 1px solid #d5dae0; border-radius: 6px; padding: 5px 8px; cursor: pointer; }
-  .checks input { width: 20px; height: 20px; }
+  .tag { display: inline-block; font-size: 14px; font-weight: 700; padding: 0 8px; border-radius: 10px; margin-left: 4px; color: #fff; }
+  .tag.Пристрій { background: #0b5cad; } .tag.Програма { background: #7e22ce; } .tag.Мережа { background: #b35900; }
+  .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 8px; }
+  .chain .link { display: flex; flex-direction: column; align-items: center; min-width: 92px; padding: 6px 8px; border: 2px dashed #c9ced3; border-radius: 10px; color: #777; font-weight: 700; font-size: 15px; }
+  .chain .link .ic { font-size: 28px; filter: grayscale(1); opacity: .45; }
+  .chain .link.on { border-style: solid; border-color: #1a7f37; background: #f3faf4; color: #1a7f37; }
+  .chain .link.on .ic { filter: none; opacity: 1; }
+  .chain .arr { font-size: 22px; color: #888; }
+  h3.sub { font-size: 20px; margin: 12px 0 6px; color: var(--a); } h3.sub small { font-weight: 400; font-size: 16px; color: #444; }
+  code.pass { font-size: 20px; background: #f4f6f9; border: 1px solid #d5dbe3; border-radius: 4px; padding: 0 6px; }
+  .why { color: #1a7f37; font-size: 16px; }
   .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin-bottom: 8px; }
   .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
   .q p { margin: 0 0 6px; }
@@ -57,7 +65,7 @@
   .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
   .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
   .score { font-weight: 700; font-size: 21px; }
-  @media (max-width: 900px) { .cards, .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); } .three, .quiz { grid-template-columns: 1fr; } .sit { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .three, .quiz { grid-template-columns: 1fr; } .sit { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -129,10 +137,12 @@ print(<span class="s">"Зараз:"</span>, datetime.datetime.now().strftime(<sp
   </section>
 
   <section>
-    <h2>Завдання 4. Цифрове середовище нашого класу</h2>
-    <p>Роздивись кабінет. Познач усе, що ти бачиш. Наступного уроку ми з'ясуємо, як ці пристрої з'єднуються в одну <b>мережу</b>.</p>
-    <div class="checks" id="checks"></div>
-    <p class="res" id="res4">Позначено: 0</p>
+    <h2>Завдання 4. Фото кота для бабусі <small>(5 кроків)</small></h2>
+    <p>Оля хоче показати бабусі свого кота. Прочитай історію і в кожному кроці вибери зі списку, що допомогло. Коли все правильно, побачиш весь шлях фото від Олі до бабусі.</p>
+    <div class="sits" id="path"></div>
+    <div class="chain" id="chain" aria-live="polite"></div>
+    <p><button id="chk4">Перевірити</button> <button class="ghost" id="again4">Спробувати ще раз</button></p>
+    <p class="res" id="res4"></p>
   </section>
 
   <section>
@@ -142,6 +152,11 @@ print(<span class="s">"Зараз:"</span>, datetime.datetime.now().strftime(<sp
       <li><b>Не відкривай підозрілі посилання</b> від незнайомих — навіть якщо обіцяють приз.</li>
       <li><b>Не викладай особисте:</b> адресу, номер телефону, фото документів.</li>
     </ol>
+    <h3 class="sub">Тест: надійний пароль чи ні? <small>(8 паролів)</small></h3>
+    <p>Надійний пароль — <b>довгий</b> (від 8 символів), має <b>великі й малі літери</b>, <b>цифри</b> і <b>знаки</b> (<code>- _ ! ? #</code>), і його не можна вгадати (не ім'я, не дата, не <code>qwerty</code>). Для кожного пароля вибери зі списку: <b>надійний</b> чи <b>ненадійний</b>.</p>
+    <div class="sits" id="pw"></div>
+    <p><button id="chk5">Перевірити</button> <button class="ghost" id="again5">Спробувати ще раз</button></p>
+    <p class="res" id="res5"></p>
   </section>
 
   <section>
@@ -206,11 +221,37 @@ document.getElementById("again2").addEventListener("click", () => { sitsEl.query
 const t3 = () => { const a = document.getElementById("mySys").value, b = document.getElementById("myPy").value; document.getElementById("res3").textContent = a && b ? `Твій комп'ютер: ${a}, Python ${b}. Покажи вчителю, що програма працює.` : ""; document.getElementById("res3").className = "res ok"; };
 document.getElementById("mySys").addEventListener("change", t3); document.getElementById("myPy").addEventListener("change", t3);
 
-// task 4
-const THINGS = ["Комп'ютери учнів", "Комп'ютер учителя", "Монітори", "Клавіатури й мишки", "Проєктор або телевізор", "Принтер", "Колонки або навушники", "Wi-Fi роутер", "Мережеві кабелі", "Вебкамера", "Інтерактивна дошка", "Ноутбук"];
-const ch = document.getElementById("checks");
-ch.innerHTML = THINGS.map((t, k) => `<label><input type="checkbox" id="h${k}">${t}</label>`).join("");
-ch.addEventListener("change", () => { const n = ch.querySelectorAll("input:checked").length; document.getElementById("res4").textContent = `Позначено: ${n}` + (n >= 6 ? " — у нашому класі справжнє цифрове середовище!" : ""); });
+// task 4: photo path
+const T4 = [{"i": "📷", "t": "Оля фотографує кота на свій…", "o": ["Viber", "смартфон", "Wi-Fi", "крейду"], "ok": "JUQxJTgxJUQwJUJDJUQwJUIwJUQxJTgwJUQxJTgyJUQxJTg0JUQwJUJFJUQwJUJE", "p": "Пристрій"}, {"i": "🖼️", "t": "Фото відразу з'являється в програмі…", "o": ["флешка", "Bluetooth", "Галерея", "роутер"], "ok": "JUQwJUIzJUQwJUIwJUQwJUJCJUQwJUI1JUQxJTgwJUQwJUI1JUQxJThG", "p": "Програма"}, {"i": "💬", "t": "Щоб надіслати фото бабусі, Оля відкриває…", "o": ["принтер", "Viber", "Інтернет", "мишку"], "ok": "dmliZXI=", "p": "Програма"}, {"i": "🌍", "t": "Фото летить до бабусі в інше місто через…", "o": ["Інтернет", "Scratch", "монітор", "калькулятор"], "ok": "JUQxJTk2JUQwJUJEJUQxJTgyJUQwJUI1JUQxJTgwJUQwJUJEJUQwJUI1JUQxJTgy", "p": "Мережа"}, {"i": "📱", "t": "Бабуся бачить кота на своєму…", "o": ["браузері", "Wi-Fi", "планшеті", "папері"], "ok": "JUQwJUJGJUQwJUJCJUQwJUIwJUQwJUJEJUQxJTg4JUQwJUI1JUQxJTgyJUQxJTk2", "p": "Пристрій"}];
+const pathEl = document.getElementById("path"), chainEl = document.getElementById("chain");
+pathEl.innerHTML = T4.map((s, k) => `<div class="sit" id="p${k}"><span><b>${k + 1}.</b> ${s.t} <span class="tag" id="g${k}"></span></span><select aria-label="Крок ${k + 1}">${opts(s.o)}</select></div>`).join("");
+const drawChain = done => { chainEl.innerHTML = T4.map((s, k) => `<span class="link${done[k] ? " on" : ""}"><span class="ic" aria-hidden="true">${s.i}</span>${done[k] ? s.p : "?"}</span>`).join('<span class="arr" aria-hidden="true">→</span>'); };
+drawChain(T4.map(() => false));
+document.getElementById("chk4").addEventListener("click", () => {
+  const sels = [...pathEl.querySelectorAll("select")], r = document.getElementById("res4");
+  if (sels.some(s => !s.value)) { r.textContent = "Вибери відповідь у кожному кроці."; r.className = "res"; return; }
+  const done = sels.map((s, k) => enc(s.value) === T4[k].ok);
+  done.forEach((ok, k) => { document.getElementById("p" + k).className = "sit " + (ok ? "yes" : "no"); document.getElementById("g" + k).textContent = ok ? T4[k].p : ""; document.getElementById("g" + k).className = "tag " + (ok ? T4[k].p : ""); });
+  drawChain(done);
+  const n = done.filter(Boolean).length;
+  r.textContent = n === 5 ? "Усе правильно! Бабуся бачить кота. Подивись на ланцюжок: у цій історії працювали всі три частини цифрового середовища — пристрої, програми і мережа." : `Правильно: ${n} з 5. Червоні кроки — подумай ще і натисни «Спробувати ще раз».`;
+  r.className = "res" + (n === 5 ? " ok" : "");
+});
+document.getElementById("again4").addEventListener("click", () => { pathEl.querySelectorAll(".sit").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = c.classList.contains("yes") ? "sit yes" : "sit"; }); document.getElementById("res4").textContent = ""; });
+
+// password test
+const PW = [{"t": "123456", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "лише цифри підряд — його вгадують за секунду"}, {"t": "Zyma-Snig_48?", "ok": "JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "довгий, є великі й малі літери, цифри і знаки"}, {"t": "qwerty", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "це просто клавіші підряд на клавіатурі"}, {"t": "Olia2014", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "ім'я і рік народження легко вгадати"}, {"t": "My_Kit-Murchyk#5", "ok": "JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "довгий, є великі й малі літери, цифра і знаки"}, {"t": "password", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "англійською це слово «пароль» — його пробують першим"}, {"t": "kit", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "лише 3 літери — надто короткий"}, {"t": "7a_Lviv!Kompas9", "ok": "JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "довгий, змішані літери, цифри і знаки"}];
+const pwEl = document.getElementById("pw");
+pwEl.innerHTML = PW.map((x, k) => `<div class="sit" id="w${k}"><span><b>${k + 1}.</b> <code class="pass">${x.t}</code> <span class="why" id="y${k}"></span></span><select aria-label="Пароль ${k + 1}">${opts(["надійний", "ненадійний"])}</select></div>`).join("");
+document.getElementById("chk5").addEventListener("click", () => {
+  const sels = [...pwEl.querySelectorAll("select")], r = document.getElementById("res5");
+  if (sels.some(s => !s.value)) { r.textContent = "Вибери відповідь для кожного пароля."; r.className = "res"; return; }
+  let n = 0;
+  sels.forEach((s, k) => { const ok = enc(s.value) === PW[k].ok; n += ok; document.getElementById("w" + k).className = "sit " + (ok ? "yes" : "no"); document.getElementById("y" + k).textContent = ok ? "— " + PW[k].w : ""; });
+  r.textContent = `Правильно: ${n} з 8` + (n === 8 ? " — ти вмієш відрізнити надійний пароль!" : ". Червоні — перечитай правило над тестом і натисни «Спробувати ще раз».");
+  r.className = "res" + (n === 8 ? " ok" : "");
+});
+document.getElementById("again5").addEventListener("click", () => { pwEl.querySelectorAll(".sit").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = c.classList.contains("yes") ? "sit yes" : "sit"; }); document.getElementById("res5").textContent = ""; });
 
 // quiz
 let qr = 0, qd = 0;
