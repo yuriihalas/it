@@ -11,7 +11,6 @@
   h1 { font-size: 30px; margin: 0 0 6px; }
   h1 span { font-weight: 400; color: #555; font-size: 19px; }
   h2 { font-size: 24px; margin: 22px 0 8px; color: #1a7f37; border-bottom: 3px solid #1a7f37; padding-bottom: 2px; }
-  h2 .pts { display: inline-block; font-size: 15px; background: #1a7f37; color: #fff; border-radius: 8px; padding: 1px 9px; vertical-align: 4px; margin-left: 6px; }
   p { margin: 0 0 8px; }
   .big { font-weight: 700; background: #fff6dd; border-left: 6px solid #c79100; padding: 8px 12px; border-radius: 4px; }
   .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
@@ -40,24 +39,31 @@
   .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
   .score { font-size: 22px; font-weight: 700; margin: 10px 0; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
   @media (max-width: 820px) { .two, .quiz { grid-template-columns: 1fr; } }
+  .why { margin: 0 0 8px; }
+  table.lines td:first-child { white-space: nowrap; width: 1%; }
+  .lvl { display: grid; gap: 4px; margin: 0 0 8px; font: 700 17px Consolas, monospace; }
+  .lvl div { padding: 4px 10px; border-radius: 6px; }
+  .l0 { background: #eef2f6; } .l1 { background: #dff0ff; margin-left: 40px; } .l2 { background: #fff1a8; margin-left: 80px; }
+  .lvl span { font: 400 16px "Segoe UI", Arial, sans-serif; margin-left: 10px; }
+  ol.trace li { margin-bottom: 4px; }
 </style>
 </head>
 <body>
 <div class="sheet">
-  <h1>Вкладені повторення <span>· 6-Б · Python, черепашка · практична робота № 2</span></h1>
-  <p class="big">Вкладене повторення — це цикл всередині іншого циклу. Сьогодні черепашка викладає намистинки рядами: зовнішній цикл робить ряди, а внутрішній — намистинки в кожному ряду.</p>
+  <h1>Вкладені повторення <span>· 6-Б · Python, черепашка</span></h1>
+  <p class="big">Вкладене повторення — це цикл <b>усередині</b> іншого циклу. Сьогодні одна програма: черепашка викладає намистинки рядами. Набери її, запусти, прочитай пояснення кожного рядка і пройди тест.</p>
 
   <div class="two">
     <div class="box">
       <h3>Приклад із життя</h3>
-      <p>У класі 4 ряди парт, у кожному ряду 6 місць. Щоб обійти всі місця, треба для кожного ряду (4 рази) пройти всі місця в цьому ряду (6 разів).</p>
-      <p>Разом <b>4 × 6 = 24</b> місця. Так само працює цикл у циклі.</p>
+      <p>У класі <b>4 ряди</b> парт, у кожному ряду <b>6 місць</b>. Учитель роздає цукерки: підходить до першого ряду і дає цукерку кожному з 6 учнів, потім іде до другого ряду і знову 6 разів, і так 4 ряди.</p>
+      <p>Разом <b>4 × 6 = 24</b> цукерки. «Для кожного ряду — для кожного місця» — це і є цикл у циклі.</p>
     </div>
     <div class="box">
-      <h3>Як читати програму</h3>
-      <p><code>for row in range(4):</code> — повторити 4 рази: <b>4 ряди</b>.</p>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;<code>for i in range(6):</code> — у кожному ряду повторити 6 разів: <b>6 намистинок</b>.</p>
-      <p>Внутрішній цикл має більший відступ — він «сидить» усередині зовнішнього.</p>
+      <h3>Зовнішній і внутрішній цикл</h3>
+      <p><b>Зовнішній</b> цикл <code>for row in range(4):</code> повторюється 4 рази — це <b>ряди</b>.</p>
+      <p><b>Внутрішній</b> цикл <code>for i in range(6):</code> стоїть усередині зовнішнього і за <b>кожен</b> ряд повторюється 6 разів — це <b>намистинки</b> в ряду.</p>
+      <p>Поки внутрішній цикл не закінчиться, зовнішній не переходить до наступного ряду.</p>
     </div>
   </div>
 
@@ -68,16 +74,16 @@
       <ol class="steps">
         <li>Відкрий <b>Thonny</b>.</li>
         <li>Натисни <b>Файл → Новий</b>.</li>
-        <li>Набери програму із завдання 1. Відступи роби клавішею <b>Tab</b> або 4 пробілами.</li>
+        <li>Набери програму нижче. Відступи роби клавішею <b>Tab</b> або 4 пробілами.</li>
         <li>Натисни зелену кнопку <b>▶</b> (або <b>F5</b>). Thonny попросить зберегти файл — назви його <code>namystynky.py</code>.</li>
-        <li>Відкриється вікно з черепашкою, і вона викладе намистинки.</li>
+        <li>Відкриється вікно, і черепашка викладе намистинки.</li>
         <li>Щоб запустити ще раз, закрий вікно черепашки і знову натисни <b>▶</b>.</li>
       </ol>
-      <p>Якщо щось пішло не так — внизу, в <b>Оболонці</b>, з'явиться червоний текст. Подивись таблицю «Якщо не працює» нижче.</p>
+      <p>Якщо внизу, в <b>Оболонці</b>, з'явився червоний текст — найчастіше це забута <b>двокрапка</b> <code>:</code> після <code>for</code> або <b>неправильний відступ</b>. Порівняй свій код з кодом нижче.</p>
     </div>
   </div>
 
-  <h2>Завдання 1. Набери і запусти</h2>
+  <h2>Програма: набери і запусти</h2>
   <div class="two">
 <pre><span class="k">import</span> turtle
 
@@ -97,136 +103,66 @@ turtle.done()</pre>
     <div>
       <p class="cap">Так має вийти: 4 ряди по 6 намистинок</p>
       <img src="6b-vkladeni-cykly/r1.png" width="629" height="364" alt="4 ряди по 6 синіх намистинок">
-      <p style="margin-top:8px">Відступи: <code>t.goto</code> і внутрішній <code>for</code> — 4 пробіли. <code>t.dot</code> і <code>t.forward</code> — 8 пробілів. <code>y = y - 60</code> — знову 4: він виконується один раз після кожного ряду.</p>
     </div>
   </div>
 
-  <h2>Що робить кожен рядок</h2>
-  <table>
-    <tr><th>Рядок</th><th>Що робить</th></tr>
-    <tr><td><code>t.penup()</code></td><td>черепашка не малює лінію, коли йде — лише ставить намистинки</td></tr>
-    <tr><td><code>y = 100</code></td><td>висота першого ряду</td></tr>
-    <tr><td><code>for row in range(4):</code></td><td>зовнішній цикл: 4 ряди. <code>row</code> — номер ряду: 0, 1, 2, 3</td></tr>
-    <tr><td><code>t.goto(-200, y)</code></td><td>перейти на початок ряду: ліворуч, на висоту <code>y</code></td></tr>
-    <tr><td><code>for i in range(6):</code></td><td>внутрішній цикл: 6 намистинок у ряду. <code>i</code> — номер намистинки: 0, 1, 2, 3, 4, 5</td></tr>
-    <tr><td><code>t.dot(30, "blue")</code></td><td>поставити синю намистинку розміром 30</td></tr>
-    <tr><td><code>t.forward(60)</code></td><td>зробити крок 60 праворуч до наступної намистинки</td></tr>
-    <tr><td><code>y = y - 60</code></td><td>наступний ряд на 60 нижче: 100, 40, −20, −80</td></tr>
+  <h2>Пояснення кожного рядка</h2>
+  <table class="lines">
+    <tr><th>Рядок</th><th>Що він робить і навіщо</th></tr>
+    <tr><td><code>import turtle</code></td><td>підключаємо модуль <b>turtle</b> — «черепашку», яка вміє ходити по екрану і малювати. Без цього рядка Python не знає жодної черепашки.</td></tr>
+    <tr><td><code>t = turtle.Turtle()</code></td><td>створюємо <b>одну черепашку</b> і даємо їй коротке ім'я <code>t</code>. Далі всі команди пишемо через <code>t.</code> — так Python знає, кого слухати.</td></tr>
+    <tr><td><code>t.shape("turtle")</code></td><td>черепашка виглядатиме як справжня черепашка, а не як стрілочка. Це лише для краси.</td></tr>
+    <tr><td><code>t.penup()</code></td><td>«підняти олівець»: коли черепашка йде, вона <b>не малює лінію</b>. Нам потрібні лише намистинки, без ниток між ними.</td></tr>
+    <tr><td><code>y = 100</code></td><td>змінна <code>y</code> — <b>висота ряду</b>. Перший ряд буде на висоті 100 (вище середини вікна).</td></tr>
+    <tr><td><code>for row in range(4):</code></td><td><b>зовнішній цикл</b>: усе, що під ним з відступом, повториться <b>4 рази</b> — 4 ряди. Двокрапка в кінці обов'язкова.</td></tr>
+    <tr><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.goto(-200, y)</code></td><td>черепашка переходить на <b>початок ряду</b>: ліворуч (x = −200) і на висоту <code>y</code>. Так кожен ряд починається з лівого краю.</td></tr>
+    <tr><td><code>&nbsp;&nbsp;&nbsp;&nbsp;for i in range(6):</code></td><td><b>внутрішній цикл</b>: у кожному ряду повторити <b>6 разів</b> два рядки під ним.</td></tr>
+    <tr><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t.dot(30, "blue")</code></td><td>поставити <b>синю намистинку</b> розміром 30. Колір можна змінити: <code>"red"</code>, <code>"green"</code>, <code>"orange"</code>.</td></tr>
+    <tr><td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t.forward(60)</code></td><td>зробити <b>крок 60 праворуч</b> до місця наступної намистинки.</td></tr>
+    <tr><td><code>&nbsp;&nbsp;&nbsp;&nbsp;y = y - 60</code></td><td>коли ряд готовий, <b>опускаємось на 60 нижче</b>: <code>y</code> стає 40, потім −20, потім −80. Цей рядок має 4 пробіли, тому виконується <b>один раз після кожного ряду</b>, а не після кожної намистинки.</td></tr>
+    <tr><td><code>turtle.done()</code></td><td>вікно з малюнком <b>не закривається</b>, щоб ти встиг роздивитися результат. Відступу немає — рядок виконується один раз у самому кінці.</td></tr>
   </table>
 
-  <h2>Завдання 2. Більше рядів</h2>
-  <p>Зроби <b>5 рядів по 8</b> намистинок. У програмі завдання 1 зміни два числа: <code>range(4)</code> → <code>range(5)</code> і <code>range(6)</code> → <code>range(8)</code>. Запусти ▶ і порахуй намистинки: 5 × 8 = ?</p>
-  <img src="6b-vkladeni-cykly/r2.png" width="930" height="560" alt="5 рядів по 8 синіх намистинок" style="max-width:520px">
-
-  <h2>Завдання 3. Смугасті ряди</h2>
-  <p>Тепер ряди мають бути по черзі <b>сині й червоні</b>. Поверни <code>range(4)</code> і <code>range(6)</code>. Замість рядка <code>t.dot(30, "blue")</code> постав розгалуження — воно виділене жовтим:</p>
-  <div class="two">
-<pre><span class="k">import</span> turtle
-
-t = turtle.Turtle()
-t.shape(<span class="s">"turtle"</span>)
-t.penup()
-
-y = <span class="n">100</span>
-<span class="k">for</span> row <span class="k">in</span> range(<span class="n">4</span>):
-    t.goto(<span class="n">-200</span>, y)
-    <span class="k">for</span> i <span class="k">in</span> range(<span class="n">6</span>):
-<span class="new">        <span class="k">if</span> row % <span class="n">2</span> == <span class="n">0</span>:</span>
-<span class="new">            t.dot(<span class="n">30</span>, <span class="s">"blue"</span>)</span>
-<span class="new">        <span class="k">else</span>:</span>
-<span class="new">            t.dot(<span class="n">30</span>, <span class="s">"red"</span>)</span>
-        t.forward(<span class="n">60</span>)
-    y = y - <span class="n">60</span>
-
-turtle.done()</pre>
-    <div>
-      <p class="cap">Так має вийти</p>
-      <img src="6b-vkladeni-cykly/r3.png" width="629" height="365" alt="Ряди по черзі сині і червоні">
-      <p style="margin-top:8px"><b>Що означає <code>row % 2 == 0</code>?</b> Простими словами: «номер ряду парний». Ряди 0 і 2 — сині, ряди 1 і 3 — червоні. Так кольори йдуть по черзі.</p>
-    </div>
+  <h2>Відступи — найважливіше</h2>
+  <p>У Python <b>відступ показує, що всередині чого</b>. Подивись на «сходинки»:</p>
+  <div class="lvl">
+    <div class="l0">for row in range(4):<span>0 пробілів — виконується 1 раз (запускає ряди)</span></div>
+    <div class="l1">t.goto(-200, y) · for i in range(6): · y = y - 60<span>4 пробіли — 4 рази, раз на ряд</span></div>
+    <div class="l2">t.dot(30, "blue") · t.forward(60)<span>8 пробілів — 4 × 6 = 24 рази</span></div>
   </div>
 
-  <h2>Завдання 4. Шахівниця</h2>
-  <p>У програмі завдання 3 зміни лише умову: <code>if row % 2 == 0:</code> → <code>if (row + i) % 2 == 0:</code>. Тепер кольори чергуються і в ряду, і між рядами — як клітинки на шахівниці.</p>
-  <div class="two">
-<pre>    <span class="k">for</span> i <span class="k">in</span> range(<span class="n">6</span>):
-<span class="new">        <span class="k">if</span> (row + i) % <span class="n">2</span> == <span class="n">0</span>:</span>
-            t.dot(<span class="n">30</span>, <span class="s">"blue"</span>)
-        <span class="k">else</span>:
-            t.dot(<span class="n">30</span>, <span class="s">"red"</span>)</pre>
-    <div>
-      <p class="cap">Так має вийти</p>
-      <img src="6b-vkladeni-cykly/r4.png" width="930" height="539" alt="Шахівниця з синіх і червоних намистинок">
-    </div>
-  </div>
-  <p><b>Чому так?</b> <code>row + i</code> — це номер ряду плюс номер намистинки. Коли сума парна — синя, коли непарна — червона. Наприклад, ряд 0, намистинка 0: 0 + 0 = 0 — синя; ряд 0, намистинка 1: 0 + 1 = 1 — червона.</p>
+  <h2>Як черепашка виконує програму — крок за кроком</h2>
+  <ol class="trace">
+    <li><b>Ряд 1:</b> <code>y</code> = 100. Перейти на (−200, 100). Шість разів: намистинка → крок. Тепер <code>y</code> = 40.</li>
+    <li><b>Ряд 2:</b> перейти на (−200, 40). Шість разів: намистинка → крок. Тепер <code>y</code> = −20.</li>
+    <li><b>Ряд 3:</b> перейти на (−200, −20). Шість намистинок. Тепер <code>y</code> = −80.</li>
+    <li><b>Ряд 4:</b> перейти на (−200, −80). Шість намистинок. Зовнішній цикл закінчився.</li>
+    <li><code>turtle.done()</code> — вікно лишається відкритим. Усього 24 намистинки.</li>
+  </ol>
 
-  <h2>Завдання 5 ★. Трикутник</h2>
-  <p>У першому ряду 1 намистинка, у другому — 2, у третьому — 3, у четвертому — 4. Візьми програму завдання 1 і у внутрішньому циклі зміни <code>range(6)</code> → <code>range(row + 1)</code>. Ряд 0 дасть 1 намистинку, ряд 1 — 2, і так далі.</p>
-  <img src="6b-vkladeni-cykly/r5.png" width="930" height="540" alt="Трикутник: 1, 2, 3, 4 намистинки" style="max-width:520px">
-
-  <h2>Якщо не працює</h2>
-  <table>
-    <tr><th>Що бачиш</th><th>Що не так</th></tr>
-    <tr><td><code>IndentationError</code></td><td>Відступи. Під зовнішнім <code>for</code> — 4 пробіли, під внутрішнім — 8, під <code>if</code> і <code>else</code> — 12</td></tr>
-    <tr><td><code>SyntaxError</code></td><td>Забута двокрапка після <code>for</code>, <code>if</code>, <code>else</code> або лапка</td></tr>
-    <tr><td><code>NameError</code></td><td>Помилка в слові: <code>tutrle</code>, <code>rnage</code>. Перевір літери</td></tr>
-    <tr><td>Усі ряди в одному місці, один на одному</td><td>Забутий рядок <code>y = y - 60</code></td></tr>
-    <tr><td>Видно лише 1–2 ряди, решта зникли</td><td><code>y = y - 60</code> має 8 пробілів: він потрапив у внутрішній цикл, і ряди «тікають» униз за край вікна. Має бути 4</td></tr>
-    <tr><td>Одна довга лінія намистинок</td><td>Немає <code>t.goto(-200, y)</code> або в нього не той відступ</td></tr>
-  </table>
-
-  <h2>Тест</h2>
-  <p>Вибери відповідь зі списку і натисни «Перевірити». Перевірити можна лише <b>один раз</b>.</p>
+  <h2>Тест <small style="font-weight:400;font-size:17px;color:#444">(12 питань)</small></h2>
+  <p>Вибери відповідь зі списку і натисни «Перевірити». Кожне питання можна перевірити лише <b>один раз</b>. Підказка: усі відповіді є в поясненнях вище.</p>
   <div class="quiz" id="quiz"></div>
-  <p class="score" id="score">Правильно: 0 з 10</p>
-
-  <p>Після кожного завдання поклич учителя або покажи екран сусідові.</p>
-
-  <h2>Домашнє завдання</h2>
-  <p>Вивчити, що таке вкладене повторення. Порахувати: скільки разів виконається внутрішній цикл, якщо зовнішній повторюється 3 рази, а внутрішній — 7? Відповідь скажеш на уроці.</p>
+  <p class="score" id="qs">Тест: 0 з 12</p>
 </div>
-
 <script>
-const $ = id => document.getElementById(id);
-const QUIZ = [
-  { q: "Скільки рядів намистинок малює програма завдання 1? Вибери число.", ch: ["3", "4", "6", "24"], ok: "NA==", show: "4" },
-  { q: "Скільки намистинок у кожному ряду в завданні 1? Вибери число.", ch: ["4", "6", "10", "24"], ok: "Ng==", show: "6" },
-  { q: "Скільки всього намистинок у завданні 1: 4 ряди по 6? Вибери число.", ch: ["10", "12", "24", "46"], ok: "MjQ=", show: "24" },
-  { q: "Рядок <code>t.goto(-200, y)</code> виконується один раз на початку кожного ряду. Скільки разів він виконається в завданні 1?", ch: ["1", "4", "6", "24"], ok: "NA==", show: "4" },
-  { q: "У першому ряду <code>y = 100</code>. Наступний ряд на 60 нижче. Яке <code>y</code> у другому ряду?", ch: ["40", "60", "100", "160"], ok: "NDA=", show: "40" },
-  { q: "Завдання 2: скільки всього намистинок у 5 рядах по 8? Вибери число.", ch: ["13", "35", "40", "58"], ok: "NDA=", show: "40" },
-  { q: "На скільки кроків черепашка йде від однієї намистинки до наступної? Подивись на <code>t.forward(...)</code>.", ch: ["30", "60", "100", "200"], ok: "NjA=", show: "60" },
-  { q: "Який розмір намистинки? Подивись на перше число в <code>t.dot(30, \"blue\")</code>.", ch: ["6", "30", "60", "100"], ok: "MzA=", show: "30" },
-  { q: "Смугасті ряди (завдання 3): парний номер ряду — синій, непарний — червоний. Якого кольору ряд з номером <code>row = 1</code>?", ch: ["синій", "червоний"], ok: "JUQxJTg3JUQwJUI1JUQxJTgwJUQwJUIyJUQwJUJFJUQwJUJEJUQwJUI4JUQwJUI5", show: "червоний" },
-  { q: "Трикутник ★: 1 + 2 + 3 + 4 намистинок. Скільки всього? Вибери число.", ch: ["4", "10", "16", "24"], ok: "MTA=", show: "10" },
-];
-const norm = v => v.trim().toLowerCase().replace(/[\s"'«»]/g, "");
+const DATA = [{"q": "Скільки <b>рядів</b> намистинок малює програма? Вибери число.", "o": ["4", "6", "24"], "ok": "NA=="}, {"q": "Скільки намистинок у <b>кожному ряду</b>? Вибери число.", "o": ["4", "6", "10"], "ok": "Ng=="}, {"q": "Скільки намистинок <b>усього</b> (4 × 6)? Вибери число.", "o": ["10", "24", "46"], "ok": "MjQ="}, {"q": "Який цикл робить <b>ряди</b>?", "o": ["for row in range(4)", "for i in range(6)"], "ok": "Zm9ycm93aW5yYW5nZSg0KQ=="}, {"q": "Яка команда <b>ставить намистинку</b>?", "o": ["t.dot(30, \"blue\")", "t.forward(60)", "t.goto(-200, y)"], "ok": "dC5kb3QoMzAlMkNibHVlKQ=="}, {"q": "Що робить <code>t.forward(60)</code>?", "o": ["робить крок праворуч до наступної намистинки", "малює синє коло", "переходить на новий ряд"], "ok": "JUQxJTgwJUQwJUJFJUQwJUIxJUQwJUI4JUQxJTgyJUQxJThDJUQwJUJBJUQxJTgwJUQwJUJFJUQwJUJBJUQwJUJGJUQxJTgwJUQwJUIwJUQwJUIyJUQwJUJFJUQxJTgwJUQxJTgzJUQxJTg3JUQwJUI0JUQwJUJFJUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTgzJUQwJUJGJUQwJUJEJUQwJUJFJUQxJTk3JUQwJUJEJUQwJUIwJUQwJUJDJUQwJUI4JUQxJTgxJUQxJTgyJUQwJUI4JUQwJUJEJUQwJUJBJUQwJUI4"}, {"q": "Що робить <code>t.penup()</code>?", "o": ["черепашка не малює лінію, коли йде", "черепашка зникає", "черепашка малює товсту лінію"], "ok": "JUQxJTg3JUQwJUI1JUQxJTgwJUQwJUI1JUQwJUJGJUQwJUIwJUQxJTg4JUQwJUJBJUQwJUIwJUQwJUJEJUQwJUI1JUQwJUJDJUQwJUIwJUQwJUJCJUQxJThFJUQxJTk0JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQxJThFJTJDJUQwJUJBJUQwJUJFJUQwJUJCJUQwJUI4JUQwJUI5JUQwJUI0JUQwJUI1"}, {"q": "Чому дорівнює <code>y</code> у <b>другому</b> ряду? Вибери число.", "o": ["100", "40", "-20"], "ok": "NDA="}, {"q": "Скільки разів виконається рядок <code>y = y - 60</code>? Вибери число.", "o": ["1", "4", "24"], "ok": "NA=="}, {"q": "Що буде, якщо <code>range(6)</code> замінити на <code>range(3)</code>?", "o": ["у кожному ряду буде 3 намистинки", "буде 3 ряди", "нічого не зміниться"], "ok": "JUQxJTgzJUQwJUJBJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUJFJUQwJUJDJUQxJTgzJUQxJTgwJUQxJThGJUQwJUI0JUQxJTgzJUQwJUIxJUQxJTgzJUQwJUI0JUQwJUI1MyVEMCVCRCVEMCVCMCVEMCVCQyVEMCVCOCVEMSU4MSVEMSU4MiVEMCVCOCVEMCVCRCVEMCVCQSVEMCVCOA=="}, {"q": "Як зробити намистинки <b>червоними</b>?", "o": ["замінити \"blue\" на \"red\"", "замінити range(4) на range(red)", "замінити 30 на red"], "ok": "JUQwJUI3JUQwJUIwJUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4JUQxJTgyJUQwJUI4Ymx1ZSVEMCVCRCVEMCVCMHJlZA=="}, {"q": "Чому перед <code>t.dot</code> 8 пробілів?", "o": ["бо він усередині внутрішнього циклу", "так просто красивіше", "це помилка"], "ok": "JUQwJUIxJUQwJUJFJUQwJUIyJUQxJTk2JUQwJUJEJUQxJTgzJUQxJTgxJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI0JUQwJUI4JUQwJUJEJUQxJTk2JUQwJUIyJUQwJUJEJUQxJTgzJUQxJTgyJUQxJTgwJUQxJTk2JUQxJTg4JUQwJUJEJUQxJThDJUQwJUJFJUQwJUIzJUQwJUJFJUQxJTg2JUQwJUI4JUQwJUJBJUQwJUJCJUQxJTgz"}];
+const norm = v => String(v).toLowerCase().replace(/[\s"'«»]/g, "");
 const enc = v => btoa(encodeURIComponent(norm(v)));
-let right = 0, answered = 0;
-$("quiz").innerHTML = QUIZ.map((t, k) => `
-  <div class="q" id="q${k}">
-    <p><b>${k + 1}.</b> ${t.q}</p>
-    <div class="ans">
-      <select id="a${k}" aria-label="Відповідь ${k + 1}"><option value="">?</option>${t.ch.map(c => `<option>${c}</option>`).join("")}</select>
-      <button data-q="${k}">Перевірити</button>
-      <span class="mark" id="m${k}"></span>
-    </div>
-  </div>`).join("");
-function check(k) {
-  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
-  if (box.classList.contains("yes") || box.classList.contains("no")) return;
-  if (!inp.value) { inp.focus(); return; }
-  const good = enc(inp.value) === t.ok;
-  box.classList.add(good ? "yes" : "no");
-  inp.disabled = true;
-  box.querySelector("button").disabled = true;
-  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
-  if (good) right++;
-  answered++;
-  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}` + (answered === QUIZ.length ? " — покажи вчителю" : "");
-}
-$("quiz").addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+let qr = 0, qd = 0;
+const quizEl = document.getElementById("quiz");
+quizEl.innerHTML = DATA.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q.q}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}"><option value="">?</option>${q.o.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join("")}</select><button data-q="${k}">Перевірити</button><span class="mark" id="mk${k}"></span></div></div>`).join("");
+quizEl.addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  const k = +b.dataset.q, box = document.getElementById("q" + k), s = document.getElementById("a" + k);
+  if (!s.value || box.classList.contains("yes") || box.classList.contains("no")) return;
+  const ok = enc(s.value) === DATA[k].ok;
+  box.classList.add(ok ? "yes" : "no"); s.disabled = true; b.disabled = true;
+  document.getElementById("mk" + k).textContent = ok ? "✓ Правильно" : "✗ Ні";
+  qr += ok; qd++;
+  document.getElementById("qs").textContent = `Тест: ${qr} з ${DATA.length}` + (qd === DATA.length ? " — покажи вчителю" : "");
+});
 </script>
 </body>
 </html>
