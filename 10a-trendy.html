@@ -7,372 +7,180 @@
 <style>
   * { box-sizing: border-box; }
   :root { --a: #1f5f99; --a2: #eaf2fa; --ok: #1a7f37; --bad: #b42318; }
-  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
-  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 22px; }
-  section { margin-top: 24px; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.5 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1000px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 26px 22px; }
+  section { margin-top: 18px; }
   h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
   h1 span { font-weight: 400; color: #555; font-size: 19px; }
-  h2 { font-size: 24px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; }
-  h2 small, h3 small { font-weight: 400; font-size: 17px; color: #444; }
-  h3 { font-size: 21px; margin: 18px 0 6px; color: #173f66; }
-  p { margin: 0 0 8px; max-width: 70em; }
-  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
-  code, .f { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
-  .f { background: #f4f6f9; border: 1px solid #d5dbe3; border-radius: 4px; padding: 0 5px; white-space: nowrap; }
-  .big { font-weight: 600; background: #fff6dd; border-left: 5px solid #c79100; padding: 8px 12px; margin: 0 0 8px; }
-  .def { background: var(--a2); border-left: 5px solid var(--a); padding: 6px 12px; margin: 0 0 10px; }
-  .warn { background: #fdf3f2; border-left: 5px solid var(--bad); padding: 6px 12px; margin: 0 0 10px; }
-  .plan { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 6px; }
-  .plan div { border: 2px solid #d5dae0; border-radius: 10px; padding: 6px 12px; font-size: 17px; }
-  .plan b { display: block; font-size: 18px; color: var(--a); }
-  table { border-collapse: collapse; margin: 0 0 10px; }
-  td, th { border: 1px solid #c9ced3; padding: 5px 10px; text-align: left; vertical-align: top; }
-  th { background: #eef2f6; }
-  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
-  .wrap { overflow-x: auto; }
-  .minis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0 0 10px; }
-  .mini { border: 2px solid #d5dae0; border-radius: 10px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-  .mini b { font-size: 17px; } .mini span { font-size: 15px; color: #333; }
+  h2 { font-size: 24px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; }
+  h2 small { font-weight: 400; font-size: 17px; color: #444; }
+  h3 { font-size: 21px; margin: 16px 0 4px; color: #173f66; }
+  p { margin: 0 0 8px; }
+  ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 3px; }
+  .f { font-family: Consolas, "Courier New", monospace; font-weight: 700; background: #f4f6f9; border: 1px solid #d5dbe3; border-radius: 4px; padding: 0 5px; white-space: nowrap; }
+  .big { background: #fff6dd; border-left: 5px solid #c79100; padding: 8px 12px; margin: 0 0 8px; }
+  .def { background: var(--a2); border-left: 5px solid var(--a); padding: 6px 12px; margin: 0 0 8px; }
+  .warn { background: #fdf3f2; border-left: 5px solid var(--bad); padding: 6px 12px; margin: 0 0 8px; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: center; margin: 0 0 6px; }
+  .three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 8px; }
+  .mini { border: 2px solid #d5dae0; border-radius: 10px; padding: 6px 8px; display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: 17px; }
   canvas { display: block; width: 100%; height: auto; background: #fff; }
-  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
-  .charts6 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 8px; }
-  .chartbox { border: 2px solid #d5dae0; border-radius: 10px; padding: 6px 8px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-  .chartbox.yes, .q.yes, .fld.yes { border-color: var(--ok); background: #f3faf4; }
-  .chartbox.no, .q.no, .fld.no { border-color: var(--bad); background: #fdf3f2; }
-  select, input[type=text] { font: 700 17px "Segoe UI", Arial, sans-serif; padding: 4px 6px; border: 2px solid #9aa4ae; border-radius: 6px; background: #fff; color: #111; max-width: 100%; }
-  select { cursor: pointer; }
-  input[type=text] { width: 7em; }
-  input[type=range] { width: 100%; accent-color: var(--a); }
-  button { font: inherit; font-size: 17px; padding: 5px 14px; border: 2px solid var(--a); border-radius: 6px; background: var(--a); color: #fff; font-weight: 700; cursor: pointer; }
-  button.ghost { background: #fff; color: var(--a); }
-  button:disabled { opacity: .55; cursor: default; }
-  button:focus-visible, select:focus-visible, input:focus-visible, label:focus-within { outline: 3px solid #f5b400; outline-offset: 1px; }
-  .res { font-weight: 700; font-size: 20px; margin: 4px 0 8px; min-height: 1.4em; }
-  .res.ok { color: var(--ok); }
-  .sl { display: grid; grid-template-columns: 9em minmax(0, 1fr) 5em; gap: 10px; align-items: center; margin: 0 0 6px; font-weight: 700; }
-  .sl output { font-family: Consolas, monospace; font-size: 20px; text-align: right; }
-  .meter { font-size: 20px; font-weight: 700; margin: 4px 0; }
-  .flds { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; margin: 0 0 8px; }
-  .fld { border: 2px solid #d5dae0; border-radius: 8px; padding: 6px 10px; display: flex; flex-direction: column; gap: 4px; }
-  .fld label { font-size: 17px; }
+  table { border-collapse: collapse; margin: 0 0 6px; }
+  td, th { border: 1px solid #c9ced3; padding: 3px 9px; text-align: right; font-variant-numeric: tabular-nums; }
+  th { background: #eef2f6; text-align: left; }
+  .wrap { overflow-x: auto; }
   .toggle { display: inline-flex; gap: 8px; align-items: center; font-weight: 700; cursor: pointer; margin: 0 0 6px; }
   .toggle input { width: 20px; height: 20px; }
+  select { font: 700 17px "Segoe UI", Arial, sans-serif; padding: 4px 6px; border: 2px solid #9aa4ae; border-radius: 6px; background: #fff; color: #111; max-width: 100%; cursor: pointer; }
+  button { font: inherit; font-size: 17px; padding: 4px 14px; border: 2px solid var(--a); border-radius: 6px; background: #fff; color: var(--a); font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
   .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin-bottom: 8px; }
   .q { border: 2px solid #d5dae0; border-radius: 8px; padding: 8px 12px; }
   .q p { margin: 0 0 6px; }
   .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .q.yes { border-color: var(--ok); background: #f3faf4; } .q.no { border-color: var(--bad); background: #fdf3f2; }
   .mark { font-weight: 700; } .q.yes .mark { color: var(--ok); } .q.no .mark { color: var(--bad); }
   .score { font-weight: 700; font-size: 22px; }
-  @media (max-width: 900px) { .minis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .plan, .two, .quiz { grid-template-columns: 1fr; } .charts6 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 560px) { .sheet { padding: 12px 16px; } .charts6, .minis { grid-template-columns: 1fr; } .sl { grid-template-columns: 6em minmax(0, 1fr) 4em; } }
+  @media (max-width: 800px) { .two, .quiz { grid-template-columns: 1fr; } .three { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .sheet { padding: 12px 16px; } .three { grid-template-columns: 1fr; } }
+  @media print { body { background: #fff; font-size: 13px; } .sheet { border: 0; margin: 0; padding: 0; max-width: none; } h1 { font-size: 22px; } h2 { font-size: 18px; } h3 { font-size: 15px; margin-top: 10px; } .mini { font-size: 12px; } #test { break-before: page; } .two { grid-template-columns: 1fr 1fr !important; gap: 12px; } .three { grid-template-columns: repeat(3, 1fr) !important; } .quiz { grid-template-columns: 1fr 1fr !important; gap: 6px 10px; } .q { padding: 4px 8px; } .big, .def, .warn { padding: 4px 10px; } p { margin-bottom: 5px; } section { margin-top: 10px; } h3 { margin: 8px 0 3px; } td, th { padding: 1px 7px; } select, button { font-size: 12px; } .toggle { display: none; } }
 </style>
 </head>
 <body>
 <div class="sheet">
   <h1>Ряди даних, тренди і прогноз <span>· 10-А · візуалізація рядів і трендів даних</span></h1>
-  <p class="big">Аналітики щодня дивляться на графіки і відповідають на три питання: <b>куди рухаються дані</b>, <b>наскільки швидко</b> і <b>що буде далі</b>. Сьогодні розберемося, як вони це роблять: як вибрати діаграму, як знайти лінію тренду за формулою, що таке R², навіщо ковзне середнє і як графіки обманюють.</p>
-  <div class="plan">
-    <div><b>1. Читаємо</b>теорія з прикладами і живими графіками — уважно, тест буде саме по ній</div>
-    <div><b>2. Робимо</b>4 завдання прямо на сторінці: впізнати графік, підібрати лінію, порахувати тренд і ковзне середнє</div>
-    <div><b>3. Тест</b>15 питань, кожне можна перевірити лише один раз</div>
-  </div>
+  <p class="big">Сьогодні спокійно <b>читаємо і розбираємося</b>: що таке ряд даних і тренд, як провести лінію тренду, як за нею зробити прогноз і як графіки можуть обманювати. Потім — тест із 12 простих питань. Усі відповіді є в тексті.</p>
 
   <section>
-    <h2>Частина 1. Теорія</h2>
+    <h2>Частина 1. Читаємо</h2>
 
     <h3>1. Ряд даних</h3>
-    <p class="def"><b>Ряд даних</b> (часовий ряд) — це значення однієї величини, виміряні одне за одним через рівні проміжки часу: щодня, щотижня, щомісяця.</p>
-    <p>Приклади: температура о 12:00 кожного дня; кількість учасників шкільного Telegram-каналу щопонеділка; рахунок за світло щомісяця. У кожного значення є <b>момент часу</b> (номер: 1, 2, 3, …) — його позначають <span class="f">x</span>, і <b>саме значення</b> — його позначають <span class="f">y</span>.</p>
-
-    <h3>2. Яку діаграму вибрати</h3>
+    <p class="def"><b>Ряд даних</b> — це значення однієї величини, виміряні <b>одне за одним у часі</b>: щодня, щотижня, щомісяця.</p>
+    <p>Наприклад, адміністратор шкільного Telegram-каналу щопонеділка дивиться, скільки в ньому учасників:</p>
     <div class="wrap"><table>
-      <tr><th>Діаграма</th><th>Для чого</th><th>Приклад</th></tr>
-      <tr><td><b>Лінійна</b> (графік)</td><td>зміна величини <b>в часі</b> — головна для рядів даних</td><td>температура за місяць</td></tr>
-      <tr><td><b>Стовпчикова</b> (гістограма)</td><td><b>порівняння</b> кількох категорій</td><td>скільки учнів у кожному класі</td></tr>
-      <tr><td><b>Кругова</b></td><td><b>частки одного цілого</b> (разом 100 %)</td><td>на що сім'я витрачає бюджет</td></tr>
-      <tr><td><b>Точкова</b> (діаграма розсіювання)</td><td><b>зв'язок двох величин</b>: чи росте одна, коли росте інша</td><td>зріст і розмір взуття учнів</td></tr>
+      <tr><th>Тиждень</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+      <tr><th>Учасників</th><td>64</td><td>70</td><td>81</td><td>79</td><td>90</td><td>98</td><td>97</td><td>110</td></tr>
     </table></div>
+    <p>Інші приклади рядів даних: температура кожного дня, ціна хліба кожного місяця, кількість кроків за день, оцінки за кожну контрольну.</p>
 
-    <h3>3. З чого складається ряд даних</h3>
-    <p>Майже кожен реальний ряд — це суміш кількох частин. Їх треба вміти бачити окремо:</p>
-    <div class="minis">
-      <div class="mini"><canvas id="m1" width="260" height="130"></canvas><b>Тренд</b><span>загальний напрямок за довгий час: зростає, спадає або тримається рівно.</span></div>
-      <div class="mini"><canvas id="m2" width="260" height="130"></canvas><b>Сезонність</b><span>коливання, що <b>регулярно повторюються</b> з однаковим періодом: морозиво продають більше щоліта.</span></div>
-      <div class="mini"><canvas id="m3" width="260" height="130"></canvas><b>Шум</b><span>дрібні <b>випадкові</b> коливання вгору-вниз без жодної закономірності.</span></div>
-      <div class="mini"><canvas id="m4" width="260" height="130"></canvas><b>Викид</b><span>одне значення, що <b>різко вибивається</b>: помилка вимірювання або незвичайна подія.</span></div>
-    </div>
-
-    <h3>4. Лінійний тренд: <span class="f">y = a·x + b</span></h3>
-    <p>Якщо точки на графіку йдуть приблизно вздовж прямої, через них проводять <b>лінію тренду</b>. Пряма задається рівнянням <span class="f">y = a·x + b</span>:</p>
-    <ul>
-      <li><b>a — нахил</b>: на скільки <b>в середньому</b> змінюється значення за один крок часу. <span class="f">a &gt; 0</span> — зростання, <span class="f">a &lt; 0</span> — спад, <span class="f">a ≈ 0</span> — тренду немає.</li>
-      <li><b>b</b> — де лінія перетинає вісь y (значення при <span class="f">x = 0</span>).</li>
-    </ul>
-    <p>Приклад: тренд <span class="f">y = 12·x + 108</span> для підписників по тижнях означає «щотижня в середньому <b>+12</b> підписників». Прогноз на 10-й тиждень: <span class="f">12·10 + 108 = 228</span>.</p>
-
-    <h3>5. Метод найменших квадратів — як знайти найкращу лінію</h3>
-    <p>Через точки можна провести безліч прямих. Яка найкраща? Для кожної точки рахують <b>відхилення</b> — наскільки справжнє значення вище або нижче лінії. Найкраща лінія — та, у якої <b>сума квадратів відхилень найменша</b>. Звідси й назва.</p>
-    <p class="def">Навіщо квадрати? Відхилення бувають додатні (точка над лінією) і від'ємні (під лінією). Якщо їх просто додати, вони <b>знищать одне одного</b>, і погана лінія здаватиметься хорошою. Квадрат завжди додатний, а великі промахи після піднесення до квадрата важать значно більше.</p>
-    <p>Формули (так рахує Excel, Google Таблиці і будь-яка програма):</p>
-    <p class="def"><span class="f">x̄</span> — середнє всіх x, &nbsp; <span class="f">ȳ</span> — середнє всіх y<br>
-      <span class="f">a = Σ(x − x̄)·(y − ȳ) / Σ(x − x̄)²</span><br>
-      <span class="f">b = ȳ − a·x̄</span><br>
-      <small>Σ (сигма) означає «додати для всіх точок».</small></p>
-    <p><b>Розв'язаний приклад.</b> Ряд: 3, 5, 4, 8 (x = 1, 2, 3, 4).</p>
-    <div class="wrap"><table>
-      <tr><th class="n">x</th><th class="n">y</th><th class="n">x − x̄</th><th class="n">y − ȳ</th><th class="n">(x − x̄)·(y − ȳ)</th><th class="n">(x − x̄)²</th></tr>
-      <tr><td class="n">1</td><td class="n">3</td><td class="n">−1,5</td><td class="n">−2</td><td class="n">3</td><td class="n">2,25</td></tr>
-      <tr><td class="n">2</td><td class="n">5</td><td class="n">−0,5</td><td class="n">0</td><td class="n">0</td><td class="n">0,25</td></tr>
-      <tr><td class="n">3</td><td class="n">4</td><td class="n">0,5</td><td class="n">−1</td><td class="n">−0,5</td><td class="n">0,25</td></tr>
-      <tr><td class="n">4</td><td class="n">8</td><td class="n">1,5</td><td class="n">3</td><td class="n">4,5</td><td class="n">2,25</td></tr>
-      <tr><th colspan="4">x̄ = (1+2+3+4)/4 = 2,5 &nbsp; ȳ = (3+5+4+8)/4 = 5 &nbsp; Сума:</th><th class="n">7</th><th class="n">5</th></tr>
-    </table></div>
-    <p><span class="f">a = 7 / 5 = 1,4</span>, &nbsp; <span class="f">b = 5 − 1,4·2,5 = 1,5</span>. Лінія тренду: <span class="f">y = 1,4·x + 1,5</span>. Прогноз для x = 5: <span class="f">1,4·5 + 1,5 = 8,5</span>.</p>
-
-    <h3>6. R² — наскільки лінії можна вірити</h3>
-    <p><b>R²</b> (коефіцієнт детермінації) — число від <b>0</b> до <b>1</b>. Воно показує, наскільки добре лінія тренду описує точки:</p>
-    <ul>
-      <li><b>R² близько 1</b> (0,9 і більше) — точки лежать майже на лінії, тренду можна довіряти;</li>
-      <li><b>R² близько 0</b> — точки розкидані, лінія майже нічого не пояснює, прогноз за нею безглуздий.</li>
-    </ul>
-
-    <h3>7. Не лише пряма: види ліній тренду в Excel</h3>
-    <div class="wrap"><table>
-      <tr><th>Лінія тренду</th><th>Коли вибирати</th><th>Приклад</th></tr>
-      <tr><td><b>Лінійна</b></td><td>значення змінюється <b>на однакову величину</b> за крок</td><td>щомісяця +500 грн до заощаджень</td></tr>
-      <tr><td><b>Експоненційна</b></td><td>значення змінюється <b>в однакову кількість разів</b>: подвоюється, потроюється</td><td>перегляди «вірусного» відео, розмноження бактерій</td></tr>
-      <tr><td><b>Логарифмічна</b></td><td>спершу швидке зростання, потім <b>сповільнюється</b></td><td>швидкість друку, коли вчишся сліпому методу</td></tr>
-      <tr><td><b>Поліноміальна</b></td><td>дані мають <b>підйоми і спади</b> (хвилі)</td><td>кількість відвідувачів парку протягом дня</td></tr>
-      <tr><td><b>Ковзне середнє</b></td><td>треба <b>згладити шум</b> і побачити загальну форму</td><td>курс валюти, щоденні кроки</td></tr>
-    </table></div>
-
-    <h3>8. Ковзне середнє</h3>
-    <p class="def"><b>Ковзне середнє з періодом k</b> — це середнє з k сусідніх значень, яке «ковзає» по ряду на один крок.</p>
-    <p>Приклад, період 3, ряд 10, 14, 12, 18, 16:</p>
-    <ul>
-      <li>(10 + 14 + 12) / 3 = <b>12</b></li>
-      <li>(14 + 12 + 18) / 3 = <b>14,67</b></li>
-      <li>(12 + 18 + 16) / 3 = <b>15,33</b></li>
-    </ul>
-    <p>З 5 значень вийшло 3: для перших k − 1 точок ковзного середнього немає. Нова лінія плавніша — шум зник, а тренд (зростання) видно краще.</p>
-
-    <h3>9. Прогноз і його межі</h3>
-    <ul>
-      <li><b>Інтерполяція</b> — оцінка <b>між</b> відомими значеннями (яка була температура о 13:00, якщо знаємо 12:00 і 14:00). Зазвичай точна.</li>
-      <li><b>Екстраполяція</b> — прогноз <b>за межами</b> даних, у майбутнє. Чим далі, тим менш надійно.</li>
-    </ul>
-    <p class="warn">Дитина з 6 до 12 років росте приблизно на 6 см щороку. Якщо продовжити цю пряму до 40 років, вийде зріст понад 2,5 м — нісенітниця. Тренд не знає про події, які змінюють правила.</p>
-    <p class="warn"><b>Кореляція — не причина.</b> Влітку зростають і продажі морозива, і кількість сонячних опіків. Морозиво не спричиняє опіків — в обох одна спільна причина: спека.</p>
-
-    <h3>10. Як графіки обманюють</h3>
-    <p>Той самий результат можна показати так, що він здасться катастрофою або дрібницею. Головні прийоми:</p>
-    <ul>
-      <li><b>Вісь y починається не з нуля</b> — маленька різниця виглядає величезною. Спробуй сам нижче.</li>
-      <li><b>Обрізаний період</b> — показують лише ті місяці, де «все росте», а спади ховають.</li>
-      <li><b>Різний масштаб</b> на двох графіках, які порівнюють.</li>
-    </ul>
+    <h3>2. Як побачити ряд: лінійна діаграма</h3>
     <div class="two">
       <div>
-        <p>Середній бал за тест у трьох класах: <b>7,8</b>, <b>8,0</b> і <b>8,3</b>. Різниця — пів бала.</p>
-        <label class="toggle"><input type="checkbox" id="zero"> Вісь y з нуля</label>
-        <p id="zeroTxt"></p>
+        <p>Числа в таблиці важко порівнювати. Тому ряд даних малюють <b>лінійною діаграмою</b> (графіком): знизу — час (тижні), збоку — значення. Кожне число стає точкою, а точки з'єднують лінією.</p>
+        <p>Тепер одразу видно: учасників <b>загалом стає більше</b>, хоча на 4-му і 7-му тижні було трохи менше, ніж тижнем раніше.</p>
+        <p>Лінійна діаграма — головна для змін <b>у часі</b>. Кругова діаграма показує частини одного цілого, а стовпчикова — порівнює різні речі (наприклад, класи між собою).</p>
       </div>
-      <canvas id="axis" width="520" height="240" aria-label="Стовпчикова діаграма середніх балів трьох класів"></canvas>
+      <canvas id="c1" width="460" height="250" aria-label="Графік учасників каналу за 8 тижнів"></canvas>
     </div>
 
-    <h3>11. Те саме в Excel або Google Таблицях</h3>
-    <ol>
-      <li>Виділи стовпець із даними → <b>Вставлення → Діаграма → Графік</b> (лінійна).</li>
-      <li>Клацни правою кнопкою на лінію → <b>Додати лінію тренду</b> → вибери вид (лінійна, експоненційна…).</li>
-      <li>Постав галочки <b>«Показувати рівняння на діаграмі»</b> і <b>«Показувати R²»</b>.</li>
-      <li>У полі <b>«Прогноз вперед на … періодів»</b> вкажи, на скільки кроків продовжити лінію.</li>
-    </ol>
-  </section>
+    <h3>3. Тренд — куди рухаються дані</h3>
+    <p class="def"><b>Тренд</b> — це загальний напрямок, у якому змінюються дані за довгий час. Дрібні стрибки вгору-вниз не важливі — важливо, куди дані йдуть загалом.</p>
+    <div class="three">
+      <div class="mini"><canvas id="t1" width="260" height="120"></canvas><b>Зростаючий тренд</b>значення загалом більшають: кількість смартфонів у світі.</div>
+      <div class="mini"><canvas id="t2" width="260" height="120"></canvas><b>Спадний тренд</b>значення загалом меншають: ціна старої моделі телефона.</div>
+      <div class="mini"><canvas id="t3" width="260" height="120"></canvas><b>Тренду немає</b>значення скачуть навколо одного рівня: зріст дорослої людини.</div>
+    </div>
 
-  <section>
-    <h2>Частина 2. Завдання</h2>
+    <h3>4. Сезонність і викид</h3>
+    <ul>
+      <li><b>Сезонність</b> — коли значення <b>регулярно повторюються</b>: морозиво купують більше щоліта, а менше щозими, і так кожного року. Графік схожий на хвилі.</li>
+      <li><b>Викид</b> — одне значення, яке <b>різко вибивається</b> з ряду. Наприклад, у каналі завжди 60–110 учасників, а одного тижня записано 1100. Це або помилка (зайвий нуль), або незвичайна подія. Викид не можна сприймати як тренд.</li>
+    </ul>
 
-    <h3>Завдання 1. Що на графіку? <small>(6 графіків)</small></h3>
-    <p>Під кожним графіком вибери, що на ньому головне. Кожен варіант використовується <b>один раз</b>.</p>
-    <div class="charts6" id="six"></div>
-    <p><button id="chk1">Перевірити</button> <button class="ghost" id="again1">Спробувати ще раз</button></p>
-    <p class="res" id="res1"></p>
+    <h3>5. Лінія тренду</h3>
+    <div class="two">
+      <canvas id="c2" width="460" height="250" aria-label="Точки ряду і червона лінія тренду"></canvas>
+      <div>
+        <p><b>Лінія тренду</b> — це пряма, яка проходить <b>якнайближче до всіх точок</b> одразу. Вона «вирівнює» стрибки і показує головний напрямок.</p>
+        <p>Комп'ютер проводить її так, щоб відстані від точок до лінії були загалом найменшими. Цей спосіб називають <b>методом найменших квадратів</b>.</p>
+      </div>
+    </div>
+    <p>Пряму записують рівнянням <span class="f">y = a·x + b</span>, де <span class="f">x</span> — номер тижня, <span class="f">y</span> — значення. Для нашого каналу лінія тренду приблизно така: <span class="f">y = 6·x + 58</span>.</p>
+    <ul>
+      <li>Число <b>a = 6</b> — найважливіше: щотижня в каналі стає <b>в середньому на 6 учасників більше</b>.</li>
+      <li>Якщо <b>a більше нуля</b> — тренд зростаючий; якщо <b>a менше нуля</b> (наприклад, <span class="f">y = −3·x + 50</span>) — спадний, щокроку на 3 менше; якщо <b>a = 0</b> — тренду немає.</li>
+      <li>Число <b>b = 58</b> — з якого рівня «стартує» лінія.</li>
+    </ul>
 
-    <h3>Завдання 2. Проведи лінію тренду сам <small>(повзунки)</small></h3>
-    <p>Кількість учасників шкільного Telegram-каналу за 10 тижнів: <b>64, 70, 81, 79, 90, 98, 97, 110, 118, 121</b>. Рухай повзунки <b>a</b> (нахил) і <b>b</b>, щоб лінія пройшла якнайближче до точок. Червоні відрізки — відхилення. Мета — щоб <b>сума квадратів відхилень</b> стала меншою за <b>95</b>.</p>
+    <h3>6. Прогноз</h3>
+    <p class="def"><b>Прогноз</b> — це продовження лінії тренду в майбутнє: у рівняння підставляють номер майбутнього тижня.</p>
+    <p>Скільки учасників буде на 12-му тижні? Підставляємо <span class="f">x = 12</span>: <span class="f">y = 6·12 + 58 = 72 + 58 = 130</span>. Прогноз — приблизно <b>130 учасників</b>.</p>
+    <p class="warn"><b>Чим далі в майбутнє, тим менш точний прогноз.</b> Тренд нічого не знає про нові події: канал можуть закрити, або про нього напише відомий блогер. Ще приклад: дитина росте приблизно на 6 см щороку. Якщо продовжити цю лінію до 40 років, вийде зріст понад 2,5 метра — що, звісно, нісенітниця. Прогноз на тиждень уперед надійніший, ніж на кілька років.</p>
+
+    <h3>7. Як графіки можуть обманювати</h3>
     <div class="two">
       <div>
-        <div class="sl"><label for="sa">a (нахил)</label><input type="range" id="sa" min="0" max="15" step="0.1" value="2"><output id="oa">2</output></div>
-        <div class="sl"><label for="sb">b</label><input type="range" id="sb" min="20" max="110" step="1" value="90"><output id="ob">90</output></div>
-        <p class="meter" id="sse"></p>
-        <p class="res" id="res2"></p>
+        <p>Середній бал за тест у трьох класах: <b>7,8</b>, <b>8,0</b> і <b>8,3</b> — різниця всього пів бала.</p>
+        <p>Але якщо вісь значень почати <b>не з нуля</b>, а з 7,7, стовпчики виглядатимуть так, ніби один клас у кілька разів кращий за інший. <b>Маленька різниця здається величезною.</b> Тому, дивлячись на будь-який графік, спершу глянь, з якого числа починається вісь.</p>
+        <label class="toggle"><input type="checkbox" id="zero"> Почати вісь з нуля</label>
       </div>
-      <canvas id="fit" width="520" height="300" aria-label="Точки ряду і лінія тренду, яку ти підбираєш"></canvas>
+      <canvas id="axis" width="460" height="230" aria-label="Стовпчикова діаграма середніх балів трьох класів"></canvas>
     </div>
-
-    <h3>Завдання 3. Порахуй лінію тренду за формулою</h3>
-    <p>Ряд: <b>2, 4, 5, 9</b> (x = 1, 2, 3, 4). Рахуй так само, як у розв'язаному прикладі в пункті 5 теорії. Дробові числа вводь з крапкою або комою, наприклад <code>2,5</code>.</p>
-    <div class="flds" id="f3"></div>
-    <p><button id="chk3">Перевірити</button></p>
-    <p class="res" id="res3"></p>
-
-    <h3>Завдання 4. Ковзне середнє</h3>
-    <p>Температура вдень за тиждень: <b>4, 8, 6, 10, 2, 9, 7</b> °C. Порахуй ковзне середнє з періодом <b>3</b> (як у пункті 8 теорії). Має вийти 5 чисел, усі цілі.</p>
-    <div class="flds" id="f4"></div>
-    <p><button id="chk4">Перевірити</button></p>
-    <p class="res" id="res4"></p>
-    <canvas id="ma" width="760" height="260" aria-label="Температура і ковзне середнє" hidden></canvas>
   </section>
 
-  <section>
-    <h2>Частина 3. Тест <small>(15 питань)</small></h2>
-    <p>Вибери відповідь зі списку і натисни «Перевірити». Кожне питання можна перевірити лише <b>один раз</b>, тож спершу подумай або перечитай теорію.</p>
+  <section id="test">
+    <h2>Частина 2. Тест <small>(12 питань)</small></h2>
+    <p>Вибери відповідь зі списку і натисни «Перевірити». Кожне питання можна перевірити лише <b>один раз</b>. Не знаєш — перечитай потрібний пункт тексту вище.</p>
     <div class="quiz" id="quiz"></div>
-    <p class="score" id="qs">Тест: 0 з 15</p>
+    <p class="score" id="qs">Тест: 0 з 12</p>
   </section>
 
   <section>
     <h2>Домашнє завдання</h2>
-    <p>Відкрий прогноз погоди на 10 днів для свого села чи міста. Подивись на денні температури і будь готовий сказати на початку наступного уроку: <b>є тренд чи ні</b>, якщо є — <b>зростаючий чи спадний</b>, і чи можна за ним передбачити погоду на місяць уперед (чому ні?).</p>
+    <p>Відкрий прогноз погоди на 10 днів для свого села чи міста і подивись на денні температури. На початку наступного уроку скажеш: <b>є тренд чи ні</b>, і якщо є — <b>зростаючий чи спадний</b>.</p>
   </section>
 </div>
 
 <script>
-const DATA = {"six": ["JUQxJTgxJUQwJUI1JUQwJUI3JUQwJUJFJUQwJUJEJUQwJUJEJUQxJTk2JUQxJTgxJUQxJTgyJUQxJThD", "JUQwJUI3JUQxJTgwJUQwJUJFJUQxJTgxJUQxJTgyJUQwJUIwJUQxJThFJUQxJTg3JUQwJUI4JUQwJUI5JUQxJTgyJUQxJTgwJUQwJUI1JUQwJUJEJUQwJUI0", "JUQwJUIyJUQwJUI4JUQwJUJBJUQwJUI4JUQwJUI0", "JUQwJUI1JUQwJUJBJUQxJTgxJUQwJUJGJUQwJUJFJUQwJUJEJUQwJUI1JUQwJUJEJUQxJTg2JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI1JUQwJUI3JUQxJTgwJUQwJUJFJUQxJTgxJUQxJTgyJUQwJUIwJUQwJUJEJUQwJUJEJUQxJThG", "JUQxJTgxJUQwJUJGJUQwJUIwJUQwJUI0JUQwJUJEJUQwJUI4JUQwJUI5JUQxJTgyJUQxJTgwJUQwJUI1JUQwJUJEJUQwJUI0", "JUQwJUJCJUQwJUI4JUQxJTg4JUQwJUI1JUQxJTg4JUQxJTgzJUQwJUJDJTJDJUQxJTgyJUQxJTgwJUQwJUI1JUQwJUJEJUQwJUI0JUQxJTgzJUQwJUJEJUQwJUI1JUQwJUJDJUQwJUIwJUQxJTk0"], "t3": [{"t": "x̄ (середнє x)", "ok": "Mi41"}, {"t": "ȳ (середнє y)", "ok": "NQ=="}, {"t": "Σ(x − x̄)·(y − ȳ)", "ok": "MTE="}, {"t": "Σ(x − x̄)²", "ok": "NQ=="}, {"t": "a = …", "ok": "Mi4y"}, {"t": "b = …", "ok": "LTAuNQ=="}, {"t": "Прогноз для x = 6", "ok": "MTIuNw=="}], "t4": [{"t": "Пн–Ср", "ok": "Ng=="}, {"t": "Вт–Чт", "ok": "OA=="}, {"t": "Ср–Пт", "ok": "Ng=="}, {"t": "Чт–Сб", "ok": "Nw=="}, {"t": "Пт–Нд", "ok": "Ng=="}], "quiz": [{"q": "Яка діаграма найкраще показує, як змінювалась температура протягом місяця?", "o": ["кругова", "лінійна", "точкова", "жодна"], "ok": "JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJEJUQwJUIw"}, {"q": "Яка діаграма підходить, щоб показати, яку частку сімейного бюджету витрачають на їжу, житло і транспорт?", "o": ["лінійна", "точкова", "кругова", "лінія тренду"], "ok": "JUQwJUJBJUQxJTgwJUQxJTgzJUQwJUIzJUQwJUJFJUQwJUIyJUQwJUIw"}, {"q": "Щоб перевірити, чи пов'язані зріст і розмір взуття учнів, найкраще взяти діаграму…", "o": ["кругову", "точкову", "лінійну", "жодну"], "ok": "JUQxJTgyJUQwJUJFJUQxJTg3JUQwJUJBJUQwJUJFJUQwJUIyJUQxJTgz"}, {"q": "Продаж морозива щоліта зростає, щозими падає, і так щороку. Як це називається?", "o": ["викид", "шум", "сезонність", "екстраполяція"], "ok": "JUQxJTgxJUQwJUI1JUQwJUI3JUQwJUJFJUQwJUJEJUQwJUJEJUQxJTk2JUQxJTgxJUQxJTgyJUQxJThD"}, {"q": "Тренд: <span class=\"f\">y = −4·x + 200</span>. Що відбувається зі значенням за кожен крок?", "o": ["зростає на 4", "зменшується на 4", "зменшується на 200", "не змінюється"], "ok": "JUQwJUI3JUQwJUJDJUQwJUI1JUQwJUJEJUQxJTg4JUQxJTgzJUQxJTk0JUQxJTgyJUQxJThDJUQxJTgxJUQxJThGJUQwJUJEJUQwJUIwNA=="}, {"q": "Тренд: <span class=\"f\">y = 15·x + 90</span>. Який прогноз для <span class=\"f\">x = 10</span>? Вибери число.", "o": ["105", "150", "240", "1590"], "ok": "MjQw"}, {"q": "Що робить найменшим метод найменших квадратів?", "o": ["кількість точок", "суму квадратів відхилень точок від лінії", "нахил лінії", "значення b"], "ok": "JUQxJTgxJUQxJTgzJUQwJUJDJUQxJTgzJUQwJUJBJUQwJUIyJUQwJUIwJUQwJUI0JUQxJTgwJUQwJUIwJUQxJTgyJUQxJTk2JUQwJUIyJUQwJUIyJUQxJTk2JUQwJUI0JUQxJTg1JUQwJUI4JUQwJUJCJUQwJUI1JUQwJUJEJUQxJThDJUQxJTgyJUQwJUJFJUQxJTg3JUQwJUJFJUQwJUJBJUQwJUIyJUQxJTk2JUQwJUI0JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQxJTk3"}, {"q": "Навіщо відхилення підносять до квадрата?", "o": ["щоб числа були більші", "щоб додатні й від'ємні відхилення не знищували одне одного", "так красивіше", "щоб лінія була крутіша"], "ok": "JUQxJTg5JUQwJUJFJUQwJUIxJUQwJUI0JUQwJUJFJUQwJUI0JUQwJUIwJUQxJTgyJUQwJUJEJUQxJTk2JUQwJUI5JUQwJUIyJUQxJTk2JUQwJUI0JUQxJTk0JUQwJUJDJUQwJUJEJUQxJTk2JUQwJUIyJUQxJTk2JUQwJUI0JUQxJTg1JUQwJUI4JUQwJUJCJUQwJUI1JUQwJUJEJUQwJUJEJUQxJThGJUQwJUJEJUQwJUI1JUQwJUI3JUQwJUJEJUQwJUI4JUQxJTg5JUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJCJUQwJUI4JUQwJUJFJUQwJUI0JUQwJUJEJUQwJUI1JUQwJUJFJUQwJUI0JUQwJUJEJUQwJUJFJUQwJUIzJUQwJUJF"}, {"q": "Excel показав <span class=\"f\">R² = 0,97</span>. Що це означає?", "o": ["лінія дуже добре описує точки", "лінія майже нічого не пояснює", "дані спадають", "у даних 97 точок"], "ok": "JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQxJThGJUQwJUI0JUQxJTgzJUQwJUI2JUQwJUI1JUQwJUI0JUQwJUJFJUQwJUIxJUQxJTgwJUQwJUI1JUQwJUJFJUQwJUJGJUQwJUI4JUQxJTgxJUQxJTgzJUQxJTk0JUQxJTgyJUQwJUJFJUQxJTg3JUQwJUJBJUQwJUI4"}, {"q": "Перегляди відео щодня <b>подвоюються</b>. Яку лінію тренду вибрати?", "o": ["лінійну", "логарифмічну", "експоненційну", "ковзне середнє"], "ok": "JUQwJUI1JUQwJUJBJUQxJTgxJUQwJUJGJUQwJUJFJUQwJUJEJUQwJUI1JUQwJUJEJUQxJTg2JUQxJTk2JUQwJUI5JUQwJUJEJUQxJTgz"}, {"q": "Ковзне середнє з періодом 3 для значень 6, 9, 12 — це яке число?", "o": ["3", "9", "12", "27"], "ok": "OQ=="}, {"q": "Як називають прогноз <b>за межами</b> відомих даних, у майбутнє?", "o": ["інтерполяція", "екстраполяція", "сезонність", "кореляція"], "ok": "JUQwJUI1JUQwJUJBJUQxJTgxJUQxJTgyJUQxJTgwJUQwJUIwJUQwJUJGJUQwJUJFJUQwJUJCJUQxJThGJUQxJTg2JUQxJTk2JUQxJThG"}, {"q": "У ряді 120, 135, 1500, 140, 150 значення 1500 — це…", "o": ["тренд", "сезонність", "викид", "ковзне середнє"], "ok": "JUQwJUIyJUQwJUI4JUQwJUJBJUQwJUI4JUQwJUI0"}, {"q": "На стовпчиковій діаграмі вісь y починається з 50, а не з 0. Що може статися?", "o": ["нічого", "маленька різниця здається великою", "діаграма стане круговою", "зникне тренд"], "ok": "JUQwJUJDJUQwJUIwJUQwJUJCJUQwJUI1JUQwJUJEJUQxJThDJUQwJUJBJUQwJUIwJUQxJTgwJUQxJTk2JUQwJUI3JUQwJUJEJUQwJUI4JUQxJTg2JUQxJThGJUQwJUI3JUQwJUI0JUQwJUIwJUQxJTk0JUQxJTgyJUQxJThDJUQxJTgxJUQxJThGJUQwJUIyJUQwJUI1JUQwJUJCJUQwJUI4JUQwJUJBJUQwJUJFJUQxJThF"}, {"q": "Восени разом зростають продаж парасольок і кількість застуд. Який висновок правильний?", "o": ["парасольки спричиняють застуду", "застуда змушує купувати парасольки", "в обох спільна причина — погода", "зв'язку немає зовсім"], "ok": "JUQwJUIyJUQwJUJFJUQwJUIxJUQwJUJFJUQxJTg1JUQxJTgxJUQwJUJGJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUIwJUQwJUJGJUQxJTgwJUQwJUI4JUQxJTg3JUQwJUI4JUQwJUJEJUQwJUIwJUUyJTgwJTk0JUQwJUJGJUQwJUJFJUQwJUIzJUQwJUJFJUQwJUI0JUQwJUIw"}]};
+const DATA = {"quiz": [{"q": "Ряд даних — це…", "o": ["значення, виміряні одне за одним у часі", "одне велике число", "список учнів класу", "малюнок у Paint"], "ok": "JUQwJUI3JUQwJUJEJUQwJUIwJUQxJTg3JUQwJUI1JUQwJUJEJUQwJUJEJUQxJThGJTJDJUQwJUIyJUQwJUI4JUQwJUJDJUQxJTk2JUQxJTgwJUQxJThGJUQwJUJEJUQxJTk2JUQwJUJFJUQwJUI0JUQwJUJEJUQwJUI1JUQwJUI3JUQwJUIwJUQwJUJFJUQwJUI0JUQwJUJEJUQwJUI4JUQwJUJDJUQxJTgzJUQxJTg3JUQwJUIwJUQxJTgxJUQxJTk2"}, {"q": "Яка діаграма найкраще показує, як щось змінюється <b>в часі</b>?", "o": ["кругова", "лінійна", "жодна"], "ok": "JUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJEJUQwJUIw"}, {"q": "Тренд — це…", "o": ["загальний напрямок, куди змінюються дані", "найбільше число в ряді", "одна точка на графіку"], "ok": "JUQwJUI3JUQwJUIwJUQwJUIzJUQwJUIwJUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJEJUQwJUIwJUQwJUJGJUQxJTgwJUQxJThGJUQwJUJDJUQwJUJFJUQwJUJBJTJDJUQwJUJBJUQxJTgzJUQwJUI0JUQwJUI4JUQwJUI3JUQwJUJDJUQxJTk2JUQwJUJEJUQxJThFJUQxJThFJUQxJTgyJUQxJThDJUQxJTgxJUQxJThGJUQwJUI0JUQwJUIwJUQwJUJEJUQxJTk2"}, {"q": "Значення загалом більшають з кожним тижнем. Який це тренд?", "o": ["зростаючий", "спадний", "тренду немає"], "ok": "JUQwJUI3JUQxJTgwJUQwJUJFJUQxJTgxJUQxJTgyJUQwJUIwJUQxJThFJUQxJTg3JUQwJUI4JUQwJUI5"}, {"q": "Морозиво купують більше щоліта і менше щозими, і так щороку. Як це називається?", "o": ["викид", "сезонність", "прогноз"], "ok": "JUQxJTgxJUQwJUI1JUQwJUI3JUQwJUJFJUQwJUJEJUQwJUJEJUQxJTk2JUQxJTgxJUQxJTgyJUQxJThD"}, {"q": "У каналі завжди 60–110 учасників, а одного тижня записано 1100. Як називають таке значення?", "o": ["тренд", "сезонність", "викид"], "ok": "JUQwJUIyJUQwJUI4JUQwJUJBJUQwJUI4JUQwJUI0"}, {"q": "Лінія тренду — це пряма, яка…", "o": ["проходить якнайближче до всіх точок", "з'єднує першу і останню точку", "завжди горизонтальна"], "ok": "JUQwJUJGJUQxJTgwJUQwJUJFJUQxJTg1JUQwJUJFJUQwJUI0JUQwJUI4JUQxJTgyJUQxJThDJUQxJThGJUQwJUJBJUQwJUJEJUQwJUIwJUQwJUI5JUQwJUIxJUQwJUJCJUQwJUI4JUQwJUI2JUQxJTg3JUQwJUI1JUQwJUI0JUQwJUJFJUQwJUIyJUQxJTgxJUQxJTk2JUQxJTg1JUQxJTgyJUQwJUJFJUQxJTg3JUQwJUJFJUQwJUJB"}, {"q": "Лінія тренду <span class=\"f\">y = 5·x + 20</span>. На скільки щокроку в середньому більшає значення? Вибери число.", "o": ["5", "20", "25"], "ok": "NQ=="}, {"q": "Лінія тренду <span class=\"f\">y = 5·x + 20</span>. Який прогноз для <span class=\"f\">x = 10</span>? Вибери число.", "o": ["35", "70", "520"], "ok": "NzA="}, {"q": "Лінія тренду <span class=\"f\">y = −3·x + 50</span>. Що відбувається зі значеннями?", "o": ["зростають", "зменшуються", "не змінюються"], "ok": "JUQwJUI3JUQwJUJDJUQwJUI1JUQwJUJEJUQxJTg4JUQxJTgzJUQxJThFJUQxJTgyJUQxJThDJUQxJTgxJUQxJThG"}, {"q": "Який прогноз надійніший?", "o": ["на тиждень уперед", "на 10 років уперед"], "ok": "JUQwJUJEJUQwJUIwJUQxJTgyJUQwJUI4JUQwJUI2JUQwJUI0JUQwJUI1JUQwJUJEJUQxJThDJUQxJTgzJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI0"}, {"q": "Вісь значень на графіку починається не з нуля. Що може здатися?", "o": ["маленька різниця — величезною", "графік — круговим", "нічого не зміниться"], "ok": "JUQwJUJDJUQwJUIwJUQwJUJCJUQwJUI1JUQwJUJEJUQxJThDJUQwJUJBJUQwJUIwJUQxJTgwJUQxJTk2JUQwJUI3JUQwJUJEJUQwJUI4JUQxJTg2JUQxJThGJUUyJTgwJTk0JUQwJUIyJUQwJUI1JUQwJUJCJUQwJUI4JUQxJTg3JUQwJUI1JUQwJUI3JUQwJUJEJUQwJUJFJUQxJThF"}]};
 const norm = v => String(v).toLowerCase().replace(/[\s"'«»]/g, "");
 const enc = v => btoa(encodeURIComponent(norm(v)));
-const num = v => { const x = parseFloat(String(v).replace(",", ".").replace("−", "-")); return isNaN(x) ? "" : String(Math.round(x * 100) / 100); };
 const opts = list => '<option value="">?</option>' + list.map(o => `<option>${o}</option>`).join("");
 const fmt = v => (Math.round(v * 10) / 10).toString().replace(".", ",");
 
 function chart(cv, series, o = {}) {
   const W = cv.width, H = cv.height, c = cv.getContext("2d");
   c.clearRect(0, 0, W, H);
-  const small = o.small, pad = { l: small ? 6 : 46, r: 12, t: 10, b: small ? 6 : 28 };
-  const all = []; series.forEach(s => s.y.forEach(v => { if (v != null) all.push(v); }));
+  const small = o.small, pad = { l: small ? 6 : 42, r: 12, t: 10, b: small ? 6 : 26 };
+  const all = []; series.forEach(s => s.y.forEach(v => all.push(v)));
   let lo = o.ymin != null ? o.ymin : Math.min(...all), hi = o.ymax != null ? o.ymax : Math.max(...all);
   if (o.ymin == null) { const m = (hi - lo) * 0.12 || 1; lo -= m; hi += m; }
-  const n = o.n || Math.max(...series.map(s => s.y.length));
+  const n = Math.max(...series.map(s => s.y.length));
   const bars = series.some(s => s.bars);
-  const X = bars ? i => pad.l + (W - pad.l - pad.r) * (i + 0.5) / n : i => pad.l + (W - pad.l - pad.r) * (n === 1 ? 0.5 : i / (n - 1));
+  const X = bars ? i => pad.l + (W - pad.l - pad.r) * (i + 0.5) / n : i => pad.l + (W - pad.l - pad.r) * i / (n - 1);
   const Y = v => pad.t + (H - pad.t - pad.b) * (1 - (v - lo) / (hi - lo));
   c.font = "14px Segoe UI, Arial, sans-serif"; c.lineWidth = 1;
   if (!small) {
     for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4, y = Y(v); c.strokeStyle = "#e3e7ec"; c.beginPath(); c.moveTo(pad.l, y); c.lineTo(W - pad.r, y); c.stroke(); c.fillStyle = "#444"; c.textAlign = "right"; c.fillText(fmt(v), pad.l - 6, y + 5); }
-    c.textAlign = "center"; for (let i = 0; i < n; i++) c.fillText(o.labels ? o.labels[i] : String(i + 1), X(i), H - 8);
+    c.textAlign = "center"; for (let i = 0; i < n; i++) c.fillText(o.labels ? o.labels[i] : String(i + 1), X(i), H - 7);
   }
   c.strokeStyle = "#8b96a1"; c.beginPath(); c.moveTo(pad.l, pad.t); c.lineTo(pad.l, H - pad.b); c.lineTo(W - pad.r, H - pad.b); c.stroke();
-  (o.under || (() => {}))(c, X, Y);
   series.forEach(s => {
     c.strokeStyle = c.fillStyle = s.color || "#1f5f99"; c.lineWidth = s.w || 2.5; c.setLineDash(s.dash || []);
     if (s.bars) { const bw = (W - pad.l - pad.r) / n * 0.55; s.y.forEach((v, i) => c.fillRect(X(i) - bw / 2, Y(v), bw, Y(lo) - Y(v))); return; }
-    if (!s.noline) { c.beginPath(); let st = false; s.y.forEach((v, i) => { if (v == null) return; st ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)); st = true; }); c.stroke(); }
+    if (!s.noline) { c.beginPath(); s.y.forEach((v, i) => i ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v))); c.stroke(); }
     c.setLineDash([]);
-    if (s.dots) s.y.forEach((v, i) => { if (v == null) return; c.beginPath(); c.arc(X(i), Y(v), s.dots, 0, 7); c.fill(); });
+    if (s.dots) s.y.forEach((v, i) => { c.beginPath(); c.arc(X(i), Y(v), s.dots, 0, 7); c.fill(); });
   });
-  return { X, Y };
 }
-let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647 - 0.5;
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647 - 0.5;
 const gen = (n, f) => Array.from({ length: n }, (_, i) => f(i));
 
-// theory minis
-chart(document.getElementById("m1"), [{ y: gen(14, i => 10 + 2.2 * i + 3 * rnd()), dots: 2.5 }, { y: gen(14, i => 10 + 2.2 * i), color: "#c2410c", w: 2, dash: [6, 4] }], { small: true });
-chart(document.getElementById("m2"), [{ y: gen(24, i => 20 + 8 * Math.sin(i * Math.PI / 3)), dots: 2 }], { small: true });
-chart(document.getElementById("m3"), [{ y: gen(20, () => 30 + 12 * rnd()), dots: 2 }], { small: true });
-chart(document.getElementById("m4"), [{ y: gen(16, i => i === 9 ? 95 : 40 + 6 * rnd()), dots: 2.5 }], { small: true });
+const TG = [64, 70, 81, 79, 90, 98, 97, 110];
+chart(document.getElementById("c1"), [{ y: TG, dots: 5 }], { ymin: 50, ymax: 120 });
+chart(document.getElementById("c2"), [{ y: TG.map((_, i) => 6 * (i + 1) + 58), color: "#c2410c", w: 3 }, { y: TG, dots: 5, noline: true }], { ymin: 50, ymax: 120 });
+chart(document.getElementById("t1"), [{ y: gen(14, i => 10 + 2.2 * i + 4 * rnd()), dots: 2.5, w: 2 }], { small: true });
+chart(document.getElementById("t2"), [{ y: gen(14, i => 50 - 2.2 * i + 4 * rnd()), dots: 2.5, w: 2 }], { small: true });
+chart(document.getElementById("t3"), [{ y: gen(14, () => 30 + 10 * rnd()), dots: 2.5, w: 2 }], { small: true, ymin: 10, ymax: 50 });
 
-// axis trick
-const axisCv = document.getElementById("axis"), zero = document.getElementById("zero");
-const drawAxis = () => {
-  const z = zero.checked;
-  chart(axisCv, [{ y: [7.8, 8.0, 8.3], bars: true, color: "#1f5f99" }], { labels: ["10-А", "10-Б", "11"], ymin: z ? 0 : 7.7, ymax: z ? 10 : 8.35 });
-  document.getElementById("zeroTxt").innerHTML = z ? "Вісь з нуля: класи майже однакові — і це правда." : "Вісь з 7,7: здається, що 11 клас у <b>кілька разів</b> кращий за 10-А. Увімкни галочку.";
-};
+const zero = document.getElementById("zero");
+const drawAxis = () => { const z = zero.checked; chart(document.getElementById("axis"), [{ y: [7.8, 8.0, 8.3], bars: true }], { labels: ["10-А", "10-Б", "11"], ymin: z ? 0 : 7.7, ymax: z ? 10 : 8.35 }); };
 zero.addEventListener("change", drawAxis); drawAxis();
 
-// task 1
-const KINDS = ["зростаючий тренд", "спадний тренд", "сезонність", "лише шум, тренду немає", "викид", "експоненційне зростання"];
-seed = 42;
-const SIX = [
-  gen(18, i => 30 + 10 * Math.sin(i * Math.PI / 3) + 2 * rnd()),
-  gen(15, i => 20 + 3 * i + 6 * rnd()),
-  gen(15, i => i === 6 ? 140 : 55 + 6 * rnd()),
-  gen(15, i => 2 * Math.pow(1.33, i)),
-  gen(15, i => 90 - 4 * i + 6 * rnd()),
-  gen(15, () => 50 + 18 * rnd()),
-];
-const sixEl = document.getElementById("six");
-sixEl.innerHTML = SIX.map((_, k) => `<div class="chartbox" id="b${k}"><b>Графік ${k + 1}</b><canvas id="g${k}" width="320" height="150"></canvas><select aria-label="Графік ${k + 1}">${opts(KINDS)}</select></div>`).join("");
-SIX.forEach((y, k) => chart(document.getElementById("g" + k), [{ y, dots: 2.5, w: 2 }], { small: true }));
-document.getElementById("chk1").addEventListener("click", () => {
-  const sels = [...sixEl.querySelectorAll("select")], r = document.getElementById("res1");
-  if (sels.some(s => !s.value)) { r.textContent = "Вибери відповідь під кожним графіком."; r.className = "res"; return; }
-  let n = 0;
-  sels.forEach((s, k) => { const ok = enc(s.value) === DATA.six[k]; n += ok; document.getElementById("b" + k).className = "chartbox " + (ok ? "yes" : "no"); });
-  r.textContent = `Правильно: ${n} з 6` + (n === 6 ? " — ти читаєш графіки як аналітик!" : ". Червоні — перечитай пункти 3 і 7 теорії.");
-  r.className = "res" + (n === 6 ? " ok" : "");
-});
-document.getElementById("again1").addEventListener("click", () => { sixEl.querySelectorAll(".chartbox").forEach(b => { if (b.classList.contains("no")) b.querySelector("select").value = ""; b.className = b.classList.contains("yes") ? "chartbox yes" : "chartbox"; }); document.getElementById("res1").textContent = ""; });
-
-// task 2
-const TG = [64, 70, 81, 79, 90, 98, 97, 110, 118, 121];
-const sa = document.getElementById("sa"), sb = document.getElementById("sb"), fitCv = document.getElementById("fit");
-let solved2 = false;
-const drawFit = () => {
-  const a = +sa.value, b = +sb.value;
-  document.getElementById("oa").textContent = a.toFixed(1); document.getElementById("ob").textContent = b;
-  const line = TG.map((_, i) => a * (i + 1) + b);
-  const sse = TG.reduce((s, v, i) => s + (v - line[i]) ** 2, 0);
-  chart(fitCv, [{ y: line, color: "#c2410c", w: 2.5 }, { y: TG, dots: 5, noline: true }], {
-    ymin: 40, ymax: 140,
-    under: (c, X, Y) => { c.strokeStyle = "#e5484d"; c.lineWidth = 2; TG.forEach((v, i) => { c.beginPath(); c.moveTo(X(i), Y(v)); c.lineTo(X(i), Y(line[i])); c.stroke(); }); },
-  });
-  document.getElementById("sse").textContent = `y = ${fmt(a)}·x + ${b}   ·   сума квадратів відхилень: ${Math.round(sse)}`;
-  const r = document.getElementById("res2");
-  if (sse < 95) {
-    solved2 = true;
-    r.innerHTML = `Чудово! Менше за 95. Метод найменших квадратів дає найкращу лінію <b>y = 6,4·x + 57,6</b> (сума 78). Отже, канал щотижня росте в середньому на <b>6,4</b> учасника, а на 15-й тиждень прогноз — близько <b>${Math.round(6.4 * 15 + 57.6)}</b>.`;
-    r.className = "res ok";
-  } else if (!solved2) { r.textContent = sse < 300 ? "Уже близько! Підкрути трохи." : ""; r.className = "res"; }
-};
-sa.addEventListener("input", drawFit); sb.addEventListener("input", drawFit); drawFit();
-
-// numeric fields helper
-const makeFields = (id, list) => { document.getElementById(id).innerHTML = list.map((f, k) => `<div class="fld" id="${id}_${k}"><label for="${id}i${k}">${f.t}</label><input type="text" inputmode="decimal" id="${id}i${k}" autocomplete="off"></div>`).join(""); };
-const checkFields = (id, list) => {
-  let n = 0, empty = false;
-  list.forEach((f, k) => { const v = document.getElementById(id + "i" + k).value.trim(); if (!v) { empty = true; return; } const ok = enc(num(v)) === f.ok; n += ok; document.getElementById(id + "_" + k).className = "fld " + (ok ? "yes" : "no"); });
-  return { n, empty };
-};
-
-// task 3
-makeFields("f3", DATA.t3);
-document.getElementById("chk3").addEventListener("click", () => {
-  const { n, empty } = checkFields("f3", DATA.t3), r = document.getElementById("res3"), all = DATA.t3.length;
-  if (empty) { r.textContent = "Заповни всі поля."; r.className = "res"; return; }
-  r.textContent = `Правильно: ${n} з ${all}` + (n === all ? " — ти порахував лінію тренду так само, як це робить Excel!" : ". Червоні поля виправ і перевір ще раз. Підказка: Σ(x − x̄)² для x = 1, 2, 3, 4 завжди дорівнює 5.");
-  r.className = "res" + (n === all ? " ok" : "");
-});
-
-// task 4
-const TEMP = [4, 8, 6, 10, 2, 9, 7];
-makeFields("f4", DATA.t4);
-document.getElementById("chk4").addEventListener("click", () => {
-  const { n, empty } = checkFields("f4", DATA.t4), r = document.getElementById("res4");
-  if (empty) { r.textContent = "Заповни всі 5 полів."; r.className = "res"; return; }
-  r.textContent = `Правильно: ${n} з 5` + (n === 5 ? " — подивись на графік: синя лінія скаче, помаранчева (ковзне середнє) — спокійна." : ". Перевір: перше число — це (4 + 8 + 6) / 3.");
-  r.className = "res" + (n === 5 ? " ok" : "");
-  if (n === 5) {
-    const cv = document.getElementById("ma"); cv.hidden = false;
-    const ma = TEMP.map((_, i) => i < 2 ? null : (TEMP[i] + TEMP[i - 1] + TEMP[i - 2]) / 3);
-    chart(cv, [{ y: TEMP, dots: 4 }, { y: ma, color: "#c2410c", dots: 4, w: 3 }], { ymin: 0, ymax: 12, labels: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"] });
-  }
-});
-
-// quiz
 let qr = 0, qd = 0;
 const quizEl = document.getElementById("quiz");
-quizEl.innerHTML = DATA.quiz.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q.q}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}">${opts(q.o)}</select><button class="ghost" data-q="${k}">Перевірити</button><span class="mark" id="mk${k}"></span></div></div>`).join("");
+quizEl.innerHTML = DATA.quiz.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q.q}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}">${opts(q.o)}</select><button data-q="${k}">Перевірити</button><span class="mark" id="mk${k}"></span></div></div>`).join("");
 quizEl.addEventListener("click", e => {
   const b = e.target.closest("button[data-q]"); if (!b) return;
   const k = +b.dataset.q, box = document.getElementById("q" + k), s = document.getElementById("a" + k);
