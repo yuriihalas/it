@@ -51,7 +51,7 @@
 </head>
 <body>
 <div class="sheet">
-  <h1>Рядки як масиви символів <span>· 11 клас · практична робота № 5 · JavaScript, 12 балів</span></h1>
+  <h1>Рядки як масиви символів <span>· 11 клас · практична робота № 5 · JavaScript</span></h1>
 
   <p class="big">Масив — це список значень під однією назвою, і кожне має номер — <b>індекс</b>, що починається з <b>нуля</b>. Рядок тексту влаштований так само: це <b>масив символів</b>. Тому до кожної літери можна звернутися за індексом, порахувати літери, перевернути слово чи сховати в ньому таємне повідомлення.</p>
 
@@ -82,7 +82,7 @@
   </section>
 
   <section>
-    <h2>Робота на 12 балів</h2>
+    <h2>Як працювати</h2>
     <div class="two">
       <div>
         <p><a href="11-ryadky-baza.html" download="ryadky.html"><b>Завантажити файл ryadky.html</b></a></p>
@@ -99,7 +99,7 @@
   </section>
 
   <section>
-    <h2>Крок 1: символ за індексом <span class="pts">2 бали</span></h2>
+    <h2>Крок 1: символ за індексом</h2>
     <div class="two">
       <div><pre>const word = &quot;ІНФОРМАТИКА&quot;;
 show(word[0]);
@@ -114,7 +114,7 @@ show(word[word.length - 1]);</pre></div>
   </section>
 
   <section>
-    <h2>Крок 2: порахувати і перевернути <span class="pts">2 бали</span></h2>
+    <h2>Крок 2: порахувати і перевернути</h2>
     <div class="two">
       <div><pre>let count = 0;
 for (let i = 0; i &lt; word.length; i++) {
@@ -135,7 +135,7 @@ show(&quot;Навпаки: &quot; + back);</pre></div>
   </section>
 
   <section>
-    <h2>Крок 3: паліндром <span class="pts">2 бали</span></h2>
+    <h2>Крок 3: паліндром</h2>
     <div class="two">
       <div><pre>function reverse(text) {
   let r = &quot;&quot;;
@@ -162,7 +162,7 @@ true</pre><p><b>Паліндром</b> — текст, який однаково
   </section>
 
   <section>
-    <h2>Крок 4: таємне повідомлення <span class="pts">2 бали</span></h2>
+    <h2>Крок 4: таємне повідомлення</h2>
     <div class="two">
       <div><pre>const msg = &quot;ПкЕоРдЕлРаВмА&quot;;
 let secret = &quot;&quot;;
@@ -172,11 +172,11 @@ for (let i = 0; i &lt; msg.length; i = i + 2) {
 show(&quot;Таємне слово: &quot; + secret);</pre></div>
       <div><p><b>Має вийти:</b></p><pre class="out">Таємне слово: ПЕРЕРВА</pre><p>Слово сховане у <b>кожній другій</b> літері: індекси 0, 2, 4 … Тому крок циклу <code>i = i + 2</code>.</p></div>
     </div>
-    <p class="self"><b>Сам (1 бал з 2).</b> Під кодом кроку 4 додай рядок <code>const msg2 = "КщфОюяДжц";</code>. Тут друге слово сховане в <b>кожній третій</b> літері, починаючи з індексу 0. Напиши цикл, який збирає це слово в новий рядок, і виведи його через <code>show</code>.</p>
+    <p class="self"><b>Сам.</b> Під кодом кроку 4 додай рядок <code>const msg2 = "КщфОюяДжц";</code>. Тут друге слово сховане в <b>кожній третій</b> літері, починаючи з індексу 0. Напиши цикл, який збирає це слово в новий рядок, і виведи його через <code>show</code>.</p>
   </section>
 
   <section>
-    <h2>Крок 5: гра «Вгадай слово» <span class="pts">2 бали</span></h2>
+    <h2>Крок 5: гра «Вгадай слово»</h2>
     <div class="two">
       <div><pre>const hidden = &quot;БРАУЗЕР&quot;;
 const opened = [];
@@ -203,7 +203,7 @@ document.getElementById(&quot;guess&quot;).addEventListener(&quot;click&quot;, f
 });</pre></div>
       <div><p><b>Має вийти:</b></p><pre class="out">_ _ _ _ _ _ _</pre><p>Після цього впиши в поле літеру, наприклад <b>Р</b>, і натисни «Вгадати». У віконці з'явиться <code>Р: _ Р _ _ _ _ Р</code> — відкрилися всі літери Р.</p><p><code>opened</code> — масив уже названих літер. <code>mask()</code> проходить слово по символах: якщо літеру вже назвали, показує її, інакше — <code>_</code>. <code>opened.includes(ch)</code> перевіряє, чи є літера в масиві.</p></div>
     </div>
-    <p class="self"><b>Сам (1 бал з 2).</b> Зроби лічильник спроб: створи <code>let tries = 0;</code> і збільшуй його на 1 при кожному натисканні кнопки. Коли в <code>mask()</code> не залишилося жодного <code>_</code> (перевір через <code>mask().includes("_")</code>), виведи <code>Вгадав за … спроб!</code> з числом спроб.</p>
+    <p class="self"><b>Сам.</b> Зроби лічильник спроб: створи <code>let tries = 0;</code> і збільшуй його на 1 при кожному натисканні кнопки. Коли в <code>mask()</code> не залишилося жодного <code>_</code> (перевір через <code>mask().includes("_")</code>), виведи <code>Вгадав за … спроб!</code> з числом спроб.</p>
     <p><b>Пограй з сусідом:</b> заміни слово в <code>hidden</code> на своє (великими літерами), а сусід нехай вгадує.</p>
   </section>
 
@@ -229,7 +229,7 @@ document.getElementById(&quot;guess&quot;).addEventListener(&quot;click&quot;, f
   </section>
 
   <section>
-    <h2>Тест <span class="pts">2 бали</span></h2>
+    <h2>Тест</h2>
     <p>Впиши відповідь і натисни «Перевірити» або Enter. Великі чи малі літери — неважливо. <b>Перевірити можна лише один раз.</b></p>
     <div class="half" id="quiz"></div>
     <div class="score" id="score">Правильно: 0 з 8</div>
