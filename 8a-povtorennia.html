@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Повторення розділу · 8-А</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --a: #0f766e; --a2: #ecfdf5; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 18px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; display: flex; align-items: center; gap: 10px; }
+  h2 .no { flex: none; background: var(--a); color: #fff; border-radius: 50%; width: 1.5em; height: 1.5em; display: inline-flex; align-items: center; justify-content: center; font-size: 19px; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; background: #f1f3f5; padding: 0 3px; border-radius: 3px; }
+  .how { background: var(--a2); border-left: 5px solid var(--a); padding: 8px 12px; margin: 0 0 8px; }
+  .how ol { margin: 0; }
+  .wrapc { overflow-x: auto; }
+  canvas.code { display: block; max-width: 100%; background: #f4f6f9; border-left: 6px solid var(--a); border-radius: 4px; margin: 4px 0 10px; }
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid var(--a); border-radius: 5px; background: #fff; color: var(--a); font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .quiz { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px; margin-bottom: 4px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q p { margin-bottom: 6px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ans input { font: 700 19px Consolas, "Courier New", monospace; width: 9em; max-width: 100%; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { position: sticky; bottom: 0; background: #fff; border-top: 3px solid var(--a); padding: 6px 0; font-weight: 700; font-size: 21px; margin-top: 14px; }
+  .star { background: #eef8ee; border-left: 5px solid #1a7f37; padding: 6px 12px; margin: 0 0 8px; }
+  .hw { background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 12px; }
+  @media (max-width: 600px) { .sheet { padding: 10px 14px; margin: 0; } h1 { font-size: 25px; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Повторення розділу: 8 програм <span>· 8-А · 24.11 · Python</span></h1>
+
+  <div class="how">
+    <ol>
+      <li>Відкрий Thonny: <b>Файл → Новий</b>.</li>
+      <li>Набери програму з картинки (номери рядків зліва набирати не треба).</li>
+      <li>Запусти зеленою кнопкою <b>▶</b> і відповідай на питання під програмою.</li>
+      <li>Де написано <b>«Зміни»</b> чи <b>«Заміни»</b> — зміни код, запусти ще раз і тоді відповідай.</li>
+    </ol>
+  </div>
+
+  <section class="prog" id="s1">
+    <h2><span class="no">1</span> Арифметика</h2>
+    <p><code>/</code> — звичайне ділення, <code>//</code> — ціла частина, <code>%</code> — остача, <code>**</code> — степінь.</p>
+    <canvas class="code" data-code='"a = 17\nb = 5\nprint(a + b)\nprint(a / b)\nprint(a // b)\nprint(a % b)\nprint(a ** 2)"' role="img" aria-label="Програма 1"></canvas>
+    <div class="quiz" data-box="p1"></div>
+  </section>
+  <section class="prog" id="s2">
+    <h2><span class="no">2</span> Розгалуження if / elif / else</h2>
+    <p>Python перевіряє умови згори вниз і виконує <b>першу</b> правдиву. Решту пропускає.</p>
+    <canvas class="code" data-code='"age = int(input(\"Скільки тобі років? \"))\nif age &lt; 7:\n    print(\"Квиток безкоштовний\")\nelif age &lt; 18:\n    print(\"Дитячий квиток: 80 грн\")\nelse:\n    print(\"Дорослий квиток: 150 грн\")"' role="img" aria-label="Програма 2"></canvas>
+    <div class="quiz" data-box="p2"></div>
+  </section>
+  <section class="prog" id="s3">
+    <h2><span class="no">3</span> Логічні оператори and / or</h2>
+    <p><code>and</code> — правда, коли правдиві <b>обидві</b> умови. <code>or</code> — коли правдива <b>хоча б одна</b>.</p>
+    <canvas class="code" data-code='"t = int(input(\"Температура: \"))\nrain = input(\"Дощ? (так/ні) \")\nif t &gt;= 15 and rain == \"ні\":\n    print(\"Йдемо гуляти\")\nelif t &gt;= 15 or rain == \"ні\":\n    print(\"Можна погуляти недовго\")\nelse:\n    print(\"Сидимо вдома\")"' role="img" aria-label="Програма 3"></canvas>
+    <div class="quiz" data-box="p3"></div>
+  </section>
+  <section class="prog" id="s4">
+    <h2><span class="no">4</span> Цикл for і range</h2>
+    <p><code>range(1, 11, 3)</code> — від 1, до 11 (саме 11 не входить), крок 3.</p>
+    <canvas class="code" data-code='"total = 0\nfor i in range(1, 11, 3):\n    print(i)\n    total = total + i\nprint(\"Сума:\", total)"' role="img" aria-label="Програма 4"></canvas>
+    <div class="quiz" data-box="p4"></div>
+  </section>
+  <section class="prog" id="s5">
+    <h2><span class="no">5</span> Цикл while</h2>
+    <p><code>while</code> повторює, <b>поки</b> умова правдива. Тут — поки гроші більші за 0.</p>
+    <canvas class="code" data-code='"money = 100\nday = 0\nwhile money &gt; 0:\n    day = day + 1\n    money = money - 15\n    print(\"День\", day, \"залишилось\", money)\nprint(\"Гроші закінчились за\", day, \"днів\")"' role="img" aria-label="Програма 5"></canvas>
+    <div class="quiz" data-box="p5"></div>
+  </section>
+  <section class="prog" id="s6">
+    <h2><span class="no">6</span> Умова всередині циклу</h2>
+    <p><code>n % 3 == 0</code> — число ділиться на 3 без остачі. Цикл перебирає числа, <code>if</code> відбирає потрібні.</p>
+    <canvas class="code" data-code='"count = 0\nfor n in range(1, 31):\n    if n % 3 == 0 and n % 2 == 0:\n        print(n)\n        count = count + 1\nprint(\"Знайдено:\", count)"' role="img" aria-label="Програма 6"></canvas>
+    <div class="quiz" data-box="p6"></div>
+  </section>
+  <section class="prog" id="s7">
+    <h2><span class="no">7</span> Вкладені цикли</h2>
+    <p>Внутрішній цикл повністю проходить для <b>кожного</b> кроку зовнішнього. <code>end=" "</code> — не переходити на новий рядок.</p>
+    <canvas class="code" data-code='"for row in range(1, 4):\n    for col in range(1, 5):\n        print(row * col, end=\" \")\n    print()"' role="img" aria-label="Програма 7"></canvas>
+    <div class="quiz" data-box="p7"></div>
+  </section>
+  <section class="prog" id="s8">
+    <h2><span class="no">8</span> Знайди й виправ помилки</h2>
+    <p>У цій програмі <b>три</b> помилки: синтаксична, логічна і помилка виконання. Набери її саме так, як тут.</p>
+    <canvas class="code" data-code='"n = int(input(\"Скільки чисел? \"))\ntotal = 0\nfor i in range(n)\n    x = int(input(\"Число: \"))\n    total = x\nprint(\"Середнє:\", total / n)"' role="img" aria-label="Програма 8"></canvas>
+    <div class="quiz" data-box="p8"></div>
+  </section>
+
+  <section>
+    <div class="star"><b>Сам:</b> у програмі 8 зроби так, щоб для кількості <code>0</code> вона писала <code>Немає чисел</code> і не падала. Підказка: <code>if n &gt; 0:</code> перед рядком з <code>print</code>.</div>
+  </section>
+
+  <section>
+    <h2>Твій проєкт</h2>
+    <p>Встиг усі 8 програм? Відкрий свій <code>proekt.py</code> і перевір його на чотирьох видах даних:</p>
+    <ul>
+      <li>звичайні числа;</li>
+      <li>межові (найменше і найбільше можливе);</li>
+      <li><code>0</code> або від'ємне число;</li>
+      <li>букви замість числа.</li>
+    </ul>
+    <p>Знайшов, де програма падає чи рахує не те, — виправ і запусти ще раз.</p>
+  </section>
+
+  <section>
+    <p class="hw"><b>Домашнє:</b> повторити вивчене за розділ.</p>
+  </section>
+
+  <div class="score" id="score" aria-live="polite">Правильно: 0 з 25</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const KW = /^(for|in|if|elif|else|while|and|or|not|range|print|input|int|end)$/;
+function drawCode(cv) {
+  const lines = JSON.parse(cv.dataset.code).split("\n");
+  const fs = 18, lh = 27, pad = 12, dpr = window.devicePixelRatio || 1;
+  const ctx = cv.getContext("2d");
+  const font = `${fs}px Menlo, Consolas, "DejaVu Sans Mono", monospace`;
+  ctx.font = font;
+  const cw = ctx.measureText("M").width;
+  const W = Math.ceil(pad * 2 + cw * (Math.max(...lines.map(l => l.length)) + 4));
+  const H = pad * 2 + lh * lines.length - 6;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px";
+  ctx.scale(dpr, dpr); ctx.font = font; ctx.textBaseline = "top";
+  lines.forEach((ln, i) => {
+    const y = pad + i * lh;
+    ctx.fillStyle = "#9ca3af"; ctx.fillText(String(i + 1).padStart(2), pad, y);
+    let x = pad + cw * 4;
+    for (const t of ln.match(/"[^"]*"|\w+|\s+|./g) || []) {
+      ctx.fillStyle = t[0] === '"' ? "#15803d" : KW.test(t) ? "#7e22ce" : /^\d+$/.test(t) ? "#c2410c" : "#111";
+      ctx.fillText(t, x, y); x += cw * t.length;
+    }
+  });
+}
+document.querySelectorAll("canvas.code").forEach(drawCode);
+const QUIZ = [{"box": "p1", "q": "Яке число виводить 3-й рядок виводу (<code>a // b</code>)?", "ok": ["Mw=="], "show": "3"}, {"box": "p1", "q": "Яке число виводить 4-й рядок (<code>a % b</code>)?", "ok": ["Mg=="], "show": "2"}, {"box": "p1", "q": "Зміни <code>a = 17</code> на <code>a = 20</code> і запусти. Що тепер виводить <code>a % b</code>?", "ok": ["MA=="], "show": "0"}, {"box": "p2", "q": "Запусти, введи <code>17</code>. Скільки гривень коштує квиток? Напиши число.", "ok": ["ODA="], "show": "80"}, {"box": "p2", "q": "Запусти ще раз, введи <code>18</code>. Скільки гривень?", "ok": ["MTUw"], "show": "150"}, {"box": "p2", "q": "Введи <code>7</code>. Квиток безкоштовний? Напиши <b>так</b> або <b>ні</b>.", "ok": ["JUQwJUJEJUQxJTk2"], "show": "ні"}, {"box": "p3", "q": "Введи <code>20</code> і <code>ні</code>. Що вивела програма? Напиши номер: <b>1</b> — Йдемо гуляти, <b>2</b> — Можна погуляти недовго, <b>3</b> — Сидимо вдома", "ok": ["MQ=="], "show": "1"}, {"box": "p3", "q": "Введи <code>20</code> і <code>так</code>. Номер відповіді (1, 2 чи 3)?", "ok": ["Mg=="], "show": "2"}, {"box": "p3", "q": "Введи <code>10</code> і <code>так</code>. Номер відповіді (1, 2 чи 3)?", "ok": ["Mw=="], "show": "3"}, {"box": "p4", "q": "Скільки чисел виводить цикл (без рядка «Сума»)?", "ok": ["NA=="], "show": "4"}, {"box": "p4", "q": "Яке число стоїть після «Сума:»?", "ok": ["MjI="], "show": "22"}, {"box": "p4", "q": "Зміни крок: <code>range(1, 11, 2)</code>. Запусти. Яка тепер сума?", "ok": ["MjU="], "show": "25"}, {"box": "p5", "q": "За скільки днів закінчились гроші? Напиши число.", "ok": ["Nw=="], "show": "7"}, {"box": "p5", "q": "Яке число стоїть після «залишилось» в останньому дні?", "ok": ["LTU="], "show": "-5"}, {"box": "p5", "q": "Зміни <code>- 15</code> на <code>- 25</code>. За скільки днів тепер?", "ok": ["NA=="], "show": "4"}, {"box": "p6", "q": "Яке <b>перше</b> число виводить програма?", "ok": ["Ng=="], "show": "6"}, {"box": "p6", "q": "Яке число стоїть після «Знайдено:»?", "ok": ["NQ=="], "show": "5"}, {"box": "p6", "q": "Заміни <code>and</code> на <code>or</code>. Запусти. Що тепер після «Знайдено:»?", "ok": ["MjA="], "show": "20"}, {"box": "p7", "q": "Скільки рядків з числами вивела програма?", "ok": ["Mw=="], "show": "3"}, {"box": "p7", "q": "Яке <b>останнє</b> число?", "ok": ["MTI="], "show": "12"}, {"box": "p7", "q": "Заміни <code>range(1, 4)</code> на <code>range(1, 6)</code>. Яке тепер останнє число?", "ok": ["MjA="], "show": "20"}, {"box": "p8", "q": "Запусти. Thonny пише <code>SyntaxError</code>. У якому рядку помилка? Напиши номер рядка.", "ok": ["Mw=="], "show": "3"}, {"box": "p8", "q": "Допиши двокрапку в кінці рядка 3. Запусти, введи <code>3</code>, потім числа <code>2</code>, <code>4</code>, <code>6</code>. Що виводить програма після «Середнє:»?", "ok": ["Mi4w", "Mg=="], "show": "2.0"}, {"box": "p8", "q": "Яке середнє чисел 2, 4, 6 мало б бути насправді?", "ok": ["NC4w", "NA=="], "show": "4.0"}, {"box": "p8", "q": "Виправ рядок 5 на <code>total = total + x</code>. Запусти і на першому питанні введи <code>0</code>. Як називається помилка? Напиши англійською, як у Thonny.", "ok": ["emVyb2RpdmlzaW9uZXJyb3I="], "show": "ZeroDivisionError"}];
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "").replace(/,/g, ".").replace(/−/g, "-");
+const enc = v => btoa(encodeURIComponent(v));
+let right = 0;
+const counters = {};
+document.querySelectorAll(".quiz[data-box]").forEach(el => {
+  let n = 0;
+  el.innerHTML = QUIZ.map((t, k) => t.box !== el.dataset.box ? "" : `
+  <div class="q" id="q${k}">
+    <p><b>${k + 1}.</b> ${t.q}</p>
+    <div class="ans">
+      <input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">
+      <button data-q="${k}">Перевірити</button>
+      <span class="mark" id="m${k}"></span>
+    </div>
+  </div>`).join("");
+});
+function check(k) {
+  const box = $("q" + k), inp = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const good = t.ok.includes(enc(norm(inp.value)));
+  box.classList.add(good ? "yes" : "no");
+  inp.readOnly = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${t.show}`;
+  if (good) right++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id && e.target.id.startsWith("a")) check(+e.target.id.slice(1)); });
+</script>
+</body>
+</html>
