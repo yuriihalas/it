@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сніжинка в Python</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.45 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1110px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 22px 20px; }
+  h1 { font-size: 30px; margin: 0 0 6px; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 24px; margin: 22px 0 8px; color: #9b1c1c; border-bottom: 3px solid #9b1c1c; padding-bottom: 2px; }
+  h2 small { font-weight: 400; font-size: 17px; color: #444; }
+  p { margin: 0 0 8px; }
+  .big { background: #fff6dd; border-left: 6px solid #c79100; padding: 8px 12px; border-radius: 4px; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .code2 { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } .code2 pre { font-size: 16px; }
+  .box { border: 1px solid #d5dae0; border-radius: 8px; padding: 10px 14px; }
+  .box h3 { margin: 0 0 6px; font-size: 20px; }
+  .box ul { margin: 0; padding-left: 1.2em; } .box li { margin-bottom: 3px; }
+  pre { font: 700 18px/1.5 Consolas, "Courier New", monospace; background: #f2f4f7; border-left: 6px solid #9b1c1c; padding: 10px 12px; margin: 0 0 8px; overflow-x: auto; -webkit-user-select: none; user-select: none; }
+  pre .k { color: #7e22ce; } pre .s { color: #1a7f37; } pre .n { color: #b35900; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; background: #f2f4f7; padding: 0 4px; border-radius: 4px; }
+  img { max-width: 100%; height: auto; display: block; border: 1px solid #d5dae0; border-radius: 6px; }
+  canvas { display: block; width: 100%; max-width: 420px; height: auto; border: 1px solid #d5dae0; border-radius: 6px; background: #fff; }
+  .cap { font-weight: 700; margin: 0 0 4px; }
+  ol.steps { margin: 0 0 8px; padding-left: 26px; } ol.steps li { margin-bottom: 5px; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 8px; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; } td.nr { text-align: right; color: #666; width: 1%; }
+  td:nth-child(2) { white-space: nowrap; width: 1%; }
+  td code { background: none; padding: 0; }
+  .wrap { overflow-x: auto; }
+  .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; min-width: 0; }
+  .q p { margin: 0 0 6px; }
+  .ans { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .ans select { font: 700 17px "Segoe UI", Arial, sans-serif; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; background: #fff; max-width: 100%; }
+  button { font: inherit; font-size: 16px; font-weight: 700; padding: 4px 12px; border: 2px solid #0b5cad; border-radius: 6px; background: #fff; color: #0b5cad; cursor: pointer; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, select:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-size: 22px; font-weight: 700; margin: 10px 0; padding: 6px 12px; background: #eef8ee; border-left: 5px solid #1a7f37; }
+  @media (max-width: 820px) { .two, .quiz { grid-template-columns: 1fr; } td:nth-child(2) { white-space: normal; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Сніжинка в Python <span>· 7-Б · змінні, список, цикл</span></h1>
+  <p class="big">Надворі зима — тож сьогодні Python намалює <b>сніжинку</b>. Ти набереш коротку програму, розберешся, що робить кожен рядок, а потім зміниш кольори, довжину і кількість променів — і вийде <b>твоя власна</b> сніжинка.</p>
+
+  <div class="two">
+    <div class="box">
+      <h3>Як черепашка малює сніжинку</h3>
+      <ul>
+        <li>Іде від центру — малює <b>промінь</b>.</li>
+        <li>На промені малює дві маленькі <b>гілочки</b>.</li>
+        <li>Повертається в <b>центр</b> і повертає на 60°.</li>
+        <li>Повторює це <b>6 разів</b> — сніжинка готова. Справжні сніжинки теж мають 6 променів!</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Що буде в програмі</h3>
+      <ul>
+        <li><b>числа</b> — довжина, кути, товщина;</li>
+        <li><b>рядки</b> — назви кольорів у лапках: <code>"white"</code>;</li>
+        <li><b>список</b> — кілька кольорів разом;</li>
+        <li><b>цикл</b> <code>for</code> — щоб не писати 6 однакових променів.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Як працювати в Thonny</h2>
+  <div class="two">
+    <div><img src="7b-snizhynka/run.png" width="790" height="847" alt="Thonny з програмою сніжинки: кнопка ▶ запустити, кнопка STOP, внизу Оболонка"></div>
+    <div>
+      <ol class="steps">
+        <li>Відкрий <b>Thonny</b>.</li>
+        <li>Натисни <b>Файл → Новий</b>.</li>
+        <li>Набери програму нижче. Порожні рядки можна пропускати. Відступ перед усіма рядками під <code>for</code> — клавіша <b>Tab</b> або 4 пробіли.</li>
+        <li>Натисни зелену кнопку <b>▶</b> (або <b>F5</b>). Thonny попросить зберегти файл — назви його <code>snizhynka.py</code>.</li>
+        <li>Відкриється вікно, і черепашка намалює сніжинку.</li>
+        <li>Щоб запустити ще раз, закрий вікно зі сніжинкою і знову натисни <b>▶</b>.</li>
+      </ol>
+      <p>Якщо внизу, в <b>Оболонці</b>, з'явився червоний текст — подивись номер рядка в ньому і порівняй цей рядок із програмою. Найчастіше це забуті <b>лапки</b>, <b>дужка</b>, <b>двокрапка</b> після <code>for</code> або англійська назва кольору з помилкою.</p>
+    </div>
+  </div>
+
+  <h2>Програма: набери і запусти</h2>
+  <div class="two code2">
+<pre><span class="k">import</span> turtle
+
+turtle.bgcolor(<span class="s">&quot;navy&quot;</span>)
+t = turtle.Turtle()
+t.speed(<span class="n">0</span>)
+t.pensize(<span class="n">4</span>)
+
+colors = [<span class="s">&quot;white&quot;</span>, <span class="s">&quot;cyan&quot;</span>, <span class="s">&quot;white&quot;</span>, <span class="s">&quot;cyan&quot;</span>, <span class="s">&quot;white&quot;</span>, <span class="s">&quot;cyan&quot;</span>]
+<span class="k">for</span> c <span class="k">in</span> colors:
+    t.pencolor(c)
+    t.forward(<span class="n">100</span>)
+    t.backward(<span class="n">40</span>)
+    t.left(<span class="n">45</span>)
+    t.forward(<span class="n">30</span>)
+    t.backward(<span class="n">30</span>)
+    t.right(<span class="n">90</span>)
+    t.forward(<span class="n">30</span>)
+    t.backward(<span class="n">30</span>)
+    t.left(<span class="n">45</span>)
+    t.backward(<span class="n">60</span>)
+    t.right(<span class="n">60</span>)
+
+t.hideturtle()
+turtle.done()</pre>
+    <div>
+      <p class="cap">Так має вийти:</p>
+      <canvas id="egg" width="320" height="320" aria-label="Біло-блакитна сніжинка з 6 променями на темно-синьому фоні"></canvas>
+    </div>
+  </div>
+
+  <h2>Пояснення кожного рядка</h2>
+  <div class="wrap"><table>
+    <tr><th>№</th><th>Рядок</th><th>Що він робить</th></tr>
+    <tr><td class="nr">1</td><td><code>import turtle</code></td><td>підключаємо модуль <b>turtle</b> — «черепашку», яка ходить по екрану і малює.</td></tr>
+    <tr><td class="nr">3</td><td><code>turtle.bgcolor(&quot;navy&quot;)</code></td><td>фарбуємо <b>фон</b> вікна в темно-синій (<b>navy</b>) — як зимове нічне небо.</td></tr>
+    <tr><td class="nr">4</td><td><code>t = turtle.Turtle()</code></td><td>створюємо черепашку і називаємо її коротко <code>t</code>. Далі всі команди пишемо через <code>t.</code></td></tr>
+    <tr><td class="nr">5</td><td><code>t.speed(0)</code></td><td>найшвидша швидкість: <b>0</b> означає «без затримок».</td></tr>
+    <tr><td class="nr">6</td><td><code>t.pensize(4)</code></td><td>товщина лінії — <b>4</b>.</td></tr>
+    <tr><td class="nr">8</td><td><code>colors = [&quot;white&quot;, &quot;cyan&quot;, ...]</code></td><td>змінна <code>colors</code> — це <b>список</b> (тип даних <b>list</b>): 6 кольорів через кому. <b>Скільки кольорів у списку — стільки променів у сніжинки.</b></td></tr>
+    <tr><td class="nr">9</td><td><code>for c in colors:</code></td><td><b>цикл по списку</b>: усі рядки під ним (з відступом) повторяться для кожного кольору. Змінна <code>c</code> по черзі стає "white", "cyan", "white"…</td></tr>
+    <tr><td class="nr">10</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.pencolor(c)</code></td><td>колір лінії — той, що <b>зараз у c</b>. Тому промені білі й блакитні по черзі.</td></tr>
+    <tr><td class="nr">11</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.forward(100)</code></td><td>іти <b>100 кроків</b> від центру — малюємо промінь.</td></tr>
+    <tr><td class="nr">12</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(40)</code></td><td>повернутися <b>назад на 40</b> — до місця, де ростуть гілочки.</td></tr>
+    <tr><td class="nr">13</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.left(45)</code></td><td>повернутися <b>ліворуч на 45°</b>.</td></tr>
+    <tr><td class="nr">14</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.forward(30)</code></td><td>намалювати <b>ліву гілочку</b> довжиною 30…</td></tr>
+    <tr><td class="nr">15</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(30)</code></td><td>…і повернутися назад на промінь.</td></tr>
+    <tr><td class="nr">16</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.right(90)</code></td><td>повернутися <b>праворуч на 90°</b>: 45° — щоб знову дивитися вздовж променя, і ще 45° — на праву гілочку.</td></tr>
+    <tr><td class="nr">17</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.forward(30)</code></td><td>намалювати <b>праву гілочку</b>…</td></tr>
+    <tr><td class="nr">18</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(30)</code></td><td>…і повернутися назад.</td></tr>
+    <tr><td class="nr">19</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.left(45)</code></td><td>знову дивимось <b>уздовж променя</b>.</td></tr>
+    <tr><td class="nr">20</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(60)</code></td><td>повернутися <b>в центр</b>: 40 + 60 = 100 — рівно стільки, скільки пройшли вперед.</td></tr>
+    <tr><td class="nr">21</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.right(60)</code></td><td>повернутися на <b>60°</b> до наступного променя. 6 променів × 60° = <b>360°</b> — повне коло.</td></tr>
+    <tr><td class="nr">23</td><td><code>t.hideturtle()</code></td><td>ховаємо черепашку, щоб вона не закривала сніжинку.</td></tr>
+    <tr><td class="nr">24</td><td><code>turtle.done()</code></td><td>вікно зі сніжинкою <b>не закривається</b>, щоб ти встиг її роздивитися.</td></tr>
+  </table></div>
+  <p>Порожні рядки 2, 7, 22 нічого не роблять — вони лише ділять програму на частини: <b>підготовка</b>, <b>промені</b>, <b>кінець</b>.</p>
+
+  <h2>Зроби свою сніжинку</h2>
+  <p>Після кожної зміни закрий вікно зі сніжинкою і натисни <b>▶</b>. Назви кольорів — англійською, у лапках: <code>"white"</code>, <code>"cyan"</code>, <code>"lightblue"</code>, <code>"silver"</code>, <code>"yellow"</code>, <code>"pink"</code>, <code>"black"</code>, <code>"darkblue"</code>, <code>"purple"</code>.</p>
+  <ol class="steps">
+    <li><b>Фон.</b> У рядку 3 заміни <code>"navy"</code> на <code>"black"</code> або <code>"purple"</code>.</li>
+    <li><b>Свої кольори.</b> У рядку 8 заміни <code>"cyan"</code> на <code>"pink"</code> або <code>"yellow"</code>. Слідкуй: кожен колір — у лапках, між ними — кома. Кольорів має лишитися <b>6</b>.</li>
+    <li><b>Товщина.</b> У рядку 6 заміни <code>4</code> на <code>2</code> — сніжинка стане тоншою, «ажурною».</li>
+    <li><b>Більша сніжинка.</b> У рядку 11 заміни <code>100</code> на <code>150</code>, а в рядку 20 — <code>60</code> на <code>110</code>. Чому 110? Щоб повернутися в центр, назад треба пройти стільки ж, скільки вперед: 40 + 110 = 150.</li>
+    <li><b>★ 8 променів.</b> Допиши в список ще 2 кольори (щоб їх стало 8), а в рядку 21 заміни <code>60</code> на <code>45</code>, бо 8 × 45 = 360. Підказка: 6 променів — 60, 8 — 45, 12 — 30.</li>
+  </ol>
+  <p>Готову сніжинку покажи вчителю.</p>
+
+  <h2>Тест <small>(12 питань)</small></h2>
+  <p>Вибери відповідь зі списку і натисни «Перевірити». Кожне питання можна перевірити лише <b>один раз</b>. Підказка: усі відповіді є в поясненні рядків.</p>
+  <div class="quiz" id="quiz"></div>
+  <p class="score" id="qs">Тест: 0 з 12</p>
+
+  <h2>Домашнє завдання</h2>
+  <p>Подумай, як змінити програму, щоб у сніжинки на кожному промені було <b>не 2, а 4 гілочки</b>. Розкажеш на наступному уроці.</p>
+</div>
+<script>
+const cv = document.getElementById("egg"), g = cv.getContext("2d");
+g.fillStyle = "navy"; g.fillRect(0, 0, 320, 320);
+g.lineWidth = 4; g.lineCap = "round";
+let x = 160, y = 160, h = 0, col = "white";
+const fd = d => { const nx = x + d * Math.cos(h * Math.PI / 180), ny = y - d * Math.sin(h * Math.PI / 180); g.strokeStyle = col; g.beginPath(); g.moveTo(x, y); g.lineTo(nx, ny); g.stroke(); x = nx; y = ny; };
+["white", "cyan", "white", "cyan", "white", "cyan"].forEach(c => { col = c; fd(100); fd(-40); h += 45; fd(30); fd(-30); h -= 90; fd(30); fd(-30); h += 45; fd(-60); h -= 60; });
+
+const DATA = [{"q": "Що робить <code>turtle.bgcolor(\"navy\")</code>?", "o": ["фарбує фон у темно-синій", "малює синю лінію", "змінює колір черепашки"], "ok": "JUQxJTg0JUQwJUIwJUQxJTgwJUQwJUIxJUQxJTgzJUQxJTk0JUQxJTg0JUQwJUJFJUQwJUJEJUQxJTgzJUQxJTgyJUQwJUI1JUQwJUJDJUQwJUJEJUQwJUJFLSVEMSU4MSVEMCVCOCVEMCVCRCVEMSU5NiVEMCVCOQ=="}, {"q": "Скільки <b>променів</b> у сніжинки? Вибери число.", "o": ["3", "6", "60"], "ok": "Ng=="}, {"q": "Чому променів саме стільки?", "o": ["бо в списку colors 6 кольорів", "бо t.pensize(4)", "бо t.forward(100)"], "ok": "JUQwJUIxJUQwJUJFJUQwJUIyJUQxJTgxJUQwJUJGJUQwJUI4JUQxJTgxJUQwJUJBJUQxJTgzY29sb3JzNiVEMCVCQSVEMCVCRSVEMCVCQiVEMSU4QyVEMCVCRSVEMSU4MCVEMSU5NiVEMCVCMg=="}, {"q": "Яка <b>довжина</b> променя? Вибери число.", "o": ["30", "60", "100"], "ok": "MTAw"}, {"q": "Що робить <code>t.backward(40)</code>?", "o": ["іде назад на 40 кроків", "повертає ліворуч на 40°", "малює коло"], "ok": "JUQxJTk2JUQwJUI0JUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI3JUQwJUIwJUQwJUI0JUQwJUJEJUQwJUIwNDAlRDAlQkElRDElODAlRDAlQkUlRDAlQkElRDElOTYlRDAlQjI="}, {"q": "Скільки маленьких <b>гілочок</b> на одному промені? Вибери число.", "o": ["1", "2", "6"], "ok": "Mg=="}, {"q": "Чому в <code>t.right(60)</code> саме 60?", "o": ["бо 6 × 60 = 360, повне коло", "бо так красивіше", "бо довжина променя 60"], "ok": "JUQwJUIxJUQwJUJFNiVDMyU5NzYwJTNEMzYwJTJDJUQwJUJGJUQwJUJFJUQwJUIyJUQwJUJEJUQwJUI1JUQwJUJBJUQwJUJFJUQwJUJCJUQwJUJF"}, {"q": "Що робить <code>t.pensize(4)</code>?", "o": ["задає товщину лінії", "задає розмір сніжинки", "задає кількість променів"], "ok": "JUQwJUI3JUQwJUIwJUQwJUI0JUQwJUIwJUQxJTk0JUQxJTgyJUQwJUJFJUQwJUIyJUQxJTg5JUQwJUI4JUQwJUJEJUQxJTgzJUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQxJTk3"}, {"q": "Яка змінна <b>по черзі</b> стає кожним кольором зі списку?", "o": ["c", "t", "colors"], "ok": "Yw=="}, {"q": "Який <b>тип даних</b> у змінної <code>colors</code>?", "o": ["список (list)", "число (int)", "рядок (str)"], "ok": "JUQxJTgxJUQwJUJGJUQwJUI4JUQxJTgxJUQwJUJFJUQwJUJBKGxpc3Qp"}, {"q": "Щоб зробити <b>8</b> променів, у списку має бути 8 кольорів, а в <code>t.right(…)</code> — яке число?", "o": ["45", "60", "80"], "ok": "NDU="}, {"q": "Чому рядки під <code>for</code> мають відступ?", "o": ["бо вони всередині циклу і повторюються", "так просто красивіше", "це помилка"], "ok": "JUQwJUIxJUQwJUJFJUQwJUIyJUQwJUJFJUQwJUJEJUQwJUI4JUQwJUIyJUQxJTgxJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI0JUQwJUI4JUQwJUJEJUQxJTk2JUQxJTg2JUQwJUI4JUQwJUJBJUQwJUJCJUQxJTgzJUQxJTk2JUQwJUJGJUQwJUJFJUQwJUIyJUQxJTgyJUQwJUJFJUQxJTgwJUQxJThFJUQxJThFJUQxJTgyJUQxJThDJUQxJTgxJUQxJThG"}];
+const norm = v => String(v).toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(norm(v)));
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+let qr = 0, qd = 0;
+const quizEl = document.getElementById("quiz");
+quizEl.innerHTML = DATA.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q.q}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}"><option value="">?</option>${q.o.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join("")}</select><button data-q="${k}">Перевірити</button><span class="mark" id="mk${k}"></span></div></div>`).join("");
+quizEl.addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  const k = +b.dataset.q, box = document.getElementById("q" + k), s = document.getElementById("a" + k);
+  if (!s.value || box.classList.contains("yes") || box.classList.contains("no")) return;
+  const ok = enc(s.value) === DATA[k].ok;
+  box.classList.add(ok ? "yes" : "no"); s.disabled = true; b.disabled = true;
+  document.getElementById("mk" + k).textContent = ok ? "✓ Правильно" : "✗ Ні";
+  qr += ok; qd++;
+  document.getElementById("qs").textContent = `Тест: ${qr} з ${DATA.length}` + (qd === DATA.length ? " — покажи вчителю" : "");
+});
+</script>
+</body>
+</html>
