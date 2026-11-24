@@ -156,7 +156,6 @@ turtle.done()</pre>
     <li><b>Більша сніжинка.</b> У рядку 11 заміни <code>100</code> на <code>150</code>, а в рядку 20 — <code>60</code> на <code>110</code>. Чому 110? Щоб повернутися в центр, назад треба пройти стільки ж, скільки вперед: 40 + 110 = 150.</li>
     <li><b>★ 8 променів.</b> Допиши в список ще 2 кольори (щоб їх стало 8), а в рядку 21 заміни <code>60</code> на <code>45</code>, бо 8 × 45 = 360. Підказка: 6 променів — 60, 8 — 45, 12 — 30.</li>
   </ol>
-  <p>Готову сніжинку покажи вчителю.</p>
 
   <h2>Тест <small>(12 питань)</small></h2>
   <p>Вибери відповідь зі списку і натисни «Перевірити». Кожне питання можна перевірити лише <b>один раз</b>. Підказка: усі відповіді є в поясненні рядків.</p>
@@ -189,7 +188,7 @@ quizEl.addEventListener("click", e => {
   box.classList.add(ok ? "yes" : "no"); s.disabled = true; b.disabled = true;
   document.getElementById("mk" + k).textContent = ok ? "✓ Правильно" : "✗ Ні";
   qr += ok; qd++;
-  document.getElementById("qs").textContent = `Тест: ${qr} з ${DATA.length}` + (qd === DATA.length ? " — покажи вчителю" : "");
+  document.getElementById("qs").textContent = `Тест: ${qr} з ${DATA.length}`;
 });
 </script>
 </body>

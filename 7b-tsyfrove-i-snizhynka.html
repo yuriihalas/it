@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Цифрове середовище і сніжинка · 7-Б</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --a: #0f766e; --a2: #e8f6f4; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 22px; }
+  h1 { font-size: 30px; margin: 0 0 6px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; }
+  h2 small { font-weight: 400; font-size: 17px; color: #444; }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 4px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; }
+  .big { font-weight: 700; background: #fff6dd; border-left: 5px solid #c79100; padding: 6px 10px; margin: 0 0 8px; }
+  .try { background: var(--a2); border-left: 5px solid var(--a); padding: 6px 10px; margin: 0 0 8px; }
+  .three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 10px; }
+  .box { border: 2px solid #d5dae0; border-radius: 10px; padding: 8px 12px; }
+  .box h3 { margin: 0 0 4px; font-size: 20px; }
+  .box.d h3 { color: #0b5cad; } .box.p h3 { color: #7e22ce; } .box.m h3 { color: #b35900; }
+  .box p { margin: 0; font-size: 17px; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .wrap { overflow-x: auto; }
+  pre { font-family: Consolas, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.35; background: #f4f6f9; border: 2px solid #d5dbe3; border-left: 8px solid var(--a); border-radius: 4px; padding: 8px 10px; overflow-x: auto; margin: 0 0 8px; }
+  .k { color: #7e22ce; } .s { color: #0a6e2a; }
+  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0 0 8px; }
+  .card { border: 2px solid #d5dae0; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .card .ic { font-size: 30px; line-height: 1; }
+  .card .nm { font-weight: 700; font-size: 17px; }
+  .card.yes { border-color: #1a7f37; background: #f3faf4; } .card.no { border-color: #b42318; background: #fdf3f2; }
+  select { font: 700 17px "Segoe UI", Arial, sans-serif; padding: 4px 6px; border: 2px solid #9aa4ae; border-radius: 6px; background: #fff; color: #111; max-width: 100%; cursor: pointer; }
+  .sits { display: grid; gap: 8px; margin: 0 0 8px; }
+  .sit { border: 2px solid #d5dae0; border-radius: 10px; padding: 8px 12px; display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 10px; align-items: center; }
+  .sit.yes { border-color: #1a7f37; background: #f3faf4; } .sit.no { border-color: #b42318; background: #fdf3f2; }
+  button { font: inherit; font-size: 17px; padding: 5px 14px; border: 2px solid var(--a); border-radius: 6px; background: var(--a); color: #fff; font-weight: 700; cursor: pointer; }
+  button.ghost { background: #fff; color: var(--a); }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .res { font-weight: 700; font-size: 20px; margin: 4px 0 8px; min-height: 1.4em; }
+  .res.ok { color: #1a7f37; }
+  .steps { margin: 0 0 8px; }
+  .shot { display: block; max-width: 760px; width: 100%; height: auto; border: 1px solid #d5dae0; border-radius: 6px; margin: 4px 0 10px; }
+  .tag { display: inline-block; font-size: 14px; font-weight: 700; padding: 0 8px; border-radius: 10px; margin-left: 4px; color: #fff; }
+  .tag.Пристрій { background: #0b5cad; } .tag.Програма { background: #7e22ce; } .tag.Мережа { background: #b35900; }
+  .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 8px; }
+  .chain .link { display: flex; flex-direction: column; align-items: center; min-width: 92px; padding: 6px 8px; border: 2px dashed #c9ced3; border-radius: 10px; color: #777; font-weight: 700; font-size: 15px; }
+  .chain .link .ic { font-size: 28px; filter: grayscale(1); opacity: .45; }
+  .chain .link.on { border-style: solid; border-color: #1a7f37; background: #f3faf4; color: #1a7f37; }
+  .chain .link.on .ic { filter: none; opacity: 1; }
+  .chain .arr { font-size: 22px; color: #888; }
+  h3.sub { font-size: 20px; margin: 12px 0 6px; color: var(--a); } h3.sub small { font-weight: 400; font-size: 16px; color: #444; }
+  code.pass { font-size: 20px; background: #f4f6f9; border: 1px solid #d5dbe3; border-radius: 4px; padding: 0 6px; }
+  .why { color: #1a7f37; font-size: 16px; }
+  .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin-bottom: 8px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q p { margin: 0 0 6px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .score { font-weight: 700; font-size: 21px; }
+  @media (max-width: 900px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .three, .quiz { grid-template-columns: 1fr; } .sit { grid-template-columns: 1fr; } }
+
+  .snow h2 { color: #9b1c1c; border-color: #9b1c1c; }
+  .snow .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .snow .code2 { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+  .snow pre { font: 700 16px/1.5 Consolas, "Courier New", monospace; background: #f2f4f7; border: 0; border-left: 6px solid #9b1c1c; border-radius: 4px; padding: 10px 12px; -webkit-user-select: none; user-select: none; }
+  .snow pre .k { color: #7e22ce; } .snow pre .s { color: #1a7f37; } .snow pre .n { color: #b35900; }
+  .snow img { max-width: 100%; height: auto; display: block; border: 1px solid #d5dae0; border-radius: 6px; }
+  .snow canvas { display: block; width: 100%; max-width: 420px; height: auto; border: 1px solid #d5dae0; border-radius: 6px; }
+  .snow .cap { font-weight: 700; margin: 0 0 4px; }
+  .snow td.nr { text-align: right; color: #666; width: 1%; }
+  .snow td:nth-child(2) { white-space: nowrap; width: 1%; }
+  .snow details { border: 1px solid #d5dae0; border-radius: 8px; padding: 6px 12px; margin: 0 0 10px; }
+  .snow summary { font-weight: 700; cursor: pointer; color: #9b1c1c; }
+  .part { font-size: 26px; margin: 26px 0 4px; padding: 6px 12px; background: #eef2f6; border-radius: 6px; }
+  .part.p2 { background: #fdf0f0; color: #9b1c1c; }
+  @media (max-width: 820px) { .snow .two { grid-template-columns: 1fr; } .snow td:nth-child(2) { white-space: normal; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Цифрове середовище і сніжинка в Python <span>· 7-Б · 24.11</span></h1>
+  <p class="big">Спочатку — <b>5 тестів</b> про цифрове середовище. Потім набери в Thonny програму-<b>сніжинку</b> і пройди тест до неї.</p>
+
+  <h2 class="part">Частина 1. Цифрове середовище — тести</h2>
+  <p>Цифрове середовище складається з трьох частин:</p>
+  <div class="three">
+      <div class="box d"><h3>Пристрої</h3><p>те, що можна взяти в руки: комп'ютер, смартфон, принтер, флешка, навушники</p></div>
+      <div class="box p"><h3>Програми</h3><p>те, що працює всередині пристрою: браузер, Thonny, Scratch, гра, застосунок на телефоні</p></div>
+      <div class="box m"><h3>Мережі (зв'язок)</h3><p>те, що з'єднує пристрої: Інтернет, Wi-Fi, мобільний зв'язок, Bluetooth</p></div>
+    </div>
+  <p><b>Інформаційні технології (ІТ)</b> — способи за допомогою пристроїв і програм <b>збирати, зберігати, опрацьовувати і передавати</b> інформацію. Паперовий підручник чи крейда — <b>не цифрові</b>: у них немає ні програми, ні зв'язку.</p>
+
+  <section>
+    <h2>Завдання 1. Розклади по кошиках <small>(12 карток)</small></h2>
+    <p>Під кожною карткою вибери зі списку: це <b>пристрій</b>, <b>програма</b>, <b>мережа (зв'язок)</b> чи <b>не цифрове</b>. Коли вибереш усі 12 — натисни «Перевірити».</p>
+    <div class="cards" id="cards"></div>
+    <button id="chk1">Перевірити</button> <button class="ghost" id="again1">Спробувати ще раз</button>
+    <p class="res" id="res1"></p>
+  </section>
+
+  <section>
+    <h2>Завдання 2. Яка технологія допомогла? <small>(6 історій)</small></h2>
+    <p>Прочитай історію і вибери технологію, яка в ній працює. Кожна технологія підходить лише до однієї історії.</p>
+    <div class="sits" id="sits"></div>
+    <button id="chk2">Перевірити</button> <button class="ghost" id="again2">Спробувати ще раз</button>
+    <p class="res" id="res2"></p>
+  </section>
+
+  <section>
+    <h2>Завдання 3. Фото кота для бабусі <small>(5 кроків)</small></h2>
+    <p>Оля хоче показати бабусі свого кота. Прочитай історію і в кожному кроці вибери зі списку, що допомогло. Коли все правильно, побачиш весь шлях фото від Олі до бабусі.</p>
+    <div class="sits" id="path"></div>
+    <div class="chain" id="chain" aria-live="polite"></div>
+    <p><button id="chk4">Перевірити</button> <button class="ghost" id="again4">Спробувати ще раз</button></p>
+    <p class="res" id="res4"></p>
+  </section>
+
+  <section>
+    <h2>Завдання 4. Надійний пароль чи ні? <small>(8 паролів)</small></h2>
+    
+    <p>Надійний пароль — <b>довгий</b> (від 8 символів), має <b>великі й малі літери</b>, <b>цифри</b> і <b>знаки</b> (<code>- _ ! ? #</code>), і його не можна вгадати (не ім'я, не дата, не <code>qwerty</code>). Для кожного пароля вибери зі списку: <b>надійний</b> чи <b>ненадійний</b>.</p>
+    <div class="sits" id="pw"></div>
+    <p><button id="chk5">Перевірити</button> <button class="ghost" id="again5">Спробувати ще раз</button></p>
+    <p class="res" id="res5"></p>
+  </section>
+
+  <section>
+    <h2>Завдання 5. Тест <small>(6 питань)</small></h2>
+    <p>Вибери відповідь зі списку і натисни «Перевірити». Перевірити кожне питання можна лише <b>один раз</b>.</p>
+    <div class="quiz" id="quiz"></div>
+    <p class="score" id="qs">Тест: 0 з 6</p>
+  </section>
+
+  <div class="snow">
+  <h2 class="part p2">Частина 2. Сніжинка в Python</h2>
+  <p>Черепашка йде від центру, малює промінь з двома гілочками, повертається в центр і повертає на 60°. І так <b>6 разів</b> — як у справжньої сніжинки.</p>
+
+  <h2>Як працювати в Thonny</h2>
+  <div class="two">
+    <div><img src="7b-snizhynka/run.png" width="790" height="847" alt="Thonny з програмою сніжинки: кнопка ▶ запустити, кнопка STOP, внизу Оболонка"></div>
+    <div>
+      <ol class="steps">
+        <li>Відкрий <b>Thonny</b>.</li>
+        <li>Натисни <b>Файл → Новий</b>.</li>
+        <li>Набери програму нижче. Порожні рядки можна пропускати. Відступ перед усіма рядками під <code>for</code> — клавіша <b>Tab</b> або 4 пробіли.</li>
+        <li>Натисни зелену кнопку <b>▶</b> (або <b>F5</b>). Thonny попросить зберегти файл — назви його <code>snizhynka.py</code>.</li>
+        <li>Відкриється вікно, і черепашка намалює сніжинку.</li>
+        <li>Щоб запустити ще раз, закрий вікно зі сніжинкою і знову натисни <b>▶</b>.</li>
+      </ol>
+      <p>Якщо внизу, в <b>Оболонці</b>, з'явився червоний текст — подивись номер рядка в ньому і порівняй цей рядок із програмою. Найчастіше це забуті <b>лапки</b>, <b>дужка</b>, <b>двокрапка</b> після <code>for</code> або англійська назва кольору з помилкою.</p>
+    </div>
+  </div>
+
+
+  <h2>Програма: набери і запусти</h2>
+  <div class="two code2">
+<pre><span class="k">import</span> turtle
+
+turtle.bgcolor(<span class="s">&quot;navy&quot;</span>)
+t = turtle.Turtle()
+t.speed(<span class="n">0</span>)
+t.pensize(<span class="n">4</span>)
+
+colors = [<span class="s">&quot;white&quot;</span>, <span class="s">&quot;cyan&quot;</span>, <span class="s">&quot;white&quot;</span>, <span class="s">&quot;cyan&quot;</span>, <span class="s">&quot;white&quot;</span>, <span class="s">&quot;cyan&quot;</span>]
+<span class="k">for</span> c <span class="k">in</span> colors:
+    t.pencolor(c)
+    t.forward(<span class="n">100</span>)
+    t.backward(<span class="n">40</span>)
+    t.left(<span class="n">45</span>)
+    t.forward(<span class="n">30</span>)
+    t.backward(<span class="n">30</span>)
+    t.right(<span class="n">90</span>)
+    t.forward(<span class="n">30</span>)
+    t.backward(<span class="n">30</span>)
+    t.left(<span class="n">45</span>)
+    t.backward(<span class="n">60</span>)
+    t.right(<span class="n">60</span>)
+
+t.hideturtle()
+turtle.done()</pre>
+    <div>
+      <p class="cap">Так має вийти:</p>
+      <canvas id="egg" width="320" height="320" aria-label="Біло-блакитна сніжинка з 6 променями на темно-синьому фоні"></canvas>
+    </div>
+  </div>
+
+
+  <details>
+    <summary>Що робить кожен рядок (відкрий, якщо щось незрозуміло в тесті)</summary>
+  <div class="wrap"><table>
+    <tr><th>№</th><th>Рядок</th><th>Що він робить</th></tr>
+    <tr><td class="nr">1</td><td><code>import turtle</code></td><td>підключаємо модуль <b>turtle</b> — «черепашку», яка ходить по екрану і малює.</td></tr>
+    <tr><td class="nr">3</td><td><code>turtle.bgcolor(&quot;navy&quot;)</code></td><td>фарбуємо <b>фон</b> вікна в темно-синій (<b>navy</b>) — як зимове нічне небо.</td></tr>
+    <tr><td class="nr">4</td><td><code>t = turtle.Turtle()</code></td><td>створюємо черепашку і називаємо її коротко <code>t</code>. Далі всі команди пишемо через <code>t.</code></td></tr>
+    <tr><td class="nr">5</td><td><code>t.speed(0)</code></td><td>найшвидша швидкість: <b>0</b> означає «без затримок».</td></tr>
+    <tr><td class="nr">6</td><td><code>t.pensize(4)</code></td><td>товщина лінії — <b>4</b>.</td></tr>
+    <tr><td class="nr">8</td><td><code>colors = [&quot;white&quot;, &quot;cyan&quot;, ...]</code></td><td>змінна <code>colors</code> — це <b>список</b> (тип даних <b>list</b>): 6 кольорів через кому. <b>Скільки кольорів у списку — стільки променів у сніжинки.</b></td></tr>
+    <tr><td class="nr">9</td><td><code>for c in colors:</code></td><td><b>цикл по списку</b>: усі рядки під ним (з відступом) повторяться для кожного кольору. Змінна <code>c</code> по черзі стає "white", "cyan", "white"…</td></tr>
+    <tr><td class="nr">10</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.pencolor(c)</code></td><td>колір лінії — той, що <b>зараз у c</b>. Тому промені білі й блакитні по черзі.</td></tr>
+    <tr><td class="nr">11</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.forward(100)</code></td><td>іти <b>100 кроків</b> від центру — малюємо промінь.</td></tr>
+    <tr><td class="nr">12</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(40)</code></td><td>повернутися <b>назад на 40</b> — до місця, де ростуть гілочки.</td></tr>
+    <tr><td class="nr">13</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.left(45)</code></td><td>повернутися <b>ліворуч на 45°</b>.</td></tr>
+    <tr><td class="nr">14</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.forward(30)</code></td><td>намалювати <b>ліву гілочку</b> довжиною 30…</td></tr>
+    <tr><td class="nr">15</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(30)</code></td><td>…і повернутися назад на промінь.</td></tr>
+    <tr><td class="nr">16</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.right(90)</code></td><td>повернутися <b>праворуч на 90°</b>: 45° — щоб знову дивитися вздовж променя, і ще 45° — на праву гілочку.</td></tr>
+    <tr><td class="nr">17</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.forward(30)</code></td><td>намалювати <b>праву гілочку</b>…</td></tr>
+    <tr><td class="nr">18</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(30)</code></td><td>…і повернутися назад.</td></tr>
+    <tr><td class="nr">19</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.left(45)</code></td><td>знову дивимось <b>уздовж променя</b>.</td></tr>
+    <tr><td class="nr">20</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.backward(60)</code></td><td>повернутися <b>в центр</b>: 40 + 60 = 100 — рівно стільки, скільки пройшли вперед.</td></tr>
+    <tr><td class="nr">21</td><td><code>&nbsp;&nbsp;&nbsp;&nbsp;t.right(60)</code></td><td>повернутися на <b>60°</b> до наступного променя. 6 променів × 60° = <b>360°</b> — повне коло.</td></tr>
+    <tr><td class="nr">23</td><td><code>t.hideturtle()</code></td><td>ховаємо черепашку, щоб вона не закривала сніжинку.</td></tr>
+    <tr><td class="nr">24</td><td><code>turtle.done()</code></td><td>вікно зі сніжинкою <b>не закривається</b>, щоб ти встиг її роздивитися.</td></tr>
+  </table></div>
+  <p>Порожні рядки 2, 7, 22 нічого не роблять — вони лише ділять програму на частини: <b>підготовка</b>, <b>промені</b>, <b>кінець</b>.</p>
+  </details>
+
+  <h2>Тест до сніжинки <small>(12 питань)</small></h2>
+  <p>Вибери відповідь зі списку і натисни «Перевірити». Кожне питання можна перевірити лише <b>один раз</b>. Можна змінювати програму й запускати, щоб перевірити себе.</p>
+  <div class="quiz" id="quiz2"></div>
+  <p class="score" id="qs2">Тест: 0 з 12</p>
+  </div>
+
+  <section>
+    <h2>Домашнє завдання</h2>
+    <p>Придумай <b>3 приклади інформаційних технологій</b>, якими користуєшся ти або твоя родина. І подумай, як змінити сніжинку, щоб на кожному промені було <b>4 гілочки</b>, а не 2.</p>
+  </section>
+</div>
+<script>
+{
+
+const DATA = {"cats": ["Пристрій", "Програма", "Мережа (зв'язок)", "Не цифрове"], "cards": [{"i": "💻", "t": "Ноутбук", "ok": "JUQwJUJGJUQxJTgwJUQwJUI4JUQxJTgxJUQxJTgyJUQxJTgwJUQxJTk2JUQwJUI5"}, {"i": "🐍", "t": "Thonny", "ok": "JUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUIw"}, {"i": "📶", "t": "Wi-Fi (зв'язок без дротів)", "ok": "JUQwJUJDJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI2JUQwJUIwKCVEMCVCNyVEMCVCMiVEMSU4RiVEMCVCNyVEMCVCRSVEMCVCQSk="}, {"i": "📕", "t": "Паперовий підручник", "ok": "JUQwJUJEJUQwJUI1JUQxJTg2JUQwJUI4JUQxJTg0JUQxJTgwJUQwJUJFJUQwJUIyJUQwJUI1"}, {"i": "🌐", "t": "Браузер (Chrome)", "ok": "JUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUIw"}, {"i": "🖨️", "t": "Принтер", "ok": "JUQwJUJGJUQxJTgwJUQwJUI4JUQxJTgxJUQxJTgyJUQxJTgwJUQxJTk2JUQwJUI5"}, {"i": "🌍", "t": "Інтернет", "ok": "JUQwJUJDJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI2JUQwJUIwKCVEMCVCNyVEMCVCMiVEMSU4RiVEMCVCNyVEMCVCRSVEMCVCQSk="}, {"i": "🐱", "t": "Scratch", "ok": "JUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUIw"}, {"i": "🖍️", "t": "Крейда і дошка", "ok": "JUQwJUJEJUQwJUI1JUQxJTg2JUQwJUI4JUQxJTg0JUQxJTgwJUQwJUJFJUQwJUIyJUQwJUI1"}, {"i": "📱", "t": "Смартфон", "ok": "JUQwJUJGJUQxJTgwJUQwJUI4JUQxJTgxJUQxJTgyJUQxJTgwJUQxJTk2JUQwJUI5"}, {"i": "🧮", "t": "Застосунок «Калькулятор» на телефоні", "ok": "JUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUIw"}, {"i": "💾", "t": "Флешка", "ok": "JUQwJUJGJUQxJTgwJUQwJUI4JUQxJTgxJUQxJTgyJUQxJTgwJUQxJTk2JUQwJUI5"}], "tech": ["QR-код", "Електронна пошта", "Навігація (GPS)", "Онлайн-перекладач", "Хмарне сховище", "Відеозв'язок"], "sit": [{"t": "Тато в незнайомому місті, а телефон показує, куди повернути і скільки йти.", "ok": "JUQwJUJEJUQwJUIwJUQwJUIyJUQxJTk2JUQwJUIzJUQwJUIwJUQxJTg2JUQxJTk2JUQxJThGKGdwcyk="}, {"t": "Під час тривоги клас удома бачить і чує вчителя на екрані.", "ok": "JUQwJUIyJUQxJTk2JUQwJUI0JUQwJUI1JUQwJUJFJUQwJUI3JUQwJUIyJUQxJThGJUQwJUI3JUQwJUJFJUQwJUJB"}, {"t": "Телефон загубився, а фото не зникли: вони збереглися в інтернеті, і їх видно на новому телефоні.", "ok": "JUQxJTg1JUQwJUJDJUQwJUIwJUQxJTgwJUQwJUJEJUQwJUI1JUQxJTgxJUQxJTg1JUQwJUJFJUQwJUIyJUQwJUI4JUQxJTg5JUQwJUI1"}, {"t": "Оля навела камеру телефона на квадратик із чорно-білим візерунком — і відкрився сайт з уроком.", "ok": "cXItJUQwJUJBJUQwJUJFJUQwJUI0"}, {"t": "Максим вставив англійський текст і за секунду прочитав його українською.", "ok": "JUQwJUJFJUQwJUJEJUQwJUJCJUQwJUIwJUQwJUI5JUQwJUJELSVEMCVCRiVEMCVCNSVEMSU4MCVEMCVCNSVEMCVCQSVEMCVCQiVEMCVCMCVEMCVCNCVEMCVCMCVEMSU4Nw=="}, {"t": "Школа надіслала батькам лист із розкладом, і він прийшов їм на телефон за хвилину.", "ok": "JUQwJUI1JUQwJUJCJUQwJUI1JUQwJUJBJUQxJTgyJUQxJTgwJUQwJUJFJUQwJUJEJUQwJUJEJUQwJUIwJUQwJUJGJUQwJUJFJUQxJTg4JUQxJTgyJUQwJUIw"}], "quiz": [{"q": "Що з цього — <b>пристрій</b>? Вибери.", "o": ["Thonny", "принтер", "Інтернет", "браузер"], "ok": "JUQwJUJGJUQxJTgwJUQwJUI4JUQwJUJEJUQxJTgyJUQwJUI1JUQxJTgw"}, {"q": "Що з цього — <b>програма</b>? Вибери.", "o": ["монітор", "браузер", "флешка", "Wi-Fi"], "ok": "JUQwJUIxJUQxJTgwJUQwJUIwJUQxJTgzJUQwJUI3JUQwJUI1JUQxJTgw"}, {"q": "Що таке <b>цифрове середовище</b>? Вибери.", "o": ["усе цифрове навколо нас: пристрої, програми і мережі", "лише один комп'ютер", "лише Інтернет", "паперові книжки в бібліотеці"], "ok": "JUQxJTgzJUQxJTgxJUQwJUI1JUQxJTg2JUQwJUI4JUQxJTg0JUQxJTgwJUQwJUJFJUQwJUIyJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUIyJUQwJUJBJUQwJUJFJUQwJUJCJUQwJUJFJUQwJUJEJUQwJUIwJUQxJTgxJTNBJUQwJUJGJUQxJTgwJUQwJUI4JUQxJTgxJUQxJTgyJUQxJTgwJUQwJUJFJUQxJTk3JTJDJUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUI4JUQxJTk2JUQwJUJDJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI2JUQxJTk2"}, {"q": "Інформаційні технології допомагають з інформацією… Що саме? Вибери.", "o": ["збирати, зберігати, опрацьовувати і передавати", "лише малювати", "лише друкувати на папері", "лише грати"], "ok": "JUQwJUI3JUQwJUIxJUQwJUI4JUQxJTgwJUQwJUIwJUQxJTgyJUQwJUI4JTJDJUQwJUI3JUQwJUIxJUQwJUI1JUQxJTgwJUQxJTk2JUQwJUIzJUQwJUIwJUQxJTgyJUQwJUI4JTJDJUQwJUJFJUQwJUJGJUQxJTgwJUQwJUIwJUQxJTg2JUQxJThDJUQwJUJFJUQwJUIyJUQxJTgzJUQwJUIyJUQwJUIwJUQxJTgyJUQwJUI4JUQxJTk2JUQwJUJGJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI0JUQwJUIwJUQwJUIyJUQwJUIwJUQxJTgyJUQwJUI4"}, {"q": "Який пароль <b>найнадійніший</b>? Вибери.", "o": ["123456", "qwerty", "Sonce-Kit_7!", "7a"], "ok": "c29uY2Uta2l0Xzch"}, {"q": "<b>Bluetooth</b> (зв'язок навушників із телефоном) — це…? Вибери.", "o": ["пристрій", "програма", "мережа (зв'язок)", "не цифрове"], "ok": "JUQwJUJDJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI2JUQwJUIwKCVEMCVCNyVEMCVCMiVEMSU4RiVEMCVCNyVEMCVCRSVEMCVCQSk="}]};
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(norm(v)));
+const opts = list => '<option value="">?</option>' + list.map(o => `<option>${o}</option>`).join("");
+
+// task 1
+const cardsEl = document.getElementById("cards");
+cardsEl.innerHTML = DATA.cards.map((c, k) => `<div class="card" id="c${k}"><span class="ic" aria-hidden="true">${c.i}</span><span class="nm">${c.t}</span><select aria-label="${c.t}">${opts(DATA.cats)}</select></div>`).join("");
+document.getElementById("chk1").addEventListener("click", () => {
+  const sels = [...cardsEl.querySelectorAll("select")];
+  if (sels.some(s => !s.value)) { document.getElementById("res1").textContent = "Вибери щось під кожною карткою."; document.getElementById("res1").className = "res"; return; }
+  let n = 0;
+  sels.forEach((s, k) => { const ok = enc(s.value) === DATA.cards[k].ok; n += ok; document.getElementById("c" + k).className = "card " + (ok ? "yes" : "no"); });
+  const r = document.getElementById("res1");
+  r.textContent = `Правильно: ${n} з 12` + (n === 12 ? " — чудово!" : ". Червоні картки — подумай ще і натисни «Спробувати ще раз».");
+  r.className = "res" + (n === 12 ? " ok" : "");
+});
+document.getElementById("again1").addEventListener("click", () => { cardsEl.querySelectorAll(".card").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = "card"; }); document.getElementById("res1").textContent = ""; });
+
+// task 2
+const sitsEl = document.getElementById("sits");
+sitsEl.innerHTML = DATA.sit.map((s, k) => `<div class="sit" id="s${k}"><span><b>${k + 1}.</b> ${s.t}</span><select aria-label="Технологія для історії ${k + 1}">${opts(DATA.tech)}</select></div>`).join("");
+document.getElementById("chk2").addEventListener("click", () => {
+  const sels = [...sitsEl.querySelectorAll("select")];
+  if (sels.some(s => !s.value)) { document.getElementById("res2").textContent = "Вибери технологію для кожної історії."; document.getElementById("res2").className = "res"; return; }
+  let n = 0;
+  sels.forEach((s, k) => { const ok = enc(s.value) === DATA.sit[k].ok; n += ok; document.getElementById("s" + k).className = "sit " + (ok ? "yes" : "no"); });
+  const r = document.getElementById("res2");
+  r.textContent = `Правильно: ${n} з 6` + (n === 6 ? " — молодець!" : ". Підказка: кожна технологія — лише один раз.");
+  r.className = "res" + (n === 6 ? " ok" : "");
+});
+document.getElementById("again2").addEventListener("click", () => { sitsEl.querySelectorAll(".sit").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = "sit"; }); document.getElementById("res2").textContent = ""; });
+
+
+// task 4: photo path
+const T4 = [{"i": "📷", "t": "Оля фотографує кота на свій…", "o": ["Viber", "смартфон", "Wi-Fi", "крейду"], "ok": "JUQxJTgxJUQwJUJDJUQwJUIwJUQxJTgwJUQxJTgyJUQxJTg0JUQwJUJFJUQwJUJE", "p": "Пристрій"}, {"i": "🖼️", "t": "Фото відразу з'являється в програмі…", "o": ["флешка", "Bluetooth", "Галерея", "роутер"], "ok": "JUQwJUIzJUQwJUIwJUQwJUJCJUQwJUI1JUQxJTgwJUQwJUI1JUQxJThG", "p": "Програма"}, {"i": "💬", "t": "Щоб надіслати фото бабусі, Оля відкриває…", "o": ["принтер", "Viber", "Інтернет", "мишку"], "ok": "dmliZXI=", "p": "Програма"}, {"i": "🌍", "t": "Фото летить до бабусі в інше місто через…", "o": ["Інтернет", "Scratch", "монітор", "калькулятор"], "ok": "JUQxJTk2JUQwJUJEJUQxJTgyJUQwJUI1JUQxJTgwJUQwJUJEJUQwJUI1JUQxJTgy", "p": "Мережа"}, {"i": "📱", "t": "Бабуся бачить кота на своєму…", "o": ["браузері", "Wi-Fi", "планшеті", "папері"], "ok": "JUQwJUJGJUQwJUJCJUQwJUIwJUQwJUJEJUQxJTg4JUQwJUI1JUQxJTgyJUQxJTk2", "p": "Пристрій"}];
+const pathEl = document.getElementById("path"), chainEl = document.getElementById("chain");
+pathEl.innerHTML = T4.map((s, k) => `<div class="sit" id="p${k}"><span><b>${k + 1}.</b> ${s.t} <span class="tag" id="g${k}"></span></span><select aria-label="Крок ${k + 1}">${opts(s.o)}</select></div>`).join("");
+const drawChain = done => { chainEl.innerHTML = T4.map((s, k) => `<span class="link${done[k] ? " on" : ""}"><span class="ic" aria-hidden="true">${s.i}</span>${done[k] ? s.p : "?"}</span>`).join('<span class="arr" aria-hidden="true">→</span>'); };
+drawChain(T4.map(() => false));
+document.getElementById("chk4").addEventListener("click", () => {
+  const sels = [...pathEl.querySelectorAll("select")], r = document.getElementById("res4");
+  if (sels.some(s => !s.value)) { r.textContent = "Вибери відповідь у кожному кроці."; r.className = "res"; return; }
+  const done = sels.map((s, k) => enc(s.value) === T4[k].ok);
+  done.forEach((ok, k) => { document.getElementById("p" + k).className = "sit " + (ok ? "yes" : "no"); document.getElementById("g" + k).textContent = ok ? T4[k].p : ""; document.getElementById("g" + k).className = "tag " + (ok ? T4[k].p : ""); });
+  drawChain(done);
+  const n = done.filter(Boolean).length;
+  r.textContent = n === 5 ? "Усе правильно! Бабуся бачить кота. Подивись на ланцюжок: у цій історії працювали всі три частини цифрового середовища — пристрої, програми і мережа." : `Правильно: ${n} з 5. Червоні кроки — подумай ще і натисни «Спробувати ще раз».`;
+  r.className = "res" + (n === 5 ? " ok" : "");
+});
+document.getElementById("again4").addEventListener("click", () => { pathEl.querySelectorAll(".sit").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = c.classList.contains("yes") ? "sit yes" : "sit"; }); document.getElementById("res4").textContent = ""; });
+
+// password test
+const PW = [{"t": "123456", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "лише цифри підряд — його вгадують за секунду"}, {"t": "Zyma-Snig_48?", "ok": "JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "довгий, є великі й малі літери, цифри і знаки"}, {"t": "qwerty", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "це просто клавіші підряд на клавіатурі"}, {"t": "Olia2014", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "ім'я і рік народження легко вгадати"}, {"t": "My_Kit-Murchyk#5", "ok": "JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "довгий, є великі й малі літери, цифра і знаки"}, {"t": "password", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "англійською це слово «пароль» — його пробують першим"}, {"t": "kit", "ok": "JUQwJUJEJUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "лише 3 літери — надто короткий"}, {"t": "7a_Lviv!Kompas9", "ok": "JUQwJUJEJUQwJUIwJUQwJUI0JUQxJTk2JUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5", "w": "довгий, змішані літери, цифри і знаки"}];
+const pwEl = document.getElementById("pw");
+pwEl.innerHTML = PW.map((x, k) => `<div class="sit" id="w${k}"><span><b>${k + 1}.</b> <code class="pass">${x.t}</code> <span class="why" id="y${k}"></span></span><select aria-label="Пароль ${k + 1}">${opts(["надійний", "ненадійний"])}</select></div>`).join("");
+document.getElementById("chk5").addEventListener("click", () => {
+  const sels = [...pwEl.querySelectorAll("select")], r = document.getElementById("res5");
+  if (sels.some(s => !s.value)) { r.textContent = "Вибери відповідь для кожного пароля."; r.className = "res"; return; }
+  let n = 0;
+  sels.forEach((s, k) => { const ok = enc(s.value) === PW[k].ok; n += ok; document.getElementById("w" + k).className = "sit " + (ok ? "yes" : "no"); document.getElementById("y" + k).textContent = ok ? "— " + PW[k].w : ""; });
+  r.textContent = `Правильно: ${n} з 8` + (n === 8 ? " — ти вмієш відрізнити надійний пароль!" : ". Червоні — перечитай правило над тестом і натисни «Спробувати ще раз».");
+  r.className = "res" + (n === 8 ? " ok" : "");
+});
+document.getElementById("again5").addEventListener("click", () => { pwEl.querySelectorAll(".sit").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = c.classList.contains("yes") ? "sit yes" : "sit"; }); document.getElementById("res5").textContent = ""; });
+
+// quiz
+let qr = 0, qd = 0;
+const quizEl = document.getElementById("quiz");
+quizEl.innerHTML = DATA.quiz.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q.q}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}">${opts(q.o)}</select><button class="ghost" data-q="${k}">Перевірити</button><span class="mark" id="m${k}"></span></div></div>`).join("");
+quizEl.addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  const k = +b.dataset.q, box = document.getElementById("q" + k), s = document.getElementById("a" + k);
+  if (!s.value || box.classList.contains("yes") || box.classList.contains("no")) return;
+  const ok = enc(s.value) === DATA.quiz[k].ok;
+  box.classList.add(ok ? "yes" : "no"); s.disabled = true; b.disabled = true;
+  document.getElementById("m" + k).textContent = ok ? "✓ Правильно" : "✗ Ні";
+  qr += ok; qd++;
+  document.getElementById("qs").textContent = `Тест: ${qr} з ${DATA.quiz.length}`;
+});
+
+}
+{
+
+const cv = document.getElementById("egg"), g = cv.getContext("2d");
+g.fillStyle = "navy"; g.fillRect(0, 0, 320, 320);
+g.lineWidth = 4; g.lineCap = "round";
+let x = 160, y = 160, h = 0, col = "white";
+const fd = d => { const nx = x + d * Math.cos(h * Math.PI / 180), ny = y - d * Math.sin(h * Math.PI / 180); g.strokeStyle = col; g.beginPath(); g.moveTo(x, y); g.lineTo(nx, ny); g.stroke(); x = nx; y = ny; };
+["white", "cyan", "white", "cyan", "white", "cyan"].forEach(c => { col = c; fd(100); fd(-40); h += 45; fd(30); fd(-30); h -= 90; fd(30); fd(-30); h += 45; fd(-60); h -= 60; });
+
+const DATA = [{"q": "Що робить <code>turtle.bgcolor(\"navy\")</code>?", "o": ["фарбує фон у темно-синій", "малює синю лінію", "змінює колір черепашки"], "ok": "JUQxJTg0JUQwJUIwJUQxJTgwJUQwJUIxJUQxJTgzJUQxJTk0JUQxJTg0JUQwJUJFJUQwJUJEJUQxJTgzJUQxJTgyJUQwJUI1JUQwJUJDJUQwJUJEJUQwJUJFLSVEMSU4MSVEMCVCOCVEMCVCRCVEMSU5NiVEMCVCOQ=="}, {"q": "Скільки <b>променів</b> у сніжинки? Вибери число.", "o": ["3", "6", "60"], "ok": "Ng=="}, {"q": "Чому променів саме стільки?", "o": ["бо в списку colors 6 кольорів", "бо t.pensize(4)", "бо t.forward(100)"], "ok": "JUQwJUIxJUQwJUJFJUQwJUIyJUQxJTgxJUQwJUJGJUQwJUI4JUQxJTgxJUQwJUJBJUQxJTgzY29sb3JzNiVEMCVCQSVEMCVCRSVEMCVCQiVEMSU4QyVEMCVCRSVEMSU4MCVEMSU5NiVEMCVCMg=="}, {"q": "Яка <b>довжина</b> променя? Вибери число.", "o": ["30", "60", "100"], "ok": "MTAw"}, {"q": "Що робить <code>t.backward(40)</code>?", "o": ["іде назад на 40 кроків", "повертає ліворуч на 40°", "малює коло"], "ok": "JUQxJTk2JUQwJUI0JUQwJUI1JUQwJUJEJUQwJUIwJUQwJUI3JUQwJUIwJUQwJUI0JUQwJUJEJUQwJUIwNDAlRDAlQkElRDElODAlRDAlQkUlRDAlQkElRDElOTYlRDAlQjI="}, {"q": "Скільки маленьких <b>гілочок</b> на одному промені? Вибери число.", "o": ["1", "2", "6"], "ok": "Mg=="}, {"q": "Чому в <code>t.right(60)</code> саме 60?", "o": ["бо 6 × 60 = 360, повне коло", "бо так красивіше", "бо довжина променя 60"], "ok": "JUQwJUIxJUQwJUJFNiVDMyU5NzYwJTNEMzYwJTJDJUQwJUJGJUQwJUJFJUQwJUIyJUQwJUJEJUQwJUI1JUQwJUJBJUQwJUJFJUQwJUJCJUQwJUJF"}, {"q": "Що робить <code>t.pensize(4)</code>?", "o": ["задає товщину лінії", "задає розмір сніжинки", "задає кількість променів"], "ok": "JUQwJUI3JUQwJUIwJUQwJUI0JUQwJUIwJUQxJTk0JUQxJTgyJUQwJUJFJUQwJUIyJUQxJTg5JUQwJUI4JUQwJUJEJUQxJTgzJUQwJUJCJUQxJTk2JUQwJUJEJUQxJTk2JUQxJTk3"}, {"q": "Яка змінна <b>по черзі</b> стає кожним кольором зі списку?", "o": ["c", "t", "colors"], "ok": "Yw=="}, {"q": "Який <b>тип даних</b> у змінної <code>colors</code>?", "o": ["список (list)", "число (int)", "рядок (str)"], "ok": "JUQxJTgxJUQwJUJGJUQwJUI4JUQxJTgxJUQwJUJFJUQwJUJBKGxpc3Qp"}, {"q": "Щоб зробити <b>8</b> променів, у списку має бути 8 кольорів, а в <code>t.right(…)</code> — яке число?", "o": ["45", "60", "80"], "ok": "NDU="}, {"q": "Чому рядки під <code>for</code> мають відступ?", "o": ["бо вони всередині циклу і повторюються", "так просто красивіше", "це помилка"], "ok": "JUQwJUIxJUQwJUJFJUQwJUIyJUQwJUJFJUQwJUJEJUQwJUI4JUQwJUIyJUQxJTgxJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI0JUQwJUI4JUQwJUJEJUQxJTk2JUQxJTg2JUQwJUI4JUQwJUJBJUQwJUJCJUQxJTgzJUQxJTk2JUQwJUJGJUQwJUJFJUQwJUIyJUQxJTgyJUQwJUJFJUQxJTgwJUQxJThFJUQxJThFJUQxJTgyJUQxJThDJUQxJTgxJUQxJThG"}];
+const norm = v => String(v).toLowerCase().replace(/[\s"'«»]/g, "");
+const enc = v => btoa(encodeURIComponent(norm(v)));
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+let qr = 0, qd = 0;
+const quizEl = document.getElementById("quiz2");
+quizEl.innerHTML = DATA.map((q, k) => `<div class="q" id="zq${k}"><p><b>${k + 1}.</b> ${q.q}</p><div class="ans"><select id="za${k}" aria-label="Відповідь ${k + 1}"><option value="">?</option>${q.o.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join("")}</select><button data-q="${k}">Перевірити</button><span class="mark" id="zm${k}"></span></div></div>`).join("");
+quizEl.addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  const k = +b.dataset.q, box = document.getElementById("zq" + k), s = document.getElementById("za" + k);
+  if (!s.value || box.classList.contains("yes") || box.classList.contains("no")) return;
+  const ok = enc(s.value) === DATA[k].ok;
+  box.classList.add(ok ? "yes" : "no"); s.disabled = true; b.disabled = true;
+  document.getElementById("zm" + k).textContent = ok ? "✓ Правильно" : "✗ Ні";
+  qr += ok; qd++;
+  document.getElementById("qs2").textContent = `Тест: ${qr} з ${DATA.length}`;
+});
+
+}
+</script>
+</body>
+</html>

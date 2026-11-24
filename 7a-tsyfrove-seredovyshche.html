@@ -133,7 +133,7 @@ print(<span class="s">"Зараз:"</span>, datetime.datetime.now().strftime(<sp
     <p>Система: <select id="mySys"><option value="">?</option><option>Windows</option><option>Linux</option><option>macOS (Darwin)</option></select>
        &nbsp; Python: <select id="myPy"><option value="">?</option><option>3.8 або старший</option><option>3.10</option><option>3.11</option><option>3.12 або новіший</option></select></p>
     <p class="res" id="res3"></p>
-    <p class="try"><b>Зміни сам:</b> додай у кінець рядок <code>print("Мій клас: 7-А")</code> і запусти ще раз. Потім спробуй змінити текст у лапках у будь-якому рядку — наприклад, <code>"Мій комп'ютер:"</code> на <code>"Мого друга звуть:"</code>. Покажи вчителю.</p>
+    <p class="try"><b>Зміни сам:</b> додай у кінець рядок <code>print("Мій клас: 7-А")</code> і запусти ще раз. Потім спробуй змінити текст у лапках у будь-якому рядку — наприклад, <code>"Мій комп'ютер:"</code> на <code>"Мого друга звуть:"</code>.</p>
   </section>
 
   <section>
@@ -187,7 +187,7 @@ document.getElementById("chk1").addEventListener("click", () => {
   let n = 0;
   sels.forEach((s, k) => { const ok = enc(s.value) === DATA.cards[k].ok; n += ok; document.getElementById("c" + k).className = "card " + (ok ? "yes" : "no"); });
   const r = document.getElementById("res1");
-  r.textContent = `Правильно: ${n} з 12` + (n === 12 ? " — чудово! Покажи вчителю." : ". Червоні картки — подумай ще і натисни «Спробувати ще раз».");
+  r.textContent = `Правильно: ${n} з 12` + (n === 12 ? " — чудово!" : ". Червоні картки — подумай ще і натисни «Спробувати ще раз».");
   r.className = "res" + (n === 12 ? " ok" : "");
 });
 document.getElementById("again1").addEventListener("click", () => { cardsEl.querySelectorAll(".card").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = "card"; }); document.getElementById("res1").textContent = ""; });
@@ -207,7 +207,7 @@ document.getElementById("chk2").addEventListener("click", () => {
 document.getElementById("again2").addEventListener("click", () => { sitsEl.querySelectorAll(".sit").forEach(c => { if (c.classList.contains("no")) c.querySelector("select").value = ""; c.className = "sit"; }); document.getElementById("res2").textContent = ""; });
 
 // task 3: own result (not graded)
-const t3 = () => { const a = document.getElementById("mySys").value, b = document.getElementById("myPy").value; document.getElementById("res3").textContent = a && b ? `Твій комп'ютер: ${a}, Python ${b}. Покажи вчителю, що програма працює.` : ""; document.getElementById("res3").className = "res ok"; };
+const t3 = () => { const a = document.getElementById("mySys").value, b = document.getElementById("myPy").value; document.getElementById("res3").textContent = a && b ? `Твій комп'ютер: ${a}, Python ${b}.` : ""; document.getElementById("res3").className = "res ok"; };
 document.getElementById("mySys").addEventListener("change", t3); document.getElementById("myPy").addEventListener("change", t3);
 
 // task 4: photo path
@@ -254,7 +254,7 @@ quizEl.addEventListener("click", e => {
   box.classList.add(ok ? "yes" : "no"); s.disabled = true; b.disabled = true;
   document.getElementById("m" + k).textContent = ok ? "✓ Правильно" : "✗ Ні";
   qr += ok; qd++;
-  document.getElementById("qs").textContent = `Тест: ${qr} з ${DATA.quiz.length}` + (qd === DATA.quiz.length ? " — покажи вчителю" : "");
+  document.getElementById("qs").textContent = `Тест: ${qr} з ${DATA.quiz.length}`;
 });
 </script>
 </body>
