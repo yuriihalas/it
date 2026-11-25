@@ -67,7 +67,7 @@
 <div class="wrap"><table><tr><th>Група даних</th><th>Що це</th><th>Приклад: «дітям до 7 років — безкоштовно»</th></tr>
 <tr><td><b>Звичайні</b></td><td>те, що вводять найчастіше</td><td>3, 10, 40</td></tr>
 <tr><td><b>Межові</b></td><td>сама межа і її сусід; тут помилок найбільше (<code>&gt;</code> замість <code>&gt;=</code>)</td><td>6 і 7</td></tr>
-<tr><td><b>Особливі</b></td><td>0, від'ємні (якщо дозволені), однакові, один елемент, порожній масив</td><td>0</td></tr>
+<tr><td><b>Особливі</b></td><td>0, від'ємні (якщо дозволені), однакові, ділення на 0</td><td>0</td></tr>
 <tr><td><b>Неправильні</b></td><td>те, чого не мало б бути</td><td>−5, літери</td></tr></table></div>
   </section>
   <section><h2><span class="no">1</span> Програма перевіряє сама себе</h2>
@@ -108,58 +108,53 @@ OK   17
 FAIL 18 треба 150 вийшло 80
 OK   0</pre><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>static int price(int age)</code></td><td>метод, який перевіряємо: за віком повертає ціну</td></tr><tr><td><code>static void check(int age, int expected)</code></td><td>перевіряльник: отримує вхід і очікуваний результат</td></tr><tr><td><code>int actual = price(age);</code></td><td>фактичний результат — що метод повернув насправді</td></tr><tr><td><code>if (actual == expected)</code></td><td>порівнює: збіглося — OK, ні — FAIL з поясненням</td></tr><tr><td><code>check(18, 150);</code></td><td>один тест: для 18 років очікуємо 150</td></tr></table></div><div class="quiz"><div class="q" data-k="0"></div><div class="q" data-k="1"></div><div class="q" data-k="2"></div><div class="q" data-k="3"></div><div class="q" data-k="4"></div></div>
   </section>
-  <section><h2><span class="no">2</span> Набір тестів у масивах</h2>
-<p><b>Умова:</b> рік високосний, якщо ділиться на 4. Але якщо ділиться на 100 — ні, хіба що ділиться на 400. Тому 2000 — високосний, а 1900 — ні.</p><p>Тести зручно зберігати разом: вхідні дані в одному масиві, очікувані результати — в другому.</p><pre>public class Main {
-    static boolean isLeap(int year) {
-        return year % 4 == 0;
+  <section><h2><span class="no">2</span> Ліфт</h2>
+<p><b>Умова:</b> ліфт їде, якщо вантаж <b>до 400 кг включно</b>. Метод повертає <code>true</code> — можна їхати, <code>false</code> — не можна.</p><p>Програма така сама, як перша: метод, перевіряльник <code>check</code> і тести.</p><pre>public class Main {
+    static boolean canGo(int kg) {
+        return kg &lt; 400;
+    }
+
+    static void check(int kg, boolean expected) {
+        boolean actual = canGo(kg);
+        if (actual == expected) {
+            System.out.println("OK   " + kg);
+        } else {
+            System.out.println("FAIL " + kg + " треба " + expected + " вийшло " + actual);
+        }
     }
 
     public static void main(String[] args) {
-        int[] years = {2024, 2023, 2000, 1900};
-        boolean[] expected = {true, false, true, false};
-        int passed = 0;
-        for (int i = 0; i &lt; years.length; i++) {
-            if (isLeap(years[i]) == expected[i]) {
-                passed++;
-            } else {
-                System.out.println("FAIL " + years[i]);
-            }
-        }
-        System.out.println("Пройдено: " + passed + " з " + years.length);
+        check(100, true);
+        check(399, true);
+        check(400, true);
+        check(401, false);
+        check(900, false);
     }
-}</pre><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>int[] years</code></td><td>вхідні дані: роки</td></tr><tr><td><code>boolean[] expected</code></td><td>очікувані результати, у тому самому порядку</td></tr><tr><td><code>isLeap(years[i]) == expected[i]</code></td><td>порівнює i-й результат з i-м очікуваним</td></tr><tr><td><code>passed++</code></td><td>рахує пройдені тести</td></tr></table></div><div class="quiz"><div class="q" data-k="5"></div><div class="q" data-k="6"></div><div class="q" data-k="7"></div><div class="q" data-k="8"></div><div class="q" data-k="9"></div><div class="q" data-k="10"></div></div>
+}</pre><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>static boolean canGo(int kg)</code></td><td>метод, який перевіряємо: чи можна їхати з такою вагою</td></tr><tr><td><code>return kg &lt; 400;</code></td><td>повертає true, якщо вага менша за 400; тут схована помилка</td></tr><tr><td><code>boolean expected</code></td><td>очікуваний результат тепер true або false</td></tr><tr><td><code>check(400, true);</code></td><td>тест: 400 кг — сама межа, їхати можна</td></tr></table></div><div class="quiz"><div class="q" data-k="5"></div><div class="q" data-k="6"></div><div class="q" data-k="7"></div><div class="q" data-k="8"></div></div>
   </section>
-  <section><h2><span class="no">3</span> Найтепліший день</h2>
-<p><b>Умова:</b> метод отримує масив температур і повертає найбільшу.</p><pre>import java.util.Arrays;
-
-public class Main {
-    static int warmest(int[] temps) {
-        int best = 0;
-        for (int t : temps) {
-            if (t &gt; best) {
-                best = t;
-            }
-        }
-        return best;
+  <section><h2><span class="no">3</span> Ділимо піцу</h2>
+<p><b>Умова:</b> піцу з <code>pieces</code> шматків ділять порівну на <code>people</code> людей. Метод повертає, скільки <b>цілих</b> шматків дістанеться кожному. Якщо людей 0 — повертає 0.</p><pre>public class Main {
+    static int slices(int pieces, int people) {
+        return pieces / people;
     }
 
-    static void check(int[] temps, int expected) {
-        int actual = warmest(temps);
+    static void check(int pieces, int people, int expected) {
+        int actual = slices(pieces, people);
         if (actual == expected) {
-            System.out.println("OK   " + Arrays.toString(temps));
+            System.out.println("OK   " + pieces + " на " + people);
         } else {
-            System.out.print("FAIL " + Arrays.toString(temps));
+            System.out.print("FAIL " + pieces + " на " + people);
             System.out.println(" треба " + expected + " вийшло " + actual);
         }
     }
 
     public static void main(String[] args) {
-        check(new int[]{3, 9, 5}, 9);
-        check(new int[]{7}, 7);
-        check(new int[]{4, 4}, 4);
-        check(new int[]{-5, -2, -8}, -2);
+        check(8, 4, 2);
+        check(8, 1, 8);
+        check(9, 2, 4);
+        check(8, 0, 0);
     }
-}</pre><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>int best = 0;</code></td><td>найбільше, знайдене досі; тут схована помилка</td></tr><tr><td><code>for (int t : temps)</code></td><td>перебирає всі температури</td></tr><tr><td><code>if (t &gt; best)</code></td><td>знайшли теплішу — запам'ятали</td></tr><tr><td><code>new int[]{-5, -2, -8}</code></td><td>масив просто в тесті: усі дні морозні</td></tr><tr><td><code>Arrays.toString(temps)</code></td><td>масив як текст, щоб його надрукувати</td></tr></table></div><div class="quiz"><div class="q" data-k="11"></div><div class="q" data-k="12"></div><div class="q" data-k="13"></div><div class="q" data-k="14"></div><div class="q" data-k="15"></div></div><p class="star"><b>Сам:</b> зроби, щоб для порожнього масиву метод повертав 0 і програма не падала. Підказка: <code>if (temps.length == 0)</code> першим рядком методу.</p>
+}</pre><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>static int slices(int pieces, int people)</code></td><td>метод, який перевіряємо: два вхідні числа</td></tr><tr><td><code>return pieces / people;</code></td><td>ділення цілих чисел: остача відкидається, 9 / 2 = 4</td></tr><tr><td><code>check(8, 0, 0);</code></td><td>особливий тест: людей 0</td></tr></table></div><div class="quiz"><div class="q" data-k="9"></div><div class="q" data-k="10"></div><div class="q" data-k="11"></div><div class="q" data-k="12"></div></div>
   </section>
   <section><h2><span class="no">4</span> Гра «Злови 7 помилок»</h2>
 <p>Одну програму написали 7 разів, і щоразу з іншою помилкою. Коду ти не бачиш — лише умову. Підбери тести так, щоб зловити всі 7. У тебе <b>8 спроб</b>; можна зловити й за 6.</p>
@@ -168,15 +163,15 @@ public class Main {
 <div class="bugs" id="bugs"></div><p id="gm" class="gm" aria-live="polite"></p><div class="wrap"><table id="gt" hidden><tr><th>Тест</th><th>Вхід</th><th>Очікую</th><th>Нових помилок зловлено</th></tr></table></div>
   </section>
   <section><h2>Тест</h2>
-<div class="quiz"><div class="q" data-k="16"></div><div class="q" data-k="17"></div><div class="q" data-k="18"></div><div class="q" data-k="19"></div><div class="q" data-k="20"></div><div class="q" data-k="21"></div><div class="q" data-k="22"></div><div class="q" data-k="23"></div><div class="q" data-k="24"></div><div class="q" data-k="25"></div></div>
+<div class="quiz"><div class="q" data-k="13"></div><div class="q" data-k="14"></div><div class="q" data-k="15"></div><div class="q" data-k="16"></div><div class="q" data-k="17"></div><div class="q" data-k="18"></div><div class="q" data-k="19"></div><div class="q" data-k="20"></div><div class="q" data-k="21"></div><div class="q" data-k="22"></div></div>
   </section>
   <section><h2>Домашнє завдання</h2>
 <p>Скласти 4 тести (вхід і очікуваний результат) до програми, яка за номером місяця називає пору року. Візьми дані з різних груп: звичайні, межові, неправильні.</p>
   </section>
-  <div class="score" id="score" aria-live="polite">Правильно: 0 з 26</div>
+  <div class="score" id="score" aria-live="polite">Правильно: 0 з 23</div>
 </div>
 <script>
-const QUIZ = [{"q": "Для якого віку тест показав FAIL?", "ok": ["MTg="], "show": "MTg=", "o": null, "code": ""}, {"q": "До якої групи належить цей вхід?", "ok": ["JUQwJUJDJUQwJUI1JUQwJUI2JUQwJUJFJUQwJUIyJUQxJTk2"], "show": "JUQwJUJDJUQwJUI1JUQwJUI2JUQwJUJFJUQwJUIyJUQxJTk2", "o": ["звичайні", "межові", "особливі", "неправильні"], "code": ""}, {"q": "Виправ умову: <code>age &gt; 18</code> → <code>age &gt;= 18</code>. Запусти. Скільки тепер рядків FAIL?", "ok": ["MA=="], "show": "MA==", "o": null, "code": ""}, {"q": "Тепер навмисно зламай: <code>age &lt; 7</code> → <code>age &lt;= 7</code>. Запусти. Для якого віку FAIL?", "ok": ["Nw=="], "show": "Nw==", "o": null, "code": ""}, {"q": "А якби тестів 7 і 18 не було, чи показали б решта тестів ці дві помилки?", "ok": ["JUQwJUJEJUQxJTk2"], "show": "JUQwJUJEJUQxJTk2", "o": ["так", "ні"], "code": ""}, {"q": "Який рік показав FAIL?", "ok": ["MTkwMA=="], "show": "MTkwMA==", "o": null, "code": ""}, {"q": "Скільки тестів пройдено з 4?", "ok": ["Mw=="], "show": "Mw==", "o": null, "code": ""}, {"q": "Додай у кінець п'ятий тест: <code>2100</code> у <code>years</code> і <code>false</code> у <code>expected</code>. Код не виправляй. Запусти. Скільки пройдено з 5?", "ok": ["Mw=="], "show": "Mw==", "o": null, "code": ""}, {"q": "Виправ: <code>return year % 4 == 0 &amp;&amp; year % 100 != 0 || year % 400 == 0;</code>. Запусти. Скільки пройдено з 5?", "ok": ["NQ=="], "show": "NQ==", "o": null, "code": ""}, {"q": "Який очікуваний результат для 2400? Порахуй за умовою.", "ok": ["dHJ1ZQ=="], "show": "dHJ1ZQ==", "o": ["true", "false"], "code": ""}, {"q": "А для 2200?", "ok": ["ZmFsc2U="], "show": "ZmFsc2U=", "o": ["true", "false"], "code": ""}, {"q": "Яке число у FAIL стоїть після «вийшло»?", "ok": ["MA=="], "show": "MA==", "o": null, "code": ""}, {"q": "Чому так вийшло?", "ok": ["JUQxJTgzJUQxJTgxJUQxJTk2JUQxJTgyJUQwJUI1JUQwJUJDJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUIwJUQxJTgyJUQxJTgzJUQxJTgwJUQwJUI4JUQwJUJDJUQwJUI1JUQwJUJEJUQxJTg4JUQxJTk2JUQwJUI3JUQwJUIwMC4lRDElOTZiZXN0JUQwJUJEJUQwJUI1JUQwJUI3JUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4JUQwJUIyJUQxJTgxJUQxJThG"], "show": "JUQxJTgzJUQxJTgxJUQxJTk2JTIwJUQxJTgyJUQwJUI1JUQwJUJDJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUIwJUQxJTgyJUQxJTgzJUQxJTgwJUQwJUI4JTIwJUQwJUJDJUQwJUI1JUQwJUJEJUQxJTg4JUQxJTk2JTIwJUQwJUI3JUQwJUIwJTIwMCUyQyUyMCVEMSU5NiUyMGJlc3QlMjAlRDAlQkQlRDAlQjUlMjAlRDAlQjclRDAlQkMlRDElOTYlRDAlQkQlRDAlQjglRDAlQjIlRDElODElRDElOEY=", "o": ["усі температури менші за 0, і best не змінився", "цикл не запустився", "чисел забагато"], "code": ""}, {"q": "Виправ: <code>int best = 0;</code> → <code>int best = temps[0];</code>. Запусти. Скільки тепер рядків FAIL?", "ok": ["MA=="], "show": "MA==", "o": null, "code": ""}, {"q": "Додай останнім тест з порожнім масивом: <code>check(new int[]{}, 0);</code>. Запусти. Яка помилка?", "ok": ["YXJyYXlpbmRleG91dG9mYm91bmRzZXhjZXB0aW9u"], "show": "QXJyYXlJbmRleE91dE9mQm91bmRzRXhjZXB0aW9u", "o": ["ArrayIndexOutOfBoundsException", "NullPointerException", "ArithmeticException"], "code": ""}, {"q": "До якої групи належить порожній масив?", "ok": ["JUQwJUJFJUQxJTgxJUQwJUJFJUQwJUIxJUQwJUJCJUQwJUI4JUQwJUIyJUQxJTk2"], "show": "JUQwJUJFJUQxJTgxJUQwJUJFJUQwJUIxJUQwJUJCJUQwJUI4JUQwJUIyJUQxJTk2", "o": ["звичайні", "межові", "особливі"], "code": ""}, {"q": "Тест — це…", "ok": ["JUQwJUIyJUQxJTg1JUQxJTk2JUQwJUI0JUQwJUJEJUQxJTk2JUQwJUI0JUQwJUIwJUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy"], "show": "JUQwJUIyJUQxJTg1JUQxJTk2JUQwJUI0JUQwJUJEJUQxJTk2JTIwJUQwJUI0JUQwJUIwJUQwJUJEJUQxJTk2JTIwJUQwJUI5JTIwJUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy", "o": ["вхідні дані й очікуваний результат", "запуск програми один раз", "список помилок"], "code": ""}, {"q": "Звідки беремо очікуваний результат?", "ok": ["JUQwJUI3JUQxJTgzJUQwJUJDJUQwJUJFJUQwJUIyJUQwJUI4JUQwJUI3JUQwJUIwJUQwJUI0JUQwJUIwJUQxJTg3JUQxJTk2"], "show": "JUQwJUI3JTIwJUQxJTgzJUQwJUJDJUQwJUJFJUQwJUIyJUQwJUI4JTIwJUQwJUI3JUQwJUIwJUQwJUI0JUQwJUIwJUQxJTg3JUQxJTk2", "o": ["з умови задачі", "з того, що вивела програма", "вгадуємо"], "code": ""}, {"q": "Умова: «знижка від 10 товарів». Які два числа — межові?", "ok": ["OSVEMSU5NjEw"], "show": "OSUyMCVEMSU5NiUyMDEw", "o": ["9 і 10", "1 і 100", "5 і 50"], "code": ""}, {"q": "Усі тести пройдено. Чи означає це, що помилок точно немає?", "ok": ["JUQwJUJEJUQxJTk2"], "show": "JUQwJUJEJUQxJTk2", "o": ["так", "ні"], "code": ""}, {"q": "Метод шукає найменше число. Який вхід — з групи «особливі»?", "ok": ["JUQwJUJDJUQwJUIwJUQxJTgxJUQwJUI4JUQwJUIyJUQwJUI3JUQwJUJFJUQwJUI0JUQwJUJEJUQwJUJFJUQwJUIzJUQwJUJFJUQwJUI1JUQwJUJCJUQwJUI1JUQwJUJDJUQwJUI1JUQwJUJEJUQxJTgyJUQwJUIw"], "show": "JUQwJUJDJUQwJUIwJUQxJTgxJUQwJUI4JUQwJUIyJTIwJUQwJUI3JTIwJUQwJUJFJUQwJUI0JUQwJUJEJUQwJUJFJUQwJUIzJUQwJUJFJTIwJUQwJUI1JUQwJUJCJUQwJUI1JUQwJUJDJUQwJUI1JUQwJUJEJUQxJTgyJUQwJUIw", "o": ["масив з одного елемента", "масив 4, 7, 2", "число 5"], "code": ""}, {"q": "Тест FAIL. Що перевіряємо спочатку?", "ok": ["JUQxJTg3JUQwJUI4JUQwJUJGJUQxJTgwJUQwJUIwJUQwJUIyJUQwJUI4JUQwJUJCJUQxJThDJUQwJUJEJUQwJUJFJUQwJUJGJUQwJUJFJUQxJTgwJUQwJUIwJUQxJTg1JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUJFJUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy"], "show": "JUQxJTg3JUQwJUI4JTIwJUQwJUJGJUQxJTgwJUQwJUIwJUQwJUIyJUQwJUI4JUQwJUJCJUQxJThDJUQwJUJEJUQwJUJFJTIwJUQwJUJGJUQwJUJFJUQxJTgwJUQwJUIwJUQxJTg1JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUJFJTIwJUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy", "o": ["чи правильно пораховано очікуваний результат", "видаляємо тест", "перезавантажуємо комп'ютер"], "code": ""}, {"q": "Чи правильний цей тест для умови «до 7 років — 0 грн, від 7 до 17 — 80 грн»?", "ok": ["JUQwJUJEJUQxJTk2"], "show": "JUQwJUJEJUQxJTk2", "o": ["так", "ні"], "code": "check(7, 0);"}, {"q": "Температура: «від −10 до 35 — норма». Який набір тестів найкращий?", "ok": ["LTExLi0xMC4zNS4zNg=="], "show": "JUUyJTg4JTkyMTElMkMlMjAlRTIlODglOTIxMCUyQyUyMDM1JTJDJTIwMzY=", "o": ["1, 2, 3, 4", "−11, −10, 35, 36", "20, 21, 22, 23"], "code": ""}, {"q": "Навіщо метод check, якщо можна перевірити очима?", "ok": ["JUQxJTgyJUQwJUI1JUQxJTgxJUQxJTgyJUQwJUI4JUQwJUJDJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUIwJUQwJUI3JUQwJUIwJUQwJUJGJUQxJTgzJUQxJTgxJUQxJTgyJUQwJUI4JUQxJTgyJUQwJUI4JUQwJUI3JUQwJUJEJUQwJUJFJUQwJUIyJUQxJTgzJUQwJUJGJUQxJTk2JUQxJTgxJUQwJUJCJUQxJThGJUQwJUJBJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUJFJUQxJTk3JUQwJUI3JUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4"], "show": "JUQxJTgyJUQwJUI1JUQxJTgxJUQxJTgyJUQwJUI4JTIwJUQwJUJDJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUIwJTIwJUQwJUI3JUQwJUIwJUQwJUJGJUQxJTgzJUQxJTgxJUQxJTgyJUQwJUI4JUQxJTgyJUQwJUI4JTIwJUQwJUI3JUQwJUJEJUQwJUJFJUQwJUIyJUQxJTgzJTIwJUQwJUJGJUQxJTk2JUQxJTgxJUQwJUJCJUQxJThGJTIwJUQwJUJBJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUJFJUQxJTk3JTIwJUQwJUI3JUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4", "o": ["тести можна запустити знову після кожної зміни", "так програма працює швидше", "без нього код не запуститься"], "code": ""}, {"q": "Виправили одну помилку. Які тести запускаємо?", "ok": ["JUQxJTgzJUQxJTgxJUQxJTk2"], "show": "JUQxJTgzJUQxJTgxJUQxJTk2", "o": ["лише той, що був FAIL", "усі", "жодного"], "code": ""}];
+const QUIZ = [{"q": "Для якого віку тест показав FAIL?", "ok": ["MTg="], "show": "MTg=", "o": null, "code": ""}, {"q": "До якої групи належить цей вхід?", "ok": ["JUQwJUJDJUQwJUI1JUQwJUI2JUQwJUJFJUQwJUIyJUQxJTk2"], "show": "JUQwJUJDJUQwJUI1JUQwJUI2JUQwJUJFJUQwJUIyJUQxJTk2", "o": ["звичайні", "межові", "особливі", "неправильні"], "code": ""}, {"q": "Виправ умову: <code>age &gt; 18</code> → <code>age &gt;= 18</code>. Запусти. Скільки тепер рядків FAIL?", "ok": ["MA=="], "show": "MA==", "o": null, "code": ""}, {"q": "Тепер навмисно зламай: <code>age &lt; 7</code> → <code>age &lt;= 7</code>. Запусти. Для якого віку FAIL?", "ok": ["Nw=="], "show": "Nw==", "o": null, "code": ""}, {"q": "А якби тестів 7 і 18 не було, чи показали б решта тестів ці дві помилки?", "ok": ["JUQwJUJEJUQxJTk2"], "show": "JUQwJUJEJUQxJTk2", "o": ["так", "ні"], "code": ""}, {"q": "Для якої ваги тест показав FAIL?", "ok": ["NDAw"], "show": "NDAw", "o": null, "code": ""}, {"q": "Що вийшло замість true?", "ok": ["ZmFsc2U="], "show": "ZmFsc2U=", "o": ["true", "false"], "code": ""}, {"q": "Виправ: <code>kg &lt; 400</code> → <code>kg &lt;= 400</code>. Запусти. Скільки тепер рядків FAIL?", "ok": ["MA=="], "show": "MA==", "o": null, "code": ""}, {"q": "Навмисно зламай: <code>kg &lt;= 400</code> → <code>kg &lt;= 401</code>. Для якої ваги тепер FAIL?", "ok": ["NDAx"], "show": "NDAx", "o": null, "code": ""}, {"q": "Скільки рядків OK програма встигла вивести?", "ok": ["Mw=="], "show": "Mw==", "o": null, "code": ""}, {"q": "Яка помилка зупинила програму на тесті з нулем?", "ok": ["YXJpdGhtZXRpY2V4Y2VwdGlvbg=="], "show": "QXJpdGhtZXRpY0V4Y2VwdGlvbg==", "o": ["ArithmeticException", "NullPointerException", "ArrayIndexOutOfBoundsException"], "code": ""}, {"q": "До якої групи належить тест «0 людей»?", "ok": ["JUQwJUJFJUQxJTgxJUQwJUJFJUQwJUIxJUQwJUJCJUQwJUI4JUQwJUIyJUQxJTk2"], "show": "JUQwJUJFJUQxJTgxJUQwJUJFJUQwJUIxJUQwJUJCJUQwJUI4JUQwJUIyJUQxJTk2", "o": ["звичайні", "межові", "особливі"], "code": ""}, {"q": "Виправ метод: перед <code>return</code> додай <code>if (people == 0) { return 0; }</code>. Запусти. Скільки тепер рядків OK?", "ok": ["NA=="], "show": "NA==", "o": null, "code": ""}, {"q": "Тест — це…", "ok": ["JUQwJUIyJUQxJTg1JUQxJTk2JUQwJUI0JUQwJUJEJUQxJTk2JUQwJUI0JUQwJUIwJUQwJUJEJUQxJTk2JUQwJUI5JUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy"], "show": "JUQwJUIyJUQxJTg1JUQxJTk2JUQwJUI0JUQwJUJEJUQxJTk2JTIwJUQwJUI0JUQwJUIwJUQwJUJEJUQxJTk2JTIwJUQwJUI5JTIwJUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy", "o": ["вхідні дані й очікуваний результат", "запуск програми один раз", "список помилок"], "code": ""}, {"q": "Звідки беремо очікуваний результат?", "ok": ["JUQwJUI3JUQxJTgzJUQwJUJDJUQwJUJFJUQwJUIyJUQwJUI4JUQwJUI3JUQwJUIwJUQwJUI0JUQwJUIwJUQxJTg3JUQxJTk2"], "show": "JUQwJUI3JTIwJUQxJTgzJUQwJUJDJUQwJUJFJUQwJUIyJUQwJUI4JTIwJUQwJUI3JUQwJUIwJUQwJUI0JUQwJUIwJUQxJTg3JUQxJTk2", "o": ["з умови задачі", "з того, що вивела програма", "вгадуємо"], "code": ""}, {"q": "Умова: «знижка від 10 товарів». Які два числа — межові?", "ok": ["OSVEMSU5NjEw"], "show": "OSUyMCVEMSU5NiUyMDEw", "o": ["9 і 10", "1 і 100", "5 і 50"], "code": ""}, {"q": "Усі тести пройдено. Чи означає це, що помилок точно немає?", "ok": ["JUQwJUJEJUQxJTk2"], "show": "JUQwJUJEJUQxJTk2", "o": ["так", "ні"], "code": ""}, {"q": "Метод ділить піцу на людей. Який вхід — з групи «особливі»?", "ok": ["MCVEMCVCQiVEMSU4RSVEMCVCNCVEMCVCNSVEMCVCOQ=="], "show": "MCUyMCVEMCVCQiVEMSU4RSVEMCVCNCVEMCVCNSVEMCVCOQ==", "o": ["0 людей", "4 людини", "2 людини"], "code": ""}, {"q": "Тест FAIL. Що перевіряємо спочатку?", "ok": ["JUQxJTg3JUQwJUI4JUQwJUJGJUQxJTgwJUQwJUIwJUQwJUIyJUQwJUI4JUQwJUJCJUQxJThDJUQwJUJEJUQwJUJFJUQwJUJGJUQwJUJFJUQxJTgwJUQwJUIwJUQxJTg1JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUJFJUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy"], "show": "JUQxJTg3JUQwJUI4JTIwJUQwJUJGJUQxJTgwJUQwJUIwJUQwJUIyJUQwJUI4JUQwJUJCJUQxJThDJUQwJUJEJUQwJUJFJTIwJUQwJUJGJUQwJUJFJUQxJTgwJUQwJUIwJUQxJTg1JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUJFJTIwJUQwJUJFJUQxJTg3JUQxJTk2JUQwJUJBJUQxJTgzJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQxJTgwJUQwJUI1JUQwJUI3JUQxJTgzJUQwJUJCJUQxJThDJUQxJTgyJUQwJUIwJUQxJTgy", "o": ["чи правильно пораховано очікуваний результат", "видаляємо тест", "перезавантажуємо комп'ютер"], "code": ""}, {"q": "Чи правильний цей тест для умови «до 7 років — 0 грн, від 7 до 17 — 80 грн»?", "ok": ["JUQwJUJEJUQxJTk2"], "show": "JUQwJUJEJUQxJTk2", "o": ["так", "ні"], "code": "check(7, 0);"}, {"q": "Температура: «від −10 до 35 — норма». Який набір тестів найкращий?", "ok": ["LTExLi0xMC4zNS4zNg=="], "show": "JUUyJTg4JTkyMTElMkMlMjAlRTIlODglOTIxMCUyQyUyMDM1JTJDJTIwMzY=", "o": ["1, 2, 3, 4", "−11, −10, 35, 36", "20, 21, 22, 23"], "code": ""}, {"q": "Навіщо метод check, якщо можна перевірити очима?", "ok": ["JUQxJTgyJUQwJUI1JUQxJTgxJUQxJTgyJUQwJUI4JUQwJUJDJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUIwJUQwJUI3JUQwJUIwJUQwJUJGJUQxJTgzJUQxJTgxJUQxJTgyJUQwJUI4JUQxJTgyJUQwJUI4JUQwJUI3JUQwJUJEJUQwJUJFJUQwJUIyJUQxJTgzJUQwJUJGJUQxJTk2JUQxJTgxJUQwJUJCJUQxJThGJUQwJUJBJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUJFJUQxJTk3JUQwJUI3JUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4"], "show": "JUQxJTgyJUQwJUI1JUQxJTgxJUQxJTgyJUQwJUI4JTIwJUQwJUJDJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUIwJTIwJUQwJUI3JUQwJUIwJUQwJUJGJUQxJTgzJUQxJTgxJUQxJTgyJUQwJUI4JUQxJTgyJUQwJUI4JTIwJUQwJUI3JUQwJUJEJUQwJUJFJUQwJUIyJUQxJTgzJTIwJUQwJUJGJUQxJTk2JUQxJTgxJUQwJUJCJUQxJThGJTIwJUQwJUJBJUQwJUJFJUQwJUI2JUQwJUJEJUQwJUJFJUQxJTk3JTIwJUQwJUI3JUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4", "o": ["тести можна запустити знову після кожної зміни", "так програма працює швидше", "без нього код не запуститься"], "code": ""}, {"q": "Виправили одну помилку. Які тести запускаємо?", "ok": ["JUQxJTgzJUQxJTgxJUQxJTk2"], "show": "JUQxJTgzJUQxJTgxJUQxJTk2", "o": ["лише той, що був FAIL", "усі", "жодного"], "code": ""}];
 const $ = id => document.getElementById(id);
 const KW = /^(for|in|if|elif|else|while|and|or|import|print|input|int)$/;
 function drawCode(cv) {
