@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Цифрове робоче місце · 8-А</title>
+<style>
+  * { box-sizing: border-box; }
+  :root { --a: #0f766e; --a2: #ecfdf5; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1120px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 24px 18px; }
+  section { margin-top: 20px; }
+  h1 { font-size: 30px; margin: 0 0 8px; text-wrap: balance; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 0 0 8px; color: var(--a); border-bottom: 3px solid var(--a); padding-bottom: 2px; text-wrap: balance; }
+  h2 .no { display: inline-block; background: var(--a); color: #fff; border-radius: 50%; width: 1.6em; line-height: 1.6em; text-align: center; font-size: 19px; margin-right: 4px; }
+  h3 { margin: 0 0 4px; font-size: 20px; color: var(--a); }
+  p { margin: 0 0 8px; }
+  ol, ul { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 3px; }
+  code { font-family: Consolas, "Courier New", monospace; font-weight: 700; background: #f1f3f5; padding: 0 3px; border-radius: 3px; }
+  pre { font-family: Consolas, Menlo, "Courier New", monospace; font-weight: 700; font-size: 17px; line-height: 1.4; background: #f4f6f9; border-left: 6px solid var(--a); border-radius: 4px; padding: 10px 12px; margin: 4px 0 10px; overflow-x: auto; }
+  pre.out { background: #f3faf4; border-left-color: #1a7f37; color: #14532d; }
+  .q pre { font-size: 16px; padding: 4px 8px; margin: 0 0 6px; }
+  .big { background: #fff6dd; border-left: 5px solid #c79100; padding: 8px 12px; }
+  .star { background: #eef8ee; border-left: 5px solid #1a7f37; padding: 6px 12px; margin-top: 8px; }
+  .rule { background: var(--a2); border-left: 5px solid var(--a); padding: 8px 12px; }
+  .ok { color: #1a7f37; } .bad { color: #b42318; }
+  .three { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+  .card { border: 2px solid #d5dae0; border-radius: 10px; padding: 8px 12px; } .card p { margin: 0; font-size: 18px; }
+  .wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 10px; font-size: 18px; }
+  td, th { border: 1px solid #c9ced3; padding: 4px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .num td { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  canvas.code { display: block; max-width: 100%; background: #f4f6f9; border-left: 6px solid var(--a); border-radius: 4px; margin: 4px 0 10px; }
+  .shot { display: block; max-width: 760px; width: 100%; height: auto; border: 1px solid #d5dae0; border-radius: 6px; margin: 4px 0 10px; }
+  button { font: inherit; font-size: 17px; padding: 4px 12px; border: 2px solid var(--a); border-radius: 5px; background: var(--a); color: #fff; font-weight: 700; cursor: pointer; }
+  .q button, button.ghost { background: #fff; color: var(--a); }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .quiz { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 8px; margin-bottom: 4px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; min-width: 0; }
+  .q p { margin-bottom: 6px; }
+  .ans { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  input { font: 700 19px Consolas, "Courier New", monospace; width: 9em; max-width: 100%; padding: 4px 8px; border: 2px solid #9aa4ae; border-radius: 5px; }
+  select { font: 700 17px "Segoe UI", Arial, sans-serif; padding: 5px 6px; border: 2px solid #9aa4ae; border-radius: 6px; background: #fff; color: #111; max-width: 100%; cursor: pointer; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; }
+  .q.no { border-color: #b42318; background: #fdf3f2; }
+  .mark { font-weight: 700; }
+  .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .game { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: end; margin-bottom: 10px; }
+  .game label { display: flex; flex-direction: column; font-size: 17px; font-weight: 700; }
+  .bugs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .bug { border: 2px dashed #9aa4ae; border-radius: 8px; padding: 4px 12px; font-weight: 700; color: #666; }
+  .bug.on { border-style: solid; border-color: #1a7f37; background: #f3faf4; color: #1a7f37; }
+  .gm { font-weight: 700; min-height: 1.4em; }
+  .score { position: sticky; bottom: 0; background: #fff; border-top: 3px solid var(--a); padding: 6px 0; font-weight: 700; font-size: 21px; margin-top: 14px; }
+  @media (max-width: 600px) { .sheet { padding: 10px 14px; margin: 0; } h1 { font-size: 25px; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Цифрове робоче місце і види комп'ютерів <span>· 8-А · 26.11 · інформатика</span></h1>
+<p class="big"><b>Цифрове робоче місце</b> — це пристрої, програми та інтернет-сервіси, з якими людина вчиться або працює. Воно не прив'язане до одного столу: увійшов у свій акаунт з ноутбука чи телефона — і твої файли з тобою.</p>
+  <section><h2>З чого складається</h2>
+<div class="three"><div class="card"><h3>Пристрої</h3><p>комп'ютер, монітор, клавіатура, мишка, навушники, принтер</p></div><div class="card"><h3>Програми</h3><p>операційна система, браузер, Thonny, текстовий редактор</p></div><div class="card"><h3>Мережа і сервіси</h3><p>Wi-Fi, акаунт, пошта, хмарний диск, відеозустрічі</p></div></div>
+  </section>
+  <section><h2>Види комп'ютерів</h2>
+<div class="wrap"><table><tr><th>Вид</th><th>Що вміє найкраще</th></tr>
+<tr><td><b>Настільний ПК</b></td><td>найпотужніший за свою ціну, легко замінити деталь; стоїть на місці</td></tr>
+<tr><td><b>Моноблок</b></td><td>комп'ютер в одному корпусі з монітором, мало дротів</td></tr>
+<tr><td><b>Ноутбук</b></td><td>є екран, клавіатура і батарея — працює будь-де</td></tr>
+<tr><td><b>Планшет, смартфон</b></td><td>легкі, сенсорний екран, завжди з собою; довгий код чи текст набирати незручно</td></tr>
+<tr><td><b>Ігрова консоль</b></td><td>комп'ютер, зроблений для ігор на телевізорі</td></tr>
+<tr><td><b>Одноплатний комп'ютер</b></td><td>уся машина на одній маленькій платі (Raspberry Pi): роботи, розумний дім</td></tr>
+<tr><td><b>Вбудований комп'ютер</b></td><td>захований у пральній машині, авто, банкоматі; робить одну справу</td></tr>
+<tr><td><b>Сервер</b></td><td>працює цілодобово, зберігає сайти й файли для багатьох людей</td></tr>
+<tr><td><b>Суперкомп'ютер</b></td><td>тисячі процесорів разом: прогноз погоди, наука</td></tr></table></div>
+  </section>
+  <section><h2>Тест 1. Що це за комп'ютер?</h2>
+<p>Вибери вид зі списку.</p><div class="quiz"><div class="q" data-k="0"></div><div class="q" data-k="1"></div><div class="q" data-k="2"></div><div class="q" data-k="3"></div><div class="q" data-k="4"></div><div class="q" data-k="5"></div><div class="q" data-k="6"></div><div class="q" data-k="7"></div><div class="q" data-k="8"></div></div>
+  </section>
+  <section><h2>Тест 2. Вибери за характеристиками</h2>
+<p><b>Оперативна пам'ять</b> — скільки програм працює одночасно без гальмувань. <b>Диск</b> — скільки файлів поміститься. <b>Батарея</b> — скільки працює без розетки.</p>
+<div class="wrap"><table class="num"><tr><th></th><th>Оперативна пам'ять</th><th>Диск</th><th>Вага</th><th>Батарея</th><th>Клавіатура</th><th>Ціна</th></tr>
+<tr><th>А</th><td>8 ГБ</td><td>512 ГБ</td><td>1,4 кг</td><td>10 год</td><td>є</td><td>28 000 грн</td></tr>
+<tr><th>Б</th><td>32 ГБ</td><td>2 000 ГБ</td><td>9 кг</td><td>немає</td><td>є</td><td>65 000 грн</td></tr>
+<tr><th>В</th><td>6 ГБ</td><td>128 ГБ</td><td>0,5 кг</td><td>12 год</td><td>немає</td><td>14 000 грн</td></tr>
+<tr><th>Г</th><td>256 ГБ</td><td>16 000 ГБ</td><td>25 кг</td><td>немає</td><td>немає</td><td>240 000 грн</td></tr></table></div><div class="quiz"><div class="q" data-k="9"></div><div class="q" data-k="10"></div><div class="q" data-k="11"></div><div class="q" data-k="12"></div><div class="q" data-k="13"></div><div class="q" data-k="14"></div></div>
+  </section>
+  <section><h2><span class="no">1</span> Розпитай свій комп'ютер</h2>
+<ol><li>Відкрий Thonny: <b>Файл → Новий</b>.</li><li>Набери програму з картинки (номери рядків не набирай).</li><li>Запусти кнопкою <b>▶</b>. Дивись результат в <b>Оболонці</b>.</li></ol><canvas class="code" data-code='"import platform\nimport os\nimport shutil\ntotal, used, free = shutil.disk_usage(\"/\")\nprint(\"Система:\", platform.system(), platform.release())\nprint(\"Процесор:\", platform.machine())\nprint(\"Потоків процесора:\", os.cpu_count())\nprint(\"Диск, ГБ:\", total // 1024 ** 3)\nprint(\"Вільно, ГБ:\", free // 1024 ** 3)"' role="img" aria-label="Програма"></canvas><img class="shot" src="8a-robochemistse/run.png" alt="Thonny: програма угорі, кнопка запуску позначена, результат унизу в Оболонці" loading="lazy"><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>рядки 1–3</code></td><td>підключають набори команд: platform — про систему, os — про процесор, shutil — про диск</td></tr><tr><td><code>shutil.disk_usage(&quot;/&quot;)</code></td><td>повертає три числа про диск: усього, зайнято, вільно</td></tr><tr><td><code>platform.system()</code></td><td>назва операційної системи</td></tr><tr><td><code>platform.machine()</code></td><td>тип процесора</td></tr><tr><td><code>os.cpu_count()</code></td><td>скільки потоків процесора працює одночасно</td></tr><tr><td><code>// 1024 ** 3</code></td><td>переводить байти в гігабайти: 1 ГБ = 1024 · 1024 · 1024 байтів</td></tr></table></div><div class="quiz"><div class="q" data-k="15"></div><div class="q" data-k="16"></div><div class="q" data-k="17"></div></div>
+  </section>
+  <section><h2><span class="no">2</span> Порадник: який комп'ютер обрати</h2>
+<canvas class="code" data-code='"place = input(\"Де працюєш? 1 - вдома, 2 - у дорозі: \")\nvideo = input(\"Монтуєш відео? (так/ні): \")\nmoney = int(input(\"Скільки грошей, грн: \"))\nif place == \"1\" and video == \"так\" and money &gt;= 40000:\n    print(\"Потужний настільний ПК\")\nelif place == \"1\" and money &gt;= 15000:\n    print(\"Звичайний настільний ПК\")\nelif place == \"2\" and money &gt;= 20000:\n    print(\"Ноутбук\")\nelif money &gt;= 8000:\n    print(\"Планшет\")\nelse:\n    print(\"Смартфон\")"' role="img" aria-label="Програма"></canvas><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>рядки 1–3</code></td><td>програма питає місце роботи, чи є відео і скільки грошей; гроші перетворює на число</td></tr><tr><td><code>рядки 4–5</code></td><td>усі три умови разом (and): вдома, відео і від 40 000 грн</td></tr><tr><td><code>рядки 6–7</code></td><td>сюди Python доходить, лише якщо рядок 4 не спрацював</td></tr><tr><td><code>рядки 8–9</code></td><td>для роботи в дорозі, від 20 000 грн</td></tr><tr><td><code>рядки 10–11</code></td><td>будь-де, якщо є хоча б 8 000 грн</td></tr><tr><td><code>рядки 12–13</code></td><td>усі інші випадки</td></tr></table></div><div class="quiz"><div class="q" data-k="18"></div><div class="q" data-k="19"></div><div class="q" data-k="20"></div><div class="q" data-k="21"></div><div class="q" data-k="22"></div></div><p class="star"><b>Сам:</b> додай ще одну гілку <code>elif</code>: якщо в дорозі, з відео і від 50 000 грн — <code>Потужний ноутбук</code>. Подумай, куди її вставити: до рядка 8 чи після.</p>
+  </section>
+  <section><h2><span class="no">3</span> Що поміститься на диск</h2>
+<canvas class="code" data-code='"disk = int(input(\"Вільно на диску, ГБ: \"))\nmb = disk * 1024\nprint(\"Фото по 4 МБ:\", mb // 4)\nprint(\"Пісень по 8 МБ:\", mb // 8)\nprint(\"Фільмів по 5 ГБ:\", disk // 5)\nprint(\"Лишиться після фільмів, ГБ:\", disk % 5)"' role="img" aria-label="Програма"></canvas><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>disk * 1024</code></td><td>гігабайти в мегабайти: 1 ГБ = 1024 МБ</td></tr><tr><td><code>mb // 4</code></td><td>скільки цілих фото по 4 МБ</td></tr><tr><td><code>disk // 5</code></td><td>скільки цілих фільмів по 5 ГБ</td></tr><tr><td><code>disk % 5</code></td><td>остача: скільки ГБ лишиться після фільмів</td></tr></table></div><div class="quiz"><div class="q" data-k="23"></div><div class="q" data-k="24"></div><div class="q" data-k="25"></div></div>
+  </section>
+  <section><h2><span class="no">4</span> Як швидко росла потужність</h2>
+<p>У 1971 році перший мікропроцесор мав <b>2300</b> транзисторів — крихітних перемикачів. Далі їх кількість подвоювалася приблизно <b>кожні 2 роки</b> (закон Мура). Коли їх стане мільйон?</p><canvas class="code" data-code='"year = 1971\nn = 2300\nwhile n &lt; 1000000:\n    n = n * 2\n    year = year + 2\n    print(year, n)\nprint(\"Рік:\", year)"' role="img" aria-label="Програма"></canvas><div class="wrap"><table><tr><th>Рядок</th><th>Що робить</th></tr><tr><td><code>while n &lt; 1000000:</code></td><td>повторює, поки транзисторів менше мільйона</td></tr><tr><td><code>n = n * 2</code></td><td>подвоює кількість</td></tr><tr><td><code>year = year + 2</code></td><td>минає 2 роки</td></tr><tr><td><code>print(&quot;Рік:&quot;, year)</code></td><td>після циклу: рік, коли мільйон досягнуто</td></tr></table></div><div class="quiz"><div class="q" data-k="26"></div><div class="q" data-k="27"></div><div class="q" data-k="28"></div><div class="q" data-k="29"></div></div><p>Справжній процесор з понад мільйоном транзисторів (Intel 80486) з'явився саме 1989 року.</p>
+  </section>
+  <section><h2>Тест 3. Підсумок</h2>
+<div class="quiz"><div class="q" data-k="30"></div><div class="q" data-k="31"></div><div class="q" data-k="32"></div><div class="q" data-k="33"></div><div class="q" data-k="34"></div><div class="q" data-k="35"></div><div class="q" data-k="36"></div><div class="q" data-k="37"></div></div>
+  </section>
+  <section><h2>Домашнє завдання</h2>
+<p>Вивчити, що таке цифрове робоче місце. Назвати 3 види комп'ютерів.</p>
+  </section>
+  <div class="score" id="score" aria-live="polite">Правильно: 0 з 38</div>
+</div>
+<script>
+const QUIZ = [{"q": "Керує програмами прання в пральній машині.", "ok": ["JUQwJUIyJUQwJUIxJUQxJTgzJUQwJUI0JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJBJUQwJUJFJUQwJUJDJUQwJUJGJUQxJThFJUQxJTgyJUQwJUI1JUQxJTgw"], "show": "JUQwJUIyJUQwJUIxJUQxJTgzJUQwJUI0JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJUJBJUQwJUJFJUQwJUJDJUQwJUJGJyVEMSU4RSVEMSU4MiVEMCVCNSVEMSU4MA==", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Зберігає сайт ліцею і віддає сторінки вдень і вночі.", "ok": ["JUQxJTgxJUQwJUI1JUQxJTgwJUQwJUIyJUQwJUI1JUQxJTgw"], "show": "JUQxJTgxJUQwJUI1JUQxJTgwJUQwJUIyJUQwJUI1JUQxJTgw", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Студентка пише код у потязі на клавіатурі, без розетки.", "ok": ["JUQwJUJEJUQwJUJFJUQxJTgzJUQxJTgyJUQwJUIxJUQxJTgzJUQwJUJB"], "show": "JUQwJUJEJUQwJUJFJUQxJTgzJUQxJTgyJUQwJUIxJUQxJTgzJUQwJUJB", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Рахує прогноз погоди для всієї Європи.", "ok": ["JUQxJTgxJUQxJTgzJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUJBJUQwJUJFJUQwJUJDJUQwJUJGJUQxJThFJUQxJTgyJUQwJUI1JUQxJTgw"], "show": "JUQxJTgxJUQxJTgzJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUJBJUQwJUJFJUQwJUJDJUQwJUJGJyVEMSU4RSVEMSU4MiVEMCVCNSVEMSU4MA==", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Плата завбільшки з банківську картку керує саморобним роботом.", "ok": ["JUQwJUJFJUQwJUI0JUQwJUJEJUQwJUJFJUQwJUJGJUQwJUJCJUQwJUIwJUQxJTgyJUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJBJUQwJUJFJUQwJUJDJUQwJUJGJUQxJThFJUQxJTgyJUQwJUI1JUQxJTgw"], "show": "JUQwJUJFJUQwJUI0JUQwJUJEJUQwJUJFJUQwJUJGJUQwJUJCJUQwJUIwJUQxJTgyJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJUJBJUQwJUJFJUQwJUJDJUQwJUJGJyVEMSU4RSVEMSU4MiVEMCVCNSVEMSU4MA==", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Монітор, а всередині нього — весь комп'ютер. Окремого системного блока немає.", "ok": ["JUQwJUJDJUQwJUJFJUQwJUJEJUQwJUJFJUQwJUIxJUQwJUJCJUQwJUJFJUQwJUJB"], "show": "JUQwJUJDJUQwJUJFJUQwJUJEJUQwJUJFJUQwJUIxJUQwJUJCJUQwJUJFJUQwJUJB", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Під столом системний блок. Відеокарту в ньому замінили на новішу за 10 хвилин.", "ok": ["JUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJGJUQwJUJB"], "show": "JUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJTlGJUQwJTlB", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Художник малює стилусом прямо на екрані, тримаючи пристрій у руках.", "ok": ["JUQwJUJGJUQwJUJCJUQwJUIwJUQwJUJEJUQxJTg4JUQwJUI1JUQxJTgy"], "show": "JUQwJUJGJUQwJUJCJUQwJUIwJUQwJUJEJUQxJTg4JUQwJUI1JUQxJTgy", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "Під'єднали до телевізора, взяли геймпади — граємо.", "ok": ["JUQxJTk2JUQwJUIzJUQxJTgwJUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJBJUQwJUJFJUQwJUJEJUQxJTgxJUQwJUJFJUQwJUJCJUQxJThD"], "show": "JUQxJTk2JUQwJUIzJUQxJTgwJUQwJUJFJUQwJUIyJUQwJUIwJTIwJUQwJUJBJUQwJUJFJUQwJUJEJUQxJTgxJUQwJUJFJUQwJUJCJUQxJThD", "o": ["настільний ПК", "моноблок", "ноутбук", "планшет", "ігрова консоль", "одноплатний комп'ютер", "вбудований комп'ютер", "сервер", "суперкомп'ютер"], "code": ""}, {"q": "У якого найбільше оперативної пам'яті?", "ok": ["JUQwJUIz"], "show": "JUQwJTkz", "o": ["А", "Б", "В", "Г"], "code": ""}, {"q": "Який працює без розетки найдовше?", "ok": ["JUQwJUIy"], "show": "JUQwJTky", "o": ["А", "Б", "В", "Г"], "code": ""}, {"q": "Оля їде потягом 6 годин і пише програму в Thonny. Потрібні батарея і клавіатура.", "ok": ["JUQwJUIw"], "show": "JUQwJTkw", "o": ["А", "Б", "В", "Г"], "code": ""}, {"q": "Тарас удома монтує відео в 4K. Має 70 000 грн.", "ok": ["JUQwJUIx"], "show": "JUQwJTkx", "o": ["А", "Б", "В", "Г"], "code": ""}, {"q": "Бабуся дивиться серіали і дзвонить онукам по відео. Має 15 000 грн.", "ok": ["JUQwJUIy"], "show": "JUQwJTky", "o": ["А", "Б", "В", "Г"], "code": ""}, {"q": "На ньому працюватиме сайт, який відкривають тисячі людей цілодобово.", "ok": ["JUQwJUIz"], "show": "JUQwJTkz", "o": ["А", "Б", "В", "Г"], "code": ""}, {"q": "Яка змінна в рядку 4 означає «вільно»? Напиши її назву.", "ok": ["ZnJlZQ=="], "show": "ZnJlZQ==", "o": null, "code": ""}, {"q": "Скільки байтів у 1 кілобайті? Подивись на число в рядках 8–9.", "ok": ["MTAyNA=="], "show": "MTAyNA==", "o": null, "code": ""}, {"q": "Зміни в рядку 9 <code>free</code> на <code>used</code> і запусти. Що тепер показує останній рядок?", "ok": ["JUQxJTgxJUQwJUJBJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJBJUQwJUI4JUQwJUI3JUQwJUIwJUQwJUI5JUQwJUJEJUQxJThGJUQxJTgyJUQwJUJFJUQwJUJEJUQwJUIwJUQwJUI0JUQwJUI4JUQxJTgxJUQwJUJBJUQxJTgz"], "show": "JUQxJTgxJUQwJUJBJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJBJUQwJUI4JTIwJUQwJUI3JUQwJUIwJUQwJUI5JUQwJUJEJUQxJThGJUQxJTgyJUQwJUJFJTIwJUQwJUJEJUQwJUIwJTIwJUQwJUI0JUQwJUI4JUQxJTgxJUQwJUJBJUQxJTgz", "o": ["скільки зайнято на диску", "скільки вільно на диску", "скільки коштує диск"], "code": ""}, {"q": "Введи <code>1</code>, <code>так</code>, <code>30000</code>. Що порадила програма?", "ok": ["JUQwJUI3JUQwJUIyJUQwJUI4JUQxJTg3JUQwJUIwJUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJGJUQwJUJB"], "show": "JUQwJTk3JUQwJUIyJUQwJUI4JUQxJTg3JUQwJUIwJUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJTlGJUQwJTlB", "o": ["Потужний настільний ПК", "Звичайний настільний ПК", "Ноутбук", "Планшет", "Смартфон"], "code": ""}, {"q": "Введи <code>2</code>, <code>ні</code>, <code>25000</code>. Що порадила?", "ok": ["JUQwJUJEJUQwJUJFJUQxJTgzJUQxJTgyJUQwJUIxJUQxJTgzJUQwJUJB"], "show": "JUQwJTlEJUQwJUJFJUQxJTgzJUQxJTgyJUQwJUIxJUQxJTgzJUQwJUJB", "o": ["Потужний настільний ПК", "Звичайний настільний ПК", "Ноутбук", "Планшет", "Смартфон"], "code": ""}, {"q": "Введи <code>2</code>, <code>так</code>, <code>15000</code>. Що порадила?", "ok": ["JUQwJUJGJUQwJUJCJUQwJUIwJUQwJUJEJUQxJTg4JUQwJUI1JUQxJTgy"], "show": "JUQwJTlGJUQwJUJCJUQwJUIwJUQwJUJEJUQxJTg4JUQwJUI1JUQxJTgy", "o": ["Потужний настільний ПК", "Звичайний настільний ПК", "Ноутбук", "Планшет", "Смартфон"], "code": ""}, {"q": "Введи <code>1</code>, <code>так</code>, <code>40000</code>. Що порадила?", "ok": ["JUQwJUJGJUQwJUJFJUQxJTgyJUQxJTgzJUQwJUI2JUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJGJUQwJUJB"], "show": "JUQwJTlGJUQwJUJFJUQxJTgyJUQxJTgzJUQwJUI2JUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJTlGJUQwJTlB", "o": ["Потужний настільний ПК", "Звичайний настільний ПК", "Ноутбук", "Планшет", "Смартфон"], "code": ""}, {"q": "Заміни в рядку 4 <code>&gt;=</code> на <code>&gt;</code>. Введи ті самі <code>1</code>, <code>так</code>, <code>40000</code>. Що тепер?", "ok": ["JUQwJUI3JUQwJUIyJUQwJUI4JUQxJTg3JUQwJUIwJUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JUQwJUJGJUQwJUJB"], "show": "JUQwJTk3JUQwJUIyJUQwJUI4JUQxJTg3JUQwJUIwJUQwJUI5JUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJUJEJUQwJUIwJUQxJTgxJUQxJTgyJUQxJTk2JUQwJUJCJUQxJThDJUQwJUJEJUQwJUI4JUQwJUI5JTIwJUQwJTlGJUQwJTlB", "o": ["Потужний настільний ПК", "Звичайний настільний ПК", "Ноутбук", "Планшет", "Смартфон"], "code": ""}, {"q": "Введи <code>64</code>. Скільки фото поміститься?", "ok": ["MTYzODQ="], "show": "MTYzODQ=", "o": null, "code": ""}, {"q": "Введи <code>128</code>. Скільки фільмів?", "ok": ["MjU="], "show": "MjU=", "o": null, "code": ""}, {"q": "Введи <code>256</code>. Скільки ГБ лишиться після фільмів?", "ok": ["MQ=="], "show": "MQ==", "o": null, "code": ""}, {"q": "Який рік вивела програма в останньому рядку?", "ok": ["MTk4OQ=="], "show": "MTk4OQ==", "o": null, "code": ""}, {"q": "Скільки транзисторів вийшло в останньому подвоєнні?", "ok": ["MTE3NzYwMA=="], "show": "MTE3NzYwMA==", "o": null, "code": ""}, {"q": "Заміни <code>1000000</code> на <code>1000000000</code> (мільярд). Який тепер рік?", "ok": ["MjAwOQ=="], "show": "MjAwOQ==", "o": null, "code": ""}, {"q": "Поверни мільйон і зміни <code>+ 2</code> на <code>+ 3</code>. Який тепер рік?", "ok": ["MTk5OA=="], "show": "MTk5OA==", "o": null, "code": ""}, {"q": "Цифрове робоче місце — це…", "ok": ["JUQwJUJGJUQxJTgwJUQwJUI4JUQxJTgxJUQxJTgyJUQxJTgwJUQwJUJFJUQxJTk3LiVEMCVCRiVEMSU4MCVEMCVCRSVEMCVCMyVEMSU4MCVEMCVCMCVEMCVCQyVEMCVCOCVEMCVCOSVEMSU4MSVEMCVCNSVEMSU4MCVEMCVCMiVEMSU5NiVEMSU4MSVEMCVCOCVEMCVCNCVEMCVCQiVEMSU4RiVEMSU4MCVEMCVCRSVEMCVCMSVEMCVCRSVEMSU4MiVEMCVCOCVEMSU5NiVEMCVCRCVEMCVCMCVEMCVCMiVEMSU4NyVEMCVCMCVEMCVCRCVEMCVCRCVEMSU4Rg=="], "show": "JUQwJUJGJUQxJTgwJUQwJUI4JUQxJTgxJUQxJTgyJUQxJTgwJUQwJUJFJUQxJTk3JTJDJTIwJUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUI4JTIwJUQwJUI5JTIwJUQxJTgxJUQwJUI1JUQxJTgwJUQwJUIyJUQxJTk2JUQxJTgxJUQwJUI4JTIwJUQwJUI0JUQwJUJCJUQxJThGJTIwJUQxJTgwJUQwJUJFJUQwJUIxJUQwJUJFJUQxJTgyJUQwJUI4JTIwJUQxJTk2JTIwJUQwJUJEJUQwJUIwJUQwJUIyJUQxJTg3JUQwJUIwJUQwJUJEJUQwJUJEJUQxJThG", "o": ["лише стіл і стілець", "пристрої, програми й сервіси для роботи і навчання", "тільки монітор"], "code": ""}, {"q": "Хмарний диск — це яка частина робочого місця?", "ok": ["JUQwJUJDJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI2JUQwJUIwJUQxJTk2JUQxJTgxJUQwJUI1JUQxJTgwJUQwJUIyJUQxJTk2JUQxJTgxJUQwJUI4"], "show": "JUQwJUJDJUQwJUI1JUQxJTgwJUQwJUI1JUQwJUI2JUQwJUIwJTIwJUQxJTk2JTIwJUQxJTgxJUQwJUI1JUQxJTgwJUQwJUIyJUQxJTk2JUQxJTgxJUQwJUI4", "o": ["пристрої", "програми", "мережа і сервіси"], "code": ""}, {"q": "Браузер — це яка частина?", "ok": ["JUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUI4"], "show": "JUQwJUJGJUQxJTgwJUQwJUJFJUQwJUIzJUQxJTgwJUQwJUIwJUQwJUJDJUQwJUI4", "o": ["пристрої", "програми", "мережа і сервіси"], "code": ""}, {"q": "Який комп'ютер виконує одну справу і захований в іншому пристрої?", "ok": ["JUQwJUIyJUQwJUIxJUQxJTgzJUQwJUI0JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5"], "show": "JUQwJUIyJUQwJUIxJUQxJTgzJUQwJUI0JUQwJUJFJUQwJUIyJUQwJUIwJUQwJUJEJUQwJUI4JUQwJUI5", "o": ["вбудований", "сервер", "ноутбук"], "code": ""}, {"q": "Чим настільний ПК кращий за ноутбук?", "ok": ["JUQwJUJCJUQwJUI1JUQwJUIzJUQxJTg4JUQwJUI1JUQwJUI3JUQwJUIwJUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4JUQxJTgyJUQwJUI4JUQwJUI0JUQwJUI1JUQxJTgyJUQwJUIwJUQwJUJCJUQxJTk2"], "show": "JUQwJUJCJUQwJUI1JUQwJUIzJUQxJTg4JUQwJUI1JTIwJUQwJUI3JUQwJUIwJUQwJUJDJUQxJTk2JUQwJUJEJUQwJUI4JUQxJTgyJUQwJUI4JTIwJUQwJUI0JUQwJUI1JUQxJTgyJUQwJUIwJUQwJUJCJUQxJTk2", "o": ["легше замінити деталі", "працює від батареї", "менше важить"], "code": ""}, {"q": "Комп'ютер гальмує, коли відкрито багато програм. Чого бракує?", "ok": ["JUQwJUJFJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUIwJUQxJTgyJUQwJUI4JUQwJUIyJUQwJUJEJUQwJUJFJUQxJTk3JUQwJUJGJUQwJUIwJUQwJUJDJUQxJThGJUQxJTgyJUQxJTk2"], "show": "JUQwJUJFJUQwJUJGJUQwJUI1JUQxJTgwJUQwJUIwJUQxJTgyJUQwJUI4JUQwJUIyJUQwJUJEJUQwJUJFJUQxJTk3JTIwJUQwJUJGJUQwJUIwJUQwJUJDJyVEMSU4RiVEMSU4MiVEMSU5Ng==", "o": ["оперативної пам'яті", "ваги", "колонок"], "code": ""}, {"q": "Смартфон — це комп'ютер?", "ok": ["JUQxJTgyJUQwJUIwJUQwJUJB"], "show": "JUQxJTgyJUQwJUIwJUQwJUJB", "o": ["так", "ні"], "code": ""}, {"q": "Де краще писати довгу програму?", "ok": ["JUQwJUJEJUQwJUJFJUQxJTgzJUQxJTgyJUQwJUIxJUQxJTgzJUQwJUJB"], "show": "JUQwJUJEJUQwJUJFJUQxJTgzJUQxJTgyJUQwJUIxJUQxJTgzJUQwJUJB", "o": ["смартфон", "ноутбук", "ігрова консоль"], "code": ""}];
+const $ = id => document.getElementById(id);
+const KW = /^(for|in|if|elif|else|while|and|or|import|print|input|int)$/;
+function drawCode(cv) {
+  const lines = JSON.parse(cv.dataset.code).split("\n");
+  const fs = 18, lh = 27, pad = 12, dpr = window.devicePixelRatio || 1;
+  const ctx = cv.getContext("2d");
+  const font = `${fs}px Menlo, Consolas, "DejaVu Sans Mono", monospace`;
+  ctx.font = font;
+  const cw = ctx.measureText("M").width;
+  const W = Math.ceil(pad * 2 + cw * (Math.max(...lines.map(l => l.length)) + 4));
+  const H = pad * 2 + lh * lines.length - 6;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px";
+  ctx.scale(dpr, dpr); ctx.font = font; ctx.textBaseline = "top";
+  lines.forEach((ln, i) => {
+    const y = pad + i * lh;
+    ctx.fillStyle = "#9ca3af"; ctx.fillText(String(i + 1).padStart(2), pad, y);
+    let x = pad + cw * 4;
+    for (const t of ln.match(/"[^"]*"|\w+|\s+|./g) || []) {
+      ctx.fillStyle = t[0] === '"' ? "#15803d" : KW.test(t) ? "#7e22ce" : /^\d+$/.test(t) ? "#c2410c" : "#111";
+      ctx.fillText(t, x, y); x += cw * t.length;
+    }
+  });
+}
+document.querySelectorAll("canvas.code").forEach(drawCode);
+const norm = v => v.toLowerCase().replace(/[\s"'«»]/g, "").replace(/,/g, ".").replace(/−/g, "-");
+const enc = v => btoa(encodeURIComponent(v));
+const dec = v => decodeURIComponent(atob(v));
+const esc = v => v.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let right = 0;
+document.querySelectorAll(".q[data-k]").forEach(el => {
+  const k = +el.dataset.k, t = QUIZ[k];
+  const field = t.o ? `<select id="a${k}" aria-label="Відповідь ${k + 1}"><option value="">вибери</option>${t.o.map(o => `<option>${esc(o)}</option>`).join("")}</select>`
+    : `<input id="a${k}" autocomplete="off" spellcheck="false" aria-label="Відповідь ${k + 1}">`;
+  el.id = "q" + k;
+  el.innerHTML = `<p><b>${k + 1}.</b> ${t.q}</p>${t.code ? `<pre>${esc(t.code)}</pre>` : ""}<div class="ans">${field}<button data-q="${k}">Перевірити</button><span class="mark" id="m${k}"></span></div>`;
+});
+function check(k) {
+  const box = $("q" + k), f = $("a" + k), t = QUIZ[k];
+  if (box.classList.contains("yes") || box.classList.contains("no")) return;
+  if (!f.value.trim()) { f.focus(); return; }
+  const good = t.ok.includes(enc(norm(f.value)));
+  box.classList.add(good ? "yes" : "no");
+  f.disabled = true;
+  box.querySelector("button").disabled = true;
+  $("m" + k).textContent = good ? "✓ Правильно" : `✗ Правильно: ${dec(t.show)}`;
+  if (good) right++;
+  $("score").textContent = `Правильно: ${right} з ${QUIZ.length}`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("button[data-q]"); if (b) check(+b.dataset.q); });
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id && /^a\d+$/.test(e.target.id)) check(+e.target.id.slice(1)); });
+if ($("gb")) {
+  const good = s => s <= 0 ? -1 : s < 500 ? 80 : s < 1000 ? 40 : 0;
+  const bad = [
+    s => s <= 0 ? -1 : s <= 500 ? 80 : s < 1000 ? 40 : 0,
+    s => s <= 0 ? -1 : s < 500 ? 80 : s <= 1000 ? 40 : 0,
+    s => s < 0 ? -1 : s < 500 ? 80 : s < 1000 ? 40 : 0,
+    s => s === 0 ? -1 : s < 500 ? 80 : s < 1000 ? 40 : 0,
+    s => s <= 0 ? -1 : s < 500 ? 80 : s < 999 ? 40 : 0,
+    s => s <= 0 ? -1 : s < 499 ? 80 : s < 1000 ? 40 : 0,
+    s => s <= 0 ? -1 : s < 500 ? 80 : s < 1000 ? 50 : 0
+  ];
+  const MAX = 8;
+  let caught, n;
+  const draw = () => { $("bugs").innerHTML = caught.map((c, i) => `<span class="bug${c ? " on" : ""}">${c ? "✓ зловлено" : "помилка " + (i + 1)}</span>`).join(""); };
+  const reset = () => {
+    caught = bad.map(() => false); n = 0; draw();
+    $("gm").textContent = `Спроб лишилось: ${MAX}`; $("gb").disabled = false;
+    $("gt").hidden = true; while ($("gt").rows.length > 1) $("gt").deleteRow(1);
+    $("gi").value = ""; $("ge").value = "";
+  };
+  const go = () => {
+    if ($("gb").disabled) return;
+    const raw = $("gi").value.trim().replace("−", "-"), e = $("ge").value;
+    if (!/^-?\d{1,9}$/.test(raw) || e === "") { $("gm").textContent = "Введи ціле число і вибери очікуваний результат."; return; }
+    const s = +raw;
+    if (+e !== good(s)) { $("gm").textContent = `Для суми ${s} за умовою має бути інше. Перечитай умову. Спробу не витрачено.`; return; }
+    let k = 0;
+    bad.forEach((f, i) => { if (!caught[i] && f(s) !== +e) { caught[i] = true; k++; } });
+    n++; draw(); $("gt").hidden = false;
+    const r = $("gt").insertRow(); [n, s, e, k].forEach(v => { r.insertCell().textContent = v; });
+    const c = caught.filter(Boolean).length;
+    if (c === bad.length) { $("gm").textContent = `Усі 7 помилок зловлено за ${n} тестів!`; $("gb").disabled = true; }
+    else if (n === MAX) { $("gm").textContent = `Зловлено ${c} з 7. Подумай про межі умови і натисни «Спочатку».`; $("gb").disabled = true; }
+    else $("gm").textContent = `Зловлено ${c} з 7. Спроб лишилось: ${MAX - n}`;
+    $("gi").value = ""; $("ge").value = ""; $("gi").focus();
+  };
+  $("gb").addEventListener("click", go); $("gr").addEventListener("click", reset);
+  $("gi").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+  reset();
+}
+</script>
+</body>
+</html>
