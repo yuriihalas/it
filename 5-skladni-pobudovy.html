@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кіт будує замок</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecef; color: #111; font: 19px/1.4 "Segoe UI", Roboto, Arial, sans-serif; }
+  .sheet { max-width: 1100px; margin: 12px auto; background: #fff; border: 1px solid #c9ced3; padding: 14px 22px 20px; }
+  h1 { font-size: 30px; margin: 0 0 8px; }
+  h1 span { font-weight: 400; color: #555; font-size: 19px; }
+  h2 { font-size: 23px; margin: 20px 0 8px; color: #5b3ea8; border-bottom: 3px solid #5b3ea8; padding-bottom: 2px; }
+  h3 { margin: 0 0 4px; font-size: 21px; }
+  p { margin: 0 0 8px; }
+  ol { margin: 0 0 8px; padding-left: 1.4em; } li { margin-bottom: 5px; }
+  .big { background: #fff6dd; border-left: 6px solid #c79100; padding: 8px 12px; border-radius: 4px; font-weight: 700; }
+  table { border-collapse: collapse; margin: 0 0 8px; width: 100%; }
+  td, th { border: 1px solid #c9ced3; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f6; }
+  .cheat td { text-align: center; font-weight: 700; }
+  .wrap { overflow-x: auto; }
+  .score { position: sticky; top: 0; z-index: 5; background: #fff; border: 2px solid #1a7f37; border-radius: 8px; padding: 6px 12px; font-size: 22px; font-weight: 700; margin: 10px 0; display: flex; gap: 16px; flex-wrap: wrap; }
+  .stars { color: #c79100; letter-spacing: 2px; }
+  .tasks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .task { border: 2px solid #d5dae0; border-radius: 10px; padding: 10px 12px; min-width: 0; }
+  .task.done { border-color: #1a7f37; background: #f3faf4; }
+  .n { display: inline-flex; width: 30px; height: 30px; border-radius: 50%; background: #5b3ea8; color: #fff; align-items: center; justify-content: center; font-size: 17px; margin-right: 6px; }
+  .done .n { background: #1a7f37; }
+  .tag { font-size: 14px; color: #fff; background: #b42318; border-radius: 10px; padding: 2px 8px; margin-left: 6px; vertical-align: 3px; }
+  .hint { color: #333; font-size: 17px; }
+  .row { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+  canvas { border: 1px solid #c9ced3; border-radius: 6px; background: #fff; width: 260px; height: 260px; }
+  .blocks { font: 700 16px/1 "Segoe UI", Arial, sans-serif; color: #fff; }
+  .blk { display: table; border-collapse: separate; padding: 7px 10px; border-radius: 6px; margin: 2px 0; white-space: nowrap; }
+  .ctrl { background: #e6a21a; } .mot { background: #4c97ff; } .pen { background: #0fbd8c; }
+  .ev { background: #ffbf00; color: #333; border-radius: 14px 14px 6px 6px; }
+  .inner { border-left: 14px solid #e6a21a; padding-left: 4px; }
+  .end { width: 90px; height: 11px; background: #e6a21a; border-radius: 0 0 6px 6px; margin-bottom: 2px; }
+  .fix { display: inline-block; background: #fff; color: #111; border-radius: 10px; padding: 2px 8px; font-family: Consolas, monospace; }
+  select { font: 700 17px Consolas, monospace; padding: 3px 5px; border: 2px solid #9aa4ae; border-radius: 8px; background: #fff; color: #111; cursor: pointer; max-width: 100%; }
+  .blk select { border-color: #111; padding: 1px 3px; }
+  .btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  button { font: inherit; font-size: 17px; font-weight: 700; padding: 5px 12px; border: 2px solid #0b5cad; border-radius: 6px; background: #fff; color: #0b5cad; cursor: pointer; }
+  button.go { background: #0b5cad; color: #fff; }
+  button:disabled { opacity: .55; cursor: default; }
+  button:focus-visible, select:focus-visible { outline: 3px solid #f5b400; outline-offset: 1px; }
+  .msg { font-weight: 700; min-height: 1.4em; margin-top: 6px; max-width: 280px; }
+  .msg.ok { color: #1a7f37; } .msg.bad { color: #b42318; }
+  .two { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: start; }
+  .quiz { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+  .q { border: 1px solid #d5dae0; border-radius: 6px; padding: 8px 12px; }
+  .q.yes { border-color: #1a7f37; background: #f3faf4; } .q.no { border-color: #b42318; background: #fdf3f2; }
+  .ans { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .mark { font-weight: 700; } .q.yes .mark { color: #1a7f37; } .q.no .mark { color: #b42318; }
+  .total { font-weight: 700; font-size: 21px; margin-top: 8px; }
+  .pick { display: grid; gap: 6px; min-width: 0; flex: 1 1 220px; }
+  .opt { text-align: left; border-color: #9aa4ae; color: #111; line-height: 1.35; }
+  .opt:disabled { opacity: 1; cursor: default; }
+  .opt.yes { border-color: #1a7f37; background: #e3f5e6; } .opt.no { border-color: #b42318; background: #fdeceb; }
+  .ctl { margin-bottom: 8px; }
+  label { font-weight: 700; display: inline-flex; gap: 6px; align-items: center; }
+  #castle { width: 100%; max-width: 900px; height: auto; background: #10204a; cursor: crosshair; touch-action: manipulation; }
+  .todo { background: #eef4ff; border-left: 6px solid #0b5cad; padding: 7px 12px; border-radius: 4px; }
+  .example { background: #f3f0fb; border-left: 6px solid #5b3ea8; padding: 7px 12px; border-radius: 4px; }
+  .orders li { font-weight: 700; } .orders li.ok { color: #1a7f37; }
+  .pile, .prog { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; min-width: 0; flex: 1 1 190px; }
+  .prog { border: 2px dashed #9aa4ae; border-radius: 8px; padding: 8px; min-height: 120px; }
+  .prog > b { font-size: 16px; color: #555; }
+  .cmd { border: 0; color: #fff; text-align: left; } .cmd.pen { background: #0fbd8c; } .cmd.mot { background: #4c97ff; } .cmd.ctrl { background: #e6a21a; }
+  .prog .cmd { cursor: default; opacity: 1; }
+  @media (max-width: 820px) { .tasks, .quiz, .two { grid-template-columns: minmax(0, 1fr); } .sheet { padding: 10px 12px; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Кіт будує замок <span>· складні побудови · 5 клас</span></h1>
+  <p class="big">Складний малюнок — це проста фігура, повторена кілька разів. Намалюємо квадрат, а потім скажемо коту: «зроби так ще раз… і ще раз!»</p>
+
+  <p><b>План уроку:</b> <a href="#p1">1. Фігури</a> · <a href="#p2">2. Виправ кота</a> · <a href="#p3">3. Що намалював кіт</a> · <a href="#p4">4. Порахуй</a> · <a href="#p5">5. Порядок команд</a> · <a href="#p6">6. Замовлення короля</a> · <a href="#p7">7. Свій візерунок</a> · <a href="#test">Тест</a></p>
+
+  <h2>Згадай команди</h2>
+  <div class="wrap"><table>
+    <tr><th>Команда</th><th>Що робить кіт</th></tr>
+    <tr><td><div class="blocks"><div class="blk pen">опустити олівець</div></div></td><td>починає залишати лінію</td></tr>
+    <tr><td><div class="blocks"><div class="blk pen">підняти олівець</div></div></td><td>ходить без лінії</td></tr>
+    <tr><td><div class="blocks"><div class="blk mot">перемістити на <span class="fix">50</span> кроків</div></div></td><td>іде вперед</td></tr>
+    <tr><td><div class="blocks"><div class="blk mot">поворот ↻ на <span class="fix">90</span> градусів</div></div></td><td>повертає праворуч (↺ — ліворуч)</td></tr>
+    <tr><td><div class="blocks"><div class="blk ctrl">повторити <span class="fix">4</span></div></div></td><td>виконує все, що всередині, 4 рази</td></tr>
+  </table></div>
+  <p><b>Повторити в повторити.</b> Внутрішній блок малює <b>одну фігуру</b>. Зовнішній блок повторює <b>всю фігуру</b> кілька разів.</p>
+  <div class="wrap"><table class="cheat">
+    <tr><th>Скільки фігур по колу (або кутів у фігурі)</th><td>3</td><td>4</td><td>5</td><td>6</td><td>8</td><td>12</td></tr>
+    <tr><th>На скільки градусів повертати</th><td>120</td><td>90</td><td>72</td><td>60</td><td>45</td><td>30</td></tr>
+  </table></div>
+
+  <h2 id="p1">Частина 1. Прикрась замок фігурами</h2>
+  <p class="todo"><b>Що робити:</b> 1) подивись на сіру фігуру; 2) у блоках <b>вибери числа</b> з віконець; 3) натисни <b>«Перевірити»</b>. Кіт намалює червону лінію. Вона має збігтися із сірою. Одна клітинка — 10 кроків.</p>
+  <div class="score"><span id="sc"></span><span class="stars" id="st"></span></div>
+  <div class="tasks" id="tasks"></div>
+
+  <h2 id="p2">Частина 2. Кіт помилився — виправ</h2>
+  <p class="todo"><b>Що робити:</b> сіра фігура — так треба. Червона — те, що вийшло в кота, бо <b>одне число неправильне</b>. Зміни число у віконці й натисни <b>«Перевірити»</b>.</p>
+  <div class="score" style="position:static"><span id="sc2"></span></div>
+  <div class="tasks" id="bugs"></div>
+
+  <h2 id="p3">Частина 3. Що намалював кіт?</h2>
+  <p class="todo"><b>Що робити:</b> під кожним малюнком є <b>3 відповіді</b>. Натисни на ту, що правильно описує малюнок. Вибрати можна <b>один раз</b>.</p>
+  <p class="example"><b>Як думати:</b> спочатку знайди одну фігуру (квадрат має 4 сторони, трикутник — 3, шестикутник — 6). Потім порахуй, скільки таких фігур. Тоді подивись: вони стоять <b>в ряд</b> (одна біля одної) чи <b>по колу</b> (зібрані навколо однієї точки).</p>
+  <div class="tasks" id="guess"></div>
+  <p class="total" id="gs"></p>
+
+  <h2 id="p4">Частина 4. Порахуй</h2>
+  <p class="todo"><b>Що робити:</b> прочитай питання, <b>вибери число</b> зі списку і натисни «Перевірити». Один раз.</p>
+  <div class="tasks" id="count"></div>
+  <p class="total" id="ns"></p>
+
+  <h2 id="p5">Частина 5. Постав команди по порядку</h2>
+  <p class="todo"><b>Що робити:</b> команди перемішані. <b>Натискай на них по черзі</b>, яка має бути першою, другою і так далі. Вони переїдуть у програму праворуч. Потім натисни «Перевірити». Помилився — «Почати заново».</p>
+  <p class="example">Команди, які стоять після «повторити», виконуються <b>всередині</b> нього, кожного разу.</p>
+  <div class="tasks" id="order"></div>
+  <p class="total" id="os"></p>
+
+  <h2 id="p6">Частина 6. Виконай замовлення короля</h2>
+  <p class="todo"><b>Що робити:</b> 1) прочитай замовлення; 2) вибери в блоках, <b>скільки разів</b> і <b>яку фігуру</b>, а нижче — розмір і колір; 3) <b>клацни на замку</b> там, де просить король. Виконане замовлення стане зеленим. Помилився — «Прибрати останній».</p>
+  <ol class="orders" id="orders"></ol>
+  <div class="blocks ctl">
+    <div class="blk ctrl">повторити <select id="cn" aria-label="Скільки разів"><option>4</option><option>6</option><option selected>8</option><option>12</option><option>18</option></select></div>
+    <div class="inner"><div class="blk pen">намалювати <select id="cm" aria-label="Фігура"><option value="3">трикутник</option><option value="4" selected>квадрат</option><option value="5">п'ятикутник</option><option value="6">шестикутник</option><option value="36">коло</option></select></div>
+    <div class="blk mot">повернутися по колу</div></div><div class="end"></div>
+  </div>
+  <p class="btns">
+    <label>Розмір <select id="cz"><option value="18">малий</option><option value="30" selected>середній</option><option value="50">великий</option></select></label>
+    <label>Колір <select id="cc"><option value="#ffd400" selected>жовтий</option><option value="#ff6b4a">червоний</option><option value="#7fd3ff">блакитний</option><option value="#ff9fd0">рожевий</option><option value="#9be37a">зелений</option><option value="#ffffff">білий</option></select></label>
+    <button id="undo">Прибрати останній</button><button id="clear">Прибрати всі</button>
+  </p>
+  <canvas id="castle" width="900" height="520" aria-label="Замок: клацни, щоб поставити візерунок"></canvas>
+  <p class="total" id="cs"></p>
+  <p>Усі замовлення виконано? Прикрашай далі, як тобі подобається.</p>
+
+  <h2 id="p7">Частина 7. Свій візерунок</h2>
+  <div class="task" id="free"></div>
+
+  <h2 id="test">Тест</h2>
+  <p>Вибери відповідь і натисни «Перевірити». Перевірити кожне питання можна <b>один раз</b>.</p>
+  <div class="quiz" id="quiz"></div>
+  <p class="total" id="qs"></p>
+
+  <h2>Домашнє завдання</h2>
+  <p>Повторити команди повороту й малювання.</p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const T = [
+ { title: "Цегла вежі", kind: "poly", fix: { d: 80 }, ans: { m: 4, a: 90 }, opt: { m: [3, 4, 5, 6], a: [45, 60, 90, 120] },
+   hint: "Спочатку проста фігура — квадрат. Скільки в нього сторін і який поворот? Подивись у таблицю." },
+ { title: "Три віконця в ряд", kind: "row", fix: { m: 4, d: 40, a: 90 }, ans: { n: 3, s: 60 }, opt: { n: [2, 3, 4, 5], s: [40, 50, 60, 80] },
+   hint: "Кіт малює квадрат, піднімає олівець, переходить далі і малює знову. Віконце — 4 клітинки, проміжок — 2 клітинки." },
+ { title: "Прапорці-трикутники", kind: "row", left: true, fix: { m: 3, d: 40, s: 40 }, ans: { n: 5, a: 120 }, opt: { n: [3, 4, 5, 6], a: [60, 90, 120, 144] },
+   hint: "Порахуй трикутники на сірій фігурі. Поворот трикутника — у таблиці." },
+ { title: "Зубці стіни", kind: "teeth", fix: {}, ans: { n: 4, d: 30 }, opt: { n: [3, 4, 5, 6], d: [20, 30, 40, 50] },
+   hint: "Порахуй зубці. Сторона зубця — 3 клітинки, тобто 30 кроків." },
+ { title: "Вікно з 4 квадратів", kind: "flower", fix: { n: 4, m: 4, d: 60, a: 90 }, ans: { b: 90 }, opt: { b: [30, 45, 60, 90] },
+   hint: "4 квадрати по колу. На скільки повернути після кожного квадрата?" },
+ { title: "Вітраж із 8 квадратів", kind: "flower", fix: { m: 4, d: 60, a: 90 }, ans: { n: 8, b: 45 }, opt: { n: [4, 6, 8, 12], b: [30, 45, 60, 90] },
+   hint: "Тут квадратів 8. Обидва числа є в таблиці." },
+ { title: "Щит із трикутників", kind: "flower", fix: { n: 6, d: 70 }, ans: { m: 3, a: 120, b: 60 }, opt: { m: [3, 4, 5, 6], a: [60, 90, 120], b: [30, 60, 90] },
+   hint: "6 трикутників по колу. Спочатку склади трикутник, потім поворот після нього." },
+ { title: "Квітка над воротами", bug: true, kind: "flower", fix: { n: 6, m: 6, d: 40, a: 60 }, ans: { b: 60 }, pre: { b: 45 }, opt: { b: [30, 45, 60, 90] },
+   hint: "Квітка має 6 шестикутників по колу. Який поворот після кожного?" },
+ { title: "Чотири віконця", bug: true, kind: "row", fix: { m: 4, d: 40, a: 90, s: 50 }, ans: { n: 4 }, pre: { n: 3 }, opt: { n: [2, 3, 4, 5] },
+   hint: "Треба 4 віконця, а кіт намалював менше." },
+ { title: "Дах вежі", bug: true, kind: "poly", fix: { m: 3, d: 100 }, ans: { a: 120 }, pre: { a: 90 }, opt: { a: [60, 90, 120, 144] },
+   hint: "Дах — трикутник. Який поворот у трикутника? Подивись у таблицю." },
+ { title: "Вітраж із квадратів", bug: true, kind: "flower", fix: { n: 6, d: 60, a: 90, b: 60 }, ans: { m: 4 }, pre: { m: 3 }, opt: { m: [3, 4, 5, 6] },
+   hint: "Тут мають бути квадрати. Скільки в квадрата сторін?" },
+ { title: "Високі зубці", bug: true, kind: "teeth", fix: { n: 3 }, ans: { d: 40 }, pre: { d: 20 }, opt: { d: [20, 30, 40, 50] },
+   hint: "Зубці вийшли замалі. Порахуй клітинки на одній стороні сірого зубця." },
+];
+const clampInt = (v, max) => Math.max(0, Math.min(max, Math.round(+v || 0)));
+function walk(t, v) {
+  let x = 0, y = 0, h = 0; const seg = [];
+  const fd = (s, draw = true) => { const nx = x + s * Math.cos(h * Math.PI / 180), ny = y + s * Math.sin(h * Math.PI / 180); if (draw && s) seg.push([x, y, nx, ny]); x = nx; y = ny; };
+  const rt = a => { h += a; };
+  const d = +v.d || 0, dir = t.left ? -1 : 1;
+  const fig = () => { for (let j = 0; j < clampInt(v.m, 40); j++) { fd(d); rt(dir * (+v.a || 0)); } };
+  const n = clampInt(v.n, 60);
+  for (let i = 0; i < n; i++) {
+    if (t.kind === "poly") break;
+    if (t.kind === "row") { fig(); fd(+v.s || 0, false); }
+    if (t.kind === "flower") { fig(); rt(+v.b || 0); }
+    if (t.kind === "teeth") { rt(-90); fd(d); rt(90); fd(d); rt(90); fd(d); rt(-90); fd(d); }
+  }
+  if (t.kind === "poly") fig();
+  return seg;
+}
+const key = s => { const r = v => (Math.round(v * 2) / 2 + 0).toFixed(1).replace("-0.0", "0.0"); const a = r(s[0]) + "," + r(s[1]), b = r(s[2]) + "," + r(s[3]); return a < b ? a + "|" + b : b + "|" + a; };
+function same(s1, s2) {
+  const A = new Set(s1.map(key)), B = new Set(s2.map(key));
+  if (A.size !== B.size) return false;
+  for (const k of A) if (!B.has(k)) return false;
+  return true;
+}
+function frame(seg) {
+  const xs = seg.flatMap(s => [s[0], s[2]]), ys = seg.flatMap(s => [s[1], s[3]]);
+  const mid = a => (Math.min(0, ...a) + Math.max(0, ...a)) / 2;
+  const box = a => seg.length ? (Math.min(...a) + Math.max(...a)) / 2 : mid(a);
+  return { ox: Math.round((130 - box(xs)) / 10) * 10, oy: Math.round((130 - box(ys)) / 10) * 10 };
+}
+function grid(c) {
+  c.clearRect(0, 0, 260, 260); c.lineWidth = 1;
+  for (let i = 0; i <= 260; i += 10) {
+    c.strokeStyle = i % 50 === 0 ? "#c4cad3" : "#eceff3";
+    c.beginPath(); c.moveTo(i + .5, 0); c.lineTo(i + .5, 260); c.stroke();
+    c.beginPath(); c.moveTo(0, i + .5); c.lineTo(260, i + .5); c.stroke();
+  }
+}
+function lines(c, seg, f, color, w) {
+  c.strokeStyle = color; c.lineWidth = w; c.lineCap = "round";
+  for (const s of seg) { c.beginPath(); c.moveTo(s[0] + f.ox, s[1] + f.oy); c.lineTo(s[2] + f.ox, s[3] + f.oy); c.stroke(); }
+}
+const dot = (c, x, y) => { c.fillStyle = "#e6a21a"; c.beginPath(); c.arc(x, y, 6, 0, 7); c.fill(); };
+function animate(c, seg, f, base, colors, then) {
+  clearInterval(c.timer); base();
+  let k = 0; const step = Math.max(1, Math.ceil(seg.length / 50));
+  if (!seg.length) { if (then) then(); return; }
+  c.timer = setInterval(() => {
+    k = Math.min(seg.length, k + step); base();
+    seg.slice(0, k).forEach((s, i) => lines(c, [s], f, colors[i % colors.length], 3));
+    dot(c, seg[k - 1][2] + f.ox, seg[k - 1][3] + f.oy);
+    if (k >= seg.length) { clearInterval(c.timer); if (then) then(); }
+  }, 30);
+}
+const NAMES = { n: "скільки разів повторити", m: "сторін у фігурі", d: "скільки кроків", s: "на скільки перейти", a: "поворот у фігурі", b: "поворот після фігури" };
+function blocks(t) {
+  const box = k => t.fix && t.fix[k] !== undefined ? `<span class="fix">${t.fix[k]}</span>`
+    : `<select data-k="${k}" aria-label="${NAMES[k]}"><option value="">?</option>${t.opt[k].map(o => `<option${t.pre && t.pre[k] === o ? " selected" : ""}>${o}</option>`).join("")}</select>`;
+  const mot = s => `<div class="blk mot">${s}</div>`, move = k => mot(`перемістити на ${box(k)} кроків`);
+  const turn = (arrow, val) => mot(`поворот ${arrow} на ${val} градусів`);
+  const loop = (k, body) => `<div class="blk ctrl">повторити ${box(k)}</div><div class="inner">${body}</div><div class="end"></div>`;
+  const fig = t.kind === "teeth" ? "" : loop("m", move("d") + turn(t.left ? "↺" : "↻", box("a")));
+  let body;
+  if (t.kind === "poly") body = fig;
+  if (t.kind === "row") body = loop("n", fig + `<div class="blk pen">підняти олівець</div>` + move("s") + `<div class="blk pen">опустити олівець</div>`);
+  if (t.kind === "flower") body = loop("n", fig + turn("↻", box("b")));
+  if (t.kind === "teeth") { const q = '<span class="fix">90</span>'; body = loop("n", turn("↺", q) + move("d") + turn("↻", q) + move("d") + turn("↻", q) + move("d") + turn("↺", q) + move("d")); }
+  return `<div class="blocks"><div class="blk pen">опустити олівець</div>${body}</div>`;
+}
+const done = new Set();
+const GOOD = T.filter(t => !t.bug).length, BAD = T.length - GOOD;
+function upd() {
+  const a = [...done].filter(i => !T[i].bug).length, b = done.size - a;
+  $("sc").textContent = `Фігури: ${a} з ${GOOD}`;
+  $("st").textContent = "★".repeat(a) + "☆".repeat(GOOD - a);
+  $("sc2").textContent = `Виправлено: ${b} з ${BAD}`;
+}
+T.forEach((t, i) => {
+  const el = document.createElement("div"); el.className = "task"; el.id = "t" + i;
+  el.innerHTML = `<h3><span class="n">${t.bug ? i - GOOD + 1 : i + 1}</span>${t.title}</h3><p class="hint">${t.hint}</p>
+    <div class="row"><canvas width="260" height="260" role="img" aria-label="Фігура: ${t.title}"></canvas><div>${blocks(t)}<div class="btns"><button class="go">Перевірити</button></div><div class="msg" aria-live="polite"></div></div></div>`;
+  $(t.bug ? "bugs" : "tasks").appendChild(el);
+  const target = walk(t, Object.assign({}, t.fix, t.ans)), f = frame(target), c = el.querySelector("canvas").getContext("2d");
+  t.target = target;
+  const base = () => { grid(c); lines(c, target, f, "#b8bec7", 7); dot(c, f.ox, f.oy); };
+  base();
+  if (t.bug) lines(c, walk(t, Object.assign({}, t.fix, t.pre)), f, "#e03a1e", 3);
+  const msg = el.querySelector(".msg");
+  el.querySelector("button").addEventListener("click", () => {
+    const sels = [...el.querySelectorAll("select")];
+    if (sels.some(s => !s.value)) { msg.textContent = "Вибери число в кожному віконці."; msg.className = "msg bad"; return; }
+    const v = Object.assign({}, t.fix); sels.forEach(s => { v[s.dataset.k] = s.value; });
+    const seg = walk(t, v); msg.textContent = "Кіт малює…"; msg.className = "msg";
+    animate(c, seg, f, base, ["#e03a1e"], () => {
+      if (same(seg, target) && seg.length === target.length) { msg.textContent = "✓ Так! Збіглося."; msg.className = "msg ok"; el.classList.add("done"); done.add(i); }
+      else { msg.textContent = same(seg, target) ? "✗ Майже! Кіт обвів деякі лінії двічі. Повторень забагато." : "✗ Ще ні. Порівняй червону лінію із сірою і зміни числа."; msg.className = "msg bad"; el.classList.remove("done"); done.delete(i); }
+      upd();
+    });
+  });
+});
+upd();
+
+(() => {
+  const t = { kind: "flower", opt: { n: [4, 6, 8, 12, 18], m: [3, 4, 5, 6, 8], d: [30, 40, 50, 60], a: [45, 60, 72, 90, 120], b: [20, 30, 45, 60, 90] }, pre: { n: 12, m: 4, d: 50, a: 90, b: 30 }, fix: {} };
+  const el = $("free");
+  el.innerHTML = `<p>Тут немає правильної відповіді. Міняй числа й натискай «Намалювати». Спробуй, наприклад: <b>8 разів, фігура з 8 сторін, 40 кроків, поворот 45, потім 45</b>.</p>
+    <div class="row"><canvas width="260" height="260" role="img" aria-label="Твій візерунок"></canvas><div>${blocks(t)}<div class="btns"><button class="go">Намалювати</button></div></div></div>`;
+  const c = el.querySelector("canvas").getContext("2d"); grid(c);
+  el.querySelector("button").addEventListener("click", () => {
+    const v = {}; el.querySelectorAll("select").forEach(s => { v[s.dataset.k] = s.value; });
+    if (Object.values(v).some(x => !x)) return;
+    const seg = walk(t, v), xs = seg.flatMap(s => [s[0], s[2]]), ys = seg.flatMap(s => [s[1], s[3]]);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const k = Math.min(1, 240 / Math.max(x1 - x0, y1 - y0));
+    const fit = seg.map(s => [130 + (s[0] - (x0 + x1) / 2) * k, 130 + (s[1] - (y0 + y1) / 2) * k, 130 + (s[2] - (x0 + x1) / 2) * k, 130 + (s[3] - (y0 + y1) / 2) * k]);
+    animate(c, fit, { ox: 0, oy: 0 }, () => grid(c), ["#e03a1e", "#e6a21a", "#1a7f37", "#0b5cad", "#8e44ad"]);
+  });
+})();
+
+// guess the program
+const NM = { 3: ["трикутники", "трикутників"], 4: ["квадрати", "квадратів"], 6: ["шестикутники", "шестикутників"] };
+const TURN = { 3: 120, 4: 90, 6: 60 };
+const say = p => `${p[1]} ${NM[p[2]][p[1] < 5 ? 0 : 1]} ${p[0] === "row" ? "в ряд" : "по колу"}`;
+const G = [
+  [["flower", 4, 3], ["flower", 4, 4], ["flower", 6, 3]],
+  [["row", 3, 3], ["row", 4, 4], ["row", 4, 3]],
+  [["flower", 6, 4], ["flower", 4, 4], ["flower", 6, 3]],
+  [["row", 3, 6], ["flower", 3, 6], ["row", 3, 4]],
+  [["flower", 3, 4], ["flower", 3, 3], ["flower", 4, 4]],
+  [["row", 5, 4], ["flower", 5, 4], ["row", 4, 4]],
+  [["flower", 12, 3], ["flower", 6, 3], ["flower", 12, 4]],
+  [["flower", 8, 6], ["flower", 6, 6], ["flower", 8, 4]],
+];
+const RIGHT = [1, 2, 0, 0, 1, 0, 2, 1];
+const segOf = p => walk({ kind: p[0], left: p[0] === "row" }, { n: p[1], m: p[2], a: TURN[p[2]], d: p[2] === 6 ? 30 : 40, s: p[2] === 6 ? 80 : 55, b: 360 / p[1] });
+function fitDraw(c, seg, color) {
+  const xs = seg.flatMap(s => [s[0], s[2]]), ys = seg.flatMap(s => [s[1], s[3]]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const k = Math.min(1.6, 230 / Math.max(x1 - x0, y1 - y0));
+  const P = (x, y) => [130 + (x - (x0 + x1) / 2) * k, 130 + (y - (y0 + y1) / 2) * k];
+  lines(c, seg.map(s => P(s[0], s[1]).concat(P(s[2], s[3]))), { ox: 0, oy: 0 }, color, 2.5);
+}
+let gRight = 0, gDone = 0;
+const gShow = () => { $("gs").textContent = `Вгадано: ${gRight} з ${G.length}`; };
+G.forEach((opts, i) => {
+  const el = document.createElement("div"); el.className = "task";
+  el.innerHTML = `<h3><span class="n">${i + 1}</span>Що тут намальовано?</h3><div class="row"><canvas width="260" height="260" role="img" aria-label="Малюнок ${i + 1}"></canvas><div class="pick"><b>Натисни одну відповідь:</b>${opts.map((p, j) => `<button class="opt" data-j="${j}">${say(p)}</button>`).join("")}<div class="msg" aria-live="polite"></div></div></div>`;
+  $("guess").appendChild(el);
+  fitDraw(el.querySelector("canvas").getContext("2d"), segOf(opts[RIGHT[i]]), "#5b3ea8");
+  el.querySelector(".pick").addEventListener("click", e => {
+    const b = e.target.closest("button[data-j]"); if (!b) return;
+    const ok = +b.dataset.j === RIGHT[i], all = el.querySelectorAll("button");
+    all.forEach(x => { x.disabled = true; }); all[RIGHT[i]].classList.add("yes"); if (!ok) b.classList.add("no");
+    const m = el.querySelector(".msg"); m.textContent = ok ? "✓ Так!" : "✗ Правильна відповідь — зелена."; m.className = "msg " + (ok ? "ok" : "bad");
+    if (ok) gRight++; gDone++; gShow();
+  });
+});
+gShow();
+
+// count
+const C = [
+  { q: "Скільки <b>трикутників</b> намалював кіт?", p: ["row", 5, 3], a: 5 },
+  { q: "Скільки <b>зубців</b> у стіни?", t: { kind: "teeth" }, v: { n: 5, d: 22 }, a: 5 },
+  { q: "Скільки <b>сторін</b> в однієї фігури?", t: { kind: "row" }, v: { n: 3, m: 5, a: 72, d: 34, s: 80 }, a: 5 },
+  { q: "Скільки <b>трикутників</b> у цьому млинку?", p: ["flower", 3, 3], a: 3 },
+  { q: "Повторити 4: перемістити на 50 кроків. Скільки <b>всього кроків</b> пройде кіт?", a: 200, o: [50, 54, 200, 400] },
+  { q: "Повторити 3: намалювати квадрат. Скільки <b>всього сторін</b> намалює кіт?", a: 12, o: [3, 4, 7, 12] },
+];
+let nRight = 0;
+const nShow = () => { $("ns").textContent = `Правильно: ${nRight} з ${C.length}`; };
+C.forEach((q, i) => {
+  const el = document.createElement("div"); el.className = "task";
+  const pic = q.p || q.t;
+  el.innerHTML = `<h3><span class="n">${i + 1}</span>Порахуй</h3><p>${q.q}</p><div class="row">${pic ? `<canvas width="260" height="260" role="img" aria-label="Малюнок ${i + 1}"></canvas>` : ""}<div class="ans"><select aria-label="Відповідь ${i + 1}"><option value="">вибери</option>${(q.o || [3, 4, 5, 6, 8]).map(o => `<option>${o}</option>`).join("")}</select><button>Перевірити</button><span class="mark"></span></div></div>`;
+  $("count").appendChild(el);
+  if (pic) fitDraw(el.querySelector("canvas").getContext("2d"), q.p ? segOf(q.p) : walk(q.t, q.v), "#5b3ea8");
+  el.querySelector("button").addEventListener("click", () => {
+    const sel = el.querySelector("select"); if (!sel.value || sel.disabled) return;
+    const ok = +sel.value === q.a; sel.disabled = true; el.querySelector("button").disabled = true;
+    const m = el.querySelector(".mark"); m.textContent = ok ? "✓ Правильно" : "✗ Правильно: " + q.a; m.style.color = ok ? "#1a7f37" : "#b42318";
+    if (ok) { nRight++; el.classList.add("done"); } nShow();
+  });
+});
+nShow();
+
+// order the commands
+const down = ["pen", "опустити олівець"], up = ["pen", "підняти олівець"], sq = ["mot", "намалювати квадрат"];
+const O = [
+  { title: "Квадрат", goal: "Кіт має намалювати один квадрат.", right: [down, ["ctrl", "повторити 4 рази"], ["mot", "перемістити на 50"], ["mot", "поворот на 90"]], mix: [2, 0, 3, 1], swap: true },
+  { title: "Два віконця", goal: "Два квадрати окремо, без лінії між ними.", right: [down, sq, up, ["mot", "перейти вперед на 80"], down, sq], mix: [3, 1, 4, 2, 0, 5] },
+  { title: "Квітка", goal: "8 квадратів по колу.", right: [down, ["ctrl", "повторити 8 разів"], sq, ["mot", "поворот на 45"]], mix: [3, 2, 1, 0], swap: true },
+  { title: "Три прапорці", goal: "3 трикутники в ряд, без лінії між ними.", right: [down, ["ctrl", "повторити 3 рази"], ["mot", "намалювати трикутник"], up, ["mot", "перейти вперед на 60"], down], mix: [4, 2, 5, 1, 3, 0] },
+];
+let oRight = new Set();
+const oShow = () => { $("os").textContent = `Складено програм: ${oRight.size} з ${O.length}`; };
+O.forEach((o, i) => {
+  const el = document.createElement("div"); el.className = "task";
+  el.innerHTML = `<h3><span class="n">${i + 1}</span>${o.title}</h3><p>${o.goal}</p><div class="row"><div class="pile"></div><div class="prog"></div></div><div class="btns"><button class="go">Перевірити</button><button class="re">Почати заново</button></div><div class="msg" aria-live="polite"></div>`;
+  $("order").appendChild(el);
+  const pile = el.querySelector(".pile"), prog = el.querySelector(".prog"), msg = el.querySelector(".msg");
+  let got = [];
+  const reset = () => {
+    got = []; prog.innerHTML = "<b>Моя програма:</b>"; pile.innerHTML = ""; msg.textContent = ""; el.classList.remove("done"); oRight.delete(i); oShow();
+    o.mix.forEach(j => {
+      const b = document.createElement("button"); b.className = "cmd " + o.right[j][0]; b.textContent = o.right[j][1]; pile.appendChild(b);
+      b.addEventListener("click", () => { got.push(o.right[j][1]); prog.appendChild(b.cloneNode(true)); b.remove(); msg.textContent = ""; });
+    });
+  };
+  el.querySelector(".re").addEventListener("click", reset);
+  el.querySelector(".go").addEventListener("click", () => {
+    if (got.length < o.right.length) { msg.textContent = "Спочатку перенеси всі команди в програму."; msg.className = "msg bad"; return; }
+    const want = o.right.map(x => x[1]), alt = want.slice();
+    if (o.swap) [alt[2], alt[3]] = [alt[3], alt[2]];
+    const ok = got.join("|") === want.join("|") || got.join("|") === alt.join("|");
+    msg.textContent = ok ? "✓ Програма працює!" : "✗ Порядок не той. Натисни «Почати заново»."; msg.className = "msg " + (ok ? "ok" : "bad");
+    if (ok) { oRight.add(i); el.classList.add("done"); oShow(); }
+  });
+  reset();
+});
+
+// decorate the castle
+const inBox = (t, x0, x1, y0, y1) => t.x >= x0 && t.x <= x1 && t.y >= y0 && t.y <= y1;
+const YEL = "#ffd400", RED = "#ff6b4a", BLUE = "#7fd3ff", PINK = "#ff9fd0", WHITE = "#ffffff";
+const M = [
+  ["Жовтий візерунок із квадратів на лівій вежі.", S => S.some(t => t.m === 4 && t.col === YEL && inBox(t, 135, 265, 95, 450))],
+  ["Червоний візерунок із трикутників на правій вежі.", S => S.some(t => t.m === 3 && t.col === RED && inBox(t, 635, 765, 95, 450))],
+  ["Блакитне вікно з шестикутників на стіні між вежами.", S => S.some(t => t.m === 6 && t.col === BLUE && inBox(t, 262, 638, 270, 450))],
+  ["Біла сніжинка: 12 трикутників, у небі між вежами.", S => S.some(t => t.m === 3 && t.n === 12 && t.col === WHITE && inBox(t, 250, 650, 0, 255))],
+  ["Три зірки з кіл у небі (будь-який колір).", S => S.filter(t => t.m === 36 && t.y < 255 && !inBox(t, 135, 265, 95, 255) && !inBox(t, 635, 765, 95, 255)).length >= 3],
+  ["Великий рожевий візерунок над воротами.", S => S.some(t => t.col === PINK && t.z === 50 && inBox(t, 385, 515, 270, 420))],
+];
+$("orders").innerHTML = M.map((m, i) => `<li id="m${i}o">${m[0]}</li>`).join("");
+const cv = $("castle"), cc = cv.getContext("2d"), stamps = [];
+function castle() {
+  cc.fillStyle = "#10204a"; cc.fillRect(0, 0, 900, 520);
+  cc.fillStyle = "#2f6b3a"; cc.fillRect(0, 450, 900, 70);
+  cc.fillStyle = "#8b93a6";
+  const teeth = (x, y, w) => { for (let i = 0; i < w; i += 40) cc.fillRect(x + i, y - 20, 22, 20); };
+  cc.fillRect(250, 280, 400, 170); teeth(260, 280, 390);
+  [150, 650].forEach(x => { cc.fillRect(x, 200, 100, 250); cc.fillStyle = "#b4493b"; cc.beginPath(); cc.moveTo(x - 12, 200); cc.lineTo(x + 50, 95); cc.lineTo(x + 112, 200); cc.fill(); cc.fillStyle = "#8b93a6"; });
+  cc.fillStyle = "#5a3a22"; cc.beginPath(); cc.moveTo(405, 450); cc.lineTo(405, 380); cc.arc(450, 380, 45, Math.PI, 0); cc.lineTo(495, 450); cc.fill();
+}
+function paint() {
+  castle();
+  stamps.forEach(t => {
+    const side = t.m === 36 ? t.z * Math.PI / 36 : t.z * (t.m === 3 ? 1.2 : t.m === 4 ? 0.9 : t.m === 5 ? 0.7 : 0.55);
+    const seg = walk({ kind: "flower" }, { n: t.n, m: t.m, a: 360 / t.m, d: side, b: 360 / t.n });
+    const far = Math.max(...seg.map(s => Math.hypot(s[2], s[3])));
+    const k = t.z / far;
+    lines(cc, seg.map(s => [s[0] * k, s[1] * k, s[2] * k, s[3] * k]), { ox: t.x, oy: t.y }, t.col, 2);
+  });
+  $("cs").textContent = `Візерунків на замку: ${stamps.length}`;
+  let n = 0;
+  M.forEach((m, i) => { const ok = m[1](stamps); n += ok; const li = $("m" + i + "o"); li.className = ok ? "ok" : ""; li.textContent = (ok ? "✓ " : "") + m[0]; });
+  if (n === M.length) $("cs").textContent += " · Усі замовлення виконано!";
+}
+cv.addEventListener("click", e => {
+  const r = cv.getBoundingClientRect();
+  stamps.push({ x: (e.clientX - r.left) * 900 / r.width, y: (e.clientY - r.top) * 520 / r.height, n: +$("cn").value, m: +$("cm").value, z: +$("cz").value, col: $("cc").value });
+  paint();
+});
+$("undo").addEventListener("click", () => { stamps.pop(); paint(); });
+$("clear").addEventListener("click", () => { stamps.length = 0; paint(); });
+paint();
+
+const Q = [
+  ["Блок «повторити 4: перемістити на 50, поворот 90» малює…", "квадрат", ["трикутник", "квадрат", "коло"]],
+  ["У «повторити в повторити» що робить внутрішній блок?", "малює одну фігуру", ["малює одну фігуру", "стирає малюнок", "зупиняє програму"]],
+  ["Треба 6 фігур по колу. На скільки градусів повертати після кожної? Подивись у таблицю.", "60", ["30", "45", "60", "90"]],
+  ["Скільки квадратів буде: повторити 8 (квадрат, поворот 45)?", "8", ["4", "8", "45"]],
+  ["Щоб між фігурами не було лінії, перед переходом треба…", "підняти олівець", ["опустити олівець", "підняти олівець", "повторити"]],
+  ["Що намалює: повторити 3 (квадрат, підняти олівець, перейти далі, опустити олівець)?", "3 квадрати в ряд", ["1 великий квадрат", "3 квадрати в ряд", "трикутник"]],
+  ["Скільки разів кіт зробить крок: повторити 3 (повторити 4 (перемістити))?", "12", ["3", "4", "7", "12"]],
+];
+let right = 0;
+const qs = () => { $("qs").textContent = `Правильно: ${right} з ${Q.length}`; };
+$("quiz").innerHTML = Q.map((q, k) => `<div class="q" id="q${k}"><p><b>${k + 1}.</b> ${q[0]}</p><div class="ans"><select id="a${k}" aria-label="Відповідь ${k + 1}"><option value="">вибери</option>${q[2].map(o => `<option>${o}</option>`).join("")}</select><button data-q="${k}">Перевірити</button><span class="mark" id="m${k}"></span></div></div>`).join("");
+$("quiz").addEventListener("click", e => {
+  const b = e.target.closest("button[data-q]"); if (!b) return;
+  const k = +b.dataset.q, s = $("a" + k), box = $("q" + k);
+  if (!s.value || s.disabled) return;
+  const ok = s.value === Q[k][1];
+  box.classList.add(ok ? "yes" : "no"); s.disabled = true; b.disabled = true;
+  $("m" + k).textContent = ok ? "✓ Правильно" : "✗ Правильно: " + Q[k][1];
+  if (ok) right++;
+  qs();
+});
+qs();
+</script>
+</body>
+</html>
